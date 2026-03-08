@@ -10,6 +10,7 @@ import fs from "fs";
 import csv from "csv-parser";
 
 
+
 dotenv.config();
 
 const app = express();
@@ -24,6 +25,40 @@ const thaiVowels = [
   "ะ","า","ิ","ี","ึ","ื","ุ","ู",
   "เ","แ","โ","ใ","ไ","ำ","ๅ"
 ];
+
+let sentenceBank = [];
+
+function loadSentences(){
+  return new Promise((resolve,reject)=>{
+
+    const temp = [];
+
+    fs.createReadStream("./sentences.csv")
+      .pipe(csv())
+      .on("data",(row)=>{
+
+        temp.push({
+          grammar_id: row.grammar_id,
+          thai: row.thai,
+          romanization: row.romanization,
+          english: row.english,
+          breakdown: JSON.parse(row.breakdown)
+        });
+
+      })
+      .on("end",()=>{
+
+        sentenceBank = temp;
+
+        console.log("Sentences loaded:", sentenceBank.length);
+
+        resolve();
+
+      })
+      .on("error",reject);
+
+  });
+}
 
 function countThaiSyllables(word){
 
@@ -449,6 +484,82 @@ app.post("/transform", async (req, res) => {
 
 });
 
+app.post("/practice", (req,res)=>{
+
+  const { grammar } = req.body;
+
+  const matches = sentenceBank.filter(
+    s => s.grammar_id === grammar
+  );
+
+  if(matches.length === 0){
+    return res.status(404).json({error:"No sentences found"});
+  }
+
+  const random =
+    matches[Math.floor(Math.random()*matches.length)];
+
+  res.json({
+    sentence: random.thai,
+    romanization: random.romanization,
+    translation: random.english,
+    breakdown: random.breakdown
+  });
+
+});
+
+/* =============================== */
+/* CSV PRACTICE */
+/* =============================== */
+app.post("/practice-csv", (req, res) => {
+
+  console.log("BODY RECEIVED:", req.body);
+
+  try {
+
+    const { grammar } = req.body;
+
+    console.log("GRAMMAR RECEIVED:", grammar);
+
+    let matches;
+
+    if (grammar) {
+      matches = sentenceBank.filter(
+        s => String(s.grammar_id).trim() === String(grammar).trim()
+      );
+    } else {
+      matches = sentenceBank;
+    }
+
+    console.log("MATCHES FOUND:", matches.length);
+
+    if (!matches || matches.length === 0) {
+      return res.status(404).json({ error: "No CSV sentences found" });
+    }
+
+    const random =
+      matches[Math.floor(Math.random() * matches.length)];
+
+    res.json({
+      sentence: random.thai,
+      romanization: random.romanization,
+      translation: random.english,
+      breakdown: random.breakdown
+    });
+
+  } catch (err) {
+
+    console.error("CSV practice error:", err);
+    res.status(500).json({ error: "CSV practice failed" });
+
+  }
+
+});
+
+console.log(
+  [...new Set(sentenceBank.map(s => s.grammar_id))]
+);
+
 /* =============================== */
 /* START SERVER */
 /* =============================== */
@@ -458,6 +569,7 @@ async function startServer(){
   try{
 
     await loadDictionary();
+    await loadSentences();
 
     app.listen(3000,()=>{
       console.log("AI server running on port 3000");
