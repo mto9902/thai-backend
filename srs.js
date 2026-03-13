@@ -10,42 +10,22 @@
 
 import { pool } from "./db.js";
 
-// ─── SRS Configuration (Anki defaults) ──────────────────────
-
 const SRS_CONFIG = {
   dailyNewWordLimit: 20,
-
-  // Learning steps in minutes (new cards go through these before graduating)
   learningSteps: [1, 10],
-  // Relearning steps in minutes (lapsed cards go through these)
   relearningSteps: [10],
-
-  // Interval (in days) when a learning card graduates via "good"
   graduatingInterval: 1,
-  // Interval (in days) when a learning card graduates via "easy"
   easyInterval: 4,
-
-  // Starting ease factor (2.5 = Anki default)
-  defaultEase: 2.50,
-  minEase: 1.30,
-  maxEase: 3.50,
-
-  // Review multipliers
+  defaultEase: 2.5,
+  minEase: 1.3,
+  maxEase: 3.5,
   hardMultiplier: 1.2,
   easyBonus: 1.3,
-
-  // Lapse: new interval = old interval * lapseMultiplier
   lapseMultiplier: 0.1,
-  minLapseInterval: 1, // days
-
-  // Cap
+  minLapseInterval: 1,
   maxInterval: 36500,
-
-  // If no other cards available, show learning cards up to this many minutes early
   learnAheadLimitMins: 20,
 };
-
-// ─── Queue Builder ───────────────────────────────────────────
 
 async function getOrBuildQueue(userId) {
   const existing = await pool.query(
@@ -56,7 +36,6 @@ async function getOrBuildQueue(userId) {
 
   if (parseInt(existing.rows[0].count) > 0) return;
 
-  // Fetch review cards first (protect memory), then new cards
   const reviewDue = await pool.query(
     `SELECT thai FROM user_vocab
      WHERE user_id = $1
@@ -79,7 +58,6 @@ async function getOrBuildQueue(userId) {
   const reviewCards = reviewDue.rows.map((r) => r.thai);
   const newCards = newDue.rows.map((r) => r.thai);
 
-  // Shuffle each group separately
   function shuffle(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -87,10 +65,10 @@ async function getOrBuildQueue(userId) {
     }
     return arr;
   }
+
   shuffle(reviewCards);
   shuffle(newCards);
 
-  // Review cards first, then new cards
   const cards = [...reviewCards, ...newCards];
 
   if (cards.length === 0) return;
@@ -105,8 +83,6 @@ async function getOrBuildQueue(userId) {
     [userId, cards, positions]
   );
 }
-
-// ─── Queue Info ──────────────────────────────────────────────
 
 async function getQueueCounts(userId) {
   const result = await pool.query(
@@ -126,7 +102,16 @@ async function getQueueCounts(userId) {
   };
 }
 
-// ─── Session Tracking ────────────────────────────────────────
+async function markQueueCardServed(userId, thai) {
+  await pool.query(
+    `UPDATE review_queue
+     SET served = TRUE
+     WHERE user_id = $1
+       AND thai = $2
+       AND queue_date = CURRENT_DATE`,
+    [userId, thai]
+  );
+}
 
 async function getSessionRecord(userId, thai) {
   await pool.query(
@@ -172,34 +157,24 @@ async function resetCorrect(userId, thai) {
   );
 }
 
-async function recordResponseTime(userId, thai, ms) {
-  if (!ms || ms <= 0) return;
-  await pool.query(
-    `UPDATE review_sessions
-     SET last_response_ms = $3
-     WHERE user_id = $1 AND thai = $2 AND session_date = CURRENT_DATE`,
-    [userId, thai, ms]
-  );
-}
-
-// ─── Ease Factor ────────────────────────────────────────────
-
 function clampEase(ease) {
   return Math.max(SRS_CONFIG.minEase, Math.min(SRS_CONFIG.maxEase, ease));
 }
 
-// Only adjust ease on review/relearning cards (not learning)
 function easeForGrade(currentEase, grade) {
   switch (grade) {
-    case "again": return clampEase(currentEase - 0.20);
-    case "hard":  return clampEase(currentEase - 0.15);
-    case "good":  return currentEase;
-    case "easy":  return clampEase(currentEase + 0.15);
-    default:      return currentEase;
+    case "again":
+      return clampEase(currentEase - 0.2);
+    case "hard":
+      return clampEase(currentEase - 0.15);
+    case "good":
+      return currentEase;
+    case "easy":
+      return clampEase(currentEase + 0.15);
+    default:
+      return currentEase;
   }
 }
-
-// ─── Helper: minutes → fractional days ──────────────────────
 
 function minutesToDays(mins) {
   return mins / 1440;
@@ -209,23 +184,19 @@ function clampInterval(days) {
   return Math.min(days, SRS_CONFIG.maxInterval);
 }
 
-// ─── Anki-style Interval Fuzzing (review cards only) ────────
-
 function fuzzRange(interval, previousInterval) {
-  // No fuzz for very short intervals
   if (interval < 2) return { min: interval, max: interval };
 
   let range;
   if (interval < 7) {
     range = 2;
   } else if (interval < 30) {
-    range = Math.round(interval * 0.10);
+    range = Math.round(interval * 0.1);
   } else {
     range = Math.round(interval * 0.15);
   }
   range = Math.max(range, 1);
 
-  // Asymmetric: never shrink below previous interval
   const minVal = Math.max(previousInterval || 1, Math.round(interval - range), 1);
   const maxVal = Math.min(Math.round(interval + range), SRS_CONFIG.maxInterval);
 
@@ -235,28 +206,22 @@ function fuzzRange(interval, previousInterval) {
 function fuzzInterval(interval, previousInterval) {
   const { min, max } = fuzzRange(interval, previousInterval);
   if (min === max) return min;
-  // Uniform random integer in [min, max]
   return min + Math.floor(Math.random() * (max - min + 1));
 }
 
-// ─── Interval Preview Computation (all states) ──────────────
-
 function computeIntervalPreviews(state, stepIndex, ease, currentInterval) {
-  const steps = (state === "relearning")
-    ? SRS_CONFIG.relearningSteps
-    : SRS_CONFIG.learningSteps;
+  const steps =
+    state === "relearning"
+      ? SRS_CONFIG.relearningSteps
+      : SRS_CONFIG.learningSteps;
 
   if (state === "new" || state === "learning") {
-    // Again → back to step 0
     const againMins = steps[0] || 1;
-    // Hard → repeat current step (or step 0 if at start)
     const hardMins = steps[stepIndex] || steps[0] || 1;
-    // Good → next step, or graduate if at last step
     const atLastStep = stepIndex >= steps.length - 1;
     const goodDays = atLastStep
       ? SRS_CONFIG.graduatingInterval
       : minutesToDays(steps[stepIndex + 1] || steps[0]);
-    // Easy → skip all steps, graduate with easyInterval
     const easyDays = SRS_CONFIG.easyInterval;
 
     return {
@@ -268,13 +233,12 @@ function computeIntervalPreviews(state, stepIndex, ease, currentInterval) {
   }
 
   if (state === "relearning") {
-    // Again → back to step 0 of relearning
     const againMins = steps[0] || 10;
-    // Hard → repeat current step
     const hardMins = steps[stepIndex] || steps[0] || 10;
-    // Good → graduate back to review with lapsed interval
-    const goodDays = Math.max(currentInterval * SRS_CONFIG.lapseMultiplier, SRS_CONFIG.minLapseInterval);
-    // Easy → graduate back with slightly better interval
+    const goodDays = Math.max(
+      currentInterval * SRS_CONFIG.lapseMultiplier,
+      SRS_CONFIG.minLapseInterval
+    );
     const easyDays = Math.max(goodDays * 1.5, SRS_CONFIG.minLapseInterval);
 
     return {
@@ -285,19 +249,12 @@ function computeIntervalPreviews(state, stepIndex, ease, currentInterval) {
     };
   }
 
-  // state === "review" — intervals are fuzzed, show approximate midpoint
   const baseInterval = currentInterval || SRS_CONFIG.graduatingInterval;
-
-  // Again → lapse, enter relearning
   const againMins = SRS_CONFIG.relearningSteps[0] || 10;
-  // Hard → interval * hardMultiplier (at least current + 1 day)
   const hardRaw = Math.max(baseInterval * SRS_CONFIG.hardMultiplier, baseInterval + 1);
-  // Good → interval * ease
   const goodRaw = Math.max(baseInterval * ease, hardRaw + 1);
-  // Easy → interval * ease * easyBonus
   const easyRaw = Math.max(baseInterval * ease * SRS_CONFIG.easyBonus, goodRaw + 1);
 
-  // Show fuzz range midpoint for preview (actual scheduling uses random pick)
   function previewFuzz(raw) {
     const { min, max } = fuzzRange(raw, currentInterval);
     return clampInterval(Math.round((min + max) / 2));
@@ -311,17 +268,9 @@ function computeIntervalPreviews(state, stepIndex, ease, currentInterval) {
   };
 }
 
-// ─── Serve a Card ────────────────────────────────────────────
-
 async function serveCard(userId, card, queueCounts, res) {
   await getSessionRecord(userId, card.thai);
   await incrementSeen(userId, card.thai);
-
-  await pool.query(
-    `UPDATE review_queue SET served = TRUE
-     WHERE user_id = $1 AND thai = $2 AND queue_date = CURRENT_DATE`,
-    [userId, card.thai]
-  );
 
   const wrongResult = await pool.query(
     `SELECT english FROM user_vocab
@@ -338,22 +287,24 @@ async function serveCard(userId, card, queueCounts, res) {
     [choices[i], choices[j]] = [choices[j], choices[i]];
   }
 
-  // Get card SRS state for interval previews
   const vocabResult = await pool.query(
     `SELECT mastery, ease_factor, current_interval,
             COALESCE(state, 'new') AS state, COALESCE(step_index, 0) AS step_index
      FROM user_vocab WHERE user_id = $1 AND thai = $2`,
     [userId, card.thai]
   );
+
   const vocab = vocabResult.rows[0];
   const ease = parseFloat(vocab.ease_factor) || SRS_CONFIG.defaultEase;
   const currentInterval = parseFloat(vocab.current_interval) || 0;
 
   const intervalPreviews = computeIntervalPreviews(
-    vocab.state, parseInt(vocab.step_index), ease, currentInterval
+    vocab.state,
+    parseInt(vocab.step_index),
+    ease,
+    currentInterval
   );
 
-  // Anki-style counts: new / learning / review remaining
   const countsResult = await pool.query(
     `SELECT
        COUNT(*) FILTER (WHERE COALESCE(state, 'new') = 'new' AND next_review <= NOW()) AS new_count,
@@ -363,6 +314,7 @@ async function serveCard(userId, card, queueCounts, res) {
      WHERE user_id = $1`,
     [userId]
   );
+
   const counts = countsResult.rows[0];
 
   res.json({
@@ -379,93 +331,6 @@ async function serveCard(userId, card, queueCounts, res) {
     intervalPreviews,
   });
 }
-
-// ─── GET /vocab/review ───────────────────────────────────────
-
-async function handleReview(req, res) {
-  try {
-    const userId = req.userId;
-    const learnAheadMs = SRS_CONFIG.learnAheadLimitMins * 60 * 1000;
-
-    // 1) First check for learning/relearning cards whose timer is up
-    const learningCard = await pool.query(
-      `SELECT v.thai, v.english, v.romanization
-       FROM user_vocab v
-       WHERE v.user_id = $1
-         AND v.state IN ('learning', 'relearning')
-         AND v.next_review <= NOW()
-       ORDER BY v.next_review ASC
-       LIMIT 1`,
-      [userId]
-    );
-
-    if (learningCard.rows.length > 0) {
-      const queueCounts = await getQueueCounts(userId);
-      return await serveCard(userId, learningCard.rows[0], queueCounts, res);
-    }
-
-    // 2) Normal queue flow for new/review cards
-    await getOrBuildQueue(userId);
-    const queueCounts = await getQueueCounts(userId);
-
-    // Serve next unserved card from queue
-    const next = await pool.query(
-      `SELECT q.thai, v.english, v.romanization
-       FROM review_queue q
-       JOIN user_vocab v ON v.user_id = q.user_id AND v.thai = q.thai
-       WHERE q.user_id = $1
-         AND q.queue_date = CURRENT_DATE
-         AND q.served = FALSE
-       ORDER BY q.position ASC
-       LIMIT 1`,
-      [userId]
-    );
-
-    if (next.rows.length > 0) {
-      return await serveCard(userId, next.rows[0], queueCounts, res);
-    }
-
-    // 3) No queue cards left — check for learning cards within learn-ahead limit
-    const learnAhead = await pool.query(
-      `SELECT v.thai, v.english, v.romanization, v.next_review
-       FROM user_vocab v
-       WHERE v.user_id = $1
-         AND v.state IN ('learning', 'relearning')
-       ORDER BY v.next_review ASC
-       LIMIT 1`,
-      [userId]
-    );
-
-    if (learnAhead.rows.length > 0) {
-      const nextDue = new Date(learnAhead.rows[0].next_review).getTime();
-      const nowMs = Date.now();
-
-      if (nextDue <= nowMs + learnAheadMs) {
-        // Within learn-ahead limit — serve it now
-        return await serveCard(userId, learnAhead.rows[0], queueCounts, res);
-      }
-
-      // Beyond learn-ahead limit — tell frontend to wait
-      return res.json({
-        waiting: true,
-        nextDueAt: learnAhead.rows[0].next_review,
-      });
-    }
-
-    // 4) Nothing left at all
-    if (queueCounts.totalCards === 0) {
-      return res.json({ done: true });
-    }
-
-    const summary = await getSessionSummary(userId);
-    return res.json({ done: true, summary });
-  } catch (err) {
-    console.error("Review error:", err);
-    res.status(500).json({ error: "Failed to generate review" });
-  }
-}
-
-// ─── Session Summary ─────────────────────────────────────────
 
 async function getSessionSummary(userId) {
   const result = await pool.query(
@@ -496,13 +361,104 @@ async function getSessionSummary(userId) {
   };
 }
 
-// ─── POST /vocab/answer — Full Anki State Machine ───────────
+async function handleReview(req, res) {
+  try {
+    const userId = req.userId;
+    const learnAheadMs = SRS_CONFIG.learnAheadLimitMins * 60 * 1000;
+
+    const learningCard = await pool.query(
+      `SELECT v.thai, v.english, v.romanization
+       FROM user_vocab v
+       WHERE v.user_id = $1
+         AND v.state IN ('learning', 'relearning')
+         AND v.next_review <= NOW()
+       ORDER BY v.next_review ASC
+       LIMIT 1`,
+      [userId]
+    );
+
+    if (learningCard.rows.length > 0) {
+      const queueCounts = await getQueueCounts(userId);
+      return await serveCard(userId, learningCard.rows[0], queueCounts, res);
+    }
+
+    await getOrBuildQueue(userId);
+    const queueCounts = await getQueueCounts(userId);
+
+    const next = await pool.query(
+      `SELECT q.thai, v.english, v.romanization
+       FROM review_queue q
+       JOIN user_vocab v ON v.user_id = q.user_id AND v.thai = q.thai
+       WHERE q.user_id = $1
+         AND q.queue_date = CURRENT_DATE
+         AND q.served = FALSE
+       ORDER BY q.position ASC
+       LIMIT 1`,
+      [userId]
+    );
+
+    if (next.rows.length > 0) {
+      return await serveCard(userId, next.rows[0], queueCounts, res);
+    }
+
+    const staleQueuedCard = await pool.query(
+      `SELECT q.thai, v.english, v.romanization
+       FROM review_queue q
+       JOIN user_vocab v ON v.user_id = q.user_id AND v.thai = q.thai
+       WHERE q.user_id = $1
+         AND q.queue_date = CURRENT_DATE
+         AND q.served = TRUE
+         AND COALESCE(v.state, 'new') IN ('new', 'review')
+         AND v.next_review <= NOW()
+       ORDER BY q.position ASC
+       LIMIT 1`,
+      [userId]
+    );
+
+    if (staleQueuedCard.rows.length > 0) {
+      return await serveCard(userId, staleQueuedCard.rows[0], queueCounts, res);
+    }
+
+    const learnAhead = await pool.query(
+      `SELECT v.thai, v.english, v.romanization, v.next_review
+       FROM user_vocab v
+       WHERE v.user_id = $1
+         AND v.state IN ('learning', 'relearning')
+       ORDER BY v.next_review ASC
+       LIMIT 1`,
+      [userId]
+    );
+
+    if (learnAhead.rows.length > 0) {
+      const nextDue = new Date(learnAhead.rows[0].next_review).getTime();
+      const nowMs = Date.now();
+
+      if (nextDue <= nowMs + learnAheadMs) {
+        return await serveCard(userId, learnAhead.rows[0], queueCounts, res);
+      }
+
+      return res.json({
+        waiting: true,
+        nextDueAt: learnAhead.rows[0].next_review,
+      });
+    }
+
+    if (queueCounts.totalCards === 0) {
+      return res.json({ done: true });
+    }
+
+    const summary = await getSessionSummary(userId);
+    return res.json({ done: true, summary });
+  } catch (err) {
+    console.error("Review error:", err);
+    res.status(500).json({ error: "Failed to generate review" });
+  }
+}
 
 async function handleAnswer(req, res) {
   try {
     const userId = req.userId;
     const { thai, grade } = req.body;
-    // grade: "again" | "hard" | "good" | "easy"
 
     if (!thai || !grade) {
       return res.status(400).json({ error: "Missing word or grade" });
@@ -532,73 +488,55 @@ async function handleAnswer(req, res) {
     let newEase = currentEase;
     let newInterval = currentInterval;
     let newLapseCount = lapseCount;
-    let nextReviewMins = 0; // minutes from now
+    let nextReviewMins = 0;
     let promoted = false;
     let lapsed = false;
 
     if (cardState === "new" || cardState === "learning") {
-      // ── LEARNING FLOW ──
       const steps = SRS_CONFIG.learningSteps;
 
-      // Ease doesn't change during learning (Anki behavior)
-
       if (grade === "again") {
-        // Back to step 0
         newState = "learning";
         newStepIndex = 0;
         nextReviewMins = steps[0] || 1;
-
       } else if (grade === "hard") {
-        // Repeat current step
         newState = "learning";
         newStepIndex = stepIndex;
         nextReviewMins = steps[stepIndex] || steps[0] || 1;
-
       } else if (grade === "good") {
         const atLastStep = stepIndex >= steps.length - 1;
         if (atLastStep) {
-          // Graduate → review
           newState = "review";
           newStepIndex = 0;
           newInterval = SRS_CONFIG.graduatingInterval;
           nextReviewMins = SRS_CONFIG.graduatingInterval * 1440;
           promoted = true;
         } else {
-          // Advance to next step
           newState = "learning";
           newStepIndex = stepIndex + 1;
           nextReviewMins = steps[stepIndex + 1] || 10;
         }
-
       } else if (grade === "easy") {
-        // Skip all steps → graduate with easy interval
         newState = "review";
         newStepIndex = 0;
         newInterval = SRS_CONFIG.easyInterval;
         nextReviewMins = SRS_CONFIG.easyInterval * 1440;
         promoted = true;
       }
-
     } else if (cardState === "relearning") {
-      // ── RELEARNING FLOW (after lapse) ──
       const steps = SRS_CONFIG.relearningSteps;
-
-      // Ease already penalized on lapse entry; don't change further in relearning
 
       if (grade === "again") {
         newState = "relearning";
         newStepIndex = 0;
         nextReviewMins = steps[0] || 10;
-
       } else if (grade === "hard") {
         newState = "relearning";
         newStepIndex = stepIndex;
         nextReviewMins = steps[stepIndex] || steps[0] || 10;
-
       } else if (grade === "good") {
         const atLastStep = stepIndex >= steps.length - 1;
         if (atLastStep) {
-          // Graduate back to review with lapsed interval
           newState = "review";
           newStepIndex = 0;
           newInterval = Math.max(
@@ -612,9 +550,7 @@ async function handleAnswer(req, res) {
           newStepIndex = stepIndex + 1;
           nextReviewMins = steps[stepIndex + 1] || 10;
         }
-
       } else if (grade === "easy") {
-        // Skip relearning → back to review
         newState = "review";
         newStepIndex = 0;
         newInterval = Math.max(
@@ -624,32 +560,24 @@ async function handleAnswer(req, res) {
         nextReviewMins = newInterval * 1440;
         promoted = true;
       }
-
     } else {
-      // ── REVIEW FLOW ──
-      // Ease adjustments happen here
       newEase = easeForGrade(currentEase, grade);
       const baseInterval = currentInterval || SRS_CONFIG.graduatingInterval;
 
       if (grade === "again") {
-        // Lapse → enter relearning
         lapsed = true;
         newLapseCount = lapseCount + 1;
         newState = "relearning";
         newStepIndex = 0;
-        // Keep current_interval for later graduation calc
         nextReviewMins = SRS_CONFIG.relearningSteps[0] || 10;
-
       } else if (grade === "hard") {
         newState = "review";
-        const raw = clampInterval(Math.max(
-          baseInterval * SRS_CONFIG.hardMultiplier,
-          baseInterval + 1
-        ));
+        const raw = clampInterval(
+          Math.max(baseInterval * SRS_CONFIG.hardMultiplier, baseInterval + 1)
+        );
         newInterval = fuzzInterval(raw, currentInterval);
         nextReviewMins = newInterval * 1440;
         promoted = true;
-
       } else if (grade === "good") {
         newState = "review";
         const hardVal = Math.max(baseInterval * SRS_CONFIG.hardMultiplier, baseInterval + 1);
@@ -657,28 +585,25 @@ async function handleAnswer(req, res) {
         newInterval = fuzzInterval(raw, currentInterval);
         nextReviewMins = newInterval * 1440;
         promoted = true;
-
       } else if (grade === "easy") {
         newState = "review";
         const hardVal = Math.max(baseInterval * SRS_CONFIG.hardMultiplier, baseInterval + 1);
         const goodVal = Math.max(baseInterval * newEase, hardVal + 1);
-        const raw = clampInterval(Math.max(
-          baseInterval * newEase * SRS_CONFIG.easyBonus,
-          goodVal + 1
-        ));
+        const raw = clampInterval(
+          Math.max(baseInterval * newEase * SRS_CONFIG.easyBonus, goodVal + 1)
+        );
         newInterval = fuzzInterval(raw, currentInterval);
         nextReviewMins = newInterval * 1440;
         promoted = true;
       }
     }
 
-    // Round interval for storage
     newInterval = Math.round(newInterval * 100) / 100;
 
-    // Convert nextReviewMins to a postgres interval string
-    const intervalStr = nextReviewMins >= 1440
-      ? `${Math.round(nextReviewMins / 1440 * 100) / 100} days`
-      : `${Math.round(nextReviewMins)} minutes`;
+    const intervalStr =
+      nextReviewMins >= 1440
+        ? `${Math.round((nextReviewMins / 1440) * 100) / 100} days`
+        : `${Math.round(nextReviewMins)} minutes`;
 
     await pool.query(
       `UPDATE user_vocab
@@ -694,7 +619,8 @@ async function handleAnswer(req, res) {
       [userId, thai, intervalStr, newEase, newInterval, newLapseCount, newState, newStepIndex]
     );
 
-    // Session tracking (seen_count already incremented in serveCard)
+    await markQueueCardServed(userId, thai);
+
     await getSessionRecord(userId, thai);
     if (grade !== "again") {
       await incrementCorrect(userId, thai);
@@ -713,14 +639,11 @@ async function handleAnswer(req, res) {
       easeFactor: newEase,
       lapseCount: newLapseCount,
     });
-
   } catch (err) {
     console.error("Answer error:", err);
     res.status(500).json({ error: "Answer update failed" });
   }
 }
-
-// ─── GET /vocab/stats ────────────────────────────────────────
 
 async function handleStats(req, res) {
   try {
@@ -748,8 +671,6 @@ async function handleStats(req, res) {
   }
 }
 
-// ─── GET /vocab/progress ─────────────────────────────────────
-
 async function handleProgress(req, res) {
   try {
     const userId = req.userId;
@@ -770,8 +691,6 @@ async function handleProgress(req, res) {
     res.status(500).json({ error: "Failed to load progress" });
   }
 }
-
-// ─── Register ────────────────────────────────────────────────
 
 export function registerSRSRoutes(app, authMiddleware) {
   app.get("/vocab/review", authMiddleware, handleReview);
