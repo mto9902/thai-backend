@@ -292,15 +292,28 @@ async function serveCard(userId, card, queueCounts, res) {
     vocab.state, parseInt(vocab.step_index), ease, currentInterval
   );
 
+  // Anki-style counts: new / learning / review remaining
+  const countsResult = await pool.query(
+    `SELECT
+       COUNT(*) FILTER (WHERE COALESCE(state, 'new') = 'new' AND next_review <= NOW()) AS new_count,
+       COUNT(*) FILTER (WHERE state IN ('learning', 'relearning')) AS learning_count,
+       COUNT(*) FILTER (WHERE COALESCE(state, 'new') = 'review' AND next_review <= NOW()) AS review_count
+     FROM user_vocab
+     WHERE user_id = $1`,
+    [userId]
+  );
+  const counts = countsResult.rows[0];
+
   res.json({
     thai: card.thai,
     correct: card.english,
     romanization: card.romanization || "",
     choices,
     state: vocab.state,
-    progress: {
-      totalCards: queueCounts.totalCards,
-      cardsRemaining: queueCounts.cardsRemaining,
+    counts: {
+      newCount: parseInt(counts.new_count) || 0,
+      learningCount: parseInt(counts.learning_count) || 0,
+      reviewCount: parseInt(counts.review_count) || 0,
     },
     intervalPreviews,
   });
