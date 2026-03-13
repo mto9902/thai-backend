@@ -571,6 +571,13 @@ async function startServer() {
       UPDATE user_vocab SET state = 'new', step_index = 0
       WHERE state IS NULL
     `);
+    // Create indexes for SRS query performance
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_user_vocab_state_review
+        ON user_vocab (user_id, state, next_review);
+      CREATE INDEX IF NOT EXISTS idx_user_vocab_next_review
+        ON user_vocab (user_id, next_review);
+    `);
     console.log("SRS v3 migration complete");
 
     await loadDictionary();

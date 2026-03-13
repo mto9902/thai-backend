@@ -56,22 +56,44 @@ async function getOrBuildQueue(userId) {
 
   if (parseInt(existing.rows[0].count) > 0) return;
 
-  const due = await pool.query(
+  // Fetch review cards first (protect memory), then new cards
+  const reviewDue = await pool.query(
     `SELECT thai FROM user_vocab
      WHERE user_id = $1
-       AND COALESCE(state, 'new') IN ('new', 'review')
+       AND COALESCE(state, 'new') = 'review'
        AND next_review <= NOW()
      ORDER BY next_review ASC`,
     [userId]
   );
 
-  if (due.rows.length === 0) return;
+  const newDue = await pool.query(
+    `SELECT thai FROM user_vocab
+     WHERE user_id = $1
+       AND COALESCE(state, 'new') = 'new'
+       AND next_review <= NOW()
+     ORDER BY next_review ASC
+     LIMIT $2`,
+    [userId, SRS_CONFIG.dailyNewWordLimit]
+  );
 
-  const cards = due.rows.map((r) => r.thai);
-  for (let i = cards.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [cards[i], cards[j]] = [cards[j], cards[i]];
+  const reviewCards = reviewDue.rows.map((r) => r.thai);
+  const newCards = newDue.rows.map((r) => r.thai);
+
+  // Shuffle each group separately
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
   }
+  shuffle(reviewCards);
+  shuffle(newCards);
+
+  // Review cards first, then new cards
+  const cards = [...reviewCards, ...newCards];
+
+  if (cards.length === 0) return;
 
   const positions = cards.map((_, idx) => idx);
 
@@ -187,6 +209,36 @@ function clampInterval(days) {
   return Math.min(days, SRS_CONFIG.maxInterval);
 }
 
+// ─── Anki-style Interval Fuzzing (review cards only) ────────
+
+function fuzzRange(interval, previousInterval) {
+  // No fuzz for very short intervals
+  if (interval < 2) return { min: interval, max: interval };
+
+  let range;
+  if (interval < 7) {
+    range = 2;
+  } else if (interval < 30) {
+    range = Math.round(interval * 0.10);
+  } else {
+    range = Math.round(interval * 0.15);
+  }
+  range = Math.max(range, 1);
+
+  // Asymmetric: never shrink below previous interval
+  const minVal = Math.max(previousInterval || 1, Math.round(interval - range), 1);
+  const maxVal = Math.min(Math.round(interval + range), SRS_CONFIG.maxInterval);
+
+  return { min: minVal, max: Math.max(minVal, maxVal) };
+}
+
+function fuzzInterval(interval, previousInterval) {
+  const { min, max } = fuzzRange(interval, previousInterval);
+  if (min === max) return min;
+  // Uniform random integer in [min, max]
+  return min + Math.floor(Math.random() * (max - min + 1));
+}
+
 // ─── Interval Preview Computation (all states) ──────────────
 
 function computeIntervalPreviews(state, stepIndex, ease, currentInterval) {
@@ -233,23 +285,29 @@ function computeIntervalPreviews(state, stepIndex, ease, currentInterval) {
     };
   }
 
-  // state === "review"
+  // state === "review" — intervals are fuzzed, show approximate midpoint
   const baseInterval = currentInterval || SRS_CONFIG.graduatingInterval;
 
   // Again → lapse, enter relearning
   const againMins = SRS_CONFIG.relearningSteps[0] || 10;
   // Hard → interval * hardMultiplier (at least current + 1 day)
-  const hardDays = Math.max(baseInterval * SRS_CONFIG.hardMultiplier, baseInterval + 1);
+  const hardRaw = Math.max(baseInterval * SRS_CONFIG.hardMultiplier, baseInterval + 1);
   // Good → interval * ease
-  const goodDays = Math.max(baseInterval * ease, hardDays + 1);
+  const goodRaw = Math.max(baseInterval * ease, hardRaw + 1);
   // Easy → interval * ease * easyBonus
-  const easyDays = Math.max(baseInterval * ease * SRS_CONFIG.easyBonus, goodDays + 1);
+  const easyRaw = Math.max(baseInterval * ease * SRS_CONFIG.easyBonus, goodRaw + 1);
+
+  // Show fuzz range midpoint for preview (actual scheduling uses random pick)
+  function previewFuzz(raw) {
+    const { min, max } = fuzzRange(raw, currentInterval);
+    return clampInterval(Math.round((min + max) / 2));
+  }
 
   return {
     again: minutesToDays(againMins),
-    hard: clampInterval(Math.round(hardDays * 10) / 10),
-    good: clampInterval(Math.round(goodDays * 10) / 10),
-    easy: clampInterval(Math.round(easyDays * 10) / 10),
+    hard: previewFuzz(hardRaw),
+    good: previewFuzz(goodRaw),
+    easy: previewFuzz(easyRaw),
   };
 }
 
@@ -584,17 +642,19 @@ async function handleAnswer(req, res) {
 
       } else if (grade === "hard") {
         newState = "review";
-        newInterval = clampInterval(Math.max(
+        const raw = clampInterval(Math.max(
           baseInterval * SRS_CONFIG.hardMultiplier,
           baseInterval + 1
         ));
+        newInterval = fuzzInterval(raw, currentInterval);
         nextReviewMins = newInterval * 1440;
         promoted = true;
 
       } else if (grade === "good") {
         newState = "review";
         const hardVal = Math.max(baseInterval * SRS_CONFIG.hardMultiplier, baseInterval + 1);
-        newInterval = clampInterval(Math.max(baseInterval * newEase, hardVal + 1));
+        const raw = clampInterval(Math.max(baseInterval * newEase, hardVal + 1));
+        newInterval = fuzzInterval(raw, currentInterval);
         nextReviewMins = newInterval * 1440;
         promoted = true;
 
@@ -602,10 +662,11 @@ async function handleAnswer(req, res) {
         newState = "review";
         const hardVal = Math.max(baseInterval * SRS_CONFIG.hardMultiplier, baseInterval + 1);
         const goodVal = Math.max(baseInterval * newEase, hardVal + 1);
-        newInterval = clampInterval(Math.max(
+        const raw = clampInterval(Math.max(
           baseInterval * newEase * SRS_CONFIG.easyBonus,
           goodVal + 1
         ));
+        newInterval = fuzzInterval(raw, currentInterval);
         nextReviewMins = newInterval * 1440;
         promoted = true;
       }
@@ -633,14 +694,13 @@ async function handleAnswer(req, res) {
       [userId, thai, intervalStr, newEase, newInterval, newLapseCount, newState, newStepIndex]
     );
 
-    // Session tracking
+    // Session tracking (seen_count already incremented in serveCard)
     await getSessionRecord(userId, thai);
     if (grade !== "again") {
       await incrementCorrect(userId, thai);
     } else {
       await resetCorrect(userId, thai);
     }
-    await incrementSeen(userId, thai);
 
     const nextReviewDays = nextReviewMins / 1440;
 
