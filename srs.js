@@ -731,11 +731,37 @@ async function handleProgress(req, res) {
   }
 }
 
+async function handleHeatmap(req, res) {
+  try {
+    const userId = req.userId;
+    // Get daily review counts for the last 6 months
+    const result = await pool.query(
+      `SELECT session_date::text AS day, SUM(seen_count) AS count
+       FROM review_sessions
+       WHERE user_id = $1
+         AND session_date >= CURRENT_DATE - INTERVAL '182 days'
+       GROUP BY session_date
+       ORDER BY session_date`,
+      [userId]
+    );
+    // Return as { "2026-03-01": 12, "2026-03-02": 5, ... }
+    const map = {};
+    for (const row of result.rows) {
+      map[row.day] = Number(row.count);
+    }
+    res.json(map);
+  } catch (err) {
+    console.error("Heatmap error:", err);
+    res.status(500).json({ error: "Heatmap failed" });
+  }
+}
+
 export function registerSRSRoutes(app, authMiddleware) {
   app.get("/vocab/review", authMiddleware, handleReview);
   app.post("/vocab/answer", authMiddleware, handleAnswer);
   app.get("/vocab/stats", authMiddleware, handleStats);
   app.get("/vocab/progress", authMiddleware, handleProgress);
+  app.get("/vocab/heatmap", authMiddleware, handleHeatmap);
 }
 
 export { SRS_CONFIG };
