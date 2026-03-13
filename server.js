@@ -578,6 +578,16 @@ async function startServer() {
       CREATE INDEX IF NOT EXISTS idx_user_vocab_next_review
         ON user_vocab (user_id, next_review);
     `);
+    // Create activity_log table for heatmap (grammar + other non-vocab activity)
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS activity_log (
+        user_id INTEGER NOT NULL,
+        activity_date DATE NOT NULL DEFAULT CURRENT_DATE,
+        source TEXT NOT NULL,
+        count INTEGER NOT NULL DEFAULT 0,
+        PRIMARY KEY (user_id, activity_date, source)
+      );
+    `);
     console.log("SRS v3 migration complete");
 
     await loadDictionary();

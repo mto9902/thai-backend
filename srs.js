@@ -734,25 +734,57 @@ async function handleProgress(req, res) {
 async function handleHeatmap(req, res) {
   try {
     const userId = req.userId;
-    // Get daily review counts for the last 6 months
-    const result = await pool.query(
+    const map = {};
+
+    // 1. Vocab activity from review_sessions
+    const vocab = await pool.query(
       `SELECT session_date::text AS day, SUM(seen_count) AS count
        FROM review_sessions
        WHERE user_id = $1
-         AND session_date >= CURRENT_DATE - INTERVAL '182 days'
-       GROUP BY session_date
-       ORDER BY session_date`,
+       GROUP BY session_date`,
       [userId]
     );
-    // Return as { "2026-03-01": 12, "2026-03-02": 5, ... }
-    const map = {};
-    for (const row of result.rows) {
-      map[row.day] = Number(row.count);
+    for (const row of vocab.rows) {
+      map[row.day] = (map[row.day] || 0) + Number(row.count);
     }
+
+    // 2. Grammar + other activity from activity_log
+    const activity = await pool.query(
+      `SELECT activity_date::text AS day, SUM(count) AS count
+       FROM activity_log
+       WHERE user_id = $1
+       GROUP BY activity_date`,
+      [userId]
+    );
+    for (const row of activity.rows) {
+      map[row.day] = (map[row.day] || 0) + Number(row.count);
+    }
+
     res.json(map);
   } catch (err) {
     console.error("Heatmap error:", err);
     res.status(500).json({ error: "Heatmap failed" });
+  }
+}
+
+async function handleActivityLog(req, res) {
+  try {
+    const userId = req.userId;
+    const { source, count } = req.body;
+    if (!source || typeof count !== "number" || count < 1) {
+      return res.status(400).json({ error: "Invalid source or count" });
+    }
+    await pool.query(
+      `INSERT INTO activity_log (user_id, activity_date, source, count)
+       VALUES ($1, CURRENT_DATE, $2, $3)
+       ON CONFLICT (user_id, activity_date, source)
+       DO UPDATE SET count = activity_log.count + $3`,
+      [userId, source, count]
+    );
+    res.json({ ok: true });
+  } catch (err) {
+    console.error("Activity log error:", err);
+    res.status(500).json({ error: "Activity log failed" });
   }
 }
 
@@ -762,6 +794,7 @@ export function registerSRSRoutes(app, authMiddleware) {
   app.get("/vocab/stats", authMiddleware, handleStats);
   app.get("/vocab/progress", authMiddleware, handleProgress);
   app.get("/vocab/heatmap", authMiddleware, handleHeatmap);
+  app.post("/activity/log", authMiddleware, handleActivityLog);
 }
 
 export { SRS_CONFIG };
