@@ -419,6 +419,28 @@ async function handleReview(req, res) {
       return await serveCard(userId, staleQueuedCard.rows[0], queueCounts, res);
     }
 
+    // Fallback: due cards NOT in today's queue (became due after queue was built)
+    const unqueuedDue = await pool.query(
+      `SELECT v.thai, v.english, v.romanization
+       FROM user_vocab v
+       WHERE v.user_id = $1
+         AND COALESCE(v.state, 'new') IN ('new', 'review')
+         AND v.next_review <= NOW()
+         AND NOT EXISTS (
+           SELECT 1 FROM review_queue q
+           WHERE q.user_id = v.user_id AND q.thai = v.thai AND q.queue_date = CURRENT_DATE
+         )
+       ORDER BY
+         CASE WHEN COALESCE(v.state, 'new') = 'review' THEN 0 ELSE 1 END,
+         v.next_review ASC
+       LIMIT 1`,
+      [userId]
+    );
+
+    if (unqueuedDue.rows.length > 0) {
+      return await serveCard(userId, unqueuedDue.rows[0], queueCounts, res);
+    }
+
     const learnAhead = await pool.query(
       `SELECT v.thai, v.english, v.romanization, v.next_review
        FROM user_vocab v
@@ -428,6 +450,22 @@ async function handleReview(req, res) {
        LIMIT 1`,
       [userId]
     );
+
+    // Build counts for waiting/done responses
+    const countsResult = await pool.query(
+      `SELECT
+         COUNT(*) FILTER (WHERE COALESCE(state, 'new') = 'new' AND next_review <= NOW()) AS new_count,
+         COUNT(*) FILTER (WHERE state IN ('learning', 'relearning')) AS learning_count,
+         COUNT(*) FILTER (WHERE COALESCE(state, 'new') = 'review' AND next_review <= NOW()) AS review_count
+       FROM user_vocab
+       WHERE user_id = $1`,
+      [userId]
+    );
+    const counts = {
+      newCount: parseInt(countsResult.rows[0].new_count) || 0,
+      learningCount: parseInt(countsResult.rows[0].learning_count) || 0,
+      reviewCount: parseInt(countsResult.rows[0].review_count) || 0,
+    };
 
     if (learnAhead.rows.length > 0) {
       const nextDue = new Date(learnAhead.rows[0].next_review).getTime();
@@ -440,15 +478,16 @@ async function handleReview(req, res) {
       return res.json({
         waiting: true,
         nextDueAt: learnAhead.rows[0].next_review,
+        counts,
       });
     }
 
-    if (queueCounts.totalCards === 0) {
-      return res.json({ done: true });
+    if (queueCounts.totalCards === 0 && counts.newCount === 0 && counts.reviewCount === 0) {
+      return res.json({ done: true, counts });
     }
 
     const summary = await getSessionSummary(userId);
-    return res.json({ done: true, summary });
+    return res.json({ done: true, summary, counts });
   } catch (err) {
     console.error("Review error:", err);
     res.status(500).json({ error: "Failed to generate review" });
