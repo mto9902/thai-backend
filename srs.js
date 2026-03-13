@@ -40,6 +40,9 @@ const SRS_CONFIG = {
 
   // Cap
   maxInterval: 36500,
+
+  // If no other cards available, show learning cards up to this many minutes early
+  learnAheadLimitMins: 20,
 };
 
 // ─── Queue Builder ───────────────────────────────────────────
@@ -324,6 +327,7 @@ async function serveCard(userId, card, queueCounts, res) {
 async function handleReview(req, res) {
   try {
     const userId = req.userId;
+    const learnAheadMs = SRS_CONFIG.learnAheadLimitMins * 60 * 1000;
 
     // 1) First check for learning/relearning cards whose timer is up
     const learningCard = await pool.query(
@@ -338,7 +342,6 @@ async function handleReview(req, res) {
     );
 
     if (learningCard.rows.length > 0) {
-      // Serve learning/relearning card with priority
       const queueCounts = await getQueueCounts(userId);
       return await serveCard(userId, learningCard.rows[0], queueCounts, res);
     }
@@ -346,23 +349,6 @@ async function handleReview(req, res) {
     // 2) Normal queue flow for new/review cards
     await getOrBuildQueue(userId);
     const queueCounts = await getQueueCounts(userId);
-
-    if (queueCounts.totalCards === 0) {
-      // Check if there are learning cards waiting (timer not up yet)
-      const waiting = await pool.query(
-        `SELECT COUNT(*) AS cnt, MIN(next_review) AS next_due
-         FROM user_vocab
-         WHERE user_id = $1 AND state IN ('learning', 'relearning')`,
-        [userId]
-      );
-      if (parseInt(waiting.rows[0].cnt) > 0) {
-        return res.json({
-          waiting: true,
-          nextDueAt: waiting.rows[0].next_due,
-        });
-      }
-      return res.json({ done: true });
-    }
 
     // Serve next unserved card from queue
     const next = await pool.query(
@@ -377,26 +363,44 @@ async function handleReview(req, res) {
       [userId]
     );
 
-    if (next.rows.length === 0) {
-      // All served — check for learning cards waiting
-      const waiting = await pool.query(
-        `SELECT COUNT(*) AS cnt, MIN(next_review) AS next_due
-         FROM user_vocab
-         WHERE user_id = $1 AND state IN ('learning', 'relearning')`,
-        [userId]
-      );
-      if (parseInt(waiting.rows[0].cnt) > 0) {
-        return res.json({
-          waiting: true,
-          nextDueAt: waiting.rows[0].next_due,
-        });
-      }
-
-      const summary = await getSessionSummary(userId);
-      return res.json({ done: true, summary });
+    if (next.rows.length > 0) {
+      return await serveCard(userId, next.rows[0], queueCounts, res);
     }
 
-    return await serveCard(userId, next.rows[0], queueCounts, res);
+    // 3) No queue cards left — check for learning cards within learn-ahead limit
+    const learnAhead = await pool.query(
+      `SELECT v.thai, v.english, v.romanization, v.next_review
+       FROM user_vocab v
+       WHERE v.user_id = $1
+         AND v.state IN ('learning', 'relearning')
+       ORDER BY v.next_review ASC
+       LIMIT 1`,
+      [userId]
+    );
+
+    if (learnAhead.rows.length > 0) {
+      const nextDue = new Date(learnAhead.rows[0].next_review).getTime();
+      const nowMs = Date.now();
+
+      if (nextDue <= nowMs + learnAheadMs) {
+        // Within learn-ahead limit — serve it now
+        return await serveCard(userId, learnAhead.rows[0], queueCounts, res);
+      }
+
+      // Beyond learn-ahead limit — tell frontend to wait
+      return res.json({
+        waiting: true,
+        nextDueAt: learnAhead.rows[0].next_review,
+      });
+    }
+
+    // 4) Nothing left at all
+    if (queueCounts.totalCards === 0) {
+      return res.json({ done: true });
+    }
+
+    const summary = await getSessionSummary(userId);
+    return res.json({ done: true, summary });
   } catch (err) {
     console.error("Review error:", err);
     res.status(500).json({ error: "Failed to generate review" });
