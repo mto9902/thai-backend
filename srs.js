@@ -27,8 +27,8 @@ const SRS_CONFIG = {
   learnAheadLimitMins: 20,
 };
 
-async function getOrBuildQueue(userId) {
-  const existing = await pool.query(
+async function getOrBuildQueue(userId, db = pool) {
+  const existing = await db.query(
     `SELECT COUNT(*) FROM review_queue
      WHERE user_id = $1 AND queue_date = CURRENT_DATE`,
     [userId]
@@ -36,7 +36,7 @@ async function getOrBuildQueue(userId) {
 
   if (parseInt(existing.rows[0].count) > 0) return;
 
-  const reviewDue = await pool.query(
+  const reviewDue = await db.query(
     `SELECT thai FROM user_vocab
      WHERE user_id = $1
        AND COALESCE(state, 'new') = 'review'
@@ -45,7 +45,7 @@ async function getOrBuildQueue(userId) {
     [userId]
   );
 
-  const newDue = await pool.query(
+  const newDue = await db.query(
     `SELECT thai FROM user_vocab
      WHERE user_id = $1
        AND COALESCE(state, 'new') = 'new'
@@ -75,7 +75,7 @@ async function getOrBuildQueue(userId) {
 
   const positions = cards.map((_, idx) => idx);
 
-  await pool.query(
+  await db.query(
     `INSERT INTO review_queue (user_id, thai, queue_date, position)
      SELECT $1, t.thai, CURRENT_DATE, t.pos
      FROM UNNEST($2::text[], $3::int[]) AS t(thai, pos)
@@ -84,8 +84,8 @@ async function getOrBuildQueue(userId) {
   );
 }
 
-async function getQueueCounts(userId) {
-  const result = await pool.query(
+async function getQueueCounts(userId, db = pool) {
+  const result = await db.query(
     `SELECT
        COUNT(*) AS total_cards,
        COUNT(*) FILTER (WHERE served = TRUE) AS cards_served
@@ -102,8 +102,8 @@ async function getQueueCounts(userId) {
   };
 }
 
-async function markQueueCardServed(userId, thai) {
-  await pool.query(
+async function markQueueCardServed(userId, thai, db = pool) {
+  await db.query(
     `UPDATE review_queue
      SET served = TRUE
      WHERE user_id = $1
@@ -113,15 +113,15 @@ async function markQueueCardServed(userId, thai) {
   );
 }
 
-async function getSessionRecord(userId, thai) {
-  await pool.query(
+async function getSessionRecord(userId, thai, db = pool) {
+  await db.query(
     `INSERT INTO review_sessions (user_id, thai, session_date)
      VALUES ($1, $2, CURRENT_DATE)
      ON CONFLICT (user_id, thai, session_date) DO NOTHING`,
     [userId, thai]
   );
 
-  const result = await pool.query(
+  const result = await db.query(
     `SELECT * FROM review_sessions
      WHERE user_id = $1 AND thai = $2 AND session_date = CURRENT_DATE`,
     [userId, thai]
@@ -130,8 +130,8 @@ async function getSessionRecord(userId, thai) {
   return result.rows[0];
 }
 
-async function incrementSeen(userId, thai) {
-  await pool.query(
+async function incrementSeen(userId, thai, db = pool) {
+  await db.query(
     `UPDATE review_sessions
      SET seen_count = seen_count + 1, last_shown_at = NOW()
      WHERE user_id = $1 AND thai = $2 AND session_date = CURRENT_DATE`,
@@ -139,8 +139,8 @@ async function incrementSeen(userId, thai) {
   );
 }
 
-async function incrementCorrect(userId, thai) {
-  await pool.query(
+async function incrementCorrect(userId, thai, db = pool) {
+  await db.query(
     `UPDATE review_sessions
      SET correct_count = correct_count + 1
      WHERE user_id = $1 AND thai = $2 AND session_date = CURRENT_DATE`,
@@ -148,8 +148,8 @@ async function incrementCorrect(userId, thai) {
   );
 }
 
-async function resetCorrect(userId, thai) {
-  await pool.query(
+async function resetCorrect(userId, thai, db = pool) {
+  await db.query(
     `UPDATE review_sessions
      SET correct_count = 0
      WHERE user_id = $1 AND thai = $2 AND session_date = CURRENT_DATE`,
@@ -268,11 +268,8 @@ function computeIntervalPreviews(state, stepIndex, ease, currentInterval) {
   };
 }
 
-async function serveCard(userId, card, queueCounts, res) {
-  await getSessionRecord(userId, card.thai);
-  await incrementSeen(userId, card.thai);
-
-  const wrongResult = await pool.query(
+async function buildReviewCardPayload(userId, card, db = pool) {
+  const wrongResult = await db.query(
     `SELECT english FROM user_vocab
      WHERE user_id = $1 AND english != $2
      ORDER BY RANDOM()
@@ -287,7 +284,7 @@ async function serveCard(userId, card, queueCounts, res) {
     [choices[i], choices[j]] = [choices[j], choices[i]];
   }
 
-  const vocabResult = await pool.query(
+  const vocabResult = await db.query(
     `SELECT mastery, ease_factor, current_interval,
             COALESCE(state, 'new') AS state, COALESCE(step_index, 0) AS step_index
      FROM user_vocab WHERE user_id = $1 AND thai = $2`,
@@ -305,7 +302,7 @@ async function serveCard(userId, card, queueCounts, res) {
     currentInterval
   );
 
-  const countsResult = await pool.query(
+  const countsResult = await db.query(
     `SELECT
        COUNT(*) FILTER (WHERE COALESCE(state, 'new') = 'new' AND next_review <= NOW()) AS new_count,
        COUNT(*) FILTER (WHERE state IN ('learning', 'relearning')) AS learning_count,
@@ -317,7 +314,7 @@ async function serveCard(userId, card, queueCounts, res) {
 
   const counts = countsResult.rows[0];
 
-  res.json({
+  return {
     thai: card.thai,
     correct: card.english,
     romanization: card.romanization || "",
@@ -329,11 +326,11 @@ async function serveCard(userId, card, queueCounts, res) {
       reviewCount: parseInt(counts.review_count) || 0,
     },
     intervalPreviews,
-  });
+  };
 }
 
-async function getSessionSummary(userId) {
-  const result = await pool.query(
+async function getSessionSummary(userId, db = pool) {
+  const result = await db.query(
     `SELECT
        COUNT(*) AS cards_reviewed,
        SUM(correct_count) AS total_correct,
@@ -361,12 +358,10 @@ async function getSessionSummary(userId) {
   };
 }
 
-async function handleReview(req, res) {
-  try {
-    const userId = req.userId;
-    const learnAheadMs = SRS_CONFIG.learnAheadLimitMins * 60 * 1000;
+async function getNextReviewPayload(userId, db = pool) {
+  const learnAheadMs = SRS_CONFIG.learnAheadLimitMins * 60 * 1000;
 
-    const learningCard = await pool.query(
+  const learningCard = await db.query(
       `SELECT v.thai, v.english, v.romanization
        FROM user_vocab v
        WHERE v.user_id = $1
@@ -377,15 +372,14 @@ async function handleReview(req, res) {
       [userId]
     );
 
-    if (learningCard.rows.length > 0) {
-      const queueCounts = await getQueueCounts(userId);
-      return await serveCard(userId, learningCard.rows[0], queueCounts, res);
-    }
+  if (learningCard.rows.length > 0) {
+    return buildReviewCardPayload(userId, learningCard.rows[0], db);
+  }
 
-    await getOrBuildQueue(userId);
-    const queueCounts = await getQueueCounts(userId);
+  await getOrBuildQueue(userId, db);
+  const queueCounts = await getQueueCounts(userId, db);
 
-    const next = await pool.query(
+  const next = await db.query(
       `SELECT q.thai, v.english, v.romanization
        FROM review_queue q
        JOIN user_vocab v ON v.user_id = q.user_id AND v.thai = q.thai
@@ -397,11 +391,11 @@ async function handleReview(req, res) {
       [userId]
     );
 
-    if (next.rows.length > 0) {
-      return await serveCard(userId, next.rows[0], queueCounts, res);
-    }
+  if (next.rows.length > 0) {
+    return buildReviewCardPayload(userId, next.rows[0], db);
+  }
 
-    const staleQueuedCard = await pool.query(
+  const staleQueuedCard = await db.query(
       `SELECT q.thai, v.english, v.romanization
        FROM review_queue q
        JOIN user_vocab v ON v.user_id = q.user_id AND v.thai = q.thai
@@ -415,12 +409,12 @@ async function handleReview(req, res) {
       [userId]
     );
 
-    if (staleQueuedCard.rows.length > 0) {
-      return await serveCard(userId, staleQueuedCard.rows[0], queueCounts, res);
-    }
+  if (staleQueuedCard.rows.length > 0) {
+    return buildReviewCardPayload(userId, staleQueuedCard.rows[0], db);
+  }
 
-    // Fallback: due cards NOT in today's queue (became due after queue was built)
-    const unqueuedDue = await pool.query(
+  // Fallback: due cards NOT in today's queue (became due after queue was built)
+  const unqueuedDue = await db.query(
       `SELECT v.thai, v.english, v.romanization
        FROM user_vocab v
        WHERE v.user_id = $1
@@ -437,11 +431,11 @@ async function handleReview(req, res) {
       [userId]
     );
 
-    if (unqueuedDue.rows.length > 0) {
-      return await serveCard(userId, unqueuedDue.rows[0], queueCounts, res);
-    }
+  if (unqueuedDue.rows.length > 0) {
+    return buildReviewCardPayload(userId, unqueuedDue.rows[0], db);
+  }
 
-    const learnAhead = await pool.query(
+  const learnAhead = await db.query(
       `SELECT v.thai, v.english, v.romanization, v.next_review
        FROM user_vocab v
        WHERE v.user_id = $1
@@ -451,8 +445,8 @@ async function handleReview(req, res) {
       [userId]
     );
 
-    // Build counts for waiting/done responses
-    const countsResult = await pool.query(
+  // Build counts for waiting/done responses
+  const countsResult = await db.query(
       `SELECT
          COUNT(*) FILTER (WHERE COALESCE(state, 'new') = 'new' AND next_review <= NOW()) AS new_count,
          COUNT(*) FILTER (WHERE state IN ('learning', 'relearning')) AS learning_count,
@@ -461,33 +455,39 @@ async function handleReview(req, res) {
        WHERE user_id = $1`,
       [userId]
     );
-    const counts = {
-      newCount: parseInt(countsResult.rows[0].new_count) || 0,
-      learningCount: parseInt(countsResult.rows[0].learning_count) || 0,
-      reviewCount: parseInt(countsResult.rows[0].review_count) || 0,
+  const counts = {
+    newCount: parseInt(countsResult.rows[0].new_count) || 0,
+    learningCount: parseInt(countsResult.rows[0].learning_count) || 0,
+    reviewCount: parseInt(countsResult.rows[0].review_count) || 0,
+  };
+
+  if (learnAhead.rows.length > 0) {
+    const nextDue = new Date(learnAhead.rows[0].next_review).getTime();
+    const nowMs = Date.now();
+
+    if (nextDue <= nowMs + learnAheadMs) {
+      return buildReviewCardPayload(userId, learnAhead.rows[0], db);
+    }
+
+    return {
+      waiting: true,
+      nextDueAt: learnAhead.rows[0].next_review,
+      counts,
     };
+  }
 
-    if (learnAhead.rows.length > 0) {
-      const nextDue = new Date(learnAhead.rows[0].next_review).getTime();
-      const nowMs = Date.now();
+  if (queueCounts.totalCards === 0 && counts.newCount === 0 && counts.reviewCount === 0) {
+    return { done: true, counts };
+  }
 
-      if (nextDue <= nowMs + learnAheadMs) {
-        return await serveCard(userId, learnAhead.rows[0], queueCounts, res);
-      }
+  const summary = await getSessionSummary(userId, db);
+  return { done: true, summary, counts };
+}
 
-      return res.json({
-        waiting: true,
-        nextDueAt: learnAhead.rows[0].next_review,
-        counts,
-      });
-    }
-
-    if (queueCounts.totalCards === 0 && counts.newCount === 0 && counts.reviewCount === 0) {
-      return res.json({ done: true, counts });
-    }
-
-    const summary = await getSessionSummary(userId);
-    return res.json({ done: true, summary, counts });
+async function handleReview(req, res) {
+  try {
+    const payload = await getNextReviewPayload(req.userId);
+    return res.json(payload);
   } catch (err) {
     console.error("Review error:", err);
     res.status(500).json({ error: "Failed to generate review" });
@@ -495,7 +495,10 @@ async function handleReview(req, res) {
 }
 
 async function handleAnswer(req, res) {
+  let client;
+
   try {
+    client = await pool.connect();
     const userId = req.userId;
     const { thai, grade } = req.body;
 
@@ -503,7 +506,9 @@ async function handleAnswer(req, res) {
       return res.status(400).json({ error: "Missing word or grade" });
     }
 
-    const result = await pool.query(
+    await client.query("BEGIN");
+
+    const result = await client.query(
       `SELECT mastery, ease_factor, lapse_count, current_interval,
               COALESCE(state, 'new') AS state, COALESCE(step_index, 0) AS step_index
        FROM user_vocab
@@ -512,6 +517,7 @@ async function handleAnswer(req, res) {
     );
 
     if (result.rows.length === 0) {
+      await client.query("ROLLBACK");
       return res.status(404).json({ error: "Word not found" });
     }
 
@@ -644,7 +650,7 @@ async function handleAnswer(req, res) {
         ? `${Math.round((nextReviewMins / 1440) * 100) / 100} days`
         : `${Math.round(nextReviewMins)} minutes`;
 
-    await pool.query(
+    await client.query(
       `UPDATE user_vocab
        SET last_seen = NOW(),
            next_review = NOW() + ($3)::interval,
@@ -658,16 +664,20 @@ async function handleAnswer(req, res) {
       [userId, thai, intervalStr, newEase, newInterval, newLapseCount, newState, newStepIndex]
     );
 
-    await markQueueCardServed(userId, thai);
+    await markQueueCardServed(userId, thai, client);
 
-    await getSessionRecord(userId, thai);
+    await getSessionRecord(userId, thai, client);
+    await incrementSeen(userId, thai, client);
     if (grade !== "again") {
-      await incrementCorrect(userId, thai);
+      await incrementCorrect(userId, thai, client);
     } else {
-      await resetCorrect(userId, thai);
+      await resetCorrect(userId, thai, client);
     }
 
     const nextReviewDays = nextReviewMins / 1440;
+    const next = await getNextReviewPayload(userId, client);
+
+    await client.query("COMMIT");
 
     res.json({
       success: true,
@@ -677,10 +687,20 @@ async function handleAnswer(req, res) {
       nextReviewDays,
       easeFactor: newEase,
       lapseCount: newLapseCount,
+      next,
     });
   } catch (err) {
+    if (client) {
+      try {
+        await client.query("ROLLBACK");
+      } catch (rollbackErr) {
+        console.error("Rollback error:", rollbackErr);
+      }
+    }
     console.error("Answer error:", err);
     res.status(500).json({ error: "Answer update failed" });
+  } finally {
+    client?.release();
   }
 }
 
