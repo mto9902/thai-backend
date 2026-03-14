@@ -244,6 +244,166 @@ function authMiddleware(req, res, next) {
 registerSRSRoutes(app, authMiddleware);
 
 /* =============================== */
+/* GRAMMAR PROGRESS */
+/* =============================== */
+
+const GRAMMAR_ACTIVITY_MIN_ROUNDS = 10;
+
+function mapGrammarProgressRow(row) {
+  return {
+    grammarId: row.grammar_id,
+    rounds: row.rounds,
+    correct: row.correct,
+    total: row.total,
+    lastPracticed: row.lastPracticed,
+  };
+}
+
+app.get("/grammar/progress", authMiddleware, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `
+      SELECT
+        grammar_id,
+        rounds,
+        correct,
+        total,
+        last_practiced AS "lastPracticed"
+      FROM grammar_progress
+      WHERE user_id = $1
+      ORDER BY last_practiced DESC
+      `,
+      [req.userId],
+    );
+
+    res.json(result.rows.map(mapGrammarProgressRow));
+  } catch (err) {
+    console.error("Failed to fetch grammar progress:", err);
+    res.status(500).json({ error: "Failed to fetch grammar progress" });
+  }
+});
+
+app.get("/grammar/progress/:grammarId", authMiddleware, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `
+      SELECT
+        grammar_id,
+        rounds,
+        correct,
+        total,
+        last_practiced AS "lastPracticed"
+      FROM grammar_progress
+      WHERE user_id = $1 AND grammar_id = $2
+      LIMIT 1
+      `,
+      [req.userId, req.params.grammarId],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Grammar progress not found" });
+    }
+
+    res.json(mapGrammarProgressRow(result.rows[0]));
+  } catch (err) {
+    console.error("Failed to fetch grammar progress item:", err);
+    res.status(500).json({ error: "Failed to fetch grammar progress" });
+  }
+});
+
+app.post("/grammar/progress/round", authMiddleware, async (req, res) => {
+  try {
+    const { grammarId, wasCorrect } = req.body;
+
+    if (!grammarId || typeof wasCorrect !== "boolean") {
+      return res
+        .status(400)
+        .json({ error: "grammarId and wasCorrect are required" });
+    }
+
+    const result = await pool.query(
+      `
+      INSERT INTO grammar_progress (
+        user_id,
+        grammar_id,
+        rounds,
+        correct,
+        total,
+        last_practiced
+      )
+      VALUES ($1, $2, 1, $3, 1, NOW())
+      ON CONFLICT (user_id, grammar_id)
+      DO UPDATE SET
+        rounds = grammar_progress.rounds + 1,
+        correct = grammar_progress.correct + EXCLUDED.correct,
+        total = grammar_progress.total + 1,
+        last_practiced = NOW()
+      RETURNING
+        grammar_id,
+        rounds,
+        correct,
+        total,
+        last_practiced AS "lastPracticed"
+      `,
+      [req.userId, grammarId, wasCorrect ? 1 : 0],
+    );
+
+    const progress = mapGrammarProgressRow(result.rows[0]);
+
+    if (progress.rounds >= GRAMMAR_ACTIVITY_MIN_ROUNDS) {
+      await pool.query(
+        `
+        INSERT INTO activity_log (user_id, activity_date, source, count)
+        VALUES ($1, CURRENT_DATE, 'grammar', 1)
+        ON CONFLICT (user_id, activity_date, source)
+        DO UPDATE SET count = activity_log.count + 1
+        `,
+        [req.userId],
+      );
+    }
+
+    res.json(progress);
+  } catch (err) {
+    console.error("Failed to save grammar progress:", err);
+    res.status(500).json({ error: "Failed to save grammar progress" });
+  }
+});
+
+app.delete("/grammar/progress/:grammarId", authMiddleware, async (req, res) => {
+  try {
+    await pool.query(
+      `
+      DELETE FROM grammar_progress
+      WHERE user_id = $1 AND grammar_id = $2
+      `,
+      [req.userId, req.params.grammarId],
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Failed to reset grammar progress:", err);
+    res.status(500).json({ error: "Failed to reset grammar progress" });
+  }
+});
+
+app.delete("/grammar/progress", authMiddleware, async (req, res) => {
+  try {
+    await pool.query(
+      `
+      DELETE FROM grammar_progress
+      WHERE user_id = $1
+      `,
+      [req.userId],
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Failed to clear grammar progress:", err);
+    res.status(500).json({ error: "Failed to clear grammar progress" });
+  }
+});
+
+/* =============================== */
 /* BOOKMARKS */
 /* =============================== */
 
@@ -544,6 +704,21 @@ app.get("/vocab/today", authMiddleware, async (req, res) => {
 
 async function startServer() {
   try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS grammar_progress (
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        grammar_id TEXT NOT NULL,
+        rounds INTEGER NOT NULL DEFAULT 0,
+        correct INTEGER NOT NULL DEFAULT 0,
+        total INTEGER NOT NULL DEFAULT 0,
+        last_practiced TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        PRIMARY KEY (user_id, grammar_id)
+      );
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_grammar_progress_user_last_practiced
+        ON grammar_progress (user_id, last_practiced DESC);
+    `);
     // Run SRS v3 migration: add state and step_index columns
     await pool.query(`
       DO $$
