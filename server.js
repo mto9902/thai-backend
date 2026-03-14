@@ -237,6 +237,29 @@ function authMiddleware(req, res, next) {
   }
 }
 
+app.get("/me", authMiddleware, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `
+      SELECT id, email
+      FROM users
+      WHERE id = $1
+      LIMIT 1
+      `,
+      [req.userId],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("Failed to fetch user profile:", err);
+    res.status(500).json({ error: "Failed to fetch user profile" });
+  }
+});
+
 /* =============================== */
 /* SRS ROUTES (from srs.js) */
 /* =============================== */
@@ -824,7 +847,7 @@ app.post("/signup", async (req, res) => {
     );
 
     const token = jwt.sign(
-      { userId: result.rows[0].id },
+      { userId: result.rows[0].id, email },
       process.env.JWT_SECRET || "devsecret",
     );
 
@@ -865,7 +888,7 @@ app.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user.id },
+      { userId: user.id, email: user.email },
       process.env.JWT_SECRET || "devsecret",
     );
 
