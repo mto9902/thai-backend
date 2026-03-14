@@ -260,6 +260,58 @@ app.get("/me", authMiddleware, async (req, res) => {
   }
 });
 
+app.get("/user/preferences", authMiddleware, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `
+      SELECT track_practice_vocab
+      FROM user_preferences
+      WHERE user_id = $1
+      LIMIT 1
+      `,
+      [req.userId],
+    );
+
+    res.json({
+      trackPracticeVocab:
+        result.rows.length > 0 ? result.rows[0].track_practice_vocab : true,
+    });
+  } catch (err) {
+    console.error("Failed to fetch user preferences:", err);
+    res.status(500).json({ error: "Failed to fetch user preferences" });
+  }
+});
+
+app.patch("/user/preferences", authMiddleware, async (req, res) => {
+  try {
+    const { trackPracticeVocab } = req.body;
+
+    if (typeof trackPracticeVocab !== "boolean") {
+      return res
+        .status(400)
+        .json({ error: "trackPracticeVocab must be a boolean" });
+    }
+
+    const result = await pool.query(
+      `
+      INSERT INTO user_preferences (user_id, track_practice_vocab)
+      VALUES ($1, $2)
+      ON CONFLICT (user_id)
+      DO UPDATE SET track_practice_vocab = EXCLUDED.track_practice_vocab
+      RETURNING track_practice_vocab
+      `,
+      [req.userId, trackPracticeVocab],
+    );
+
+    res.json({
+      trackPracticeVocab: result.rows[0].track_practice_vocab,
+    });
+  } catch (err) {
+    console.error("Failed to update user preferences:", err);
+    res.status(500).json({ error: "Failed to update user preferences" });
+  }
+});
+
 /* =============================== */
 /* SRS ROUTES (from srs.js) */
 /* =============================== */
@@ -499,6 +551,28 @@ app.post("/track-words", authMiddleware, async (req, res) => {
   try {
     const userId = req.userId;
     const { words } = req.body;
+    const preferenceResult = await pool.query(
+      `
+      SELECT track_practice_vocab
+      FROM user_preferences
+      WHERE user_id = $1
+      LIMIT 1
+      `,
+      [userId],
+    );
+    const trackPracticeVocab =
+      preferenceResult.rows.length > 0
+        ? preferenceResult.rows[0].track_practice_vocab
+        : true;
+
+    if (!trackPracticeVocab) {
+      return res.json({
+        success: true,
+        added: 0,
+        limit: SRS_CONFIG.dailyNewWordLimit,
+        trackPracticeVocab: false,
+      });
+    }
 
     const todayResult = await pool.query(
       `
@@ -727,6 +801,12 @@ app.get("/vocab/today", authMiddleware, async (req, res) => {
 
 async function startServer() {
   try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS user_preferences (
+        user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+        track_practice_vocab BOOLEAN NOT NULL DEFAULT TRUE
+      );
+    `);
     await pool.query(`
       CREATE TABLE IF NOT EXISTS grammar_progress (
         user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
