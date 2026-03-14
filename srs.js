@@ -217,8 +217,10 @@ function computeIntervalPreviews(state, stepIndex, ease, currentInterval) {
 
   if (state === "new" || state === "learning") {
     const againMins = steps[0] || 1;
-    const hardMins = steps[stepIndex] || steps[0] || 1;
     const atLastStep = stepIndex >= steps.length - 1;
+    const hardDays = atLastStep
+      ? SRS_CONFIG.graduatingInterval
+      : minutesToDays(steps[stepIndex + 1] || steps[stepIndex] || steps[0] || 1);
     const goodDays = atLastStep
       ? SRS_CONFIG.graduatingInterval
       : minutesToDays(steps[stepIndex + 1] || steps[0]);
@@ -226,7 +228,7 @@ function computeIntervalPreviews(state, stepIndex, ease, currentInterval) {
 
     return {
       again: minutesToDays(againMins),
-      hard: minutesToDays(hardMins),
+      hard: hardDays,
       good: goodDays,
       easy: easyDays,
     };
@@ -234,7 +236,7 @@ function computeIntervalPreviews(state, stepIndex, ease, currentInterval) {
 
   if (state === "relearning") {
     const againMins = steps[0] || 10;
-    const hardMins = steps[stepIndex] || steps[0] || 10;
+    const atLastStep = stepIndex >= steps.length - 1;
     const goodDays = Math.max(
       currentInterval * SRS_CONFIG.lapseMultiplier,
       SRS_CONFIG.minLapseInterval
@@ -243,7 +245,9 @@ function computeIntervalPreviews(state, stepIndex, ease, currentInterval) {
 
     return {
       again: minutesToDays(againMins),
-      hard: minutesToDays(hardMins),
+      hard: atLastStep
+        ? clampInterval(goodDays)
+        : minutesToDays(steps[stepIndex + 1] || steps[stepIndex] || steps[0] || 10),
       good: clampInterval(goodDays),
       easy: clampInterval(easyDays),
     };
@@ -545,9 +549,18 @@ async function handleAnswer(req, res) {
         newStepIndex = 0;
         nextReviewMins = steps[0] || 1;
       } else if (grade === "hard") {
-        newState = "learning";
-        newStepIndex = stepIndex;
-        nextReviewMins = steps[stepIndex] || steps[0] || 1;
+        const atLastStep = stepIndex >= steps.length - 1;
+        if (atLastStep) {
+          newState = "review";
+          newStepIndex = 0;
+          newInterval = SRS_CONFIG.graduatingInterval;
+          nextReviewMins = SRS_CONFIG.graduatingInterval * 1440;
+          promoted = true;
+        } else {
+          newState = "learning";
+          newStepIndex = stepIndex + 1;
+          nextReviewMins = steps[stepIndex + 1] || steps[stepIndex] || steps[0] || 1;
+        }
       } else if (grade === "good") {
         const atLastStep = stepIndex >= steps.length - 1;
         if (atLastStep) {
@@ -576,9 +589,21 @@ async function handleAnswer(req, res) {
         newStepIndex = 0;
         nextReviewMins = steps[0] || 10;
       } else if (grade === "hard") {
-        newState = "relearning";
-        newStepIndex = stepIndex;
-        nextReviewMins = steps[stepIndex] || steps[0] || 10;
+        const atLastStep = stepIndex >= steps.length - 1;
+        if (atLastStep) {
+          newState = "review";
+          newStepIndex = 0;
+          newInterval = Math.max(
+            currentInterval * SRS_CONFIG.lapseMultiplier,
+            SRS_CONFIG.minLapseInterval
+          );
+          nextReviewMins = newInterval * 1440;
+          promoted = true;
+        } else {
+          newState = "relearning";
+          newStepIndex = stepIndex + 1;
+          nextReviewMins = steps[stepIndex + 1] || steps[stepIndex] || steps[0] || 10;
+        }
       } else if (grade === "good") {
         const atLastStep = stepIndex >= steps.length - 1;
         if (atLastStep) {
