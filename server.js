@@ -241,7 +241,7 @@ app.get("/me", authMiddleware, async (req, res) => {
   try {
     const result = await pool.query(
       `
-      SELECT id, email
+      SELECT id, email, display_name
       FROM users
       WHERE id = $1
       LIMIT 1
@@ -257,6 +257,56 @@ app.get("/me", authMiddleware, async (req, res) => {
   } catch (err) {
     console.error("Failed to fetch user profile:", err);
     res.status(500).json({ error: "Failed to fetch user profile" });
+  }
+});
+
+app.patch("/me", authMiddleware, async (req, res) => {
+  try {
+    const rawDisplayName =
+      typeof req.body.displayName === "string" ? req.body.displayName.trim() : "";
+    const displayName = rawDisplayName ? rawDisplayName.slice(0, 40) : null;
+
+    const result = await pool.query(
+      `
+      UPDATE users
+      SET display_name = $2
+      WHERE id = $1
+      RETURNING id, email, display_name
+      `,
+      [req.userId, displayName],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("Failed to update user profile:", err);
+    res.status(500).json({ error: "Failed to update user profile" });
+  }
+});
+
+app.post("/me/reset-progress", authMiddleware, async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+    await client.query(`DELETE FROM review_queue WHERE user_id = $1`, [req.userId]);
+    await client.query(`DELETE FROM review_sessions WHERE user_id = $1`, [req.userId]);
+    await client.query(`DELETE FROM activity_log WHERE user_id = $1`, [req.userId]);
+    await client.query(`DELETE FROM user_vocab WHERE user_id = $1`, [req.userId]);
+    await client.query(`DELETE FROM grammar_progress WHERE user_id = $1`, [req.userId]);
+    await client.query(`DELETE FROM bookmarks WHERE user_id = $1`, [req.userId]);
+    await client.query("COMMIT");
+
+    res.json({ success: true });
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error("Failed to reset user progress:", err);
+    res.status(500).json({ error: "Failed to reset user progress" });
+  } finally {
+    client.release();
   }
 });
 
@@ -833,6 +883,17 @@ app.get("/vocab/today", authMiddleware, async (req, res) => {
 
 async function startServer() {
   try {
+    await pool.query(`
+      DO $$
+      BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'display_name'
+        ) THEN
+          ALTER TABLE users ADD COLUMN display_name TEXT;
+        END IF;
+      END $$;
+    `);
     await pool.query(`
       CREATE TABLE IF NOT EXISTS user_preferences (
         user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
