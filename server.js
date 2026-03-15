@@ -574,6 +574,30 @@ app.post("/track-words", authMiddleware, async (req, res) => {
       });
     }
 
+    const practiceNewBacklogLimit = 50;
+    const newBacklogResult = await pool.query(
+      `
+      SELECT COUNT(*)
+      FROM user_vocab
+      WHERE user_id = $1
+      AND COALESCE(state, 'new') = 'new'
+      `,
+      [userId],
+    );
+
+    const newBacklog = parseInt(newBacklogResult.rows[0].count, 10) || 0;
+
+    if (newBacklog >= practiceNewBacklogLimit) {
+      return res.json({
+        success: true,
+        added: 0,
+        limit: SRS_CONFIG.dailyNewWordLimit,
+        newBacklog,
+        newBacklogLimit: practiceNewBacklogLimit,
+        blockedByNewBacklog: true,
+      });
+    }
+
     const todayResult = await pool.query(
       `
       SELECT COUNT(*)
@@ -584,11 +608,16 @@ app.post("/track-words", authMiddleware, async (req, res) => {
       [userId],
     );
 
-    const learnedToday = parseInt(todayResult.rows[0].count);
+    const learnedToday = parseInt(todayResult.rows[0].count, 10) || 0;
     let added = 0;
+    let backlogAdded = 0;
 
     for (const word of words) {
       if (learnedToday + added >= SRS_CONFIG.dailyNewWordLimit) {
+        break;
+      }
+
+      if (newBacklog + backlogAdded >= practiceNewBacklogLimit) {
         break;
       }
 
@@ -597,13 +626,14 @@ app.post("/track-words", authMiddleware, async (req, res) => {
         INSERT INTO user_vocab (user_id, thai, english, romanization, next_review)
         VALUES ($1, $2, $3, $4, NOW())
         ON CONFLICT (user_id, thai) DO UPDATE SET romanization = COALESCE(NULLIF($4, ''), user_vocab.romanization)
-        RETURNING thai
+        RETURNING thai, (xmax = 0) AS inserted
         `,
         [userId, word.thai, word.english, word.romanization || ""],
       );
 
-      if (result.rowCount > 0) {
+      if (result.rowCount > 0 && result.rows[0].inserted) {
         added++;
+        backlogAdded++;
       }
     }
 
@@ -611,7 +641,9 @@ app.post("/track-words", authMiddleware, async (req, res) => {
       success: true,
       added,
       limit: SRS_CONFIG.dailyNewWordLimit,
-    });
+      newBacklog: newBacklog + backlogAdded,
+      newBacklogLimit: practiceNewBacklogLimit,
+      blockedByNewBacklog: false,    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to track words" });
