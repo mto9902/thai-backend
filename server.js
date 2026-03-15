@@ -996,6 +996,24 @@ async function startServer() {
         ) THEN
           ALTER TABLE users ADD COLUMN google_sub TEXT;
         END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'terms_accepted_at'
+        ) THEN
+          ALTER TABLE users ADD COLUMN terms_accepted_at TIMESTAMPTZ;
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'privacy_accepted_at'
+        ) THEN
+          ALTER TABLE users ADD COLUMN privacy_accepted_at TIMESTAMPTZ;
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'consent_source'
+        ) THEN
+          ALTER TABLE users ADD COLUMN consent_source TEXT;
+        END IF;
       END $$;
     `);
     await pool.query(`
@@ -1106,9 +1124,16 @@ app.post("/signup", async (req, res) => {
   try {
     const { password } = req.body;
     const email = req.body.email?.toLowerCase().trim();
+    const acceptedTerms = req.body.acceptedTerms === true;
 
     if (!email || !password) {
       return res.status(400).json({ error: "Email and password required" });
+    }
+
+    if (!acceptedTerms) {
+      return res.status(400).json({
+        error: "You must agree to the Terms and Conditions and Privacy Policy",
+      });
     }
 
     if (!isValidEmail(email)) {
@@ -1133,9 +1158,17 @@ app.post("/signup", async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 10);
 
     const result = await pool.query(
-      `INSERT INTO users (email, password_hash)
-       VALUES ($1, $2)
-       RETURNING id`,
+      `
+      INSERT INTO users (
+        email,
+        password_hash,
+        terms_accepted_at,
+        privacy_accepted_at,
+        consent_source
+      )
+      VALUES ($1, $2, NOW(), NOW(), 'email_signup')
+      RETURNING id
+      `,
       [email, passwordHash],
     );
 
@@ -1188,6 +1221,7 @@ app.post("/login", async (req, res) => {
 
 app.post("/auth/google", async (req, res) => {
   const idToken = typeof req.body?.idToken === "string" ? req.body.idToken : "";
+  const acceptedTerms = req.body?.acceptedTerms === true;
 
   if (!idToken) {
     return res.status(400).json({ error: "Google ID token required" });
@@ -1255,11 +1289,28 @@ app.post("/auth/google", async (req, res) => {
 
         user = linkedResult.rows[0];
       } else {
+        if (!acceptedTerms) {
+          await client.query("ROLLBACK");
+          return res.json({
+            requiresTerms: true,
+            email: googleUser.email,
+            displayName: googleUser.displayName,
+          });
+        }
+
         const passwordHash = await bcrypt.hash(randomUUID(), 10);
         const insertedResult = await client.query(
           `
-          INSERT INTO users (email, password_hash, display_name, google_sub)
-          VALUES ($1, $2, $3, $4)
+          INSERT INTO users (
+            email,
+            password_hash,
+            display_name,
+            google_sub,
+            terms_accepted_at,
+            privacy_accepted_at,
+            consent_source
+          )
+          VALUES ($1, $2, $3, $4, NOW(), NOW(), 'google_signup')
           RETURNING id, email, display_name, google_sub
           `,
           [
