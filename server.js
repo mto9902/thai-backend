@@ -310,6 +310,31 @@ app.post("/me/reset-progress", authMiddleware, async (req, res) => {
   }
 });
 
+app.delete("/me", authMiddleware, async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+    await client.query(`DELETE FROM review_queue WHERE user_id = $1`, [req.userId]);
+    await client.query(`DELETE FROM review_sessions WHERE user_id = $1`, [req.userId]);
+    await client.query(`DELETE FROM activity_log WHERE user_id = $1`, [req.userId]);
+    await client.query(`DELETE FROM user_vocab WHERE user_id = $1`, [req.userId]);
+    await client.query(`DELETE FROM grammar_progress WHERE user_id = $1`, [req.userId]);
+    await client.query(`DELETE FROM bookmarks WHERE user_id = $1`, [req.userId]);
+    await client.query(`DELETE FROM user_preferences WHERE user_id = $1`, [req.userId]);
+    await client.query(`DELETE FROM users WHERE id = $1`, [req.userId]);
+    await client.query("COMMIT");
+
+    res.json({ success: true });
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error("Failed to delete account:", err);
+    res.status(500).json({ error: "Failed to delete account" });
+  } finally {
+    client.release();
+  }
+});
+
 app.get("/user/preferences", authMiddleware, async (req, res) => {
   try {
     const result = await pool.query(
