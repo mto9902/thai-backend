@@ -7,6 +7,7 @@ import fs from "fs";
 import jwt from "jsonwebtoken";
 import OpenAI from "openai";
 import path from "path";
+import { randomUUID } from "crypto";
 import { pool } from "./db.js";
 import { registerSRSRoutes, SRS_CONFIG } from "./srs.js";
 import registerTransformRoute from "./transform.js";
@@ -216,6 +217,78 @@ registerTransformRoute(app, openai);
 /* =============================== */
 /* AUTH */
 /* =============================== */
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPassword(password) {
+  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
+}
+
+function createSessionToken(user) {
+  return jwt.sign(
+    { userId: user.id, email: user.email },
+    process.env.JWT_SECRET || "devsecret",
+  );
+}
+
+function getConfiguredGoogleClientIds() {
+  return [
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_ANDROID_CLIENT_ID,
+    process.env.GOOGLE_IOS_CLIENT_ID,
+    process.env.GOOGLE_WEB_CLIENT_ID,
+    process.env.GOOGLE_EXPO_CLIENT_ID,
+    process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
+    process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+    process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+    process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+  ].filter(Boolean);
+}
+
+async function verifyGoogleIdToken(idToken) {
+  const allowedClientIds = getConfiguredGoogleClientIds();
+
+  if (allowedClientIds.length === 0) {
+    throw new Error("Google sign-in is not configured on the server");
+  }
+
+  const response = await fetch(
+    `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`,
+  );
+
+  if (!response.ok) {
+    throw new Error("Google token verification failed");
+  }
+
+  const payload = await response.json();
+  const email = payload.email?.toLowerCase().trim();
+  const iss = payload.iss;
+  const aud = payload.aud;
+  const sub = payload.sub;
+  const emailVerified =
+    payload.email_verified === true || payload.email_verified === "true";
+
+  if (
+    !email ||
+    !sub ||
+    !emailVerified ||
+    !allowedClientIds.includes(aud) ||
+    !["accounts.google.com", "https://accounts.google.com"].includes(iss)
+  ) {
+    throw new Error("Invalid Google sign-in token");
+  }
+
+  return {
+    email,
+    sub,
+    displayName:
+      typeof payload.name === "string" && payload.name.trim()
+        ? payload.name.trim().slice(0, 40)
+        : null,
+  };
+}
 
 function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -917,7 +990,18 @@ async function startServer() {
         ) THEN
           ALTER TABLE users ADD COLUMN display_name TEXT;
         END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'google_sub'
+        ) THEN
+          ALTER TABLE users ADD COLUMN google_sub TEXT;
+        END IF;
       END $$;
+    `);
+    await pool.query(`
+      CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_sub_unique
+        ON users (google_sub)
+        WHERE google_sub IS NOT NULL;
     `);
     await pool.query(`
       CREATE TABLE IF NOT EXISTS user_preferences (
@@ -1027,6 +1111,17 @@ app.post("/signup", async (req, res) => {
       return res.status(400).json({ error: "Email and password required" });
     }
 
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ error: "Please enter a valid email address" });
+    }
+
+    if (!isValidPassword(password)) {
+      return res.status(400).json({
+        error:
+          "Password must be at least 8 characters and include uppercase, lowercase, and a number",
+      });
+    }
+
     const existing = await pool.query("SELECT id FROM users WHERE email = $1", [
       email,
     ]);
@@ -1044,10 +1139,7 @@ app.post("/signup", async (req, res) => {
       [email, passwordHash],
     );
 
-    const token = jwt.sign(
-      { userId: result.rows[0].id, email },
-      process.env.JWT_SECRET || "devsecret",
-    );
+    const token = createSessionToken({ id: result.rows[0].id, email });
 
     res.json({ token });
   } catch (err) {
@@ -1085,15 +1177,112 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      process.env.JWT_SECRET || "devsecret",
-    );
+    const token = createSessionToken(user);
 
     res.json({ token });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Login failed" });
+  }
+});
+
+app.post("/auth/google", async (req, res) => {
+  const idToken = typeof req.body?.idToken === "string" ? req.body.idToken : "";
+
+  if (!idToken) {
+    return res.status(400).json({ error: "Google ID token required" });
+  }
+
+  let googleUser;
+
+  try {
+    googleUser = await verifyGoogleIdToken(idToken);
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "Google sign-in failed";
+    const status = message.includes("configured") ? 500 : 401;
+    return res.status(status).json({ error: message });
+  }
+
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    let userResult = await client.query(
+      `
+      SELECT id, email, display_name, google_sub
+      FROM users
+      WHERE google_sub = $1
+      LIMIT 1
+      `,
+      [googleUser.sub],
+    );
+
+    let user = userResult.rows[0] ?? null;
+
+    if (!user) {
+      userResult = await client.query(
+        `
+        SELECT id, email, display_name, google_sub
+        FROM users
+        WHERE email = $1
+        LIMIT 1
+        `,
+        [googleUser.email],
+      );
+
+      user = userResult.rows[0] ?? null;
+
+      if (user) {
+        if (user.google_sub && user.google_sub !== googleUser.sub) {
+          await client.query("ROLLBACK");
+          return res.status(409).json({
+            error: "This email is already linked to a different Google account",
+          });
+        }
+
+        const linkedResult = await client.query(
+          `
+          UPDATE users
+          SET google_sub = $2,
+              display_name = COALESCE(display_name, $3)
+          WHERE id = $1
+          RETURNING id, email, display_name, google_sub
+          `,
+          [user.id, googleUser.sub, googleUser.displayName],
+        );
+
+        user = linkedResult.rows[0];
+      } else {
+        const passwordHash = await bcrypt.hash(randomUUID(), 10);
+        const insertedResult = await client.query(
+          `
+          INSERT INTO users (email, password_hash, display_name, google_sub)
+          VALUES ($1, $2, $3, $4)
+          RETURNING id, email, display_name, google_sub
+          `,
+          [
+            googleUser.email,
+            passwordHash,
+            googleUser.displayName,
+            googleUser.sub,
+          ],
+        );
+
+        user = insertedResult.rows[0];
+      }
+    }
+
+    await client.query("COMMIT");
+
+    res.json({ token: createSessionToken(user) });
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error("Google sign-in failed:", err);
+    res.status(500).json({ error: "Google sign-in failed" });
+  } finally {
+    client.release();
   }
 });
 
