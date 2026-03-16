@@ -486,12 +486,20 @@ function getGoogleTtsClient() {
 
   try {
     if (rawCredentials) {
-      googleTtsClient = new textToSpeech.TextToSpeechClient({
-        credentials: JSON.parse(rawCredentials),
-      });
-    } else {
-      googleTtsClient = new textToSpeech.TextToSpeechClient();
+      try {
+        googleTtsClient = new textToSpeech.TextToSpeechClient({
+          credentials: JSON.parse(rawCredentials),
+        });
+        return googleTtsClient;
+      } catch (err) {
+        console.error(
+          "Failed to parse GOOGLE_TTS_CREDENTIALS_JSON, falling back to GOOGLE_APPLICATION_CREDENTIALS:",
+          err,
+        );
+      }
     }
+
+    googleTtsClient = new textToSpeech.TextToSpeechClient();
   } catch (err) {
     console.error("Failed to initialize Google TTS client:", err);
     googleTtsClient = null;
