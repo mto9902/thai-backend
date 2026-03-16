@@ -246,8 +246,9 @@ function buildWordRomanizationMap() {
       if (!sentence.romanization || !sentence.breakdown) continue;
       const tokens = sentence.romanization.split(/\s+/);
       sentence.breakdown.forEach((w, i) => {
-        if (tokens[i] && !wordMap.has(w.thai)) {
-          wordMap.set(w.thai, tokens[i]);
+        const preferredRoman = w?.romanization || tokens[i];
+        if (preferredRoman && !wordMap.has(w.thai)) {
+          wordMap.set(w.thai, preferredRoman);
         }
       });
     }
@@ -938,7 +939,7 @@ app.get("/me", authMiddleware, async (req, res) => {
   try {
     const result = await pool.query(
       `
-      SELECT id, email, display_name, is_admin
+      SELECT id, email, display_name, is_admin, has_keystone_access
       FROM users
       WHERE id = $1
       LIMIT 1
@@ -968,7 +969,7 @@ app.patch("/me", authMiddleware, async (req, res) => {
       UPDATE users
       SET display_name = $2
       WHERE id = $1
-      RETURNING id, email, display_name, is_admin
+      RETURNING id, email, display_name, is_admin, has_keystone_access
       `,
       [req.userId, displayName],
     );
@@ -981,6 +982,34 @@ app.patch("/me", authMiddleware, async (req, res) => {
   } catch (err) {
     console.error("Failed to update user profile:", err);
     res.status(500).json({ error: "Failed to update user profile" });
+  }
+});
+
+app.post("/me/keystone-access", authMiddleware, async (req, res) => {
+  try {
+    if (typeof req.body?.hasAccess !== "boolean") {
+      return res.status(400).json({ error: "hasAccess must be a boolean" });
+    }
+
+    const result = await pool.query(
+      `
+      UPDATE users
+      SET has_keystone_access = $2,
+          keystone_access_updated_at = NOW()
+      WHERE id = $1
+      RETURNING id, email, display_name, is_admin, has_keystone_access
+      `,
+      [req.userId, req.body.hasAccess],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("Failed to sync Keystone Access:", err);
+    res.status(500).json({ error: "Failed to sync Keystone Access" });
   }
 });
 
@@ -1798,6 +1827,18 @@ async function startServer() {
           WHERE table_name = 'users' AND column_name = 'is_admin'
         ) THEN
           ALTER TABLE users ADD COLUMN is_admin BOOLEAN NOT NULL DEFAULT FALSE;
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'has_keystone_access'
+        ) THEN
+          ALTER TABLE users ADD COLUMN has_keystone_access BOOLEAN NOT NULL DEFAULT FALSE;
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'keystone_access_updated_at'
+        ) THEN
+          ALTER TABLE users ADD COLUMN keystone_access_updated_at TIMESTAMPTZ;
         END IF;
       END $$;
     `);
