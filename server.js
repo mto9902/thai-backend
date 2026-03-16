@@ -59,9 +59,30 @@ function countThaiSyllables(word) {
 
 let grammarSentences = {};
 
+const ADMIN_DATA_DIR = path.resolve("./admin-data");
+const GRAMMAR_OVERRIDES_FILE = path.join(
+  ADMIN_DATA_DIR,
+  "grammar-overrides.json",
+);
+const GRAMMAR_DIR = path.resolve("./grammar");
+const VALID_CEFR_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
+const VALID_GRAMMAR_STAGES = new Set([
+  "A1.1",
+  "A1.2",
+  "A2.1",
+  "A2.2",
+  "B1.1",
+  "B1.2",
+  "B2.1",
+  "B2.2",
+  "C1",
+  "C2",
+]);
+const VALID_TONES = new Set(["mid", "low", "falling", "high", "rising"]);
+const VALID_DIFFICULTIES = new Set(["easy", "medium", "hard"]);
+
 function loadGrammarCSVs() {
-  const grammarPath = "./grammar";
-  const files = fs.readdirSync(grammarPath);
+  const files = fs.readdirSync(GRAMMAR_DIR);
   const promises = [];
 
   files.forEach((file) => {
@@ -71,7 +92,7 @@ function loadGrammarCSVs() {
     const temp = [];
 
     const p = new Promise((resolve) => {
-      fs.createReadStream(path.join(grammarPath, file))
+      fs.createReadStream(path.join(GRAMMAR_DIR, file))
         .pipe(csv())
         .on("data", (row) => {
           temp.push({
@@ -222,6 +243,249 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function ensureAdminDataFiles() {
+  fs.mkdirSync(ADMIN_DATA_DIR, { recursive: true });
+
+  if (!fs.existsSync(GRAMMAR_OVERRIDES_FILE)) {
+    fs.writeFileSync(GRAMMAR_OVERRIDES_FILE, "{}", "utf8");
+  }
+}
+
+function readGrammarOverrides() {
+  ensureAdminDataFiles();
+
+  try {
+    const raw = fs.readFileSync(GRAMMAR_OVERRIDES_FILE, "utf8");
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch (err) {
+    console.error("Failed to read grammar overrides:", err);
+    return {};
+  }
+}
+
+function writeGrammarOverrides(overrides) {
+  ensureAdminDataFiles();
+  fs.writeFileSync(
+    GRAMMAR_OVERRIDES_FILE,
+    JSON.stringify(overrides, null, 2),
+    "utf8",
+  );
+}
+
+function normalizePlainString(value, fieldName, options = {}) {
+  const trimmed = typeof value === "string" ? value.trim() : "";
+  const { allowEmpty = false, maxLength = null } = options;
+
+  if (!allowEmpty && !trimmed) {
+    throw new Error(`${fieldName} is required`);
+  }
+
+  if (maxLength && trimmed.length > maxLength) {
+    throw new Error(`${fieldName} must be ${maxLength} characters or fewer`);
+  }
+
+  return trimmed;
+}
+
+function normalizeWordBreakdownItem(item, index) {
+  if (!item || typeof item !== "object") {
+    throw new Error(`Breakdown item ${index + 1} must be an object`);
+  }
+
+  const thai = normalizePlainString(item.thai, `Breakdown item ${index + 1} Thai`);
+  const english = normalizePlainString(
+    item.english,
+    `Breakdown item ${index + 1} English`,
+  );
+  const tone = normalizePlainString(item.tone, `Breakdown item ${index + 1} tone`);
+
+  if (!VALID_TONES.has(tone)) {
+    throw new Error(
+      `Breakdown item ${index + 1} tone must be one of: ${Array.from(VALID_TONES).join(", ")}`,
+    );
+  }
+
+  const normalized = {
+    thai,
+    english,
+    tone,
+  };
+
+  if (item.grammar === true) {
+    normalized.grammar = true;
+  }
+
+  if (typeof item.romanization === "string" && item.romanization.trim()) {
+    normalized.romanization = item.romanization.trim();
+  }
+
+  return normalized;
+}
+
+function normalizeExample(example) {
+  if (!example || typeof example !== "object") {
+    throw new Error("Example is required");
+  }
+
+  if (!Array.isArray(example.breakdown) || example.breakdown.length === 0) {
+    throw new Error("Example breakdown must contain at least one item");
+  }
+
+  return {
+    thai: normalizePlainString(example.thai, "Example Thai"),
+    roman: normalizePlainString(example.roman, "Example romanization"),
+    english: normalizePlainString(example.english, "Example English"),
+    breakdown: example.breakdown.map((item, index) =>
+      normalizeWordBreakdownItem(item, index),
+    ),
+  };
+}
+
+function normalizeFocus(focus) {
+  if (!focus || typeof focus !== "object") {
+    throw new Error("Focus is required");
+  }
+
+  return {
+    particle: normalizePlainString(focus.particle, "Focus particle"),
+    meaning: normalizePlainString(focus.meaning, "Focus meaning"),
+  };
+}
+
+function normalizeGrammarOverride(override) {
+  if (!override || typeof override !== "object") {
+    throw new Error("Grammar override payload is required");
+  }
+
+  const level = normalizePlainString(override.level, "Level");
+  const stage = normalizePlainString(override.stage, "Stage");
+
+  if (!VALID_CEFR_LEVELS.has(level)) {
+    throw new Error("Level must be one of: A1, A2, B1, B2, C1, C2");
+  }
+
+  if (!VALID_GRAMMAR_STAGES.has(stage)) {
+    throw new Error(
+      `Stage must be one of: ${Array.from(VALID_GRAMMAR_STAGES).join(", ")}`,
+    );
+  }
+
+  return {
+    title: normalizePlainString(override.title, "Title"),
+    level,
+    stage,
+    explanation: normalizePlainString(override.explanation, "Explanation"),
+    pattern: normalizePlainString(override.pattern, "Pattern"),
+    aiPrompt:
+      typeof override.aiPrompt === "string" && override.aiPrompt.trim()
+        ? override.aiPrompt.trim()
+        : undefined,
+    example: normalizeExample(override.example),
+    focus: normalizeFocus(override.focus),
+  };
+}
+
+function normalizeGrammarRow(row, index) {
+  if (!row || typeof row !== "object") {
+    throw new Error(`Row ${index + 1} must be an object`);
+  }
+
+  if (!Array.isArray(row.breakdown) || row.breakdown.length === 0) {
+    throw new Error(`Row ${index + 1} must include at least one breakdown item`);
+  }
+
+  const difficulty = normalizePlainString(
+    row.difficulty ?? "easy",
+    `Row ${index + 1} difficulty`,
+  ).toLowerCase();
+
+  if (!VALID_DIFFICULTIES.has(difficulty)) {
+    throw new Error(
+      `Row ${index + 1} difficulty must be one of: ${Array.from(VALID_DIFFICULTIES).join(", ")}`,
+    );
+  }
+
+  return {
+    thai: normalizePlainString(row.thai, `Row ${index + 1} Thai`),
+    romanization: normalizePlainString(
+      row.romanization,
+      `Row ${index + 1} romanization`,
+    ),
+    english: normalizePlainString(row.english, `Row ${index + 1} English`),
+    breakdown: row.breakdown.map((item, breakdownIndex) =>
+      normalizeWordBreakdownItem(item, breakdownIndex),
+    ),
+    difficulty,
+  };
+}
+
+function normalizeGrammarRows(rows) {
+  if (!Array.isArray(rows) || rows.length === 0) {
+    throw new Error("Practice rows must contain at least one sentence");
+  }
+
+  return rows.map((row, index) => normalizeGrammarRow(row, index));
+}
+
+function escapeCsvValue(value) {
+  const text = String(value ?? "");
+
+  if (/[",\n]/.test(text)) {
+    return `"${text.replace(/"/g, '""')}"`;
+  }
+
+  return text;
+}
+
+function serializeGrammarRows(rows) {
+  const header = ["thai", "romanization", "english", "breakdown", "difficulty"];
+  const lines = rows.map((row) =>
+    [
+      row.thai,
+      row.romanization,
+      row.english,
+      JSON.stringify(row.breakdown),
+      row.difficulty,
+    ]
+      .map(escapeCsvValue)
+      .join(","),
+  );
+
+  return [header.join(","), ...lines].join("\n");
+}
+
+function isValidGrammarId(grammarId) {
+  return /^[a-z0-9][a-z0-9.-]*$/i.test(grammarId);
+}
+
+function getAdminEmails() {
+  return (process.env.ADMIN_EMAILS || "")
+    .split(",")
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+function isConfiguredAdminEmail(email) {
+  const normalizedEmail =
+    typeof email === "string" ? email.trim().toLowerCase() : "";
+  return normalizedEmail ? getAdminEmails().includes(normalizedEmail) : false;
+}
+
+async function syncConfiguredAdminEmails() {
+  const adminEmails = getAdminEmails();
+  if (adminEmails.length === 0) return;
+
+  await pool.query(
+    `
+    UPDATE users
+    SET is_admin = TRUE
+    WHERE LOWER(email) = ANY($1::text[])
+    `,
+    [adminEmails],
+  );
+}
+
 function isValidPassword(password) {
   return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
 }
@@ -303,6 +567,7 @@ function authMiddleware(req, res, next) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "devsecret");
 
     req.userId = decoded.userId;
+    req.userEmail = decoded.email;
 
     next();
   } catch (err) {
@@ -310,11 +575,34 @@ function authMiddleware(req, res, next) {
   }
 }
 
+async function adminMiddleware(req, res, next) {
+  try {
+    const result = await pool.query(
+      `
+      SELECT is_admin
+      FROM users
+      WHERE id = $1
+      LIMIT 1
+      `,
+      [req.userId],
+    );
+
+    if (result.rows.length === 0 || result.rows[0].is_admin !== true) {
+      return res.status(403).json({ error: "Admin access required" });
+    }
+
+    next();
+  } catch (err) {
+    console.error("Admin auth failed:", err);
+    res.status(500).json({ error: "Failed to verify admin access" });
+  }
+}
+
 app.get("/me", authMiddleware, async (req, res) => {
   try {
     const result = await pool.query(
       `
-      SELECT id, email, display_name
+      SELECT id, email, display_name, is_admin
       FROM users
       WHERE id = $1
       LIMIT 1
@@ -344,7 +632,7 @@ app.patch("/me", authMiddleware, async (req, res) => {
       UPDATE users
       SET display_name = $2
       WHERE id = $1
-      RETURNING id, email, display_name
+      RETURNING id, email, display_name, is_admin
       `,
       [req.userId, displayName],
     );
@@ -692,6 +980,161 @@ app.get("/bookmarks", authMiddleware, async (req, res) => {
 });
 
 /* =============================== */
+/* ADMIN */
+/* =============================== */
+
+app.get("/admin/dashboard", authMiddleware, adminMiddleware, async (_req, res) => {
+  try {
+    const [
+      usersResult,
+      activeUsersResult,
+      bookmarksResult,
+      grammarProgressResult,
+      grammarRoundsResult,
+      vocabResult,
+    ] = await Promise.all([
+      pool.query(`SELECT COUNT(*) FROM users`),
+      pool.query(`
+        SELECT COUNT(DISTINCT user_id)
+        FROM activity_log
+        WHERE activity_date >= CURRENT_DATE - INTERVAL '6 days'
+      `),
+      pool.query(`SELECT COUNT(*) FROM bookmarks`),
+      pool.query(`SELECT COUNT(*) FROM grammar_progress`),
+      pool.query(`SELECT COALESCE(SUM(rounds), 0) AS total FROM grammar_progress`),
+      pool.query(`SELECT COUNT(*) FROM user_vocab`),
+    ]);
+
+    const overrides = readGrammarOverrides();
+    const grammarTopicCount = Object.keys(grammarSentences).length;
+    const grammarRowCount = Object.values(grammarSentences).reduce(
+      (sum, rows) => sum + rows.length,
+      0,
+    );
+
+    res.json({
+      totalUsers: Number(usersResult.rows[0].count || 0),
+      activeUsers7d: Number(activeUsersResult.rows[0].count || 0),
+      totalBookmarks: Number(bookmarksResult.rows[0].count || 0),
+      grammarProgressEntries: Number(grammarProgressResult.rows[0].count || 0),
+      grammarRounds: Number(grammarRoundsResult.rows[0].total || 0),
+      vocabCards: Number(vocabResult.rows[0].count || 0),
+      grammarTopics: grammarTopicCount,
+      grammarPracticeRows: grammarRowCount,
+      overriddenTopics: Object.keys(overrides).length,
+    });
+  } catch (err) {
+    console.error("Failed to fetch admin dashboard:", err);
+    res.status(500).json({ error: "Failed to fetch admin dashboard" });
+  }
+});
+
+app.get("/admin/grammar", authMiddleware, adminMiddleware, async (_req, res) => {
+  try {
+    const overrides = readGrammarOverrides();
+    const ids = Array.from(
+      new Set([...Object.keys(grammarSentences), ...Object.keys(overrides)]),
+    ).sort();
+
+    res.json(
+      ids.map((id) => ({
+        id,
+        rowCount: Array.isArray(grammarSentences[id]) ? grammarSentences[id].length : 0,
+        hasOverride: Boolean(overrides[id]),
+      })),
+    );
+  } catch (err) {
+    console.error("Failed to fetch admin grammar list:", err);
+    res.status(500).json({ error: "Failed to fetch admin grammar list" });
+  }
+});
+
+app.get(
+  "/admin/grammar/:grammarId",
+  authMiddleware,
+  adminMiddleware,
+  async (req, res) => {
+    try {
+      const { grammarId } = req.params;
+
+      if (!isValidGrammarId(grammarId)) {
+        return res.status(400).json({ error: "Invalid grammar id" });
+      }
+
+      const overrides = readGrammarOverrides();
+      const rows = grammarSentences[grammarId];
+      const override = overrides[grammarId] || null;
+
+      if (!rows && !override) {
+        return res.status(404).json({ error: "Grammar point not found" });
+      }
+
+      res.json({
+        override,
+        rows: Array.isArray(rows) ? rows : [],
+      });
+    } catch (err) {
+      console.error("Failed to fetch admin grammar detail:", err);
+      res.status(500).json({ error: "Failed to fetch admin grammar detail" });
+    }
+  },
+);
+
+app.put(
+  "/admin/grammar/:grammarId",
+  authMiddleware,
+  adminMiddleware,
+  async (req, res) => {
+    try {
+      const { grammarId } = req.params;
+
+      if (!isValidGrammarId(grammarId)) {
+        return res.status(400).json({ error: "Invalid grammar id" });
+      }
+
+      const hasOverride = Object.prototype.hasOwnProperty.call(req.body ?? {}, "override");
+      const hasRows = Object.prototype.hasOwnProperty.call(req.body ?? {}, "rows");
+
+      if (!hasOverride && !hasRows) {
+        return res.status(400).json({
+          error: "Provide override, rows, or both in the request body",
+        });
+      }
+
+      let savedOverride = null;
+      let savedRows = grammarSentences[grammarId] || [];
+
+      if (hasOverride) {
+        const overrides = readGrammarOverrides();
+        savedOverride = normalizeGrammarOverride(req.body.override);
+        overrides[grammarId] = savedOverride;
+        writeGrammarOverrides(overrides);
+      }
+
+      if (hasRows) {
+        savedRows = normalizeGrammarRows(req.body.rows);
+        fs.writeFileSync(
+          path.join(GRAMMAR_DIR, `${grammarId}.csv`),
+          serializeGrammarRows(savedRows),
+          "utf8",
+        );
+        grammarSentences[grammarId] = savedRows;
+      }
+
+      res.json({
+        success: true,
+        override: savedOverride,
+        rowCount: savedRows.length,
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to save grammar";
+      console.error("Failed to save admin grammar:", err);
+      res.status(400).json({ error: message });
+    }
+  },
+);
+
+/* =============================== */
 /* USER VOCABULARY */
 /* =============================== */
 
@@ -1014,6 +1457,12 @@ async function startServer() {
         ) THEN
           ALTER TABLE users ADD COLUMN consent_source TEXT;
         END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'is_admin'
+        ) THEN
+          ALTER TABLE users ADD COLUMN is_admin BOOLEAN NOT NULL DEFAULT FALSE;
+        END IF;
       END $$;
     `);
     await pool.query(`
@@ -1087,6 +1536,8 @@ async function startServer() {
       );
     `);
     console.log("SRS v3 migration complete");
+    ensureAdminDataFiles();
+    await syncConfiguredAdminEmails();
 
     await loadDictionary();
     await loadGrammarCSVs();
@@ -1114,6 +1565,15 @@ app.post("/practice-csv", (req, res) => {
   const random = matches[Math.floor(Math.random() * matches.length)];
 
   res.json(random);
+});
+
+app.get("/grammar/overrides", (_req, res) => {
+  try {
+    res.json(readGrammarOverrides());
+  } catch (err) {
+    console.error("Failed to fetch grammar overrides:", err);
+    res.status(500).json({ error: "Failed to fetch grammar overrides" });
+  }
 });
 
 /* =============================== */
@@ -1156,20 +1616,22 @@ app.post("/signup", async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
+    const isAdmin = isConfiguredAdminEmail(email);
 
     const result = await pool.query(
       `
       INSERT INTO users (
         email,
         password_hash,
+        is_admin,
         terms_accepted_at,
         privacy_accepted_at,
         consent_source
       )
-      VALUES ($1, $2, NOW(), NOW(), 'email_signup')
+      VALUES ($1, $2, $3, NOW(), NOW(), 'email_signup')
       RETURNING id
       `,
-      [email, passwordHash],
+      [email, passwordHash, isAdmin],
     );
 
     const token = createSessionToken({ id: result.rows[0].id, email });
@@ -1242,6 +1704,7 @@ app.post("/auth/google", async (req, res) => {
 
   try {
     await client.query("BEGIN");
+    const isAdmin = isConfiguredAdminEmail(googleUser.email);
 
     let userResult = await client.query(
       `
@@ -1280,11 +1743,12 @@ app.post("/auth/google", async (req, res) => {
           `
           UPDATE users
           SET google_sub = $2,
-              display_name = COALESCE(display_name, $3)
+              display_name = COALESCE(display_name, $3),
+              is_admin = CASE WHEN $4 THEN TRUE ELSE is_admin END
           WHERE id = $1
-          RETURNING id, email, display_name, google_sub
+          RETURNING id, email, display_name, google_sub, is_admin
           `,
-          [user.id, googleUser.sub, googleUser.displayName],
+          [user.id, googleUser.sub, googleUser.displayName, isAdmin],
         );
 
         user = linkedResult.rows[0];
@@ -1306,18 +1770,20 @@ app.post("/auth/google", async (req, res) => {
             password_hash,
             display_name,
             google_sub,
+            is_admin,
             terms_accepted_at,
             privacy_accepted_at,
             consent_source
           )
-          VALUES ($1, $2, $3, $4, NOW(), NOW(), 'google_signup')
-          RETURNING id, email, display_name, google_sub
+          VALUES ($1, $2, $3, $4, $5, NOW(), NOW(), 'google_signup')
+          RETURNING id, email, display_name, google_sub, is_admin
           `,
           [
             googleUser.email,
             passwordHash,
             googleUser.displayName,
             googleUser.sub,
+            isAdmin,
           ],
         );
 
