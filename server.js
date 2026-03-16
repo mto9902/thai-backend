@@ -1694,7 +1694,6 @@ async function startServer() {
     `);
     console.log("SRS v3 migration complete");
     ensureAdminDataFiles();
-    ensureTtsCacheDir();
     await syncConfiguredAdminEmails();
 
     await loadDictionary();
