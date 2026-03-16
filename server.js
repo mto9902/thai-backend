@@ -7,7 +7,8 @@ import fs from "fs";
 import jwt from "jsonwebtoken";
 import OpenAI from "openai";
 import path from "path";
-import { randomUUID } from "crypto";
+import textToSpeech from "@google-cloud/text-to-speech";
+import { createHash, randomUUID } from "crypto";
 import { pool } from "./db.js";
 import { registerSRSRoutes, SRS_CONFIG } from "./srs.js";
 import registerTransformRoute from "./transform.js";
@@ -17,6 +18,16 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const TTS_CACHE_DIR = path.resolve("./tts-cache");
+const TTS_SENTENCE_DIR = path.join(TTS_CACHE_DIR, "sentences");
+app.use(
+  "/tts-cache",
+  express.static(TTS_CACHE_DIR, {
+    immutable: true,
+    maxAge: "365d",
+  }),
+);
 
 /* =============================== */
 /* THAI VOWEL SYLLABLE DETECTION */
@@ -457,6 +468,152 @@ function serializeGrammarRows(rows) {
 
 function isValidGrammarId(grammarId) {
   return /^[a-z0-9][a-z0-9.-]*$/i.test(grammarId);
+}
+
+let googleTtsClient;
+const ttsSentenceRequests = new Map();
+
+function ensureTtsCacheDir() {
+  fs.mkdirSync(TTS_SENTENCE_DIR, { recursive: true });
+}
+
+function getGoogleTtsClient() {
+  if (googleTtsClient !== undefined) {
+    return googleTtsClient;
+  }
+
+  const rawCredentials = process.env.GOOGLE_TTS_CREDENTIALS_JSON?.trim();
+
+  try {
+    if (rawCredentials) {
+      googleTtsClient = new textToSpeech.TextToSpeechClient({
+        credentials: JSON.parse(rawCredentials),
+      });
+    } else {
+      googleTtsClient = new textToSpeech.TextToSpeechClient();
+    }
+  } catch (err) {
+    console.error("Failed to initialize Google TTS client:", err);
+    googleTtsClient = null;
+  }
+
+  return googleTtsClient;
+}
+
+function normalizeTtsSpeakingRate(value) {
+  const rate = Number(value);
+
+  if (!Number.isFinite(rate)) {
+    return 1;
+  }
+
+  return Math.min(1.3, Math.max(0.7, rate));
+}
+
+function buildSentenceTtsConfig(text, speakingRate) {
+  const normalizedText =
+    typeof text === "string" ? text.trim().replace(/\s+/g, " ") : "";
+
+  if (!normalizedText) {
+    throw new Error("Text is required");
+  }
+
+  if (normalizedText.length > 500) {
+    throw new Error("Sentence audio is limited to 500 characters");
+  }
+
+  const languageCode = process.env.GOOGLE_TTS_LANGUAGE_CODE || "th-TH";
+  const voiceName = process.env.GOOGLE_TTS_VOICE_NAME?.trim() || null;
+  const ssmlGender =
+    process.env.GOOGLE_TTS_SSML_GENDER?.trim().toUpperCase() || "FEMALE";
+  const normalizedRate = normalizeTtsSpeakingRate(speakingRate);
+
+  const cacheKey = createHash("sha256")
+    .update(
+      JSON.stringify({
+        text: normalizedText,
+        languageCode,
+        voiceName,
+        ssmlGender,
+        speakingRate: normalizedRate,
+      }),
+    )
+    .digest("hex");
+
+  return {
+    cacheKey,
+    languageCode,
+    normalizedText,
+    speakingRate: normalizedRate,
+    ssmlGender,
+    voiceName,
+  };
+}
+
+function getSentenceAudioPublicPath(cacheKey) {
+  return `/tts-cache/sentences/${cacheKey}.mp3`;
+}
+
+async function synthesizeSentenceAudio(text, speakingRate) {
+  const config = buildSentenceTtsConfig(text, speakingRate);
+  ensureTtsCacheDir();
+
+  const targetPath = path.join(TTS_SENTENCE_DIR, `${config.cacheKey}.mp3`);
+  const publicPath = getSentenceAudioPublicPath(config.cacheKey);
+
+  if (fs.existsSync(targetPath)) {
+    return { cacheKey: config.cacheKey, cached: true, path: publicPath };
+  }
+
+  if (ttsSentenceRequests.has(config.cacheKey)) {
+    return ttsSentenceRequests.get(config.cacheKey);
+  }
+
+  const task = (async () => {
+    const client = getGoogleTtsClient();
+
+    if (!client) {
+      throw new Error(
+        "Google TTS is not configured on the server. Set GOOGLE_APPLICATION_CREDENTIALS or GOOGLE_TTS_CREDENTIALS_JSON.",
+      );
+    }
+
+    const [response] = await client.synthesizeSpeech({
+      input: { text: config.normalizedText },
+      voice: {
+        languageCode: config.languageCode,
+        ...(config.voiceName ? { name: config.voiceName } : {}),
+        ssmlGender: config.ssmlGender,
+      },
+      audioConfig: {
+        audioEncoding: "MP3",
+        speakingRate: config.speakingRate,
+      },
+    });
+
+    const audioContent = response.audioContent;
+
+    if (!audioContent) {
+      throw new Error("Google TTS returned no audio content");
+    }
+
+    const audioBuffer =
+      typeof audioContent === "string"
+        ? Buffer.from(audioContent, "binary")
+        : Buffer.from(audioContent);
+
+    fs.writeFileSync(targetPath, audioBuffer);
+
+    return { cacheKey: config.cacheKey, cached: false, path: publicPath };
+  })();
+
+  ttsSentenceRequests.set(config.cacheKey, task);
+
+  try {
+    return await task;
+  } finally {
+    ttsSentenceRequests.delete(config.cacheKey);
+  }
 }
 
 function getAdminEmails() {
@@ -1537,6 +1694,7 @@ async function startServer() {
     `);
     console.log("SRS v3 migration complete");
     ensureAdminDataFiles();
+    ensureTtsCacheDir();
     await syncConfiguredAdminEmails();
 
     await loadDictionary();
@@ -1565,6 +1723,25 @@ app.post("/practice-csv", (req, res) => {
   const random = matches[Math.floor(Math.random() * matches.length)];
 
   res.json(random);
+});
+
+app.post("/tts/sentence", async (req, res) => {
+  try {
+    const text = typeof req.body?.text === "string" ? req.body.text : "";
+    const speakingRate = req.body?.speakingRate;
+
+    const result = await synthesizeSentenceAudio(text, speakingRate);
+
+    res.json(result);
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "Failed to generate sentence audio";
+    const status =
+      message.includes("required") || message.includes("limited") ? 400 : 503;
+
+    console.error("Sentence TTS failed:", err);
+    res.status(status).json({ error: message });
+  }
 });
 
 app.get("/grammar/overrides", (_req, res) => {
