@@ -9,18 +9,31 @@ import OpenAI from "openai";
 import path from "path";
 import textToSpeech from "@google-cloud/text-to-speech";
 import { createHash, randomUUID } from "crypto";
-import { pool } from "./db.js";
+import { getPoolStats, pool } from "./db.js";
 import { registerSRSRoutes, SRS_CONFIG } from "./srs.js";
 import registerTransformRoute from "./transform.js";
 
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", true);
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: process.env.JSON_BODY_LIMIT || "1mb" }));
 
-const TTS_CACHE_DIR = path.resolve("./tts-cache");
+function readPositiveIntEnv(name, fallback) {
+  const value = Number.parseInt(process.env[name] || "", 10);
+  return Number.isFinite(value) && value > 0 ? value : fallback;
+}
+
+const PORT = readPositiveIntEnv("PORT", 3000);
+const TTS_CACHE_DIR = path.resolve(process.env.TTS_CACHE_DIR || "./tts-cache");
 const TTS_SENTENCE_DIR = path.join(TTS_CACHE_DIR, "sentences");
+const TTS_CACHE_MAX_BYTES = readPositiveIntEnv(
+  "TTS_CACHE_MAX_BYTES",
+  1024 * 1024 * 1024,
+);
+const TTS_CACHE_TRIM_TARGET_BYTES = Math.floor(TTS_CACHE_MAX_BYTES * 0.85);
+const TTS_MAX_CONCURRENT = readPositiveIntEnv("TTS_MAX_CONCURRENT", 4);
 app.use(
   "/tts-cache",
   express.static(TTS_CACHE_DIR, {
@@ -91,6 +104,106 @@ const VALID_GRAMMAR_STAGES = new Set([
 ]);
 const VALID_TONES = new Set(["mid", "low", "falling", "high", "rising"]);
 const VALID_DIFFICULTIES = new Set(["easy", "medium", "hard"]);
+
+function getRequestIdentity(req, prefix = "anon") {
+  if (req.userId) {
+    return `${prefix}:user:${req.userId}`;
+  }
+
+  const forwardedFor = req.headers["x-forwarded-for"];
+  const forwardedIp = Array.isArray(forwardedFor)
+    ? forwardedFor[0]
+    : typeof forwardedFor === "string"
+      ? forwardedFor.split(",")[0]
+      : "";
+  const ip = forwardedIp || req.ip || req.socket?.remoteAddress || "unknown";
+  return `${prefix}:ip:${ip}`;
+}
+
+function createRateLimiter({ keyPrefix, maxRequests, windowMs }) {
+  const buckets = new Map();
+  const cleanupHandle = setInterval(() => {
+    const now = Date.now();
+    for (const [key, timestamps] of buckets.entries()) {
+      const active = timestamps.filter((timestamp) => now - timestamp < windowMs);
+      if (active.length > 0) {
+        buckets.set(key, active);
+      } else {
+        buckets.delete(key);
+      }
+    }
+  }, Math.max(windowMs, 60000));
+  cleanupHandle.unref?.();
+
+  return function rateLimiter(req, res, next) {
+    const key = getRequestIdentity(req, keyPrefix);
+    const now = Date.now();
+    const bucket = (buckets.get(key) || []).filter(
+      (timestamp) => now - timestamp < windowMs,
+    );
+
+    if (bucket.length >= maxRequests) {
+      const retryAfterSeconds = Math.max(
+        1,
+        Math.ceil((windowMs - (now - bucket[0])) / 1000),
+      );
+      res.set("Retry-After", String(retryAfterSeconds));
+      return res.status(429).json({
+        error: "Too many requests. Please wait a moment and try again.",
+      });
+    }
+
+    bucket.push(now);
+    buckets.set(key, bucket);
+    next();
+  };
+}
+
+function createConcurrencyLimiter(maxConcurrent) {
+  let activeCount = 0;
+  const waitQueue = [];
+
+  async function run(task) {
+    if (activeCount >= maxConcurrent) {
+      await new Promise((resolve) => {
+        waitQueue.push(resolve);
+      });
+    }
+
+    activeCount += 1;
+
+    try {
+      return await task();
+    } finally {
+      activeCount = Math.max(0, activeCount - 1);
+      const next = waitQueue.shift();
+      next?.();
+    }
+  }
+
+  return {
+    run,
+    getStats() {
+      return {
+        activeCount,
+        maxConcurrent,
+        queuedCount: waitQueue.length,
+      };
+    },
+  };
+}
+
+const authRateLimiter = createRateLimiter({
+  keyPrefix: "auth",
+  maxRequests: readPositiveIntEnv("AUTH_RATE_LIMIT_MAX", 20),
+  windowMs: readPositiveIntEnv("AUTH_RATE_LIMIT_WINDOW_MS", 15 * 60 * 1000),
+});
+const sentenceTtsRateLimiter = createRateLimiter({
+  keyPrefix: "tts",
+  maxRequests: readPositiveIntEnv("TTS_RATE_LIMIT_MAX", 90),
+  windowMs: readPositiveIntEnv("TTS_RATE_LIMIT_WINDOW_MS", 60 * 1000),
+});
+const ttsConcurrencyLimiter = createConcurrencyLimiter(TTS_MAX_CONCURRENT);
 
 function loadGrammarCSVs() {
   const files = fs.readdirSync(GRAMMAR_DIR);
@@ -477,6 +590,49 @@ function ensureTtsCacheDir() {
   fs.mkdirSync(TTS_SENTENCE_DIR, { recursive: true });
 }
 
+async function pruneTtsCacheIfNeeded() {
+  if (!Number.isFinite(TTS_CACHE_MAX_BYTES) || TTS_CACHE_MAX_BYTES <= 0) {
+    return;
+  }
+
+  ensureTtsCacheDir();
+
+  const fileNames = await fs.promises.readdir(TTS_SENTENCE_DIR);
+  const entries = [];
+  let totalBytes = 0;
+
+  for (const fileName of fileNames) {
+    const filePath = path.join(TTS_SENTENCE_DIR, fileName);
+    const stat = await fs.promises.stat(filePath);
+
+    if (!stat.isFile()) {
+      continue;
+    }
+
+    totalBytes += stat.size;
+    entries.push({
+      filePath,
+      mtimeMs: stat.mtimeMs,
+      size: stat.size,
+    });
+  }
+
+  if (totalBytes <= TTS_CACHE_MAX_BYTES) {
+    return;
+  }
+
+  entries.sort((a, b) => a.mtimeMs - b.mtimeMs);
+
+  for (const entry of entries) {
+    await fs.promises.unlink(entry.filePath);
+    totalBytes -= entry.size;
+
+    if (totalBytes <= TTS_CACHE_TRIM_TARGET_BYTES) {
+      break;
+    }
+  }
+}
+
 function getGoogleTtsClient() {
   if (googleTtsClient !== undefined) {
     return googleTtsClient;
@@ -578,41 +734,44 @@ async function synthesizeSentenceAudio(text, speakingRate) {
   }
 
   const task = (async () => {
-    const client = getGoogleTtsClient();
+    return ttsConcurrencyLimiter.run(async () => {
+      const client = getGoogleTtsClient();
 
-    if (!client) {
-      throw new Error(
-        "Google TTS is not configured on the server. Set GOOGLE_APPLICATION_CREDENTIALS or GOOGLE_TTS_CREDENTIALS_JSON.",
-      );
-    }
+      if (!client) {
+        throw new Error(
+          "Google TTS is not configured on the server. Set GOOGLE_APPLICATION_CREDENTIALS or GOOGLE_TTS_CREDENTIALS_JSON.",
+        );
+      }
 
-    const [response] = await client.synthesizeSpeech({
-      input: { text: config.normalizedText },
-      voice: {
-        languageCode: config.languageCode,
-        ...(config.voiceName ? { name: config.voiceName } : {}),
-        ssmlGender: config.ssmlGender,
-      },
-      audioConfig: {
-        audioEncoding: "MP3",
-        speakingRate: config.speakingRate,
-      },
+      const [response] = await client.synthesizeSpeech({
+        input: { text: config.normalizedText },
+        voice: {
+          languageCode: config.languageCode,
+          ...(config.voiceName ? { name: config.voiceName } : {}),
+          ssmlGender: config.ssmlGender,
+        },
+        audioConfig: {
+          audioEncoding: "MP3",
+          speakingRate: config.speakingRate,
+        },
+      });
+
+      const audioContent = response.audioContent;
+
+      if (!audioContent) {
+        throw new Error("Google TTS returned no audio content");
+      }
+
+      const audioBuffer =
+        typeof audioContent === "string"
+          ? Buffer.from(audioContent, "binary")
+          : Buffer.from(audioContent);
+
+      await fs.promises.writeFile(targetPath, audioBuffer);
+      await pruneTtsCacheIfNeeded();
+
+      return { cacheKey: config.cacheKey, cached: false, path: publicPath };
     });
-
-    const audioContent = response.audioContent;
-
-    if (!audioContent) {
-      throw new Error("Google TTS returned no audio content");
-    }
-
-    const audioBuffer =
-      typeof audioContent === "string"
-        ? Buffer.from(audioContent, "binary")
-        : Buffer.from(audioContent);
-
-    fs.writeFileSync(targetPath, audioBuffer);
-
-    return { cacheKey: config.cacheKey, cached: false, path: publicPath };
   })();
 
   ttsSentenceRequests.set(config.cacheKey, task);
@@ -661,6 +820,18 @@ function createSessionToken(user) {
     process.env.JWT_SECRET || "devsecret",
   );
 }
+
+app.get("/health", (_req, res) => {
+  res.json({
+    ok: true,
+    db: getPoolStats(),
+    tts: {
+      cacheDir: TTS_SENTENCE_DIR,
+      cacheMaxBytes: TTS_CACHE_MAX_BYTES,
+      ...ttsConcurrencyLimiter.getStats(),
+    },
+  });
+});
 
 function getConfiguredGoogleClientIds() {
   return [
@@ -1710,8 +1881,8 @@ async function startServer() {
     const wordMap = buildWordRomanizationMap();
     await backfillRomanization(wordMap);
 
-    app.listen(3000, () => {
-      console.log("AI server running on port 3000");
+    app.listen(PORT, () => {
+      console.log(`AI server running on port ${PORT}`);
     });
   } catch (err) {
     console.error("Server startup failed:", err);
@@ -1732,7 +1903,7 @@ app.post("/practice-csv", (req, res) => {
   res.json(random);
 });
 
-app.post("/tts/sentence", async (req, res) => {
+app.post("/tts/sentence", sentenceTtsRateLimiter, async (req, res) => {
   try {
     const text = typeof req.body?.text === "string" ? req.body.text : "";
     const speakingRate = req.body?.speakingRate;
@@ -1764,7 +1935,7 @@ app.get("/grammar/overrides", (_req, res) => {
 /* SIGNUP */
 /* =============================== */
 
-app.post("/signup", async (req, res) => {
+app.post("/signup", authRateLimiter, async (req, res) => {
   try {
     const { password } = req.body;
     const email = req.body.email?.toLowerCase().trim();
@@ -1831,7 +2002,7 @@ app.post("/signup", async (req, res) => {
 /* LOGIN */
 /* =============================== */
 
-app.post("/login", async (req, res) => {
+app.post("/login", authRateLimiter, async (req, res) => {
   try {
     const { password } = req.body;
     const email = req.body.email?.toLowerCase().trim();
@@ -1865,7 +2036,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/auth/google", async (req, res) => {
+app.post("/auth/google", authRateLimiter, async (req, res) => {
   const idToken = typeof req.body?.idToken === "string" ? req.body.idToken : "";
   const acceptedTerms = req.body?.acceptedTerms === true;
 
