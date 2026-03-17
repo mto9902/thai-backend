@@ -52,6 +52,27 @@ const COMMON_SUBJECT_SWAP_TOKENS = new Set([
 ]);
 const FORBIDDEN_ROMANIZATION_REGEX = /[ʉɯəɤɔɒɕʔŋɲɳʰːɪʊɜɒ]/u;
 
+const ROMANIZATION_STYLE_REFERENCE = [
+  {
+    thai: "ฉันกำลังเรียนภาษาไทย",
+    romanization: "chǎn kamlang rian phaasǎa thai",
+    english: "I am studying Thai.",
+    difficulty: "easy",
+  },
+  {
+    thai: "วันนี้รถติดมาก เลยไปถึงที่ทำงานช้า",
+    romanization: "wan-níi rót tìt mâak loei pai thǔeng thîi tham-ngaan cháa",
+    english: "Traffic was very bad today, so I got to work late.",
+    difficulty: "medium",
+  },
+  {
+    thai: "ถึงจะเหนื่อย แต่เขายังตั้งใจทำงานต่อ",
+    romanization: "thǔeng jà nùeai tàe khǎo yang tângjai tham-ngaan tò",
+    english: "Even though he is tired, he is still determined to keep working.",
+    difficulty: "medium",
+  },
+];
+
 const STAGE_CONFIG = {
   "A1.1": [
     {
@@ -438,6 +459,461 @@ const STAGE_CONFIG = {
         "Cause connector meaning because.",
     },
   ],
+  "B1.1": [
+    {
+      id: "tend-to-mak-ja",
+      title: "Tend to with มักจะ",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "มักจะ helps learners describe habits and repeated tendencies in a slightly more analytical way than a simple present-tense statement.",
+      pattern: "SUBJECT + มักจะ + VERB",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "rather-khon-khang",
+      title: "Rather / Quite with ค่อนข้าง",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "ค่อนข้าง softens a description into quite or rather, which helps learners sound more measured and natural when giving opinions.",
+      pattern: "SUBJECT / THING + ค่อนข้าง + ADJECTIVE",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "too-much-koen-pai",
+      title: "Too Much with เกินไป",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "เกินไป marks that something goes beyond a suitable amount. It is common in feedback, complaints, and polite evaluation.",
+      pattern: "ADJECTIVE / VERB + เกินไป",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "just-in-time-pho-di",
+      title: "Just Right with พอดี",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "พอดี helps speakers say that timing, amount, or fit is exactly right. It appears constantly in everyday problem-solving and conversation.",
+      pattern: "VERB / ADJECTIVE + พอดี",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "to-be-khue-vs-pen",
+      title: "คือ vs เป็น",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "At this stage learners need to distinguish explanatory คือ from classificatory เป็น. Thai uses คือ to define or identify something and เป็น for roles or membership.",
+      pattern: "X คือ Y / SUBJECT + เป็น + ROLE",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "reciprocal-kan",
+      title: "Doing Something Together with กัน",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "กัน lets learners talk about shared or reciprocal actions such as helping each other, meeting up, or doing something together.",
+      pattern: "SUBJECT + VERB + กัน",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "beneficial-hai",
+      title: "Doing Something for Someone with ให้",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "ให้ often marks that an action is done for another person. It is essential for describing favors, service, and everyday helpful actions.",
+      pattern: "VERB + OBJECT + ให้ + PERSON",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "do-in-advance-wai",
+      title: "Do in Advance with ไว้",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "Placed after a verb, ไว้ shows that something is prepared, saved, or done ahead of time for later use.",
+      pattern: "VERB + ไว้",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "continuation-aspect",
+      title: "Continuation and Aspect",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "These forms help learners say that something is ongoing, continuing, or still in progress. This includes verb + อยู่ for an action or state that is still unfolding.",
+      pattern: "ไปเรื่อยๆ / ต่อไป / VERB + อยู่ / ยัง",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "about-concerning-kiaw-kap",
+      title: "About / Concerning with เกี่ยวกับ",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "เกี่ยวกับ lets learners clearly introduce a topic, subject, or issue. It is useful in conversation, study, and work-related Thai.",
+      pattern: "VERB / NOUN + เกี่ยวกับ + TOPIC",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "also-kor",
+      title: "Linking Ideas with ก็",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "ก็ is a flexible connector meaning also, then, so, or in that case depending on context. Learners need it for more natural, connected speech.",
+      pattern: "SUBJECT / CLAUSE + ก็ + VERB / RESULT",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "prefer-di-kwa",
+      title: "Prefer with ดีกว่า",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "ดีกว่า lets speakers compare options and recommend one as better. It is common when making decisions or giving practical advice.",
+      pattern: "OPTION + ดีกว่า",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "cause-result-phro-wa",
+      title: "Because with เพราะว่า",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "เพราะว่า gives a fuller, more explicit way to state a reason than the shorter เพราะ. It is common in spoken explanation and writing.",
+      pattern: "RESULT + เพราะว่า + REASON",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "cause-result-tham-hai",
+      title: "Cause and Result with ทำให้",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "ทำให้ links a cause directly to its effect. It is important for saying that something makes, causes, or leads to a result.",
+      pattern: "CAUSE + ทำให้ + RESULT",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "cause-result-jueng",
+      title: "Therefore with จึง",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "จึง is a compact therefore marker that often sounds more written or deliberate than ก็เลย. It helps learners connect reason and result more cleanly.",
+      pattern: "REASON + จึง + RESULT",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "sequence-laew-kor",
+      title: "And Then with แล้วก็",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "แล้วก็ is one of the most natural ways to continue a spoken sequence. It helps events feel connected and conversational.",
+      pattern: "CLAUSE + แล้วก็ + CLAUSE",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "sequence-jaak-nan",
+      title: "After That with จากนั้น",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "จากนั้น is useful for structured narration and step-by-step explanation. It sounds a little more organized than แล้วก็.",
+      pattern: "CLAUSE. จากนั้น + CLAUSE",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "sequence-nai-thi-sut",
+      title: "Finally with ในที่สุด",
+      stage: "B1.1",
+      level: "B1",
+      explanation:
+        "ในที่สุด marks the final outcome of a process or story. It helps learners close a sequence and show that something has finally happened.",
+      pattern: "ในที่สุด + CLAUSE",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+  ],
+  "B1.2": [
+    {
+      id: "not-yet-yang",
+      title: "Not Yet with ยัง...ไม่...",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "ยัง plus negation expresses not yet, while related forms like หรือยัง ask whether something has happened yet. This is crucial for real-time conversation.",
+      pattern: "ยัง + ไม่ + VERB / VERB + หรือยัง",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "intermediate-negation",
+      title: "Intermediate Negation Patterns",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "These negation patterns help learners sound more precise than simple ไม่. They cover weak negation, not yet, and reason-based non-occurrence.",
+      pattern: "ไม่ค่อย / ยังไม่ / ไม่ได้...เพราะ...",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "reflexive-tua-eng",
+      title: "Reflexive Actions with ตัวเอง",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "ตัวเอง means 'oneself' and is used to emphasize that a subject performs an action alone, by themselves, or to themselves.",
+      pattern: "SUBJECT + VERB + ตัวเอง / ด้วยตัวเอง",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "distributive-tae-la",
+      title: "Each and Every with แต่ละ",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "แต่ละ singles out items within a group, similar to 'each'. Notice that it requires the classifier after it, unlike other quantifiers that allow dropping the noun.",
+      pattern: "แต่ละ + CLASSIFIER / NOUN",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "intention-tang-jai",
+      title: "Firm Intentions with ตั้งใจ",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "While จะ shows simple future, ตั้งใจ shows premeditated intention, focus, or a firm plan. It marks a shift from reacting to proactive goal-setting.",
+      pattern: "SUBJECT + ตั้งใจ + จะ + VERB",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "almost-kueap",
+      title: "Near Misses with เกือบ",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "เกือบ expresses that an action came close to happening but ultimately did not. It's essential for narrating narrowly avoided mistakes or almost-achieved milestones.",
+      pattern: "SUBJECT + เกือบ + จะ + VERB",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "barely-thaep-ja",
+      title: "Barely with แทบจะ",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "แทบจะ shows that something happened only with difficulty or almost did not happen at all. It helps learners describe very small margins and weak success.",
+      pattern: "SUBJECT + แทบจะ + VERB",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "extent-jon",
+      title: "To the Extent That with จน",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "จน links an action to an extreme or highly noticeable result, allowing learners to specify exactly how far or how much an action was carried out.",
+      pattern: "VERB + จน / จนกระทั่ง + RESULT",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "since-tang-tae",
+      title: "Since / Starting From with ตั้งแต่",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "ตั้งแต่ helps learners anchor an action or state to a starting point in time. It is a high-frequency bridge from simple time reference to more connected narrative.",
+      pattern: "VERB / STATE + ตั้งแต่ + TIME / EVENT",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "every-time-thuk-khrang-thi",
+      title: "Every Time with ทุกครั้งที่",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "ทุกครั้งที่ links a repeated event to a repeated result. It helps learners describe habits, recurring problems, and predictable reactions more naturally.",
+      pattern: "ทุกครั้งที่ + EVENT, RESULT",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "depends-on-khun-yu-kap",
+      title: "Depend on with ขึ้นอยู่กับ",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "ขึ้นอยู่กับ lets speakers explain that an answer, result, or decision is conditional on another factor. It is important for measured answers and reasoning.",
+      pattern: "SUBJECT + ขึ้นอยู่กับ + FACTOR / CONDITION",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "so-that-ja-dai",
+      title: "So That with จะได้",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "จะได้ links an action to the benefit or result the speaker hopes to get from it. It is very common in everyday advice, planning, and persuasion.",
+      pattern: "ACTION + จะได้ + BENEFIT / RESULT",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "instead-of-thaen-thi-ja",
+      title: "Alternatives with แทนที่จะ",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "แทนที่จะ allows learners to contrast an action taken against an action that was avoided, translating cleanly to 'instead of'.",
+      pattern: "ACTION 1 + แทนที่จะ + ACTION 2",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "indirect-questions-ru-plao",
+      title: "Whether or Not with หรือเปล่า",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "When embedding a yes/no question inside another sentence (like 'I don't know if...'), B1 learners need หรือเปล่า instead of the simple question word ไหม.",
+      pattern: "CLAUSE + ว่า + CLAUSE + หรือเปล่า",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "expanded-relative-structures",
+      title: "Expanded Relative Structures",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "Relative structures become more varied at B1 and let learners refer to people, things, and ongoing situations more precisely.",
+      pattern: "คนที่... / สิ่งที่... / ที่...อยู่",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "perspective-marker-samrap",
+      title: "As For / For with สำหรับ",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "สำหรับ marks a point of reference and helps speakers say how something looks from a particular person's perspective or for a certain group.",
+      pattern: "สำหรับ + PERSON / GROUP, CLAUSE",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "opinion-marker-nai-khwam-hen",
+      title: "In My Opinion with ในความเห็น",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "When learners begin giving more personal judgments, ในความเห็น helps frame an idea clearly as a personal opinion rather than an absolute fact.",
+      pattern: "ในความเห็น(ของ...) + CLAUSE",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "stance-marker-tam-thi-chan-hen",
+      title: "As I See It with ตามที่ฉันเห็น",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "ตามที่ฉันเห็น lets speakers present a stance or evaluation while signaling that it comes from their own observation. It is useful for measured opinions and workplace discussion.",
+      pattern: "ตามที่ฉันเห็น, CLAUSE",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "nominalization-karn-khwam",
+      title: "Abstract Nouns with การ / ความ",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "To talk about abstract concepts or activities, Thai uses การ (kan) before action verbs and ความ (khwam) before adjectives or mental state verbs to turn them into nouns.",
+      pattern: "การ + ACTION VERB / ความ + ADJECTIVE",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "contrast-tae-thawaa",
+      title: "But / However with แต่ / ทว่า",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "B1 learners need clear contrast markers for connecting two conflicting ideas. แต่ is the everyday spoken choice, while ทว่า sounds a little more deliberate or written.",
+      pattern: "CLAUSE + แต่ / ทว่า + CONTRAST",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "concession-maewaa",
+      title: "Although with แม้ว่า",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "แม้ว่า introduces a concessive idea: one fact is true, but the main result still happens. It helps learners go beyond a simple but and show more nuance.",
+      pattern: "แม้ว่า + CLAUSE, MAIN CLAUSE",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "concession-thang-thi",
+      title: "Even Though with ทั้งที่",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "ทั้งที่ often adds a sense of surprise, contradiction, or mild frustration. It highlights that something should have led to a different outcome, but did not.",
+      pattern: "ทั้งที่ + CLAUSE, MAIN CLAUSE",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+    {
+      id: "result-complements-b1",
+      title: "Result Complements",
+      stage: "B1.2",
+      level: "B1",
+      explanation:
+        "Thai often uses short result words after a verb to show whether an action was completed, achieved in time, happened successfully, or was set aside for later.",
+      pattern: "VERB + เสร็จ / ทัน / ไม่ทัน / เจอ / หาย / ไว้",
+      focusParticle: "",
+      focusMeaning: "",
+    },
+  ],
 };
 
 function parseArgs() {
@@ -446,11 +922,13 @@ function parseArgs() {
     const index = args.indexOf(flag);
     return index >= 0 ? args[index + 1] : undefined;
   };
+  const hasFlag = (flag) => args.includes(flag);
 
   return {
     stage: getValue("--stage") || "A1.1",
     target: Number.parseInt(getValue("--target") || String(DEFAULT_TARGET), 10),
     grammarId: getValue("--grammar"),
+    replaceExisting: hasFlag("--replace"),
   };
 }
 
@@ -697,6 +1175,44 @@ function getStagePromptNotes(meta) {
     };
   }
 
+  if (meta.stage === "B1.1") {
+    return {
+      vocab:
+        "Use solid everyday-adult vocabulary: work, study, errands, travel, relationships, planning, service interactions, and practical problems. The set should feel clearly beyond beginner survival Thai.",
+      novelty:
+        "Use connected multi-clause situations and rotate contexts aggressively. Each grammar point should introduce several useful new words while keeping the sentences teachable.",
+      duplication:
+        "Avoid duplicates, near-duplicates, and template families. Do not simply swap subjects or locations while keeping the same core sentence frame.",
+      romanization:
+        "Use learner-friendly Thai romanization with accents. Every sentence-level romanization must include accent marks.",
+      romanizationStyle:
+        "Do not use IPA or specialist phonetic symbols such as ʉ, ə, ɔ, ŋ, or ʔ. Use ordinary Latin letters plus accents only, with digraphs like ae, ue, oe, ng when needed.",
+      register:
+        "Use common modern Thai. Natural spoken and neutral written Thai are both fine, but avoid literary, royal, poetic, or archaic wording unless the lesson explicitly teaches it.",
+      difficulty:
+        "Aim roughly for 25% easy, 45% medium, 30% hard. B1.1 should feel clearly richer than A2.2 while still readable to an intermediate learner.",
+    };
+  }
+
+  if (meta.stage === "B1.2") {
+    return {
+      vocab:
+        "Use richer intermediate vocabulary for reasoning, opinions, contrast, planning, work, study, habits, emotions, and decision-making. The set should feel more conceptually mature than B1.1.",
+      novelty:
+        "Vary discourse type as well as topic. Include explanation, stance, comparison, concession, consequence, and reflective opinion where appropriate to the grammar point.",
+      duplication:
+        "Avoid duplicates, near-duplicates, and simple frame recycling. If two sentences could be summarized as the same thought with a noun swap, rewrite one of them.",
+      romanization:
+        "Use learner-friendly Thai romanization with accents. Every sentence-level romanization must include accent marks.",
+      romanizationStyle:
+        "Do not use IPA or specialist phonetic symbols such as ʉ, ə, ɔ, ŋ, or ʔ. Use ordinary Latin letters plus accents only, with digraphs like ae, ue, oe, ng when needed.",
+      register:
+        "Use common modern Thai with occasional neutral-formal wording when the lesson naturally requires it. Avoid literary, royal, or archaic language.",
+      difficulty:
+        "Aim roughly for 15% easy, 45% medium, 40% hard. B1.2 should sound more nuanced and reasoned, not just longer.",
+    };
+  }
+
   return {
     vocab: "Keep the vocabulary accessible and useful for the target stage.",
     novelty: "Vary the subject, setting, vocabulary, polarity, and sentence shape.",
@@ -715,13 +1231,21 @@ function getStagePromptNotes(meta) {
 
 function buildPrompt(meta, existingRows, batchSize) {
   const existingThai = existingRows.map((row) => row.thai);
-  const sampleRows = existingRows.slice(0, 6).map((row) => ({
-    thai: row.thai,
-    romanization: row.romanization,
-    english: row.english,
-    difficulty: row.difficulty,
-  }));
+  const sampleRows = [
+    ...existingRows
+      .filter((row) => ACCENTED_ROMANIZATION_REGEX.test(row.romanization))
+      .slice(0, 3)
+      .map((row) => ({
+        thai: row.thai,
+        romanization: row.romanization,
+        english: row.english,
+        difficulty: row.difficulty,
+      })),
+    ...ROMANIZATION_STYLE_REFERENCE,
+  ].slice(0, 6);
   const notes = getStagePromptNotes(meta);
+  const focusParticle = meta.focusParticle || meta.pattern;
+  const focusMeaning = meta.focusMeaning || meta.explanation;
 
   return `
 You are curating production-quality Thai grammar example sentences for a grammar learning app.
@@ -733,14 +1257,14 @@ Grammar point
 - title: ${meta.title}
 - explanation: ${meta.explanation}
 - pattern: ${meta.pattern}
-- focus: ${meta.focusParticle} — ${meta.focusMeaning}
+- focus: ${focusParticle} — ${focusMeaning}
 
 Task
 - Generate ${batchSize} NEW example rows for this exact grammar point.
 - These rows will be used in a production app, so they must be natural, clear, and directly useful.
 
 Quality rules
-- Keep the language aligned with ${meta.stage} beginner Thai.
+- Keep the language aligned with ${meta.stage} Thai.
 - Use natural contemporary Thai, not textbook nonsense.
 - Each sentence must clearly demonstrate the target grammar point.
 - ${notes.duplication}
@@ -749,6 +1273,7 @@ Quality rules
 - Prefer short to medium sentences that are easy to inspect.
 - ${notes.romanization}
 - ${notes.romanizationStyle}
+- Never output plain unaccented learner romanization such as "chan", "mai", or "yang" without at least one accent mark in the sentence.
 - ${notes.register}
 - English should be natural but faithful.
 - Use difficulty values of only: easy, medium, hard.
@@ -879,11 +1404,18 @@ async function generateBatch(openai, meta, existingRows, batchSize) {
   return dedupeNewRows(existingRows, parsedRows, meta.id);
 }
 
-async function topUpGrammarPoint(openai, meta, target) {
-  const existingRows = await fetchExistingRows(meta.id);
-  if (existingRows.length >= target) {
-    console.log(`${meta.id}: already at ${existingRows.length}/${target}, skipping`);
-    return { grammarId: meta.id, before: existingRows.length, after: existingRows.length };
+async function topUpGrammarPoint(openai, meta, target, { replaceExisting = false } = {}) {
+  const storedRows = await fetchExistingRows(meta.id);
+  if (!replaceExisting && storedRows.length >= target) {
+    console.log(`${meta.id}: already at ${storedRows.length}/${target}, skipping`);
+    return { grammarId: meta.id, before: storedRows.length, after: storedRows.length };
+  }
+
+  const existingRows = replaceExisting ? [] : storedRows;
+  if (replaceExisting) {
+    console.log(
+      `${meta.id}: replacing existing rows (${storedRows.length}) and regenerating to ${target}`,
+    );
   }
 
   const rows = [...existingRows];
@@ -911,11 +1443,11 @@ async function topUpGrammarPoint(openai, meta, target) {
   await saveRows(meta.id, finalRows);
   console.log(`${meta.id}: saved ${finalRows.length} rows`);
 
-  return { grammarId: meta.id, before: existingRows.length, after: finalRows.length };
+  return { grammarId: meta.id, before: storedRows.length, after: finalRows.length };
 }
 
 async function main() {
-  const { stage, target, grammarId } = parseArgs();
+  const { stage, target, grammarId, replaceExisting } = parseArgs();
   const config = STAGE_CONFIG[stage];
   if (!config) {
     throw new Error(
@@ -940,7 +1472,7 @@ async function main() {
 
   try {
     for (const meta of selectedGrammarPoints) {
-      const result = await topUpGrammarPoint(openai, meta, target);
+      const result = await topUpGrammarPoint(openai, meta, target, { replaceExisting });
       summary.push(result);
     }
   } finally {
