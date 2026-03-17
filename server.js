@@ -675,7 +675,29 @@ function normalizeTtsSpeakingRate(value) {
   return Math.min(1.3, Math.max(0.7, rate));
 }
 
-function buildSentenceTtsConfig(text, speakingRate) {
+function normalizeTtsLanguageCode(value) {
+  const fallback = process.env.GOOGLE_TTS_LANGUAGE_CODE || "th-TH";
+
+  if (typeof value !== "string") {
+    return fallback;
+  }
+
+  const trimmed = value.trim();
+
+  if (!trimmed || !/^[a-z]{2,3}(?:-[A-Za-z]{2,4})?$/.test(trimmed)) {
+    return fallback;
+  }
+
+  const [language, region] = trimmed.split("-");
+
+  if (!region) {
+    return language.toLowerCase();
+  }
+
+  return `${language.toLowerCase()}-${region.toUpperCase()}`;
+}
+
+function buildSentenceTtsConfig(text, speakingRate, languageCodeOverride) {
   const normalizedText =
     typeof text === "string" ? text.trim().replace(/\s+/g, " ") : "";
 
@@ -687,8 +709,15 @@ function buildSentenceTtsConfig(text, speakingRate) {
     throw new Error("Sentence audio is limited to 500 characters");
   }
 
-  const languageCode = process.env.GOOGLE_TTS_LANGUAGE_CODE || "th-TH";
-  const voiceName = process.env.GOOGLE_TTS_VOICE_NAME?.trim() || null;
+  const defaultLanguageCode = normalizeTtsLanguageCode(
+    process.env.GOOGLE_TTS_LANGUAGE_CODE || "th-TH",
+  );
+  const languageCode = normalizeTtsLanguageCode(
+    languageCodeOverride || defaultLanguageCode,
+  );
+  const configuredVoiceName = process.env.GOOGLE_TTS_VOICE_NAME?.trim() || null;
+  const voiceName =
+    languageCode === defaultLanguageCode ? configuredVoiceName : null;
   const ssmlGender =
     process.env.GOOGLE_TTS_SSML_GENDER?.trim().toUpperCase() || "FEMALE";
   const normalizedRate = normalizeTtsSpeakingRate(speakingRate);
@@ -719,8 +748,8 @@ function getSentenceAudioPublicPath(cacheKey) {
   return `/tts-cache/sentences/${cacheKey}.mp3`;
 }
 
-async function synthesizeSentenceAudio(text, speakingRate) {
-  const config = buildSentenceTtsConfig(text, speakingRate);
+async function synthesizeSentenceAudio(text, speakingRate, languageCodeOverride) {
+  const config = buildSentenceTtsConfig(text, speakingRate, languageCodeOverride);
   ensureTtsCacheDir();
 
   const targetPath = path.join(TTS_SENTENCE_DIR, `${config.cacheKey}.mp3`);
@@ -1948,8 +1977,10 @@ app.post("/tts/sentence", sentenceTtsRateLimiter, async (req, res) => {
   try {
     const text = typeof req.body?.text === "string" ? req.body.text : "";
     const speakingRate = req.body?.speakingRate;
+    const languageCode =
+      typeof req.body?.languageCode === "string" ? req.body.languageCode : "";
 
-    const result = await synthesizeSentenceAudio(text, speakingRate);
+    const result = await synthesizeSentenceAudio(text, speakingRate, languageCode);
 
     res.json(result);
   } catch (err) {
