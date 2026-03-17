@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed:showcase": "node ./scripts/seedShowcaseUser.mjs",
-    "migrate:grammar": "node ./scripts/migrateGrammarCsvsToDb.mjs"
+    "migrate:grammar": "node ./scripts/migrateGrammarCsvsToDb.mjs",
+    "generate:grammar": "node ./scripts/generateGrammarExamples.mjs"
   },
   "keywords": [],
   "author": "",
