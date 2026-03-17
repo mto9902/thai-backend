@@ -34,6 +34,8 @@ const TTS_CACHE_MAX_BYTES = readPositiveIntEnv(
 );
 const TTS_CACHE_TRIM_TARGET_BYTES = Math.floor(TTS_CACHE_MAX_BYTES * 0.85);
 const TTS_MAX_CONCURRENT = readPositiveIntEnv("TTS_MAX_CONCURRENT", 4);
+const GRAMMAR_EXAMPLES_TABLE = "grammar_examples";
+const WRITE_GRAMMAR_CSV_MIRROR = process.env.WRITE_GRAMMAR_CSV_MIRROR !== "false";
 app.use(
   "/tts-cache",
   express.static(TTS_CACHE_DIR, {
@@ -205,38 +207,224 @@ const sentenceTtsRateLimiter = createRateLimiter({
 });
 const ttsConcurrencyLimiter = createConcurrencyLimiter(TTS_MAX_CONCURRENT);
 
-function loadGrammarCSVs() {
-  const files = fs.readdirSync(GRAMMAR_DIR);
-  const promises = [];
+function parseGrammarBreakdown(rawBreakdown, contextLabel) {
+  try {
+    const parsed =
+      typeof rawBreakdown === "string" ? JSON.parse(rawBreakdown) : rawBreakdown;
 
-  files.forEach((file) => {
-    if (!file.endsWith(".csv")) return;
+    if (!Array.isArray(parsed)) {
+      throw new Error("Breakdown must be an array");
+    }
+
+    return parsed;
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "Failed to parse breakdown";
+    throw new Error(`${contextLabel}: ${message}`);
+  }
+}
+
+function normalizeStoredGrammarRow(row, index, grammarId) {
+  return normalizeGrammarRow(
+    {
+      thai: row.thai,
+      romanization: row.romanization,
+      english: row.english,
+      breakdown: parseGrammarBreakdown(
+        row.breakdown,
+        `Invalid breakdown for ${grammarId} row ${index + 1}`,
+      ),
+      difficulty: row.difficulty,
+    },
+    index,
+  );
+}
+
+function readGrammarRowsFromCsvFile(filePath, grammarId) {
+  const rows = [];
+
+  return new Promise((resolve, reject) => {
+    fs.createReadStream(filePath)
+      .pipe(csv())
+      .on("data", (row) => {
+        try {
+          rows.push(normalizeStoredGrammarRow(row, rows.length, grammarId));
+        } catch (err) {
+          reject(err);
+        }
+      })
+      .on("end", () => resolve(rows))
+      .on("error", reject);
+  });
+}
+
+async function readGrammarRowsFromCsvDirectory() {
+  const nextGrammarSentences = {};
+  const files = fs.readdirSync(GRAMMAR_DIR);
+
+  for (const file of files) {
+    if (!file.endsWith(".csv")) {
+      continue;
+    }
 
     const grammarId = file.replace(".csv", "");
-    const temp = [];
+    const rows = await readGrammarRowsFromCsvFile(
+      path.join(GRAMMAR_DIR, file),
+      grammarId,
+    );
+    nextGrammarSentences[grammarId] = rows;
+  }
 
-    const p = new Promise((resolve) => {
-      fs.createReadStream(path.join(GRAMMAR_DIR, file))
-        .pipe(csv())
-        .on("data", (row) => {
-          temp.push({
-            thai: row.thai,
-            romanization: row.romanization,
-            english: row.english,
-            breakdown: JSON.parse(row.breakdown),
-            difficulty: row.difficulty,
-          });
-        })
-        .on("end", () => {
-          grammarSentences[grammarId] = temp;
-          console.log("Loaded grammar:", grammarId, temp.length);
-          resolve();
-        });
-    });
-    promises.push(p);
-  });
+  return nextGrammarSentences;
+}
 
-  return Promise.all(promises);
+async function loadGrammarRowsFromDatabase() {
+  const result = await pool.query(
+    `
+    SELECT grammar_id, thai, romanization, english, breakdown, difficulty, sort_order
+    FROM ${GRAMMAR_EXAMPLES_TABLE}
+    ORDER BY grammar_id ASC, sort_order ASC, id ASC
+    `,
+  );
+
+  const nextGrammarSentences = {};
+
+  for (const row of result.rows) {
+    if (!nextGrammarSentences[row.grammar_id]) {
+      nextGrammarSentences[row.grammar_id] = [];
+    }
+
+    const normalizedRow = normalizeStoredGrammarRow(
+      row,
+      nextGrammarSentences[row.grammar_id].length,
+      row.grammar_id,
+    );
+    nextGrammarSentences[row.grammar_id].push(normalizedRow);
+  }
+
+  return nextGrammarSentences;
+}
+
+async function writeGrammarRowsToDatabase(grammarId, rows) {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+    await client.query(
+      `DELETE FROM ${GRAMMAR_EXAMPLES_TABLE} WHERE grammar_id = $1`,
+      [grammarId],
+    );
+
+    for (const [index, row] of rows.entries()) {
+      await client.query(
+        `
+        INSERT INTO ${GRAMMAR_EXAMPLES_TABLE}
+          (grammar_id, sort_order, thai, romanization, english, breakdown, difficulty)
+        VALUES
+          ($1, $2, $3, $4, $5, $6::jsonb, $7)
+        `,
+        [
+          grammarId,
+          index,
+          row.thai,
+          row.romanization,
+          row.english,
+          JSON.stringify(row.breakdown),
+          row.difficulty,
+        ],
+      );
+    }
+
+    await client.query("COMMIT");
+  } catch (err) {
+    await client.query("ROLLBACK");
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+function writeGrammarRowsToCsvMirror(grammarId, rows) {
+  if (!WRITE_GRAMMAR_CSV_MIRROR) {
+    return;
+  }
+
+  fs.mkdirSync(GRAMMAR_DIR, { recursive: true });
+  fs.writeFileSync(
+    path.join(GRAMMAR_DIR, `${grammarId}.csv`),
+    serializeGrammarRows(rows),
+    "utf8",
+  );
+}
+
+async function importMissingGrammarCsvsToDatabase() {
+  fs.mkdirSync(GRAMMAR_DIR, { recursive: true });
+
+  const files = fs.readdirSync(GRAMMAR_DIR).filter((file) => file.endsWith(".csv"));
+  if (files.length === 0) {
+    return;
+  }
+
+  const existingResult = await pool.query(
+    `
+    SELECT grammar_id
+    FROM ${GRAMMAR_EXAMPLES_TABLE}
+    GROUP BY grammar_id
+    HAVING COUNT(*) > 0
+    `,
+  );
+  const existingGrammarIds = new Set(
+    existingResult.rows.map((row) => row.grammar_id),
+  );
+
+  let importedCount = 0;
+
+  for (const file of files) {
+    const grammarId = file.replace(".csv", "");
+    if (existingGrammarIds.has(grammarId)) {
+      continue;
+    }
+
+    const rows = await readGrammarRowsFromCsvFile(
+      path.join(GRAMMAR_DIR, file),
+      grammarId,
+    );
+
+    if (rows.length === 0) {
+      continue;
+    }
+
+    await writeGrammarRowsToDatabase(grammarId, rows);
+    importedCount += 1;
+  }
+
+  if (importedCount > 0) {
+    console.log(`Imported ${importedCount} grammar CSV files into Postgres`);
+  }
+}
+
+async function loadGrammarSentencesIntoMemory() {
+  await importMissingGrammarCsvsToDatabase();
+
+  const fromDatabase = await loadGrammarRowsFromDatabase();
+
+  if (Object.keys(fromDatabase).length > 0) {
+    grammarSentences = fromDatabase;
+    console.log(
+      "Loaded grammar examples from Postgres:",
+      Object.keys(fromDatabase).length,
+      "grammar points",
+    );
+    return;
+  }
+
+  const fromCsv = await readGrammarRowsFromCsvDirectory();
+  grammarSentences = fromCsv;
+  console.log(
+    "Loaded grammar examples from CSV fallback:",
+    Object.keys(fromCsv).length,
+    "grammar points",
+  );
 }
 
 function buildWordRomanizationMap() {
@@ -1507,11 +1695,8 @@ app.put(
 
       if (hasRows) {
         savedRows = normalizeGrammarRows(req.body.rows);
-        fs.writeFileSync(
-          path.join(GRAMMAR_DIR, `${grammarId}.csv`),
-          serializeGrammarRows(savedRows),
-          "utf8",
-        );
+        await writeGrammarRowsToDatabase(grammarId, savedRows);
+        writeGrammarRowsToCsvMirror(grammarId, savedRows);
         grammarSentences[grammarId] = savedRows;
       }
 
@@ -1897,6 +2082,25 @@ async function startServer() {
       CREATE INDEX IF NOT EXISTS idx_grammar_progress_user_last_practiced
         ON grammar_progress (user_id, last_practiced DESC);
     `);
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS ${GRAMMAR_EXAMPLES_TABLE} (
+        id BIGSERIAL PRIMARY KEY,
+        grammar_id TEXT NOT NULL,
+        sort_order INTEGER NOT NULL,
+        thai TEXT NOT NULL,
+        romanization TEXT NOT NULL,
+        english TEXT NOT NULL,
+        breakdown JSONB NOT NULL,
+        difficulty TEXT NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        UNIQUE (grammar_id, sort_order)
+      );
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_grammar_examples_grammar_sort
+        ON ${GRAMMAR_EXAMPLES_TABLE} (grammar_id, sort_order);
+    `);
     // Run SRS v3 migration: add state and step_index columns
     await pool.query(`
       DO $$
@@ -1946,7 +2150,7 @@ async function startServer() {
     await syncConfiguredAdminEmails();
 
     await loadDictionary();
-    await loadGrammarCSVs();
+    await loadGrammarSentencesIntoMemory();
 
     const wordMap = buildWordRomanizationMap();
     await backfillRomanization(wordMap);
