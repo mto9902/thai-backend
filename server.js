@@ -433,8 +433,10 @@ function buildWordRomanizationMap() {
     for (const sentence of sentences) {
       if (!sentence.romanization || !sentence.breakdown) continue;
       const tokens = sentence.romanization.split(/\s+/);
+      const canUseTokenFallback = tokens.length === sentence.breakdown.length;
       sentence.breakdown.forEach((w, i) => {
-        const preferredRoman = w?.romanization || tokens[i];
+        const preferredRoman =
+          w?.romanization || (canUseTokenFallback ? tokens[i] : "");
         if (preferredRoman && !wordMap.has(w.thai)) {
           wordMap.set(w.thai, preferredRoman);
         }

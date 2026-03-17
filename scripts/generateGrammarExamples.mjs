@@ -940,7 +940,11 @@ function normalizePlainString(value, fieldName, { allowEmpty = false } = {}) {
   return trimmed;
 }
 
-function normalizeWordBreakdownItem(item, index) {
+function normalizeWordBreakdownItem(
+  item,
+  index,
+  { requireRomanization = false } = {},
+) {
   if (!item || typeof item !== "object") {
     throw new Error(`Breakdown item ${index + 1} must be an object`);
   }
@@ -962,14 +966,32 @@ function normalizeWordBreakdownItem(item, index) {
     normalized.grammar = true;
   }
 
-  if (typeof item.romanization === "string" && item.romanization.trim()) {
-    normalized.romanization = item.romanization.trim();
+  const romanization =
+    typeof item.romanization === "string" ? item.romanization.trim() : "";
+
+  if (requireRomanization && !romanization) {
+    throw new Error(
+      `Breakdown item ${index + 1} romanization is required`,
+    );
+  }
+
+  if (romanization) {
+    if (FORBIDDEN_ROMANIZATION_REGEX.test(romanization)) {
+      throw new Error(
+        `Breakdown item ${index + 1} romanization must use Latin learner spelling, not IPA symbols`,
+      );
+    }
+    normalized.romanization = romanization;
   }
 
   return normalized;
 }
 
-function normalizeGrammarRow(row, index, { requireAccents = true } = {}) {
+function normalizeGrammarRow(
+  row,
+  index,
+  { requireAccents = true, requireBreakdownRomanization = false } = {},
+) {
   const difficulty = normalizePlainString(
     row.difficulty ?? "easy",
     `Row ${index + 1} difficulty`,
@@ -1003,7 +1025,9 @@ function normalizeGrammarRow(row, index, { requireAccents = true } = {}) {
     romanization,
     english: normalizePlainString(row.english, `Row ${index + 1} English`),
     breakdown: row.breakdown.map((item, breakdownIndex) =>
-      normalizeWordBreakdownItem(item, breakdownIndex),
+      normalizeWordBreakdownItem(item, breakdownIndex, {
+        requireRomanization: requireBreakdownRomanization,
+      }),
     ),
     difficulty,
   };
@@ -1285,7 +1309,10 @@ Breakdown rules
   - "thai"
   - "english"
   - "tone" (one of mid, low, falling, high, rising)
-- "romanization" on a breakdown item is optional.
+- Each breakdown item must also contain:
+  - "romanization"
+- Breakdown-item romanization must match that exact Thai chunk, not a rough split of the full sentence romanization.
+- Use learner-friendly accented Latin romanization for breakdown items too when natural, and never use IPA symbols.
 - Mark the target grammar chunk(s) with "grammar": true when there is an explicit grammar marker.
 - If the grammar idea is structural rather than a single particle, mark the most relevant chunk(s) when helpful, but do not force nonsense.
 
@@ -1306,6 +1333,7 @@ Return ONLY valid JSON in this exact shape:
       "breakdown": [
         {
           "thai": "",
+          "romanization": "",
           "english": "",
           "tone": "mid",
           "grammar": true
@@ -1334,7 +1362,9 @@ function dedupeNewRows(existingRows, candidateRows, grammarId) {
     let normalized;
 
     try {
-      normalized = normalizeGrammarRow(row, uniqueRows.length);
+      normalized = normalizeGrammarRow(row, uniqueRows.length, {
+        requireBreakdownRomanization: true,
+      });
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Invalid generated row";
