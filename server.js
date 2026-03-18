@@ -1267,7 +1267,10 @@ function renderPasswordResetPage() {
       const message = document.getElementById("message");
       const button = document.getElementById("submit-button");
       const token = new URLSearchParams(window.location.search).get("token") || "";
-      const resetPath = window.location.pathname.replace(/\/+$/, "");
+      let resetPath = window.location.pathname || "";
+      while (resetPath.length > 1 && resetPath.endsWith("/")) {
+        resetPath = resetPath.slice(0, -1);
+      }
       const apiPrefix = resetPath.endsWith("/reset-password")
         ? resetPath.slice(0, -"/reset-password".length)
         : "";
