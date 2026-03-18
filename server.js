@@ -5,10 +5,11 @@ import dotenv from "dotenv";
 import express from "express";
 import fs from "fs";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 import OpenAI from "openai";
 import path from "path";
 import textToSpeech from "@google-cloud/text-to-speech";
-import { createHash, randomUUID } from "crypto";
+import { createHash, randomBytes, randomUUID } from "crypto";
 import { getPoolStats, pool } from "./db.js";
 import { registerSRSRoutes, SRS_CONFIG } from "./srs.js";
 import registerTransformRoute from "./transform.js";
@@ -36,6 +37,10 @@ const TTS_CACHE_TRIM_TARGET_BYTES = Math.floor(TTS_CACHE_MAX_BYTES * 0.85);
 const TTS_MAX_CONCURRENT = readPositiveIntEnv("TTS_MAX_CONCURRENT", 4);
 const GRAMMAR_EXAMPLES_TABLE = "grammar_examples";
 const WRITE_GRAMMAR_CSV_MIRROR = process.env.WRITE_GRAMMAR_CSV_MIRROR !== "false";
+const PASSWORD_RESET_EXPIRY_MINUTES = readPositiveIntEnv(
+  "PASSWORD_RESET_EXPIRY_MINUTES",
+  60,
+);
 app.use(
   "/tts-cache",
   express.static(TTS_CACHE_DIR, {
@@ -1039,6 +1044,303 @@ function createSessionToken(user) {
     { userId: user.id, email: user.email },
     process.env.JWT_SECRET || "devsecret",
   );
+}
+
+function hashPasswordResetToken(token) {
+  return createHash("sha256").update(token).digest("hex");
+}
+
+function isTruthyEnv(value) {
+  return typeof value === "string" && ["1", "true", "yes", "on"].includes(value.toLowerCase());
+}
+
+function isPasswordResetEmailConfigured() {
+  return Boolean(
+    process.env.SMTP_HOST &&
+      process.env.SMTP_PORT &&
+      process.env.SMTP_USER &&
+      process.env.SMTP_PASS &&
+      process.env.SMTP_FROM_EMAIL,
+  );
+}
+
+let passwordResetTransporter;
+
+function getPasswordResetTransporter() {
+  if (!isPasswordResetEmailConfigured()) {
+    throw new Error("Password reset email is not configured on the server");
+  }
+
+  if (!passwordResetTransporter) {
+    const smtpPort = Number.parseInt(process.env.SMTP_PORT || "", 10) || 587;
+    const secure =
+      process.env.SMTP_SECURE != null
+        ? isTruthyEnv(process.env.SMTP_SECURE)
+        : smtpPort === 465;
+
+    passwordResetTransporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: smtpPort,
+      secure,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+  }
+
+  return passwordResetTransporter;
+}
+
+function buildPasswordResetUrl(req, token) {
+  const configuredBase = process.env.PASSWORD_RESET_BASE_URL?.trim();
+  const baseUrl =
+    configuredBase ||
+    `${req.protocol || "http"}://${req.get("host") || "localhost:3000"}/reset-password`;
+  const url = new URL(baseUrl);
+  url.searchParams.set("token", token);
+  return url.toString();
+}
+
+async function sendPasswordResetEmail({ email, resetUrl }) {
+  const transporter = getPasswordResetTransporter();
+  const fromEmail = process.env.SMTP_FROM_EMAIL?.trim();
+  const fromName = process.env.SMTP_FROM_NAME?.trim() || "Keystone Languages";
+
+  await transporter.sendMail({
+    from: fromName ? `"${fromName}" <${fromEmail}>` : fromEmail,
+    to: email,
+    subject: "Reset your Keystone password",
+    text: [
+      "We received a request to reset your Keystone password.",
+      "",
+      `Use this link within ${PASSWORD_RESET_EXPIRY_MINUTES} minutes:`,
+      resetUrl,
+      "",
+      "If you did not request this, you can ignore this email.",
+    ].join("\n"),
+    html: `
+      <div style="font-family:Arial,Helvetica,sans-serif;line-height:1.6;color:#0f1720;max-width:560px;margin:0 auto;padding:24px;">
+        <h1 style="font-size:24px;margin:0 0 12px;">Reset your Keystone password</h1>
+        <p style="margin:0 0 16px;">We received a request to reset your Keystone password.</p>
+        <p style="margin:0 0 20px;">Use the link below within ${PASSWORD_RESET_EXPIRY_MINUTES} minutes.</p>
+        <p style="margin:0 0 24px;">
+          <a href="${resetUrl}" style="display:inline-block;background:#344863;color:#ffffff;text-decoration:none;padding:12px 18px;font-weight:700;">
+            Reset password
+          </a>
+        </p>
+        <p style="margin:0 0 8px;font-size:14px;color:#4a5563;">If the button does not work, copy and paste this link into your browser:</p>
+        <p style="margin:0 0 20px;font-size:14px;word-break:break-word;color:#344863;">${resetUrl}</p>
+        <p style="margin:0;font-size:14px;color:#4a5563;">If you did not request this, you can ignore this email.</p>
+      </div>
+    `,
+  });
+}
+
+function renderPasswordResetPage() {
+  return `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset Password | Keystone Languages</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #faf7f1;
+        --card: #ffffff;
+        --ink: #111827;
+        --muted: #556070;
+        --line: #d8dde5;
+        --accent: #344863;
+        --danger: #a45151;
+        --success: #4e6b48;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .shell {
+        width: 100%;
+        max-width: 460px;
+        border: 1px solid var(--line);
+        background: var(--card);
+        padding: 28px;
+      }
+      h1 {
+        margin: 0 0 10px;
+        font-size: 32px;
+        line-height: 1.05;
+      }
+      p {
+        margin: 0 0 16px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      input {
+        width: 100%;
+        border: 1px solid var(--line);
+        padding: 14px;
+        font-size: 16px;
+        margin-bottom: 14px;
+      }
+      button {
+        width: 100%;
+        border: 1px solid var(--accent);
+        background: var(--accent);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+        padding: 14px;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+      .message {
+        display: none;
+        border: 1px solid var(--line);
+        padding: 14px;
+        margin-bottom: 18px;
+        line-height: 1.55;
+      }
+      .message.show { display: block; }
+      .message.error {
+        color: var(--danger);
+        border-color: rgba(164,81,81,0.35);
+        background: rgba(164,81,81,0.08);
+      }
+      .message.success {
+        color: var(--success);
+        border-color: rgba(78,107,72,0.35);
+        background: rgba(78,107,72,0.08);
+      }
+      .hint {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 14px;
+      }
+      .login-link {
+        display: inline-block;
+        margin-top: 18px;
+        color: var(--accent);
+        font-weight: 700;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <h1>Reset your password</h1>
+      <p>Choose a new password for your Keystone account.</p>
+      <div id="message" class="message" role="status" aria-live="polite"></div>
+      <form id="reset-form" novalidate>
+        <label for="password">New password</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" />
+        <label for="confirm-password">Confirm password</label>
+        <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" />
+        <button id="submit-button" type="submit">Update password</button>
+      </form>
+      <div class="hint">Use at least 8 characters, including uppercase, lowercase, and a number.</div>
+      <a class="login-link" href="https://keystonelanguages.com/">Back to Keystone</a>
+    </main>
+    <script>
+      const form = document.getElementById("reset-form");
+      const message = document.getElementById("message");
+      const button = document.getElementById("submit-button");
+      const token = new URLSearchParams(window.location.search).get("token") || "";
+
+      function showMessage(type, text) {
+        message.className = "message show " + type;
+        message.textContent = text;
+      }
+
+      async function validateToken() {
+        if (!token) {
+          form.style.display = "none";
+          showMessage("error", "This reset link is missing a token.");
+          return;
+        }
+
+        try {
+          const response = await fetch("/password/reset/validate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token }),
+          });
+          if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            form.style.display = "none";
+            showMessage("error", data.error || "This reset link is invalid or has expired.");
+          }
+        } catch {
+          form.style.display = "none";
+          showMessage("error", "We could not verify this reset link right now.");
+        }
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm-password").value;
+
+        if (!password || !confirmPassword) {
+          showMessage("error", "Please fill out both password fields.");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showMessage("error", "The passwords do not match.");
+          return;
+        }
+
+        button.disabled = true;
+        button.textContent = "Updating...";
+
+        try {
+          const response = await fetch("/password/reset", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token, password }),
+          });
+          const data = await response.json().catch(() => ({}));
+
+          if (!response.ok) {
+            showMessage("error", data.error || "We could not reset your password.");
+          } else {
+            form.style.display = "none";
+            showMessage("success", "Your password has been updated. You can return to Keystone and sign in now.");
+          }
+        } catch {
+          showMessage("error", "We could not reset your password right now.");
+        } finally {
+          button.disabled = false;
+          button.textContent = "Update password";
+        }
+      });
+
+      validateToken();
+    </script>
+  </body>
+</html>`;
 }
 
 app.get("/health", (_req, res) => {
@@ -2103,6 +2405,24 @@ async function startServer() {
       CREATE INDEX IF NOT EXISTS idx_grammar_examples_grammar_sort
         ON ${GRAMMAR_EXAMPLES_TABLE} (grammar_id, sort_order);
     `);
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS password_reset_tokens (
+        id BIGSERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        token_hash TEXT NOT NULL UNIQUE,
+        expires_at TIMESTAMPTZ NOT NULL,
+        used_at TIMESTAMPTZ,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_user
+        ON password_reset_tokens (user_id, created_at DESC);
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_expiry
+        ON password_reset_tokens (expires_at);
+    `);
     // Run SRS v3 migration: add state and step_index columns
     await pool.query(`
       DO $$
@@ -2316,6 +2636,194 @@ app.post("/login", authRateLimiter, async (req, res) => {
     console.error(err);
     res.status(500).json({ error: "Login failed" });
   }
+});
+
+app.post("/password/forgot", authRateLimiter, async (req, res) => {
+  try {
+    const email = req.body.email?.toLowerCase().trim();
+
+    if (!email || !isValidEmail(email)) {
+      return res.status(400).json({ error: "Please enter a valid email address" });
+    }
+
+    const result = await pool.query(
+      `
+      SELECT id, email
+      FROM users
+      WHERE email = $1
+      LIMIT 1
+      `,
+      [email],
+    );
+
+    if (result.rows.length === 0) {
+      return res.json({
+        success: true,
+        message: "If an account exists for that email, we sent a reset link.",
+      });
+    }
+
+    if (!isPasswordResetEmailConfigured()) {
+      return res.status(500).json({
+        error: "Password reset email is not configured on the server",
+      });
+    }
+
+    const user = result.rows[0];
+    const rawToken = randomBytes(32).toString("hex");
+    const tokenHash = hashPasswordResetToken(rawToken);
+
+    await pool.query(
+      `
+      UPDATE password_reset_tokens
+      SET used_at = NOW()
+      WHERE user_id = $1
+        AND used_at IS NULL
+      `,
+      [user.id],
+    );
+
+    await pool.query(
+      `
+      INSERT INTO password_reset_tokens (user_id, token_hash, expires_at)
+      VALUES ($1, $2, NOW() + ($3 * INTERVAL '1 minute'))
+      `,
+      [user.id, tokenHash, PASSWORD_RESET_EXPIRY_MINUTES],
+    );
+
+    const resetUrl = buildPasswordResetUrl(req, rawToken);
+
+    try {
+      await sendPasswordResetEmail({
+        email: user.email,
+        resetUrl,
+      });
+    } catch (err) {
+      await pool.query(
+        `
+        DELETE FROM password_reset_tokens
+        WHERE token_hash = $1
+        `,
+        [tokenHash],
+      );
+      throw err;
+    }
+
+    res.json({
+      success: true,
+      message: "If an account exists for that email, we sent a reset link.",
+    });
+  } catch (err) {
+    console.error("Password reset request failed:", err);
+    res.status(500).json({ error: "Failed to send password reset email" });
+  }
+});
+
+app.post("/password/reset/validate", authRateLimiter, async (req, res) => {
+  try {
+    const token = typeof req.body?.token === "string" ? req.body.token.trim() : "";
+
+    if (!token) {
+      return res.status(400).json({ error: "Reset token is required" });
+    }
+
+    const result = await pool.query(
+      `
+      SELECT id
+      FROM password_reset_tokens
+      WHERE token_hash = $1
+        AND used_at IS NULL
+        AND expires_at > NOW()
+      LIMIT 1
+      `,
+      [hashPasswordResetToken(token)],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(400).json({ error: "This reset link is invalid or has expired." });
+    }
+
+    res.json({ valid: true });
+  } catch (err) {
+    console.error("Password reset token validation failed:", err);
+    res.status(500).json({ error: "Failed to validate reset link" });
+  }
+});
+
+app.post("/password/reset", authRateLimiter, async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    const token = typeof req.body?.token === "string" ? req.body.token.trim() : "";
+    const password = typeof req.body?.password === "string" ? req.body.password : "";
+
+    if (!token) {
+      return res.status(400).json({ error: "Reset token is required" });
+    }
+
+    if (!isValidPassword(password)) {
+      return res.status(400).json({
+        error:
+          "Password must be at least 8 characters and include uppercase, lowercase, and a number",
+      });
+    }
+
+    await client.query("BEGIN");
+
+    const tokenResult = await client.query(
+      `
+      SELECT id, user_id
+      FROM password_reset_tokens
+      WHERE token_hash = $1
+        AND used_at IS NULL
+        AND expires_at > NOW()
+      LIMIT 1
+      FOR UPDATE
+      `,
+      [hashPasswordResetToken(token)],
+    );
+
+    if (tokenResult.rows.length === 0) {
+      await client.query("ROLLBACK");
+      return res.status(400).json({ error: "This reset link is invalid or has expired." });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const resetRow = tokenResult.rows[0];
+
+    await client.query(
+      `
+      UPDATE users
+      SET password_hash = $2
+      WHERE id = $1
+      `,
+      [resetRow.user_id, passwordHash],
+    );
+
+    await client.query(
+      `
+      UPDATE password_reset_tokens
+      SET used_at = NOW()
+      WHERE user_id = $1
+        AND used_at IS NULL
+      `,
+      [resetRow.user_id],
+    );
+
+    await client.query("COMMIT");
+
+    res.json({ success: true });
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error("Password reset failed:", err);
+    res.status(500).json({ error: "Failed to reset password" });
+  } finally {
+    client.release();
+  }
+});
+
+app.get("/reset-password", (_req, res) => {
+  res.type("html").send(renderPasswordResetPage());
 });
 
 app.post("/auth/google", authRateLimiter, async (req, res) => {
