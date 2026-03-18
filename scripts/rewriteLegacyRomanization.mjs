@@ -53,8 +53,14 @@ function parseArgs() {
   return {
     grammarIds,
     batchSize: Number.isFinite(batchSize) && batchSize > 0 ? batchSize : DEFAULT_BATCH_SIZE,
+    asciiOnly: args.includes("--ascii-only"),
+    sentenceAsciiOnly: args.includes("--sentence-ascii-only"),
     dryRun: args.includes("--dry-run"),
   };
+}
+
+function isAsciiOnly(value) {
+  return /^[\x00-\x7F]*$/.test(typeof value === "string" ? value : "");
 }
 
 function normalizePlainString(value, fieldName) {
@@ -98,6 +104,12 @@ function normalizeWordBreakdownItem(item, index) {
     );
   }
 
+  if (tone !== "mid" && isAsciiOnly(romanization)) {
+    throw new Error(
+      `Breakdown item ${index + 1} romanization must include tone markers for ${tone} tone`,
+    );
+  }
+
   const normalized = {
     thai: normalizePlainString(item.thai, `Breakdown item ${index + 1} Thai`),
     english: normalizePlainString(item.english, `Breakdown item ${index + 1} English`),
@@ -131,6 +143,12 @@ function normalizeGrammarRow(row, index) {
 
   if (FORBIDDEN_ROMANIZATION_REGEX.test(romanization)) {
     throw new Error(`Row ${index + 1} sentence romanization must not use IPA`);
+  }
+
+  if (breakdown.some((item) => item.tone !== "mid") && isAsciiOnly(romanization)) {
+    throw new Error(
+      `Row ${index + 1} sentence romanization must include tone markers when the breakdown contains non-mid tones`,
+    );
   }
 
   return {
@@ -272,6 +290,15 @@ Task
 - Do not change tone labels, grammar flags, or English glosses.
 - Romanize each breakdown chunk as its own chunk. Do not guess by splitting the sentence into words.
 - The sentence romanization should read naturally and match the breakdown chunks.
+- Use ordinary Latin learner spelling with real tone markers, not plain ASCII fallback.
+- If a chunk or sentence contains any non-mid tone, include visible tone markers in the learner romanization.
+- Do not leave common Thai words plain when standard learner romanization would mark them.
+- Good examples:
+  - ฉัน -> chǎn
+  - ที่ -> thîi
+  - บ้าน -> bâan
+  - ของ -> khǒng
+  - นั่นเป็นความสำเร็จ -> nân bpen khwaam-sǎm-rèt
 - Use ordinary Latin learner spelling with accents when natural.
 - Never use IPA or specialist symbols such as ʉ, ə, ɔ, ŋ, or ʔ.
 
@@ -446,7 +473,7 @@ async function rewriteBatch(openai, grammarId, rows) {
 }
 
 async function main() {
-  const { grammarIds, batchSize, dryRun } = parseArgs();
+  const { grammarIds, batchSize, asciiOnly, sentenceAsciiOnly, dryRun } = parseArgs();
   if (!process.env.OPENAI_API_KEY) {
     throw new Error("OPENAI_API_KEY is required for legacy romanization rewrite");
   }
@@ -464,21 +491,59 @@ async function main() {
         throw new Error(`No rows found for ${grammarId}`);
       }
 
-      console.log(`${grammarId}: rewriting ${rows.length} legacy rows`);
+      const targetRows = asciiOnly
+        ? rows.filter(
+            (row) =>
+              isAsciiOnly(row.romanization) ||
+              row.breakdown.some((item) => isAsciiOnly(item.romanization)),
+          )
+        : sentenceAsciiOnly
+          ? rows.filter((row) => isAsciiOnly(row.romanization))
+        : rows;
+
+      if (targetRows.length === 0) {
+        console.log(`${grammarId}: no matching rows to rewrite`);
+        summary.push({
+          grammarId,
+          rowCount: 0,
+          totalRows: rows.length,
+          asciiOnly,
+          sentenceAsciiOnly,
+          dryRun,
+        });
+        continue;
+      }
+
+      console.log(
+        `${grammarId}: rewriting ${targetRows.length} ${
+          asciiOnly ? "ASCII-only " : sentenceAsciiOnly ? "sentence-ASCII-only " : ""
+        }legacy rows`,
+      );
+
       const rewrittenRows = [];
-      for (const batch of chunkArray(rows, batchSize)) {
+      for (const batch of chunkArray(targetRows, batchSize)) {
         console.log(`${grammarId}: rewriting batch of ${batch.length} rows`);
         const rewrittenBatch = await rewriteBatch(openai, grammarId, batch);
         rewrittenRows.push(...rewrittenBatch);
       }
 
+      const rewrittenBySortOrder = new Map(
+        rewrittenRows.map((row, index) => [targetRows[index].sortOrder, row]),
+      );
+      const mergedRows = rows.map((row) =>
+        rewrittenBySortOrder.get(row.sortOrder) ?? normalizeGrammarRow(row, row.sortOrder),
+      );
+
       if (!dryRun) {
-        await saveRows(grammarId, rewrittenRows);
+        await saveRows(grammarId, mergedRows);
       }
 
       summary.push({
         grammarId,
-        rowCount: rewrittenRows.length,
+        rowCount: targetRows.length,
+        totalRows: rows.length,
+        asciiOnly,
+        sentenceAsciiOnly,
         dryRun,
       });
     }
