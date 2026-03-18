@@ -2166,12 +2166,16 @@ async function startServer() {
 }
 
 app.post("/practice-csv", (req, res) => {
-  const { grammar } = req.body;
+  const { grammar, preview } = req.body;
 
   const matches = grammarSentences[grammar] || [];
 
   if (matches.length === 0) {
     return res.status(404).json({ error: "No sentences found" });
+  }
+
+  if (preview) {
+    return res.json(matches[0]);
   }
 
   const random = matches[Math.floor(Math.random() * matches.length)];
