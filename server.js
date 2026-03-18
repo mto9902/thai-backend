@@ -1267,6 +1267,14 @@ function renderPasswordResetPage() {
       const message = document.getElementById("message");
       const button = document.getElementById("submit-button");
       const token = new URLSearchParams(window.location.search).get("token") || "";
+      const resetPath = window.location.pathname.replace(/\/+$/, "");
+      const apiPrefix = resetPath.endsWith("/reset-password")
+        ? resetPath.slice(0, -"/reset-password".length)
+        : "";
+
+      function apiUrl(path) {
+        return (apiPrefix || "") + path;
+      }
 
       function showMessage(type, text) {
         message.className = "message show " + type;
@@ -1281,7 +1289,7 @@ function renderPasswordResetPage() {
         }
 
         try {
-          const response = await fetch("/password/reset/validate", {
+          const response = await fetch(apiUrl("/password/reset/validate"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token }),
@@ -1316,7 +1324,7 @@ function renderPasswordResetPage() {
         button.textContent = "Updating...";
 
         try {
-          const response = await fetch("/password/reset", {
+          const response = await fetch(apiUrl("/password/reset"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token, password }),
