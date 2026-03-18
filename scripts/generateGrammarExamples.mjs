@@ -459,6 +459,296 @@ const STAGE_CONFIG = {
         "Cause connector meaning because.",
     },
   ],
+  "A2.1": [
+    {
+      id: "past-laew",
+      title: "Completed Actions with แล้ว",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "แล้ว marks that something has already happened or is already done. It helps learners narrate completed actions and recent updates more naturally.",
+      pattern: "VERB + แล้ว / ยัง...แล้ว",
+      focusParticle: "แล้ว",
+      focusMeaning: "Completion or already-done marker.",
+    },
+    {
+      id: "recent-past-phoeng",
+      title: "Just Recently with เพิ่ง",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "เพิ่ง places an action in the recent past and often suggests that it happened not long ago. It is useful for everyday updates and timing.",
+      pattern: "SUBJECT + เพิ่ง + VERB",
+      focusParticle: "เพิ่ง",
+      focusMeaning: "Recent-past marker meaning just / only recently.",
+    },
+    {
+      id: "duration-penwela-manan",
+      title: "Duration with เป็นเวลา / มานาน",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "These patterns let learners talk about how long something lasts or has continued. They are important for routines, study, work, and ongoing situations.",
+      pattern: "VERB + เป็นเวลา + TIME / VERB + มานาน",
+      focusParticle: "เป็นเวลา / มานาน",
+      focusMeaning: "Duration expressions for a length of time.",
+    },
+    {
+      id: "female-particles-kha-kha",
+      title: "Female Speech Particles คะ / ค่ะ",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "Learners need to distinguish question-like คะ from statement-like ค่ะ in polite female speech. This supports more natural sounding interaction.",
+      pattern: "QUESTION + คะ / STATEMENT + ค่ะ",
+      focusParticle: "คะ / ค่ะ",
+      focusMeaning: "Polite female sentence endings with different functions.",
+    },
+    {
+      id: "frequency-adverbs",
+      title: "Frequency Adverbs",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "Frequency words help learners describe routines and habits, which is a major step up from isolated present-tense statements.",
+      pattern: "SUBJECT + frequency word + VERB",
+      focusParticle: "บ่อย / บางครั้ง / เสมอ / ไม่ค่อย",
+      focusMeaning: "Words for saying how often something happens.",
+    },
+    {
+      id: "like-chorp",
+      title: "Likes and Preferences with ชอบ",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "ชอบ helps learners talk about tastes, activities, and preferences in a more flexible way than simple wants.",
+      pattern: "SUBJECT + ชอบ + NOUN / VERB",
+      focusParticle: "ชอบ",
+      focusMeaning: "Common verb for like / enjoy / prefer.",
+    },
+    {
+      id: "knowledge-ruu-ruujak",
+      title: "Knowing with รู้ / รู้จัก",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "Thai distinguishes between knowing information and being acquainted with a person, place, or thing. Learners need both for natural conversation.",
+      pattern: "รู้ + FACT / รู้จัก + PERSON / PLACE",
+      focusParticle: "รู้ / รู้จัก",
+      focusMeaning: "Two common knowing verbs with different uses.",
+    },
+    {
+      id: "skill-pen",
+      title: "Skill and Know-How with เป็น",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "เป็น can show that someone knows how to do something. This lets learners talk about ability as a learned skill, not only raw possibility.",
+      pattern: "VERB + เป็น",
+      focusParticle: "เป็น",
+      focusMeaning: "Post-verb marker for knowing how to do something.",
+    },
+    {
+      id: "permission-dai",
+      title: "Permission with ได้",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "ได้ can also express permission, not only ability. This is essential for everyday situations involving rules, asking, and allowing.",
+      pattern: "VERB + ได้ / ได้ไหม",
+      focusParticle: "ได้",
+      focusMeaning: "Permission or allowed-to marker in context.",
+    },
+    {
+      id: "quantifiers-thuk-bang-lai",
+      title: "Quantifiers like ทุก / บาง / หลาย",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "Quantifiers help learners talk about every item, some items, or many items. They are essential for fuller description and comparison.",
+      pattern: "quantifier + NOUN",
+      focusParticle: "ทุก / บาง / หลาย",
+      focusMeaning: "Common quantity words for all, some, and many.",
+    },
+    {
+      id: "sequence-conjunctions",
+      title: "Basic Sequence Connectors",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "A2 learners need simple sequencing language to narrate routines and tell short stories in order.",
+      pattern: "CLAUSE + แล้ว / จากนั้น / ก่อนที่จะ + CLAUSE",
+      focusParticle: "แล้ว / จากนั้น / ก่อนที่จะ",
+      focusMeaning: "Simple connectors for ordering events.",
+    },
+    {
+      id: "comparison-kwaa",
+      title: "Comparisons with กว่า",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "กว่า is the core Thai comparison marker. It helps learners compare people, prices, places, speed, and qualities more directly.",
+      pattern: "X + ADJECTIVE / VERB + กว่า + Y",
+      focusParticle: "กว่า",
+      focusMeaning: "Comparative marker meaning more ... than.",
+    },
+    {
+      id: "relative-thi",
+      title: "Relative Clauses with ที่",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "ที่ connects a noun to a following descriptive clause. This is a major bridge from short statements to more precise sentence building.",
+      pattern: "NOUN + ที่ + CLAUSE",
+      focusParticle: "ที่",
+      focusMeaning: "Relative marker linking a noun to a describing clause.",
+    },
+    {
+      id: "reported-speech",
+      title: "Reported Speech with ว่า",
+      stage: "A2.1",
+      level: "A2",
+      explanation:
+        "ว่า helps learners report what someone said, thought, heard, or believed. It is essential for everyday conversation and short narratives.",
+      pattern: "VERB OF SAYING / THINKING + ว่า + CLAUSE",
+      focusParticle: "ว่า",
+      focusMeaning: "Clause linker for reported speech and thought.",
+    },
+  ],
+  "A2.2": [
+    {
+      id: "endurance-wai",
+      title: "Do and Keep with ไว้",
+      stage: "A2.2",
+      level: "A2",
+      explanation:
+        "ไว้ often shows that something is done and kept ready, saved, or left in place for later. It is very common in practical daily Thai.",
+      pattern: "VERB + OBJECT + ไว้",
+      focusParticle: "ไว้",
+      focusMeaning: "Marker for keeping, saving, or doing something for later.",
+    },
+    {
+      id: "superlative",
+      title: "Superlatives",
+      stage: "A2.2",
+      level: "A2",
+      explanation:
+        "Superlative patterns let learners say what is the most, best, worst, or least in a group. This supports richer evaluation and comparison.",
+      pattern: "ที่สุด / มากที่สุด / น้อยที่สุด",
+      focusParticle: "ที่สุด",
+      focusMeaning: "Superlative marker meaning the most / -est.",
+    },
+    {
+      id: "must-tong",
+      title: "Necessity with ต้อง",
+      stage: "A2.2",
+      level: "A2",
+      explanation:
+        "ต้อง is a core verb for obligations, requirements, and unavoidable actions. It belongs before B1 because learners use it constantly in real life.",
+      pattern: "SUBJECT + ต้อง + VERB",
+      focusParticle: "ต้อง",
+      focusMeaning: "Necessity marker meaning must / have to.",
+    },
+    {
+      id: "should-khuan",
+      title: "Advice with ควร",
+      stage: "A2.2",
+      level: "A2",
+      explanation:
+        "ควร expresses recommendation, appropriate action, or what someone ought to do. It is softer than ต้อง and important for advice.",
+      pattern: "SUBJECT + ควร + VERB",
+      focusParticle: "ควร",
+      focusMeaning: "Advice or should marker.",
+    },
+    {
+      id: "prefix-naa-adjective",
+      title: "Likely / Worthy with น่า-",
+      stage: "A2.2",
+      level: "A2",
+      explanation:
+        "น่า- changes a following word into something like likely to, worthy of, or invitingly. It helps learners express reactions and evaluations.",
+      pattern: "น่า + VERB / ADJECTIVE",
+      focusParticle: "น่า-",
+      focusMeaning: "Prefix suggesting appeal, expectation, or suitability.",
+    },
+    {
+      id: "feelings-rusuek",
+      title: "Feelings with รู้สึก",
+      stage: "A2.2",
+      level: "A2",
+      explanation:
+        "รู้สึก lets learners state emotional or physical reactions more clearly, which is a natural next step after simple adjective statements.",
+      pattern: "SUBJECT + รู้สึก + ADJECTIVE / CLAUSE",
+      focusParticle: "รู้สึก",
+      focusMeaning: "Feel / sense marker for emotions and reactions.",
+    },
+    {
+      id: "try-lawng",
+      title: "Trying Something with ลอง",
+      stage: "A2.2",
+      level: "A2",
+      explanation:
+        "ลอง softens an action into trying, testing, or giving something a go. It is common in suggestions, experiments, and practical actions.",
+      pattern: "ลอง + VERB",
+      focusParticle: "ลอง",
+      focusMeaning: "Try / test / give it a go marker.",
+    },
+    {
+      id: "resultative-ok-samret",
+      title: "Successful Result with ออก / สำเร็จ",
+      stage: "A2.2",
+      level: "A2",
+      explanation:
+        "Resultative patterns help learners state that an action came out, worked out, or was completed successfully.",
+      pattern: "VERB + ออก / สำเร็จ",
+      focusParticle: "ออก / สำเร็จ",
+      focusMeaning: "Resultative markers for producing or achieving an outcome.",
+    },
+    {
+      id: "passive-tuuk",
+      title: "Basic Passive with ถูก",
+      stage: "A2.2",
+      level: "A2",
+      explanation:
+        "ถูก introduces an affected passive meaning that something happened to the subject, often in unwanted or notable situations.",
+      pattern: "SUBJECT + ถูก + VERB",
+      focusParticle: "ถูก",
+      focusMeaning: "Basic passive marker for being affected by an action.",
+    },
+    {
+      id: "conditionals",
+      title: "Basic Conditionals",
+      stage: "A2.2",
+      level: "A2",
+      explanation:
+        "Conditionals let learners connect cause and possible result more flexibly than a simple reason clause. They are a key bridge into B1 logic.",
+      pattern: "ถ้า + CLAUSE, (ก็) + RESULT",
+      focusParticle: "ถ้า / ก็",
+      focusMeaning: "If-then conditional framing.",
+    },
+    {
+      id: "change-state-khuen-long",
+      title: "Change of State with ขึ้น / ลง",
+      stage: "A2.2",
+      level: "A2",
+      explanation:
+        "ขึ้น and ลง are common result words showing increase, decrease, or directional change in state. They are practical in prices, mood, health, and activity.",
+      pattern: "VERB / ADJECTIVE + ขึ้น / ลง",
+      focusParticle: "ขึ้น / ลง",
+      focusMeaning: "Result words for becoming more / less or moving up / down.",
+    },
+    {
+      id: "in-order-to-phuea",
+      title: "Purpose with เพื่อ",
+      stage: "A2.2",
+      level: "A2",
+      explanation:
+        "เพื่อ introduces purpose or intended result, helping learners explain why an action is done in a clearer, more organized way.",
+      pattern: "VERB + เพื่อ + PURPOSE / เพื่อจะ + VERB",
+      focusParticle: "เพื่อ / เพื่อจะ",
+      focusMeaning: "Purpose marker meaning in order to / for the purpose of.",
+    },
+  ],
   "B1.1": [
     {
       id: "tend-to-mak-ja",
@@ -1199,6 +1489,44 @@ function getStagePromptNotes(meta) {
     };
   }
 
+  if (meta.stage === "A2.1") {
+    return {
+      vocab:
+        "Use practical everyday vocabulary that clearly bridges beyond A1: routines, transport, school, work, home tasks, shopping, family, hobbies, feelings, and short narrative situations.",
+      novelty:
+        "Make the set feel like learners are starting to tell short stories and fuller personal updates, not just naming objects or asking survival questions.",
+      duplication:
+        "Avoid repetitive subject-swap families and weak frame recycling. If two rows share the same core meaning with only a noun or person changed, rewrite one.",
+      romanization:
+        "Use learner-friendly Thai romanization with accents. Every sentence-level romanization must include accent marks.",
+      romanizationStyle:
+        "Do not use IPA or specialist phonetic symbols such as ʉ, ə, ɔ, ŋ, or ʔ. Use ordinary Latin letters plus accents only, with digraphs like ae, ue, oe, ng when needed.",
+      register:
+        "Use common modern Thai only. Keep the tone natural and useful, with no literary, poetic, royal, or archaic wording.",
+      difficulty:
+        "Aim roughly for 45% easy, 40% medium, 15% hard. A2.1 should feel clearly fuller than A1.2 but still very teachable sentence by sentence.",
+    };
+  }
+
+  if (meta.stage === "A2.2") {
+    return {
+      vocab:
+        "Use richer everyday-adult vocabulary than A2.1: errands, obligations, advice, plans, emotions, work, study, household tasks, service situations, and practical problems.",
+      novelty:
+        "Let the sentences feel like a real bridge into B1: more reasoning, comparison, recommendations, conditions, and outcomes, while still staying concrete and usable.",
+      duplication:
+        "Avoid duplicates, near-duplicates, and shallow template families. Change both the situation and the communicative purpose across the set.",
+      romanization:
+        "Use learner-friendly Thai romanization with accents. Every sentence-level romanization must include accent marks.",
+      romanizationStyle:
+        "Do not use IPA or specialist phonetic symbols such as ʉ, ə, ɔ, ŋ, or ʔ. Use ordinary Latin letters plus accents only, with digraphs like ae, ue, oe, ng when needed.",
+      register:
+        "Use common modern Thai. Neutral spoken and everyday written Thai are both fine, but avoid literary, royal, poetic, or archaic forms.",
+      difficulty:
+        "Aim roughly for 30% easy, 45% medium, 25% hard. A2.2 should feel like the final bridge before B1, with more complex ideas but still accessible grammar focus.",
+    };
+  }
+
   if (meta.stage === "B1.1") {
     return {
       vocab:
@@ -1253,16 +1581,22 @@ function getStagePromptNotes(meta) {
   };
 }
 
+function sanitizePromptText(text) {
+  return String(text ?? "")
+    .normalize("NFC")
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\uD800-\uDFFF]/g, " ");
+}
+
 function buildPrompt(meta, existingRows, batchSize) {
-  const existingThai = existingRows.map((row) => row.thai);
+  const existingThai = existingRows.map((row) => sanitizePromptText(row.thai));
   const sampleRows = [
     ...existingRows
       .filter((row) => ACCENTED_ROMANIZATION_REGEX.test(row.romanization))
       .slice(0, 3)
       .map((row) => ({
-        thai: row.thai,
-        romanization: row.romanization,
-        english: row.english,
+        thai: sanitizePromptText(row.thai),
+        romanization: sanitizePromptText(row.romanization),
+        english: sanitizePromptText(row.english),
         difficulty: row.difficulty,
       })),
     ...ROMANIZATION_STYLE_REFERENCE,
@@ -1271,7 +1605,7 @@ function buildPrompt(meta, existingRows, batchSize) {
   const focusParticle = meta.focusParticle || meta.pattern;
   const focusMeaning = meta.focusMeaning || meta.explanation;
 
-  return `
+  return sanitizePromptText(`
 You are curating production-quality Thai grammar example sentences for a grammar learning app.
 
 Grammar point
@@ -1342,7 +1676,7 @@ Return ONLY valid JSON in this exact shape:
     }
   ]
 }
-`;
+`);
 }
 
 function parseResponseJson(content) {
