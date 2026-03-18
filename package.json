@@ -8,7 +8,8 @@
     "seed:showcase": "node ./scripts/seedShowcaseUser.mjs",
     "migrate:grammar": "node ./scripts/migrateGrammarCsvsToDb.mjs",
     "generate:grammar": "node ./scripts/generateGrammarExamples.mjs",
-    "backfill:breakdown-romanization": "node ./scripts/backfillBreakdownRomanization.mjs"
+    "backfill:breakdown-romanization": "node ./scripts/backfillBreakdownRomanization.mjs",
+    "rewrite:legacy-romanization": "node ./scripts/rewriteLegacyRomanization.mjs"
   },
   "keywords": [],
   "author": "",
