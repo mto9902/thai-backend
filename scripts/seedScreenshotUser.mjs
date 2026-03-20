@@ -103,7 +103,7 @@ const BOOKMARK_IDS = [
   "must-tong",
 ];
 
-const HEATMAP_TIMELINE = [
+const RECENT_HEATMAP_TIMELINE = [
   { daysAgo: 13, activityCount: 0, reviewCount: 0 },
   { daysAgo: 12, activityCount: 9, reviewCount: 3 },
   { daysAgo: 11, activityCount: 13, reviewCount: 8 },
@@ -119,6 +119,88 @@ const HEATMAP_TIMELINE = [
   { daysAgo: 1, activityCount: 0, reviewCount: 0 },
   { daysAgo: 0, activityCount: 26, reviewCount: 22 },
 ];
+
+const OLDER_HEATMAP_WEEKS = [
+  [
+    { activityCount: 2, reviewCount: 1 },
+    { activityCount: 0, reviewCount: 0 },
+    { activityCount: 4, reviewCount: 2 },
+    { activityCount: 5, reviewCount: 2 },
+    { activityCount: 3, reviewCount: 1 },
+    { activityCount: 6, reviewCount: 3 },
+    { activityCount: 1, reviewCount: 0 },
+  ],
+  [
+    { activityCount: 0, reviewCount: 0 },
+    { activityCount: 5, reviewCount: 2 },
+    { activityCount: 7, reviewCount: 3 },
+    { activityCount: 4, reviewCount: 2 },
+    { activityCount: 8, reviewCount: 4 },
+    { activityCount: 6, reviewCount: 3 },
+    { activityCount: 2, reviewCount: 1 },
+  ],
+  [
+    { activityCount: 3, reviewCount: 1 },
+    { activityCount: 6, reviewCount: 3 },
+    { activityCount: 0, reviewCount: 0 },
+    { activityCount: 8, reviewCount: 5 },
+    { activityCount: 5, reviewCount: 3 },
+    { activityCount: 9, reviewCount: 5 },
+    { activityCount: 4, reviewCount: 2 },
+  ],
+  [
+    { activityCount: 4, reviewCount: 2 },
+    { activityCount: 7, reviewCount: 4 },
+    { activityCount: 9, reviewCount: 5 },
+    { activityCount: 0, reviewCount: 0 },
+    { activityCount: 6, reviewCount: 3 },
+    { activityCount: 10, reviewCount: 6 },
+    { activityCount: 5, reviewCount: 2 },
+  ],
+  [
+    { activityCount: 6, reviewCount: 3 },
+    { activityCount: 8, reviewCount: 4 },
+    { activityCount: 0, reviewCount: 0 },
+    { activityCount: 11, reviewCount: 7 },
+    { activityCount: 7, reviewCount: 4 },
+    { activityCount: 12, reviewCount: 7 },
+    { activityCount: 4, reviewCount: 2 },
+  ],
+  [
+    { activityCount: 5, reviewCount: 2 },
+    { activityCount: 9, reviewCount: 5 },
+    { activityCount: 7, reviewCount: 4 },
+    { activityCount: 12, reviewCount: 8 },
+    { activityCount: 0, reviewCount: 0 },
+    { activityCount: 10, reviewCount: 6 },
+    { activityCount: 6, reviewCount: 3 },
+  ],
+  [
+    { activityCount: 7, reviewCount: 4 },
+    { activityCount: 10, reviewCount: 6 },
+    { activityCount: 0, reviewCount: 0 },
+    { activityCount: 13, reviewCount: 8 },
+    { activityCount: 9, reviewCount: 5 },
+    { activityCount: 15, reviewCount: 10 },
+    { activityCount: 6, reviewCount: 3 },
+  ],
+];
+
+function buildHeatmapTimeline() {
+  const olderEntries = [];
+  let daysAgo = 62;
+
+  for (const week of OLDER_HEATMAP_WEEKS) {
+    for (const day of week) {
+      olderEntries.push({ daysAgo, ...day });
+      daysAgo -= 1;
+    }
+  }
+
+  return [...olderEntries, ...RECENT_HEATMAP_TIMELINE];
+}
+
+const HEATMAP_TIMELINE = buildHeatmapTimeline();
 
 function parseArgs() {
   const [emailArg, passwordArg, displayNameArg] = process.argv.slice(2);
