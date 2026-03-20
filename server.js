@@ -1039,6 +1039,27 @@ function isValidPassword(password) {
   return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
 }
 
+function getEmailLocalPart(email) {
+  const normalizedEmail =
+    typeof email === "string" ? email.trim().toLowerCase() : "";
+  if (!normalizedEmail) return "";
+  return normalizedEmail.split("@")[0]?.trim() || "";
+}
+
+function getDefaultDisplayName(email) {
+  const localPart = getEmailLocalPart(email);
+  return localPart ? localPart.slice(0, 40) : null;
+}
+
+function normalizeDisplayName(value) {
+  const trimmed = typeof value === "string" ? value.trim() : "";
+  return trimmed ? trimmed.slice(0, 40) : null;
+}
+
+function resolveDisplayName(value, email) {
+  return normalizeDisplayName(value) ?? getDefaultDisplayName(email);
+}
+
 function createSessionToken(user) {
   return jwt.sign(
     { userId: user.id, email: user.email },
@@ -1492,14 +1513,12 @@ app.get("/me", authMiddleware, async (req, res) => {
 
 app.patch("/me", authMiddleware, async (req, res) => {
   try {
-    const rawDisplayName =
-      typeof req.body.displayName === "string" ? req.body.displayName.trim() : "";
-    const displayName = rawDisplayName ? rawDisplayName.slice(0, 40) : null;
+    const displayName = normalizeDisplayName(req.body.displayName);
 
     const result = await pool.query(
       `
       UPDATE users
-      SET display_name = $2
+      SET display_name = COALESCE($2, LEFT(split_part(email, '@', 1), 40))
       WHERE id = $1
       RETURNING id, email, display_name, is_admin, has_keystone_access
       `,
@@ -1545,6 +1564,18 @@ app.post("/me/keystone-access", authMiddleware, async (req, res) => {
   }
 });
 
+async function deleteUserAndRelatedData(client, userId) {
+  await client.query(`DELETE FROM review_queue WHERE user_id = $1`, [userId]);
+  await client.query(`DELETE FROM review_sessions WHERE user_id = $1`, [userId]);
+  await client.query(`DELETE FROM activity_log WHERE user_id = $1`, [userId]);
+  await client.query(`DELETE FROM user_vocab WHERE user_id = $1`, [userId]);
+  await client.query(`DELETE FROM grammar_progress WHERE user_id = $1`, [userId]);
+  await client.query(`DELETE FROM bookmarks WHERE user_id = $1`, [userId]);
+  await client.query(`DELETE FROM user_preferences WHERE user_id = $1`, [userId]);
+  await client.query(`DELETE FROM password_reset_tokens WHERE user_id = $1`, [userId]);
+  await client.query(`DELETE FROM users WHERE id = $1`, [userId]);
+}
+
 app.post("/me/reset-progress", authMiddleware, async (req, res) => {
   const client = await pool.connect();
 
@@ -1573,14 +1604,7 @@ app.delete("/me", authMiddleware, async (req, res) => {
 
   try {
     await client.query("BEGIN");
-    await client.query(`DELETE FROM review_queue WHERE user_id = $1`, [req.userId]);
-    await client.query(`DELETE FROM review_sessions WHERE user_id = $1`, [req.userId]);
-    await client.query(`DELETE FROM activity_log WHERE user_id = $1`, [req.userId]);
-    await client.query(`DELETE FROM user_vocab WHERE user_id = $1`, [req.userId]);
-    await client.query(`DELETE FROM grammar_progress WHERE user_id = $1`, [req.userId]);
-    await client.query(`DELETE FROM bookmarks WHERE user_id = $1`, [req.userId]);
-    await client.query(`DELETE FROM user_preferences WHERE user_id = $1`, [req.userId]);
-    await client.query(`DELETE FROM users WHERE id = $1`, [req.userId]);
+    await deleteUserAndRelatedData(client, req.userId);
     await client.query("COMMIT");
 
     res.json({ success: true });
@@ -1923,6 +1947,259 @@ app.get("/admin/dashboard", authMiddleware, adminMiddleware, async (_req, res) =
   } catch (err) {
     console.error("Failed to fetch admin dashboard:", err);
     res.status(500).json({ error: "Failed to fetch admin dashboard" });
+  }
+});
+
+app.get("/admin/users", authMiddleware, adminMiddleware, async (_req, res) => {
+  try {
+    const result = await pool.query(
+      `
+      SELECT
+        u.id,
+        u.email,
+        u.display_name,
+        u.is_admin,
+        u.has_keystone_access,
+        u.consent_source,
+        NULLIF(
+          GREATEST(
+            COALESCE(
+              (SELECT MAX(gp.last_practiced::timestamp) FROM grammar_progress gp WHERE gp.user_id = u.id),
+              TIMESTAMP 'epoch'
+            ),
+            COALESCE(
+              (SELECT MAX(rs.session_date::timestamp) FROM review_sessions rs WHERE rs.user_id = u.id),
+              TIMESTAMP 'epoch'
+            ),
+            COALESCE(
+              (SELECT MAX(al.activity_date::timestamp) FROM activity_log al WHERE al.user_id = u.id),
+              TIMESTAMP 'epoch'
+            )
+          ),
+          TIMESTAMP 'epoch'
+        ) AS last_active_at
+      FROM users u
+      ORDER BY u.id DESC
+      `,
+    );
+
+    res.json(
+      result.rows.map((row) => ({
+        id: Number(row.id),
+        email: row.email,
+        display_name: row.display_name,
+        is_admin: row.is_admin === true,
+        has_keystone_access: row.has_keystone_access === true,
+        consent_source: row.consent_source ?? null,
+        last_active_at: row.last_active_at ?? null,
+      })),
+    );
+  } catch (err) {
+    console.error("Failed to fetch admin users:", err);
+    res.status(500).json({ error: "Failed to fetch admin users" });
+  }
+});
+
+app.post("/admin/users", authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const email = req.body.email?.toLowerCase().trim();
+    const password = typeof req.body?.password === "string" ? req.body.password : "";
+    const wantsPremium = req.body?.hasKeystoneAccess === true;
+    const wantsAdmin = req.body?.isAdmin === true;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ error: "Please enter a valid email address" });
+    }
+
+    if (!isValidPassword(password)) {
+      return res.status(400).json({
+        error:
+          "Password must be at least 8 characters and include uppercase, lowercase, and a number",
+      });
+    }
+
+    const existing = await pool.query(
+      `
+      SELECT id
+      FROM users
+      WHERE email = $1
+      LIMIT 1
+      `,
+      [email],
+    );
+
+    if (existing.rows.length > 0) {
+      return res.status(409).json({ error: "Email already registered" });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const displayName = resolveDisplayName(req.body.displayName, email);
+    const isAdmin = wantsAdmin || isConfiguredAdminEmail(email);
+
+    const result = await pool.query(
+      `
+      INSERT INTO users (
+        email,
+        password_hash,
+        display_name,
+        is_admin,
+        has_keystone_access,
+        keystone_access_updated_at,
+        consent_source
+      )
+      VALUES (
+        $1,
+        $2,
+        $3,
+        $4,
+        $5,
+        CASE WHEN $5 THEN NOW() ELSE NULL END,
+        'admin_created'
+      )
+      RETURNING id, email, display_name, is_admin, has_keystone_access, consent_source
+      `,
+      [email, passwordHash, displayName, isAdmin, wantsPremium],
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error("Failed to create admin user:", err);
+    res.status(500).json({ error: "Failed to create user" });
+  }
+});
+
+app.patch("/admin/users/:userId", authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const userId = Number.parseInt(req.params.userId, 10);
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+      return res.status(400).json({ error: "Invalid user id" });
+    }
+
+    const existingResult = await pool.query(
+      `
+      SELECT id, email
+      FROM users
+      WHERE id = $1
+      LIMIT 1
+      `,
+      [userId],
+    );
+
+    if (existingResult.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const existingUser = existingResult.rows[0];
+    const updates = [];
+    const values = [userId];
+    let valueIndex = 2;
+
+    if (Object.prototype.hasOwnProperty.call(req.body ?? {}, "displayName")) {
+      updates.push(
+        `display_name = COALESCE($${valueIndex}, LEFT(split_part(email, '@', 1), 40))`,
+      );
+      values.push(normalizeDisplayName(req.body.displayName));
+      valueIndex += 1;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(req.body ?? {}, "hasKeystoneAccess")) {
+      if (typeof req.body.hasKeystoneAccess !== "boolean") {
+        return res.status(400).json({ error: "hasKeystoneAccess must be a boolean" });
+      }
+
+      updates.push(`has_keystone_access = $${valueIndex}`);
+      values.push(req.body.hasKeystoneAccess);
+      valueIndex += 1;
+      updates.push(`keystone_access_updated_at = NOW()`);
+    }
+
+    if (Object.prototype.hasOwnProperty.call(req.body ?? {}, "isAdmin")) {
+      if (typeof req.body.isAdmin !== "boolean") {
+        return res.status(400).json({ error: "isAdmin must be a boolean" });
+      }
+
+      const nextIsAdmin =
+        req.body.isAdmin === true || isConfiguredAdminEmail(existingUser.email);
+
+      if (userId === req.userId && nextIsAdmin !== true) {
+        return res.status(400).json({ error: "You cannot remove your own admin access" });
+      }
+
+      updates.push(`is_admin = $${valueIndex}`);
+      values.push(nextIsAdmin);
+      valueIndex += 1;
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({
+        error: "Provide displayName, hasKeystoneAccess, or isAdmin",
+      });
+    }
+
+    const result = await pool.query(
+      `
+      UPDATE users
+      SET ${updates.join(", ")}
+      WHERE id = $1
+      RETURNING id, email, display_name, is_admin, has_keystone_access, consent_source
+      `,
+      values,
+    );
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("Failed to update admin user:", err);
+    res.status(500).json({ error: "Failed to update user" });
+  }
+});
+
+app.delete("/admin/users/:userId", authMiddleware, adminMiddleware, async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    const userId = Number.parseInt(req.params.userId, 10);
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+      return res.status(400).json({ error: "Invalid user id" });
+    }
+
+    if (userId === req.userId) {
+      return res.status(400).json({ error: "Use your own account settings to delete yourself" });
+    }
+
+    await client.query("BEGIN");
+
+    const existingResult = await client.query(
+      `
+      SELECT id
+      FROM users
+      WHERE id = $1
+      LIMIT 1
+      FOR UPDATE
+      `,
+      [userId],
+    );
+
+    if (existingResult.rows.length === 0) {
+      await client.query("ROLLBACK");
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    await deleteUserAndRelatedData(client, userId);
+    await client.query("COMMIT");
+
+    res.json({ success: true });
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error("Failed to delete admin user:", err);
+    res.status(500).json({ error: "Failed to delete user" });
+  } finally {
+    client.release();
   }
 });
 
@@ -2372,6 +2649,13 @@ async function startServer() {
       END $$;
     `);
     await pool.query(`
+      UPDATE users
+      SET display_name = LEFT(split_part(email, '@', 1), 40)
+      WHERE (display_name IS NULL OR BTRIM(display_name) = '')
+        AND email IS NOT NULL
+        AND POSITION('@' IN email) > 1;
+    `);
+    await pool.query(`
       CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_sub_unique
         ON users (google_sub)
         WHERE google_sub IS NOT NULL;
@@ -2585,21 +2869,23 @@ app.post("/signup", authRateLimiter, async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 10);
     const isAdmin = isConfiguredAdminEmail(email);
+    const displayName = getDefaultDisplayName(email);
 
     const result = await pool.query(
       `
       INSERT INTO users (
         email,
         password_hash,
+        display_name,
         is_admin,
         terms_accepted_at,
         privacy_accepted_at,
         consent_source
       )
-      VALUES ($1, $2, $3, NOW(), NOW(), 'email_signup')
+      VALUES ($1, $2, $3, $4, NOW(), NOW(), 'email_signup')
       RETURNING id
       `,
-      [email, passwordHash, isAdmin],
+      [email, passwordHash, displayName, isAdmin],
     );
 
     const token = createSessionToken({ id: result.rows[0].id, email });
@@ -2861,6 +3147,10 @@ app.post("/auth/google", authRateLimiter, async (req, res) => {
   try {
     await client.query("BEGIN");
     const isAdmin = isConfiguredAdminEmail(googleUser.email);
+    const resolvedDisplayName = resolveDisplayName(
+      googleUser.displayName,
+      googleUser.email,
+    );
 
     let userResult = await client.query(
       `
@@ -2904,7 +3194,7 @@ app.post("/auth/google", authRateLimiter, async (req, res) => {
           WHERE id = $1
           RETURNING id, email, display_name, google_sub, is_admin
           `,
-          [user.id, googleUser.sub, googleUser.displayName, isAdmin],
+          [user.id, googleUser.sub, resolvedDisplayName, isAdmin],
         );
 
         user = linkedResult.rows[0];
@@ -2937,7 +3227,7 @@ app.post("/auth/google", authRateLimiter, async (req, res) => {
           [
             googleUser.email,
             passwordHash,
-            googleUser.displayName,
+            resolvedDisplayName,
             googleUser.sub,
             isAdmin,
           ],
