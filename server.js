@@ -1416,17 +1416,24 @@ app.get("/health", (_req, res) => {
 });
 
 const STARTUP_ROUTE_CHECKS = [
-  { method: "GET", path: "/health", label: "health" },
-  { method: "GET", path: "/grammar/overrides", label: "grammar overrides" },
-  { method: "POST", path: "/tts/sentence", label: "sentence TTS" },
-  { method: "POST", path: "/me/keystone-access", label: "keystone access sync" },
-  { method: "GET", path: "/jlpt/levels", label: "JLPT levels" },
-  { method: "GET", path: "/jlpt/lessons", label: "JLPT lesson list" },
-  { method: "GET", path: "/jlpt/lessons/:id", label: "JLPT lesson detail" },
-  { method: "GET", path: "/jlpt/lessons/:id/examples", label: "JLPT lesson examples" },
-  { method: "POST", path: "/transform", label: "transform generation" },
-  { method: "GET", path: "/vocab/review", label: "SRS review" },
-  { method: "POST", path: "/vocab/answer", label: "SRS answer" },
+  { group: "core", method: "GET", path: "/health", label: "health" },
+  { group: "core", method: "GET", path: "/health/startup", label: "startup health" },
+  { group: "core", method: "POST", path: "/signup", label: "signup" },
+  { group: "core", method: "POST", path: "/login", label: "login" },
+  { group: "core", method: "POST", path: "/auth/google", label: "google auth" },
+  { group: "core", method: "GET", path: "/me", label: "current user" },
+  { group: "core", method: "DELETE", path: "/me", label: "delete account" },
+  { group: "thai", method: "GET", path: "/grammar/overrides", label: "grammar overrides" },
+  { group: "thai", method: "POST", path: "/practice-csv", label: "practice sentence" },
+  { group: "thai", method: "POST", path: "/tts/sentence", label: "sentence TTS" },
+  { group: "thai", method: "POST", path: "/me/keystone-access", label: "keystone access sync" },
+  { group: "thai", method: "POST", path: "/transform", label: "transform generation" },
+  { group: "thai", method: "GET", path: "/vocab/review", label: "SRS review" },
+  { group: "thai", method: "POST", path: "/vocab/answer", label: "SRS answer" },
+  { group: "jlpt", method: "GET", path: "/jlpt/levels", label: "JLPT levels" },
+  { group: "jlpt", method: "GET", path: "/jlpt/lessons", label: "JLPT lesson list" },
+  { group: "jlpt", method: "GET", path: "/jlpt/lessons/:id", label: "JLPT lesson detail" },
+  { group: "jlpt", method: "GET", path: "/jlpt/lessons/:id/examples", label: "JLPT lesson examples" },
 ];
 
 function isRouteRegistered(method, routePath) {
@@ -1493,6 +1500,7 @@ function buildStartupReport() {
   const structuredJlpt = countStructuredJlptLessons();
   const grammarPointCount = Object.keys(grammarSentences).length;
   const routeChecks = STARTUP_ROUTE_CHECKS.map((route) => ({
+    group: route.group,
     method: route.method,
     path: route.path,
     label: route.label,
@@ -1507,51 +1515,58 @@ function buildStartupReport() {
       jsonBodyLimit: process.env.JSON_BODY_LIMIT || "1mb",
     },
     services: {
-      db: {
-        status: "connected",
-        pool: getPoolStats(),
+      core: {
+        db: {
+          status: "connected",
+          pool: getPoolStats(),
+        },
+        googleSignIn: {
+          status:
+            getConfiguredGoogleClientIds().length > 0 ? "configured" : "missing",
+          clientIdCount: getConfiguredGoogleClientIds().length,
+        },
+        passwordResetEmail: {
+          status: isPasswordResetEmailConfigured() ? "configured" : "missing",
+        },
+        googleTts: {
+          status:
+            getGoogleTtsConfigStatus() === "missing" ? "missing" : "configured",
+          configSource: getGoogleTtsConfigStatus(),
+        },
+        ttsCache: {
+          status: fs.existsSync(TTS_SENTENCE_DIR) ? "ready" : "missing",
+          cacheDir: TTS_SENTENCE_DIR,
+          cacheMaxBytes: TTS_CACHE_MAX_BYTES,
+          ...ttsConcurrencyLimiter.getStats(),
+        },
       },
-      dictionary: {
-        status: dictionary.length > 0 ? "loaded" : "empty",
-        entryCount: dictionary.length,
+      thai: {
+        dictionary: {
+          status: dictionary.length > 0 ? "loaded" : "empty",
+          entryCount: dictionary.length,
+        },
+        grammarExamples: {
+          status: grammarPointCount > 0 ? "loaded" : "empty",
+          grammarPointCount,
+        },
       },
-      grammarExamples: {
-        status: grammarPointCount > 0 ? "loaded" : "empty",
-        grammarPointCount,
-      },
-      googleSignIn: {
-        status:
-          getConfiguredGoogleClientIds().length > 0 ? "configured" : "missing",
-        clientIdCount: getConfiguredGoogleClientIds().length,
-      },
-      passwordResetEmail: {
-        status: isPasswordResetEmailConfigured() ? "configured" : "missing",
-      },
-      googleTts: {
-        status: getGoogleTtsConfigStatus() === "missing" ? "missing" : "configured",
-        configSource: getGoogleTtsConfigStatus(),
-      },
-      ttsCache: {
-        status: fs.existsSync(TTS_SENTENCE_DIR) ? "ready" : "missing",
-        cacheDir: TTS_SENTENCE_DIR,
-        cacheMaxBytes: TTS_CACHE_MAX_BYTES,
-        ...ttsConcurrencyLimiter.getStats(),
-      },
-      jlptContent: {
-        status:
-          structuredJlpt.lessonCount > 0 || countLegacyJlptLessons() > 0
-            ? "loaded"
-            : "missing",
-        mode:
-          structuredJlpt.lessonCount > 0
-            ? structuredJlpt.mode
-            : countLegacyJlptLessons() > 0
-              ? "legacy-json"
+      jlpt: {
+        content: {
+          status:
+            structuredJlpt.lessonCount > 0 || countLegacyJlptLessons() > 0
+              ? "loaded"
               : "missing",
-        lessonCount:
-          structuredJlpt.lessonCount > 0
-            ? structuredJlpt.lessonCount
-            : countLegacyJlptLessons(),
+          mode:
+            structuredJlpt.lessonCount > 0
+              ? structuredJlpt.mode
+              : countLegacyJlptLessons() > 0
+                ? "legacy-json"
+                : "missing",
+          lessonCount:
+            structuredJlpt.lessonCount > 0
+              ? structuredJlpt.lessonCount
+              : countLegacyJlptLessons(),
+        },
       },
     },
     routes: routeChecks,
@@ -1560,59 +1575,78 @@ function buildStartupReport() {
 
 function printStartupSummary() {
   const report = buildStartupReport();
-  const serviceRows = [
+  const coreServiceRows = [
     {
       component: "DB",
-      status: report.services.db.status,
-      details: `pool max ${report.services.db.pool.max}, waiting ${report.services.db.pool.waitingCount}`,
-    },
-    {
-      component: "Dictionary",
-      status: report.services.dictionary.status,
-      details: `${report.services.dictionary.entryCount} entries`,
-    },
-    {
-      component: "Grammar examples",
-      status: report.services.grammarExamples.status,
-      details: `${report.services.grammarExamples.grammarPointCount} grammar points`,
+      status: report.services.core.db.status,
+      details: `pool max ${report.services.core.db.pool.max}, waiting ${report.services.core.db.pool.waitingCount}`,
     },
     {
       component: "Google sign-in",
-      status: report.services.googleSignIn.status,
-      details: `${report.services.googleSignIn.clientIdCount} client IDs`,
+      status: report.services.core.googleSignIn.status,
+      details: `${report.services.core.googleSignIn.clientIdCount} client IDs`,
     },
     {
       component: "Password reset email",
-      status: report.services.passwordResetEmail.status,
-      details: report.services.passwordResetEmail.status,
+      status: report.services.core.passwordResetEmail.status,
+      details: report.services.core.passwordResetEmail.status,
     },
     {
       component: "Google TTS",
-      status: report.services.googleTts.status,
-      details: report.services.googleTts.configSource,
+      status: report.services.core.googleTts.status,
+      details: report.services.core.googleTts.configSource,
     },
     {
       component: "TTS cache",
-      status: report.services.ttsCache.status,
-      details: report.services.ttsCache.cacheDir,
-    },
-    {
-      component: "JLPT content",
-      status: report.services.jlptContent.status,
-      details: `${report.services.jlptContent.lessonCount} lessons via ${report.services.jlptContent.mode}`,
+      status: report.services.core.ttsCache.status,
+      details: report.services.core.ttsCache.cacheDir,
     },
   ];
 
-  const routeRows = report.routes.map((route) => ({
-    route: `${route.method} ${route.path}`,
-    status: route.registered ? "registered" : "missing",
-    label: route.label,
-  }));
+  const thaiServiceRows = [
+    {
+      component: "Dictionary",
+      status: report.services.thai.dictionary.status,
+      details: `${report.services.thai.dictionary.entryCount} entries`,
+    },
+    {
+      component: "Grammar examples",
+      status: report.services.thai.grammarExamples.status,
+      details: `${report.services.thai.grammarExamples.grammarPointCount} grammar points`,
+    },
+  ];
+
+  const jlptServiceRows = [
+    {
+      component: "JLPT content",
+      status: report.services.jlpt.content.status,
+      details: `${report.services.jlpt.content.lessonCount} lessons via ${report.services.jlpt.content.mode}`,
+    },
+  ];
+
+  const routeRowsForGroup = (group) =>
+    report.routes
+      .filter((route) => route.group === group)
+      .map((route) => ({
+        route: `${route.method} ${route.path}`,
+        status: route.registered ? "registered" : "missing",
+        label: route.label,
+      }));
 
   console.log("");
   console.log("Backend startup summary");
-  console.table(serviceRows);
-  console.table(routeRows);
+  console.log("Core services");
+  console.table(coreServiceRows);
+  console.log("Thai services");
+  console.table(thaiServiceRows);
+  console.log("JLPT services");
+  console.table(jlptServiceRows);
+  console.log("Core routes");
+  console.table(routeRowsForGroup("core"));
+  console.log("Thai routes");
+  console.table(routeRowsForGroup("thai"));
+  console.log("JLPT routes");
+  console.table(routeRowsForGroup("jlpt"));
 }
 
 app.get("/health/startup", (_req, res) => {
