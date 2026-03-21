@@ -1,0 +1,731 @@
+{
+  "lessons": [
+    {
+      "id": "jlpt-n5-tai",
+      "level": "N5",
+      "lessonNumber": 5,
+      "titleJapanese": "〜たい",
+      "titleMeaning": "Want to do",
+      "mainExample": {
+        "jp": "日本で美味しいラーメンを食べたいです。",
+        "segments": [
+          { "text": "日本", "reading": "にほん" },
+          { "text": "で" },
+          { "text": "美味しい", "reading": "おいしい" },
+          { "text": "ラーメン" },
+          { "text": "を" },
+          { "text": "食べたい", "reading": "たべたい", "highlight": true },
+          { "text": "です。" }
+        ],
+        "romaji": "Nihon de oishii ramen o tabetai desu.",
+        "en": "I want to eat delicious ramen in Japan.",
+        "audioText": "日本で美味しいラーメンを食べたいです。"
+      },
+      "structureFormula": [
+        { "id": "verb", "text": "Verb (stem)", "kind": "chip" },
+        { "id": "plus", "text": "+", "kind": "operator" },
+        { "id": "tai", "text": "たい", "kind": "accent" }
+      ],
+      "conjugationChoices": [
+        {
+          "id": "taberu",
+          "label": "食べる",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "食べる" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "stem", "label": "Stem", "value": "食べ" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "食べたい" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "食べたいです", "emphasis": true }
+          ]
+        },
+        {
+          "id": "miru",
+          "label": "見る",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "見る" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "stem", "label": "Stem", "value": "見" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "見たい" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "見たいです", "emphasis": true }
+          ]
+        },
+        {
+          "id": "nomu",
+          "label": "飲む",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "飲む" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "stem", "label": "Stem", "value": "飲み" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "飲みたい" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "飲みたいです", "emphasis": true }
+          ]
+        }
+      ],
+      "nuances": [
+        {
+          "id": "desire",
+          "title": "Personal desire",
+          "description": "〜たい expresses what the speaker personally wants to do. It is most natural for your own wishes rather than someone else's internal desires.",
+          "example": {
+            "jp": "今日は早く帰りたいです。",
+            "segments": [
+              { "text": "今日", "reading": "きょう" },
+              { "text": "は" },
+              { "text": "早く", "reading": "はやく" },
+              { "text": "帰りたい", "reading": "かえりたい", "highlight": true },
+              { "text": "です。" }
+            ],
+            "romaji": "Kyou wa hayaku kaeritai desu.",
+            "en": "I want to go home early today."
+          }
+        },
+        {
+          "id": "softness",
+          "title": "Soft polite tone",
+          "description": "Adding です after 〜たい makes the wish sound gentle and polite, especially in everyday conversation.",
+          "example": {
+            "jp": "新しい映画を見たいです。",
+            "segments": [
+              { "text": "新しい", "reading": "あたらしい" },
+              { "text": "映画", "reading": "えいが" },
+              { "text": "を" },
+              { "text": "見たい", "reading": "みたい", "highlight": true },
+              { "text": "です。" }
+            ],
+            "romaji": "Atarashii eiga o mitai desu.",
+            "en": "I want to watch the new movie."
+          }
+        },
+        {
+          "id": "limits",
+          "title": "Not for commands",
+          "description": "〜たい talks about wanting to do something. It does not tell another person what to do, and it should not be used as an imperative."
+        }
+      ],
+      "examples": [
+        {
+          "jp": "週末に友だちと買い物したいです。",
+          "segments": [
+            { "text": "週末", "reading": "しゅうまつ" },
+            { "text": "に" },
+            { "text": "友だち", "reading": "ともだち" },
+            { "text": "と" },
+            { "text": "買い物", "reading": "かいもの" },
+            { "text": "したい", "reading": "したい", "highlight": true },
+            { "text": "です。" }
+          ],
+          "romaji": "Shuumatsu ni tomodachi to kaimono shitai desu.",
+          "en": "I want to go shopping with my friend this weekend."
+        },
+        {
+          "jp": "来年は北海道へ行きたいです。",
+          "segments": [
+            { "text": "来年", "reading": "らいねん" },
+            { "text": "は" },
+            { "text": "北海道", "reading": "ほっかいどう" },
+            { "text": "へ" },
+            { "text": "行きたい", "reading": "いきたい", "highlight": true },
+            { "text": "です。" }
+          ],
+          "romaji": "Rainen wa Hokkaidou e ikitai desu.",
+          "en": "I want to go to Hokkaido next year."
+        },
+        {
+          "jp": "今日は静かなカフェで勉強したいです。",
+          "segments": [
+            { "text": "今日", "reading": "きょう" },
+            { "text": "は" },
+            { "text": "静かな", "reading": "しずかな" },
+            { "text": "カフェ" },
+            { "text": "で" },
+            { "text": "勉強", "reading": "べんきょう" },
+            { "text": "したい", "reading": "したい", "highlight": true },
+            { "text": "です。" }
+          ],
+          "romaji": "Kyou wa shizuka na kafe de benkyou shitai desu.",
+          "en": "I want to study at a quiet cafe today."
+        }
+      ]
+    },
+    {
+      "id": "jlpt-n4-nagara",
+      "level": "N4",
+      "lessonNumber": 18,
+      "titleJapanese": "〜ながら",
+      "titleMeaning": "While doing / At the same time as",
+      "mainExample": {
+        "jp": "音楽を聞きながら宿題をします。",
+        "segments": [
+          { "text": "音楽", "reading": "おんがく" },
+          { "text": "を" },
+          { "text": "聞きながら", "reading": "ききながら", "highlight": true },
+          { "text": "宿題", "reading": "しゅくだい" },
+          { "text": "を" },
+          { "text": "します。" }
+        ],
+        "romaji": "Ongaku o kikinagara shukudai o shimasu.",
+        "en": "I do my homework while listening to music.",
+        "audioText": "音楽を聞きながら宿題をします。"
+      },
+      "structureFormula": [
+        { "id": "verb", "text": "Verb (stem)", "kind": "chip" },
+        { "id": "plus", "text": "+", "kind": "operator" },
+        { "id": "nagara", "text": "ながら", "kind": "accent" }
+      ],
+      "conjugationChoices": [
+        {
+          "id": "kiku",
+          "label": "聞く",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "聞く" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "stem", "label": "Stem", "value": "聞き" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "聞きながら" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "聞きながら宿題をします", "emphasis": true }
+          ]
+        },
+        {
+          "id": "aruku",
+          "label": "歩く",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "歩く" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "stem", "label": "Stem", "value": "歩き" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "歩きながら" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "歩きながら話します", "emphasis": true }
+          ]
+        },
+        {
+          "id": "taberu",
+          "label": "食べる",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "食べる" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "stem", "label": "Stem", "value": "食べ" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "食べながら" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "食べながら読みます", "emphasis": true }
+          ]
+        }
+      ],
+      "nuances": [
+        {
+          "id": "same-subject",
+          "title": "Same subject",
+          "description": "The person doing both actions is usually the same. 〜ながら links two actions performed by one subject."
+        },
+        {
+          "id": "main-action",
+          "title": "Second action feels main",
+          "description": "The action after 〜ながら often feels like the main action, while the first action forms the background.",
+          "example": {
+            "jp": "コーヒーを飲みながら本を読みます。",
+            "segments": [
+              { "text": "コーヒー" },
+              { "text": "を" },
+              { "text": "飲みながら", "reading": "のみながら", "highlight": true },
+              { "text": "本", "reading": "ほん" },
+              { "text": "を" },
+              { "text": "読みます", "reading": "よみます" }
+            ],
+            "romaji": "Koohii o nominagara hon o yomimasu.",
+            "en": "I read a book while drinking coffee."
+          }
+        },
+        {
+          "id": "limited-simultaneity",
+          "title": "Natural simultaneity",
+          "description": "Use it when the two actions can naturally happen together. If the pairing feels impossible or forced, another structure may be better."
+        }
+      ],
+      "examples": [
+        {
+          "jp": "電車に乗りながらニュースを読みました。",
+          "segments": [
+            { "text": "電車", "reading": "でんしゃ" },
+            { "text": "に" },
+            { "text": "乗りながら", "reading": "のりながら", "highlight": true },
+            { "text": "ニュース" },
+            { "text": "を" },
+            { "text": "読みました", "reading": "よみました" }
+          ],
+          "romaji": "Densha ni norinagara nyuusu o yomimashita.",
+          "en": "I read the news while riding the train."
+        },
+        {
+          "jp": "彼は笑いながら答えました。",
+          "segments": [
+            { "text": "彼", "reading": "かれ" },
+            { "text": "は" },
+            { "text": "笑いながら", "reading": "わらいながら", "highlight": true },
+            { "text": "答えました", "reading": "こたえました" }
+          ],
+          "romaji": "Kare wa warainagara kotaemashita.",
+          "en": "He answered while smiling."
+        },
+        {
+          "jp": "私は歩きながら日本語のポッドキャストを聞きます。",
+          "segments": [
+            { "text": "私", "reading": "わたし" },
+            { "text": "は" },
+            { "text": "歩きながら", "reading": "あるきながら", "highlight": true },
+            { "text": "日本語", "reading": "にほんご" },
+            { "text": "の" },
+            { "text": "ポッドキャスト" },
+            { "text": "を" },
+            { "text": "聞きます", "reading": "ききます" }
+          ],
+          "romaji": "Watashi wa arukinagara nihongo no poddokyasuto o kikimasu.",
+          "en": "I listen to Japanese podcasts while walking."
+        }
+      ]
+    },
+    {
+      "id": "jlpt-n3-teshimau",
+      "level": "N3",
+      "lessonNumber": 42,
+      "titleJapanese": "〜てしまう",
+      "titleMeaning": "To do completely / To do regrettably",
+      "mainExample": {
+        "jp": "ケーキを全部食べてしまった。",
+        "segments": [
+          { "text": "ケーキ" },
+          { "text": "を" },
+          { "text": "全部", "reading": "ぜんぶ" },
+          { "text": "食べてしまった", "reading": "たべてしまった", "highlight": true },
+          { "text": "。" }
+        ],
+        "romaji": "Keeki o zenbu tabete shimatta.",
+        "en": "I ate the whole cake (regrettably).",
+        "audioText": "ケーキを全部食べてしまった。"
+      },
+      "structureFormula": [
+        { "id": "verb", "text": "Verb (て-form)", "kind": "chip" },
+        { "id": "plus", "text": "+", "kind": "operator" },
+        { "id": "shimau", "text": "しまう", "kind": "accent" }
+      ],
+      "conjugationChoices": [
+        {
+          "id": "kowasu",
+          "label": "壊す",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "壊す" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "te-form", "label": "Te-form", "value": "壊して" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "壊してしまう" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "壊してしまった", "emphasis": true }
+          ]
+        },
+        {
+          "id": "wasureru",
+          "label": "忘れる",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "忘れる" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "te-form", "label": "Te-form", "value": "忘れて" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "忘れてしまう" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "忘れてしまった", "emphasis": true }
+          ]
+        },
+        {
+          "id": "iu",
+          "label": "言う",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "言う" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "te-form", "label": "Te-form", "value": "言って" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "言ってしまう" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "言ってしまった", "emphasis": true }
+          ]
+        },
+        {
+          "id": "neru",
+          "label": "寝る",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "寝る" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "te-form", "label": "Te-form", "value": "寝て" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "寝てしまう" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "寝てしまった", "emphasis": true }
+          ]
+        }
+      ],
+      "nuances": [
+        {
+          "id": "completion",
+          "title": "Completion",
+          "description": "Indicates an action is fully finished, often with a sense of finality.",
+          "example": {
+            "jp": "宿題をやってしまった。",
+            "segments": [
+              { "text": "宿題", "reading": "しゅくだい" },
+              { "text": "を" },
+              { "text": "やってしまった", "highlight": true },
+              { "text": "。" }
+            ],
+            "romaji": "Shukudai o yatte shimatta.",
+            "en": "I finished my homework completely."
+          }
+        },
+        {
+          "id": "regret",
+          "title": "Regret",
+          "description": "Expresses that something happened unintentionally or regrettably."
+        },
+        {
+          "id": "reversibility",
+          "title": "Reversibility",
+          "description": "Unlike pure past tense, suggests a state that cannot easily be undone."
+        }
+      ],
+      "examples": [
+        {
+          "jp": "宿題を忘れてしまいました。",
+          "segments": [
+            { "text": "宿題", "reading": "しゅくだい" },
+            { "text": "を" },
+            { "text": "忘れてしまいました", "reading": "わすれてしまいました", "highlight": true },
+            { "text": "。" }
+          ],
+          "romaji": "Shukudai o wasurete shimaimashita.",
+          "en": "I completely forgot my homework (regrettably)."
+        },
+        {
+          "jp": "傘を電車に置いてしまった。",
+          "segments": [
+            { "text": "傘", "reading": "かさ" },
+            { "text": "を" },
+            { "text": "電車", "reading": "でんしゃ" },
+            { "text": "に" },
+            { "text": "置いてしまった", "reading": "おいてしまった", "highlight": true },
+            { "text": "。" }
+          ],
+          "romaji": "Kasa o densha ni oite shimatta.",
+          "en": "I left my umbrella on the train (by accident)."
+        },
+        {
+          "jp": "その秘密を友だちに話してしまった。",
+          "segments": [
+            { "text": "その" },
+            { "text": "秘密", "reading": "ひみつ" },
+            { "text": "を" },
+            { "text": "友だち", "reading": "ともだち" },
+            { "text": "に" },
+            { "text": "話してしまった", "reading": "はなしてしまった", "highlight": true },
+            { "text": "。" }
+          ],
+          "romaji": "Sono himitsu o tomodachi ni hanashite shimatta.",
+          "en": "I ended up telling my friend that secret."
+        }
+      ]
+    },
+    {
+      "id": "jlpt-n2-wakedehanai",
+      "level": "N2",
+      "lessonNumber": 17,
+      "titleJapanese": "〜わけではない",
+      "titleMeaning": "It is not that / It does not mean that",
+      "mainExample": {
+        "jp": "日本語が嫌いなわけではない。",
+        "segments": [
+          { "text": "日本語", "reading": "にほんご" },
+          { "text": "が" },
+          { "text": "嫌い", "reading": "きらい" },
+          { "text": "な" },
+          { "text": "わけではない", "highlight": true },
+          { "text": "。" }
+        ],
+        "romaji": "Nihongo ga kirai na wake de wa nai.",
+        "en": "It is not that I dislike Japanese.",
+        "audioText": "日本語が嫌いなわけではない。"
+      },
+      "structureFormula": [
+        { "id": "statement", "text": "Clause", "kind": "chip" },
+        { "id": "plus", "text": "+", "kind": "operator" },
+        { "id": "wake", "text": "わけではない", "kind": "accent" }
+      ],
+      "conjugationChoices": [
+        {
+          "id": "adjective",
+          "label": "嫌い",
+          "flow": [
+            { "id": "dictionary", "label": "Base", "value": "嫌い" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "link", "label": "Link", "value": "嫌いな" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "嫌いなわけではない", "emphasis": true }
+          ]
+        },
+        {
+          "id": "verb",
+          "label": "行く",
+          "flow": [
+            { "id": "dictionary", "label": "Clause", "value": "毎日行く" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "毎日行くわけではない", "emphasis": true }
+          ]
+        },
+        {
+          "id": "noun",
+          "label": "先生",
+          "flow": [
+            { "id": "dictionary", "label": "Base", "value": "先生" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "link", "label": "Link", "value": "先生な" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "先生なわけではない", "emphasis": true }
+          ]
+        }
+      ],
+      "nuances": [
+        {
+          "id": "partial-denial",
+          "title": "Partial denial",
+          "description": "This pattern softens a denial. Instead of rejecting something absolutely, it narrows what is or is not true."
+        },
+        {
+          "id": "correction",
+          "title": "Gentle correction",
+          "description": "It often appears when correcting a misunderstanding without sounding too blunt.",
+          "example": {
+            "jp": "忙しいわけではないが、今日は予定がある。",
+            "segments": [
+              { "text": "忙しい", "reading": "いそがしい" },
+              { "text": "わけではない", "highlight": true },
+              { "text": "が、" },
+              { "text": "今日", "reading": "きょう" },
+              { "text": "は" },
+              { "text": "予定", "reading": "よてい" },
+              { "text": "が" },
+              { "text": "ある。" }
+            ],
+            "romaji": "Isogashii wake de wa nai ga, kyou wa yotei ga aru.",
+            "en": "It's not that I'm busy, but I do have plans today."
+          }
+        },
+        {
+          "id": "not-total-negation",
+          "title": "Not total negation",
+          "description": "Compared with a plain negative, this phrasing implies that part of the idea may still be true."
+        }
+      ],
+      "examples": [
+        {
+          "jp": "甘い物が嫌いなわけではありません。",
+          "segments": [
+            { "text": "甘い", "reading": "あまい" },
+            { "text": "物", "reading": "もの" },
+            { "text": "が" },
+            { "text": "嫌い", "reading": "きらい" },
+            { "text": "な" },
+            { "text": "わけではありません", "highlight": true },
+            { "text": "。" }
+          ],
+          "romaji": "Amai mono ga kirai na wake de wa arimasen.",
+          "en": "It is not that I dislike sweets."
+        },
+        {
+          "jp": "彼の意見に全部反対というわけではない。",
+          "segments": [
+            { "text": "彼", "reading": "かれ" },
+            { "text": "の" },
+            { "text": "意見", "reading": "いけん" },
+            { "text": "に" },
+            { "text": "全部", "reading": "ぜんぶ" },
+            { "text": "反対", "reading": "はんたい" },
+            { "text": "と" },
+            { "text": "いう" },
+            { "text": "わけではない", "highlight": true },
+            { "text": "。" }
+          ],
+          "romaji": "Kare no iken ni zenbu hantai to iu wake de wa nai.",
+          "en": "It is not that I oppose all of his opinion."
+        },
+        {
+          "jp": "毎日運動しているわけではないが、週に三回は走る。",
+          "segments": [
+            { "text": "毎日", "reading": "まいにち" },
+            { "text": "運動", "reading": "うんどう" },
+            { "text": "している" },
+            { "text": "わけではない", "highlight": true },
+            { "text": "が、" },
+            { "text": "週", "reading": "しゅう" },
+            { "text": "に" },
+            { "text": "三回", "reading": "さんかい" },
+            { "text": "は" },
+            { "text": "走る", "reading": "はしる" },
+            { "text": "。" }
+          ],
+          "romaji": "Mainichi undou shite iru wake de wa nai ga, shuu ni sankai wa hashiru.",
+          "en": "It's not that I exercise every day, but I do run three times a week."
+        }
+      ]
+    },
+    {
+      "id": "jlpt-n1-zunihairarenai",
+      "level": "N1",
+      "lessonNumber": 9,
+      "titleJapanese": "〜ずにはいられない",
+      "titleMeaning": "Cannot help but do",
+      "mainExample": {
+        "jp": "その話を聞いて、笑わずにはいられなかった。",
+        "segments": [
+          { "text": "その" },
+          { "text": "話", "reading": "はなし" },
+          { "text": "を" },
+          { "text": "聞いて", "reading": "きいて" },
+          { "text": "、" },
+          { "text": "笑わずにはいられなかった", "reading": "わらわずにはいられなかった", "highlight": true },
+          { "text": "。" }
+        ],
+        "romaji": "Sono hanashi o kiite, warawazu ni wa irarenakatta.",
+        "en": "After hearing that story, I couldn't help but laugh.",
+        "audioText": "その話を聞いて、笑わずにはいられなかった。"
+      },
+      "structureFormula": [
+        { "id": "verb", "text": "Verb (ない-stem)", "kind": "chip" },
+        { "id": "plus", "text": "+", "kind": "operator" },
+        { "id": "zunihairarenai", "text": "ずにはいられない", "kind": "accent" }
+      ],
+      "conjugationChoices": [
+        {
+          "id": "warau",
+          "label": "笑う",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "笑う" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "nai-stem", "label": "Negative stem", "value": "笑わず" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "笑わずにはいられない" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "笑わずにはいられなかった", "emphasis": true }
+          ]
+        },
+        {
+          "id": "naku",
+          "label": "泣く",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "泣く" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "nai-stem", "label": "Negative stem", "value": "泣かず" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "泣かずにはいられない" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "泣かずにはいられない", "emphasis": true }
+          ]
+        },
+        {
+          "id": "odoroku",
+          "label": "驚く",
+          "flow": [
+            { "id": "dictionary", "label": "Dictionary", "value": "驚く" },
+            { "id": "arrow-1", "label": "", "value": "↓" },
+            { "id": "nai-stem", "label": "Negative stem", "value": "驚かず" },
+            { "id": "arrow-2", "label": "", "value": "↓" },
+            { "id": "base", "label": "Base", "value": "驚かずにはいられない" },
+            { "id": "arrow-3", "label": "", "value": "↓" },
+            { "id": "result", "label": "Result", "value": "驚かずにはいられない", "emphasis": true }
+          ]
+        }
+      ],
+      "nuances": [
+        {
+          "id": "strong-emotion",
+          "title": "Strong emotional push",
+          "description": "This pattern suggests a feeling is so strong that resisting the action becomes almost impossible."
+        },
+        {
+          "id": "involuntary",
+          "title": "Involuntary reaction",
+          "description": "The action is not framed as a deliberate choice. It happens because the emotion or reaction spills out.",
+          "example": {
+            "jp": "その映画を見て、泣かずにはいられなかった。",
+            "segments": [
+              { "text": "その" },
+              { "text": "映画", "reading": "えいが" },
+              { "text": "を" },
+              { "text": "見て", "reading": "みて" },
+              { "text": "、" },
+              { "text": "泣かずにはいられなかった", "reading": "なかずにはいられなかった", "highlight": true },
+              { "text": "。" }
+            ],
+            "romaji": "Sono eiga o mite, nakazu ni wa irarenakatta.",
+            "en": "I couldn't help crying when I watched that movie."
+          }
+        },
+        {
+          "id": "literary-tone",
+          "title": "Formal or literary tone",
+          "description": "Compared with simpler spoken patterns like 〜ちゃう or 〜てしまう, this structure often feels more formal, written, or emphatic."
+        }
+      ],
+      "examples": [
+        {
+          "jp": "彼の努力を見て、応援せずにはいられない。",
+          "segments": [
+            { "text": "彼", "reading": "かれ" },
+            { "text": "の" },
+            { "text": "努力", "reading": "どりょく" },
+            { "text": "を" },
+            { "text": "見て", "reading": "みて" },
+            { "text": "、" },
+            { "text": "応援", "reading": "おうえん" },
+            { "text": "せずにはいられない", "highlight": true },
+            { "text": "。" }
+          ],
+          "romaji": "Kare no doryoku o mite, ouen sezu ni wa irarenai.",
+          "en": "Seeing his effort, I can't help but cheer him on."
+        },
+        {
+          "jp": "あの結末には驚かずにはいられなかった。",
+          "segments": [
+            { "text": "あの" },
+            { "text": "結末", "reading": "けつまつ" },
+            { "text": "に" },
+            { "text": "は" },
+            { "text": "驚かずにはいられなかった", "reading": "おどろかずにはいられなかった", "highlight": true },
+            { "text": "。" }
+          ],
+          "romaji": "Ano ketsumatsu ni wa odorokazu ni wa irarenakatta.",
+          "en": "I couldn't help being shocked by that ending."
+        },
+        {
+          "jp": "そんな親切な言葉を聞いたら、感謝せずにはいられない。",
+          "segments": [
+            { "text": "そんな" },
+            { "text": "親切", "reading": "しんせつ" },
+            { "text": "な" },
+            { "text": "言葉", "reading": "ことば" },
+            { "text": "を" },
+            { "text": "聞いたら", "reading": "きいたら" },
+            { "text": "、" },
+            { "text": "感謝", "reading": "かんしゃ" },
+            { "text": "せずにはいられない", "highlight": true },
+            { "text": "。" }
+          ],
+          "romaji": "Sonna shinsetsu na kotoba o kiitara, kansha sezu ni wa irarenai.",
+          "en": "When I hear such kind words, I can't help but feel grateful."
+        }
+      ]
+    }
+  ]
+}

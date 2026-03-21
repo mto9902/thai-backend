@@ -11,6 +11,7 @@ import path from "path";
 import textToSpeech from "@google-cloud/text-to-speech";
 import { createHash, randomBytes, randomUUID } from "crypto";
 import { getPoolStats, pool } from "./db.js";
+import registerJlptRoutes from "./jlpt.js";
 import { registerSRSRoutes, SRS_CONFIG } from "./srs.js";
 import registerTransformRoute from "./transform.js";
 
@@ -554,6 +555,7 @@ function getUserMemory(sessionId) {
 }
 
 registerTransformRoute(app, openai);
+registerJlptRoutes(app, { adminDataDir: ADMIN_DATA_DIR });
 
 /* =============================== */
 /* AUTH */
