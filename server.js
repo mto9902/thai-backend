@@ -22,6 +22,32 @@ app.set("trust proxy", true);
 app.use(cors());
 app.use(express.json({ limit: process.env.JSON_BODY_LIMIT || "1mb" }));
 
+const registeredRoutes = [];
+const TRACKED_HTTP_METHODS = ["get", "post", "put", "patch", "delete"];
+
+function trackRouteRegistration(method, routePath) {
+  if (typeof routePath !== "string") {
+    return;
+  }
+
+  registeredRoutes.push({
+    method: method.toUpperCase(),
+    path: routePath,
+  });
+}
+
+for (const method of TRACKED_HTTP_METHODS) {
+  const originalMethod = app[method].bind(app);
+  app[method] = (routePath, ...handlers) => {
+    if (handlers.length === 0) {
+      return originalMethod(routePath);
+    }
+
+    trackRouteRegistration(method, routePath);
+    return originalMethod(routePath, ...handlers);
+  };
+}
+
 function readPositiveIntEnv(name, fallback) {
   const value = Number.parseInt(process.env[name] || "", 10);
   return Number.isFinite(value) && value > 0 ? value : fallback;
@@ -1387,6 +1413,210 @@ app.get("/health", (_req, res) => {
       ...ttsConcurrencyLimiter.getStats(),
     },
   });
+});
+
+const STARTUP_ROUTE_CHECKS = [
+  { method: "GET", path: "/health", label: "health" },
+  { method: "GET", path: "/grammar/overrides", label: "grammar overrides" },
+  { method: "POST", path: "/tts/sentence", label: "sentence TTS" },
+  { method: "POST", path: "/me/keystone-access", label: "keystone access sync" },
+  { method: "GET", path: "/jlpt/levels", label: "JLPT levels" },
+  { method: "GET", path: "/jlpt/lessons", label: "JLPT lesson list" },
+  { method: "GET", path: "/jlpt/lessons/:id", label: "JLPT lesson detail" },
+  { method: "GET", path: "/jlpt/lessons/:id/examples", label: "JLPT lesson examples" },
+  { method: "POST", path: "/transform", label: "transform generation" },
+  { method: "GET", path: "/vocab/review", label: "SRS review" },
+  { method: "POST", path: "/vocab/answer", label: "SRS answer" },
+];
+
+function isRouteRegistered(method, routePath) {
+  return registeredRoutes.some(
+    (route) => route.method === method && route.path === routePath,
+  );
+}
+
+function countStructuredJlptLessons() {
+  const jlptRoot = path.join(ADMIN_DATA_DIR, "jlpt", "levels");
+  if (!fs.existsSync(jlptRoot)) {
+    return { mode: "missing", lessonCount: 0 };
+  }
+
+  let lessonCount = 0;
+
+  for (const level of ["N5", "N4", "N3", "N2", "N1"]) {
+    const levelDir = path.join(jlptRoot, level);
+    if (!fs.existsSync(levelDir)) {
+      continue;
+    }
+
+    const entries = fs
+      .readdirSync(levelDir, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory());
+
+    lessonCount += entries.length;
+  }
+
+  return {
+    mode: lessonCount > 0 ? "structured-files" : "structured-empty",
+    lessonCount,
+  };
+}
+
+function countLegacyJlptLessons() {
+  const legacyFile = path.join(ADMIN_DATA_DIR, "jlpt-lessons.json");
+  if (!fs.existsSync(legacyFile)) {
+    return 0;
+  }
+
+  try {
+    const parsed = JSON.parse(fs.readFileSync(legacyFile, "utf8"));
+    return Array.isArray(parsed?.lessons) ? parsed.lessons.length : 0;
+  } catch (err) {
+    console.error("Failed to inspect legacy JLPT lesson file:", err);
+    return 0;
+  }
+}
+
+function getGoogleTtsConfigStatus() {
+  if (process.env.GOOGLE_TTS_CREDENTIALS_JSON?.trim()) {
+    return "inline-json";
+  }
+
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS?.trim()) {
+    return "credentials-file";
+  }
+
+  return "missing";
+}
+
+function buildStartupReport() {
+  const structuredJlpt = countStructuredJlptLessons();
+  const grammarPointCount = Object.keys(grammarSentences).length;
+  const routeChecks = STARTUP_ROUTE_CHECKS.map((route) => ({
+    method: route.method,
+    path: route.path,
+    label: route.label,
+    registered: isRouteRegistered(route.method, route.path),
+  }));
+
+  return {
+    ok: true,
+    runtime: {
+      port: PORT,
+      nodeEnv: process.env.NODE_ENV || "development",
+      jsonBodyLimit: process.env.JSON_BODY_LIMIT || "1mb",
+    },
+    services: {
+      db: {
+        status: "connected",
+        pool: getPoolStats(),
+      },
+      dictionary: {
+        status: dictionary.length > 0 ? "loaded" : "empty",
+        entryCount: dictionary.length,
+      },
+      grammarExamples: {
+        status: grammarPointCount > 0 ? "loaded" : "empty",
+        grammarPointCount,
+      },
+      googleSignIn: {
+        status:
+          getConfiguredGoogleClientIds().length > 0 ? "configured" : "missing",
+        clientIdCount: getConfiguredGoogleClientIds().length,
+      },
+      passwordResetEmail: {
+        status: isPasswordResetEmailConfigured() ? "configured" : "missing",
+      },
+      googleTts: {
+        status: getGoogleTtsConfigStatus() === "missing" ? "missing" : "configured",
+        configSource: getGoogleTtsConfigStatus(),
+      },
+      ttsCache: {
+        status: fs.existsSync(TTS_SENTENCE_DIR) ? "ready" : "missing",
+        cacheDir: TTS_SENTENCE_DIR,
+        cacheMaxBytes: TTS_CACHE_MAX_BYTES,
+        ...ttsConcurrencyLimiter.getStats(),
+      },
+      jlptContent: {
+        status:
+          structuredJlpt.lessonCount > 0 || countLegacyJlptLessons() > 0
+            ? "loaded"
+            : "missing",
+        mode:
+          structuredJlpt.lessonCount > 0
+            ? structuredJlpt.mode
+            : countLegacyJlptLessons() > 0
+              ? "legacy-json"
+              : "missing",
+        lessonCount:
+          structuredJlpt.lessonCount > 0
+            ? structuredJlpt.lessonCount
+            : countLegacyJlptLessons(),
+      },
+    },
+    routes: routeChecks,
+  };
+}
+
+function printStartupSummary() {
+  const report = buildStartupReport();
+  const serviceRows = [
+    {
+      component: "DB",
+      status: report.services.db.status,
+      details: `pool max ${report.services.db.pool.max}, waiting ${report.services.db.pool.waitingCount}`,
+    },
+    {
+      component: "Dictionary",
+      status: report.services.dictionary.status,
+      details: `${report.services.dictionary.entryCount} entries`,
+    },
+    {
+      component: "Grammar examples",
+      status: report.services.grammarExamples.status,
+      details: `${report.services.grammarExamples.grammarPointCount} grammar points`,
+    },
+    {
+      component: "Google sign-in",
+      status: report.services.googleSignIn.status,
+      details: `${report.services.googleSignIn.clientIdCount} client IDs`,
+    },
+    {
+      component: "Password reset email",
+      status: report.services.passwordResetEmail.status,
+      details: report.services.passwordResetEmail.status,
+    },
+    {
+      component: "Google TTS",
+      status: report.services.googleTts.status,
+      details: report.services.googleTts.configSource,
+    },
+    {
+      component: "TTS cache",
+      status: report.services.ttsCache.status,
+      details: report.services.ttsCache.cacheDir,
+    },
+    {
+      component: "JLPT content",
+      status: report.services.jlptContent.status,
+      details: `${report.services.jlptContent.lessonCount} lessons via ${report.services.jlptContent.mode}`,
+    },
+  ];
+
+  const routeRows = report.routes.map((route) => ({
+    route: `${route.method} ${route.path}`,
+    status: route.registered ? "registered" : "missing",
+    label: route.label,
+  }));
+
+  console.log("");
+  console.log("Backend startup summary");
+  console.table(serviceRows);
+  console.table(routeRows);
+}
+
+app.get("/health/startup", (_req, res) => {
+  res.json(buildStartupReport());
 });
 
 function getConfiguredGoogleClientIds() {
@@ -2776,6 +3006,7 @@ async function startServer() {
 
     app.listen(PORT, () => {
       console.log(`AI server running on port ${PORT}`);
+      printStartupSummary();
     });
   } catch (err) {
     console.error("Server startup failed:", err);
