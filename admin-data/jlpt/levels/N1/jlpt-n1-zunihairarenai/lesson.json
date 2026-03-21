@@ -1,0 +1,237 @@
+{
+  "id": "jlpt-n1-zunihairarenai",
+  "level": "N1",
+  "lessonNumber": 9,
+  "titleJapanese": "〜ずにはいられない",
+  "titleMeaning": "Cannot help but do",
+  "mainExample": {
+    "jp": "その話を聞いて、笑わずにはいられなかった。",
+    "segments": [
+      {
+        "text": "その"
+      },
+      {
+        "text": "話",
+        "reading": "はなし"
+      },
+      {
+        "text": "を"
+      },
+      {
+        "text": "聞いて",
+        "reading": "きいて"
+      },
+      {
+        "text": "、"
+      },
+      {
+        "text": "笑わずにはいられなかった",
+        "reading": "わらわずにはいられなかった",
+        "highlight": true
+      },
+      {
+        "text": "。"
+      }
+    ],
+    "romaji": "Sono hanashi o kiite, warawazu ni wa irarenakatta.",
+    "en": "After hearing that story, I couldn't help but laugh.",
+    "audioText": "その話を聞いて、笑わずにはいられなかった。"
+  },
+  "structureFormula": [
+    {
+      "id": "verb",
+      "text": "Verb (ない-stem)",
+      "kind": "chip"
+    },
+    {
+      "id": "plus",
+      "text": "+",
+      "kind": "operator"
+    },
+    {
+      "id": "zunihairarenai",
+      "text": "ずにはいられない",
+      "kind": "accent"
+    }
+  ],
+  "conjugationChoices": [
+    {
+      "id": "warau",
+      "label": "笑う",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "笑う"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "nai-stem",
+          "label": "Negative stem",
+          "value": "笑わず"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "笑わずにはいられない"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "笑わずにはいられなかった",
+          "emphasis": true
+        }
+      ]
+    },
+    {
+      "id": "naku",
+      "label": "泣く",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "泣く"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "nai-stem",
+          "label": "Negative stem",
+          "value": "泣かず"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "泣かずにはいられない"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "泣かずにはいられない",
+          "emphasis": true
+        }
+      ]
+    },
+    {
+      "id": "odoroku",
+      "label": "驚く",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "驚く"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "nai-stem",
+          "label": "Negative stem",
+          "value": "驚かず"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "驚かずにはいられない"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "驚かずにはいられない",
+          "emphasis": true
+        }
+      ]
+    }
+  ],
+  "nuances": [
+    {
+      "id": "strong-emotion",
+      "title": "Strong emotional push",
+      "description": "This pattern suggests a feeling is so strong that resisting the action becomes almost impossible."
+    },
+    {
+      "id": "involuntary",
+      "title": "Involuntary reaction",
+      "description": "The action is not framed as a deliberate choice. It happens because the emotion or reaction spills out.",
+      "example": {
+        "jp": "その映画を見て、泣かずにはいられなかった。",
+        "segments": [
+          {
+            "text": "その"
+          },
+          {
+            "text": "映画",
+            "reading": "えいが"
+          },
+          {
+            "text": "を"
+          },
+          {
+            "text": "見て",
+            "reading": "みて"
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "泣かずにはいられなかった",
+            "reading": "なかずにはいられなかった",
+            "highlight": true
+          },
+          {
+            "text": "。"
+          }
+        ],
+        "romaji": "Sono eiga o mite, nakazu ni wa irarenakatta.",
+        "en": "I couldn't help crying when I watched that movie."
+      }
+    },
+    {
+      "id": "literary-tone",
+      "title": "Formal or literary tone",
+      "description": "Compared with simpler spoken patterns like 〜ちゃう or 〜てしまう, this structure often feels more formal, written, or emphatic."
+    }
+  ],
+  "exampleCount": 3,
+  "status": "draft",
+  "source": "migrated-from-legacy-json"
+}

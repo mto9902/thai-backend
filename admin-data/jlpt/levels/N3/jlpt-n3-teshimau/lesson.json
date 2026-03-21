@@ -1,0 +1,261 @@
+{
+  "id": "jlpt-n3-teshimau",
+  "level": "N3",
+  "lessonNumber": 42,
+  "titleJapanese": "〜てしまう",
+  "titleMeaning": "To do completely / To do regrettably",
+  "mainExample": {
+    "jp": "ケーキを全部食べてしまった。",
+    "segments": [
+      {
+        "text": "ケーキ"
+      },
+      {
+        "text": "を"
+      },
+      {
+        "text": "全部",
+        "reading": "ぜんぶ"
+      },
+      {
+        "text": "食べてしまった",
+        "reading": "たべてしまった",
+        "highlight": true
+      },
+      {
+        "text": "。"
+      }
+    ],
+    "romaji": "Keeki o zenbu tabete shimatta.",
+    "en": "I ate the whole cake (regrettably).",
+    "audioText": "ケーキを全部食べてしまった。"
+  },
+  "structureFormula": [
+    {
+      "id": "verb",
+      "text": "Verb (て-form)",
+      "kind": "chip"
+    },
+    {
+      "id": "plus",
+      "text": "+",
+      "kind": "operator"
+    },
+    {
+      "id": "shimau",
+      "text": "しまう",
+      "kind": "accent"
+    }
+  ],
+  "conjugationChoices": [
+    {
+      "id": "kowasu",
+      "label": "壊す",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "壊す"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "te-form",
+          "label": "Te-form",
+          "value": "壊して"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "壊してしまう"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "壊してしまった",
+          "emphasis": true
+        }
+      ]
+    },
+    {
+      "id": "wasureru",
+      "label": "忘れる",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "忘れる"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "te-form",
+          "label": "Te-form",
+          "value": "忘れて"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "忘れてしまう"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "忘れてしまった",
+          "emphasis": true
+        }
+      ]
+    },
+    {
+      "id": "iu",
+      "label": "言う",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "言う"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "te-form",
+          "label": "Te-form",
+          "value": "言って"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "言ってしまう"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "言ってしまった",
+          "emphasis": true
+        }
+      ]
+    },
+    {
+      "id": "neru",
+      "label": "寝る",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "寝る"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "te-form",
+          "label": "Te-form",
+          "value": "寝て"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "寝てしまう"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "寝てしまった",
+          "emphasis": true
+        }
+      ]
+    }
+  ],
+  "nuances": [
+    {
+      "id": "completion",
+      "title": "Completion",
+      "description": "Indicates an action is fully finished, often with a sense of finality.",
+      "example": {
+        "jp": "宿題をやってしまった。",
+        "segments": [
+          {
+            "text": "宿題",
+            "reading": "しゅくだい"
+          },
+          {
+            "text": "を"
+          },
+          {
+            "text": "やってしまった",
+            "highlight": true
+          },
+          {
+            "text": "。"
+          }
+        ],
+        "romaji": "Shukudai o yatte shimatta.",
+        "en": "I finished my homework completely."
+      }
+    },
+    {
+      "id": "regret",
+      "title": "Regret",
+      "description": "Expresses that something happened unintentionally or regrettably."
+    },
+    {
+      "id": "reversibility",
+      "title": "Reversibility",
+      "description": "Unlike pure past tense, suggests a state that cannot easily be undone."
+    }
+  ],
+  "exampleCount": 3,
+  "status": "draft",
+  "source": "migrated-from-legacy-json"
+}

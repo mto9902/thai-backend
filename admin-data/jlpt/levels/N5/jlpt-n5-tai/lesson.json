@@ -1,0 +1,257 @@
+{
+  "id": "jlpt-n5-tai",
+  "level": "N5",
+  "lessonNumber": 5,
+  "titleJapanese": "〜たい",
+  "titleMeaning": "Want to do",
+  "mainExample": {
+    "jp": "日本で美味しいラーメンを食べたいです。",
+    "segments": [
+      {
+        "text": "日本",
+        "reading": "にほん"
+      },
+      {
+        "text": "で"
+      },
+      {
+        "text": "美味しい",
+        "reading": "おいしい"
+      },
+      {
+        "text": "ラーメン"
+      },
+      {
+        "text": "を"
+      },
+      {
+        "text": "食べたい",
+        "reading": "たべたい",
+        "highlight": true
+      },
+      {
+        "text": "です。"
+      }
+    ],
+    "romaji": "Nihon de oishii ramen o tabetai desu.",
+    "en": "I want to eat delicious ramen in Japan.",
+    "audioText": "日本で美味しいラーメンを食べたいです。"
+  },
+  "structureFormula": [
+    {
+      "id": "verb",
+      "text": "Verb (stem)",
+      "kind": "chip"
+    },
+    {
+      "id": "plus",
+      "text": "+",
+      "kind": "operator"
+    },
+    {
+      "id": "tai",
+      "text": "たい",
+      "kind": "accent"
+    }
+  ],
+  "conjugationChoices": [
+    {
+      "id": "taberu",
+      "label": "食べる",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "食べる"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "stem",
+          "label": "Stem",
+          "value": "食べ"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "食べたい"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "食べたいです",
+          "emphasis": true
+        }
+      ]
+    },
+    {
+      "id": "miru",
+      "label": "見る",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "見る"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "stem",
+          "label": "Stem",
+          "value": "見"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "見たい"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "見たいです",
+          "emphasis": true
+        }
+      ]
+    },
+    {
+      "id": "nomu",
+      "label": "飲む",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "飲む"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "stem",
+          "label": "Stem",
+          "value": "飲み"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "飲みたい"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "飲みたいです",
+          "emphasis": true
+        }
+      ]
+    }
+  ],
+  "nuances": [
+    {
+      "id": "desire",
+      "title": "Personal desire",
+      "description": "〜たい expresses what the speaker personally wants to do. It is most natural for your own wishes rather than someone else's internal desires.",
+      "example": {
+        "jp": "今日は早く帰りたいです。",
+        "segments": [
+          {
+            "text": "今日",
+            "reading": "きょう"
+          },
+          {
+            "text": "は"
+          },
+          {
+            "text": "早く",
+            "reading": "はやく"
+          },
+          {
+            "text": "帰りたい",
+            "reading": "かえりたい",
+            "highlight": true
+          },
+          {
+            "text": "です。"
+          }
+        ],
+        "romaji": "Kyou wa hayaku kaeritai desu.",
+        "en": "I want to go home early today."
+      }
+    },
+    {
+      "id": "softness",
+      "title": "Soft polite tone",
+      "description": "Adding です after 〜たい makes the wish sound gentle and polite, especially in everyday conversation.",
+      "example": {
+        "jp": "新しい映画を見たいです。",
+        "segments": [
+          {
+            "text": "新しい",
+            "reading": "あたらしい"
+          },
+          {
+            "text": "映画",
+            "reading": "えいが"
+          },
+          {
+            "text": "を"
+          },
+          {
+            "text": "見たい",
+            "reading": "みたい",
+            "highlight": true
+          },
+          {
+            "text": "です。"
+          }
+        ],
+        "romaji": "Atarashii eiga o mitai desu.",
+        "en": "I want to watch the new movie."
+      }
+    },
+    {
+      "id": "limits",
+      "title": "Not for commands",
+      "description": "〜たい talks about wanting to do something. It does not tell another person what to do, and it should not be used as an imperative."
+    }
+  ],
+  "exampleCount": 3,
+  "status": "draft",
+  "source": "migrated-from-legacy-json"
+}

@@ -1,0 +1,196 @@
+{
+  "id": "jlpt-n2-wakedehanai",
+  "level": "N2",
+  "lessonNumber": 17,
+  "titleJapanese": "〜わけではない",
+  "titleMeaning": "It is not that / It does not mean that",
+  "mainExample": {
+    "jp": "日本語が嫌いなわけではない。",
+    "segments": [
+      {
+        "text": "日本語",
+        "reading": "にほんご"
+      },
+      {
+        "text": "が"
+      },
+      {
+        "text": "嫌い",
+        "reading": "きらい"
+      },
+      {
+        "text": "な"
+      },
+      {
+        "text": "わけではない",
+        "highlight": true
+      },
+      {
+        "text": "。"
+      }
+    ],
+    "romaji": "Nihongo ga kirai na wake de wa nai.",
+    "en": "It is not that I dislike Japanese.",
+    "audioText": "日本語が嫌いなわけではない。"
+  },
+  "structureFormula": [
+    {
+      "id": "statement",
+      "text": "Clause",
+      "kind": "chip"
+    },
+    {
+      "id": "plus",
+      "text": "+",
+      "kind": "operator"
+    },
+    {
+      "id": "wake",
+      "text": "わけではない",
+      "kind": "accent"
+    }
+  ],
+  "conjugationChoices": [
+    {
+      "id": "adjective",
+      "label": "嫌い",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Base",
+          "value": "嫌い"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "link",
+          "label": "Link",
+          "value": "嫌いな"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "嫌いなわけではない",
+          "emphasis": true
+        }
+      ]
+    },
+    {
+      "id": "verb",
+      "label": "行く",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Clause",
+          "value": "毎日行く"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "毎日行くわけではない",
+          "emphasis": true
+        }
+      ]
+    },
+    {
+      "id": "noun",
+      "label": "先生",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Base",
+          "value": "先生"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "link",
+          "label": "Link",
+          "value": "先生な"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "先生なわけではない",
+          "emphasis": true
+        }
+      ]
+    }
+  ],
+  "nuances": [
+    {
+      "id": "partial-denial",
+      "title": "Partial denial",
+      "description": "This pattern softens a denial. Instead of rejecting something absolutely, it narrows what is or is not true."
+    },
+    {
+      "id": "correction",
+      "title": "Gentle correction",
+      "description": "It often appears when correcting a misunderstanding without sounding too blunt.",
+      "example": {
+        "jp": "忙しいわけではないが、今日は予定がある。",
+        "segments": [
+          {
+            "text": "忙しい",
+            "reading": "いそがしい"
+          },
+          {
+            "text": "わけではない",
+            "highlight": true
+          },
+          {
+            "text": "が、"
+          },
+          {
+            "text": "今日",
+            "reading": "きょう"
+          },
+          {
+            "text": "は"
+          },
+          {
+            "text": "予定",
+            "reading": "よてい"
+          },
+          {
+            "text": "が"
+          },
+          {
+            "text": "ある。"
+          }
+        ],
+        "romaji": "Isogashii wake de wa nai ga, kyou wa yotei ga aru.",
+        "en": "It's not that I'm busy, but I do have plans today."
+      }
+    },
+    {
+      "id": "not-total-negation",
+      "title": "Not total negation",
+      "description": "Compared with a plain negative, this phrasing implies that part of the idea may still be true."
+    }
+  ],
+  "exampleCount": 3,
+  "status": "draft",
+  "source": "migrated-from-legacy-json"
+}

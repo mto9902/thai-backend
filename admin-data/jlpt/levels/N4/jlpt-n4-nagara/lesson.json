@@ -1,0 +1,231 @@
+{
+  "id": "jlpt-n4-nagara",
+  "level": "N4",
+  "lessonNumber": 18,
+  "titleJapanese": "〜ながら",
+  "titleMeaning": "While doing / At the same time as",
+  "mainExample": {
+    "jp": "音楽を聞きながら宿題をします。",
+    "segments": [
+      {
+        "text": "音楽",
+        "reading": "おんがく"
+      },
+      {
+        "text": "を"
+      },
+      {
+        "text": "聞きながら",
+        "reading": "ききながら",
+        "highlight": true
+      },
+      {
+        "text": "宿題",
+        "reading": "しゅくだい"
+      },
+      {
+        "text": "を"
+      },
+      {
+        "text": "します。"
+      }
+    ],
+    "romaji": "Ongaku o kikinagara shukudai o shimasu.",
+    "en": "I do my homework while listening to music.",
+    "audioText": "音楽を聞きながら宿題をします。"
+  },
+  "structureFormula": [
+    {
+      "id": "verb",
+      "text": "Verb (stem)",
+      "kind": "chip"
+    },
+    {
+      "id": "plus",
+      "text": "+",
+      "kind": "operator"
+    },
+    {
+      "id": "nagara",
+      "text": "ながら",
+      "kind": "accent"
+    }
+  ],
+  "conjugationChoices": [
+    {
+      "id": "kiku",
+      "label": "聞く",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "聞く"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "stem",
+          "label": "Stem",
+          "value": "聞き"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "聞きながら"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "聞きながら宿題をします",
+          "emphasis": true
+        }
+      ]
+    },
+    {
+      "id": "aruku",
+      "label": "歩く",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "歩く"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "stem",
+          "label": "Stem",
+          "value": "歩き"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "歩きながら"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "歩きながら話します",
+          "emphasis": true
+        }
+      ]
+    },
+    {
+      "id": "taberu",
+      "label": "食べる",
+      "flow": [
+        {
+          "id": "dictionary",
+          "label": "Dictionary",
+          "value": "食べる"
+        },
+        {
+          "id": "arrow-1",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "stem",
+          "label": "Stem",
+          "value": "食べ"
+        },
+        {
+          "id": "arrow-2",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "base",
+          "label": "Base",
+          "value": "食べながら"
+        },
+        {
+          "id": "arrow-3",
+          "label": "",
+          "value": "↓"
+        },
+        {
+          "id": "result",
+          "label": "Result",
+          "value": "食べながら読みます",
+          "emphasis": true
+        }
+      ]
+    }
+  ],
+  "nuances": [
+    {
+      "id": "same-subject",
+      "title": "Same subject",
+      "description": "The person doing both actions is usually the same. 〜ながら links two actions performed by one subject."
+    },
+    {
+      "id": "main-action",
+      "title": "Second action feels main",
+      "description": "The action after 〜ながら often feels like the main action, while the first action forms the background.",
+      "example": {
+        "jp": "コーヒーを飲みながら本を読みます。",
+        "segments": [
+          {
+            "text": "コーヒー"
+          },
+          {
+            "text": "を"
+          },
+          {
+            "text": "飲みながら",
+            "reading": "のみながら",
+            "highlight": true
+          },
+          {
+            "text": "本",
+            "reading": "ほん"
+          },
+          {
+            "text": "を"
+          },
+          {
+            "text": "読みます",
+            "reading": "よみます"
+          }
+        ],
+        "romaji": "Koohii o nominagara hon o yomimasu.",
+        "en": "I read a book while drinking coffee."
+      }
+    },
+    {
+      "id": "limited-simultaneity",
+      "title": "Natural simultaneity",
+      "description": "Use it when the two actions can naturally happen together. If the pairing feels impossible or forced, another structure may be better."
+    }
+  ],
+  "exampleCount": 3,
+  "status": "draft",
+  "source": "migrated-from-legacy-json"
+}
