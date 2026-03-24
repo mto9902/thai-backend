@@ -10,6 +10,7 @@ import OpenAI from "openai";
 import path from "path";
 import textToSpeech from "@google-cloud/text-to-speech";
 import { createHash, randomBytes, randomUUID } from "crypto";
+import { resolveBreakdownTones } from "./breakdownTone.js";
 import { getPoolStats, pool } from "./db.js";
 import registerJlptRoutes from "./jlpt.js";
 import { registerSRSRoutes, SRS_CONFIG } from "./srs.js";
@@ -646,26 +647,43 @@ function normalizeWordBreakdownItem(item, index) {
     item.english,
     `Breakdown item ${index + 1} English`,
   );
-  const tone = normalizePlainString(item.tone, `Breakdown item ${index + 1} tone`);
+  const providedTone = normalizePlainString(
+    item.tone,
+    `Breakdown item ${index + 1} tone`,
+    { allowEmpty: true },
+  ).toLowerCase();
 
-  if (!VALID_TONES.has(tone)) {
+  if (providedTone && !VALID_TONES.has(providedTone)) {
     throw new Error(
       `Breakdown item ${index + 1} tone must be one of: ${Array.from(VALID_TONES).join(", ")}`,
     );
   }
-
-  const normalized = {
+  const romanization =
+    typeof item.romanization === "string" && item.romanization.trim()
+      ? item.romanization.trim()
+      : undefined;
+  // Derive tones from spelling / marked romanization instead of trusting
+  // AI-authored one-tone-per-chunk labels, which are often wrong.
+  const tones = resolveBreakdownTones({
     thai,
-    english,
-    tone,
-  };
+    romanization,
+  });
+
+  const normalized = { thai, english };
+
+  if (tones.length > 0) {
+    normalized.tones = tones;
+    if (tones.length === 1) {
+      normalized.tone = tones[0];
+    }
+  }
 
   if (item.grammar === true) {
     normalized.grammar = true;
   }
 
-  if (typeof item.romanization === "string" && item.romanization.trim()) {
-    normalized.romanization = item.romanization.trim();
+  if (romanization) {
+    normalized.romanization = romanization;
   }
 
   return normalized;
