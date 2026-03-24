@@ -1388,7 +1388,10 @@ async function ensureReviewAssigneeExists(userId) {
   );
 
   if (result.rows.length === 0) {
-    throw new Error("Review assignee must be an admin or reviewer");
+    console.warn(
+      `Ignoring stale review assignee ${userId}; user is no longer an admin or reviewer`,
+    );
+    return null;
   }
 
   return Number(result.rows[0].id);
