@@ -527,12 +527,12 @@ async function writeGrammarRowsToDatabase(grammarId, rows) {
             $9,
             $10::jsonb,
             $11,
-            $12,
+            $12::bigint,
             $13,
-            $14,
-            CASE WHEN $14 IS NOT NULL THEN NOW() ELSE NULL END,
-            $15,
-            CASE WHEN $15 IS NOT NULL THEN NOW() ELSE NULL END
+            $14::bigint,
+            CASE WHEN $14::bigint IS NOT NULL THEN NOW() ELSE NULL END,
+            $15::bigint,
+            CASE WHEN $15::bigint IS NOT NULL THEN NOW() ELSE NULL END
           )
         `,
         [
@@ -1676,12 +1676,12 @@ async function upsertGrammarLessonOverrideRecord({
       $2,
       $3::jsonb,
       $4,
-      $5,
+      $5::bigint,
       $6,
-      $7,
+      $7::bigint,
       NOW(),
-      $8,
-      CASE WHEN $8 IS NOT NULL THEN NOW() ELSE NULL END,
+      $8::bigint,
+      CASE WHEN $8::bigint IS NOT NULL THEN NOW() ELSE NULL END,
       NOW()
     )
     ON CONFLICT (grammar_id)
@@ -3948,12 +3948,12 @@ app.post(
           $9,
           $10::jsonb,
           $11,
-          $12,
+          $12::bigint,
           $13,
-          $14,
+          $14::bigint,
           NOW(),
-          $15,
-          CASE WHEN $15 IS NOT NULL THEN NOW() ELSE NULL END
+          $15::bigint,
+          CASE WHEN $15::bigint IS NOT NULL THEN NOW() ELSE NULL END
         )
         RETURNING id
         `,
@@ -4057,12 +4057,12 @@ app.patch(
           tone_status = $9,
           tone_analysis = $10::jsonb,
           review_status = $11,
-          review_assignee_user_id = $12,
+          review_assignee_user_id = $12::bigint,
           review_note = $13,
-          last_edited_by_user_id = $14,
+          last_edited_by_user_id = $14::bigint,
           last_edited_at = NOW(),
-          approved_by_user_id = $15,
-          approved_at = CASE WHEN $15 IS NOT NULL THEN NOW() ELSE NULL END
+          approved_by_user_id = $15::bigint,
+          approved_at = CASE WHEN $15::bigint IS NOT NULL THEN NOW() ELSE NULL END
         WHERE id = $1
         `,
         [
