@@ -8,6 +8,8 @@
     "seed:showcase": "node ./scripts/seedShowcaseUser.mjs",
     "migrate:grammar": "node ./scripts/migrateGrammarCsvsToDb.mjs",
     "generate:grammar": "node ./scripts/generateGrammarExamples.mjs",
+    "report:a11-review": "node ./scripts/reportA11Review.mjs",
+    "trim:grammar-rows": "node ./scripts/trimGrammarRows.mjs",
     "backfill:breakdown-romanization": "node ./scripts/backfillBreakdownRomanization.mjs",
     "rewrite:legacy-romanization": "node ./scripts/rewriteLegacyRomanization.mjs"
   },
