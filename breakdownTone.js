@@ -5,134 +5,183 @@ const EXPLICIT_ROMAN_TONE_MARKS = new Map([
   ["\u030C", "rising"],
 ]);
 
-const MID_CLASS_CONSONANTS = new Set(["ก", "จ", "ฎ", "ฏ", "ด", "ต", "บ", "ป", "อ"]);
+const MID_CLASS_CONSONANTS = new Set([
+  "\u0E01",
+  "\u0E08",
+  "\u0E0E",
+  "\u0E0F",
+  "\u0E14",
+  "\u0E15",
+  "\u0E1A",
+  "\u0E1B",
+  "\u0E2D",
+]);
 const HIGH_CLASS_CONSONANTS = new Set([
-  "ข",
-  "ฉ",
-  "ฐ",
-  "ถ",
-  "ผ",
-  "ฝ",
-  "ศ",
-  "ษ",
-  "ส",
-  "ห",
+  "\u0E02",
+  "\u0E09",
+  "\u0E10",
+  "\u0E16",
+  "\u0E1C",
+  "\u0E1D",
+  "\u0E28",
+  "\u0E29",
+  "\u0E2A",
+  "\u0E2B",
 ]);
 const LOW_CLASS_CONSONANTS = new Set([
-  "ค",
-  "ฅ",
-  "ฆ",
-  "ง",
-  "ช",
-  "ซ",
-  "ฌ",
-  "ญ",
-  "ฑ",
-  "ฒ",
-  "ณ",
-  "ท",
-  "ธ",
-  "น",
-  "พ",
-  "ฟ",
-  "ภ",
-  "ม",
-  "ย",
-  "ร",
-  "ล",
-  "ว",
-  "ฬ",
-  "ฮ",
+  "\u0E04",
+  "\u0E05",
+  "\u0E06",
+  "\u0E07",
+  "\u0E0A",
+  "\u0E0B",
+  "\u0E0C",
+  "\u0E0D",
+  "\u0E11",
+  "\u0E12",
+  "\u0E13",
+  "\u0E17",
+  "\u0E18",
+  "\u0E19",
+  "\u0E1E",
+  "\u0E1F",
+  "\u0E20",
+  "\u0E21",
+  "\u0E22",
+  "\u0E23",
+  "\u0E25",
+  "\u0E27",
+  "\u0E2C",
+  "\u0E2E",
 ]);
-const HO_NAM_FOLLOWERS = new Set(["ง", "ญ", "ณ", "น", "ม", "ย", "ร", "ล", "ว"]);
-const INITIAL_CLUSTER_SECONDS = new Set(["ร", "ล", "ว"]);
-const THAI_CONSONANT_REGEX = /[ก-ฮ]/u;
-const TONE_MARKS = ["่", "้", "๊", "๋"];
-const LIVE_FINALS = new Set(["ง", "น", "ณ", "ญ", "ม", "ย", "ว", "ร", "ล", "ฬ"]);
+const HO_NAM_FOLLOWERS = new Set([
+  "\u0E07",
+  "\u0E0D",
+  "\u0E13",
+  "\u0E19",
+  "\u0E21",
+  "\u0E22",
+  "\u0E23",
+  "\u0E25",
+  "\u0E27",
+]);
+const INITIAL_CLUSTER_SECONDS = new Set(["\u0E23", "\u0E25", "\u0E27"]);
+const THAI_CONSONANT_REGEX = /[\u0E01-\u0E2E]/u;
+const TONE_MARKS = ["\u0E48", "\u0E49", "\u0E4A", "\u0E4B"];
+const LIVE_FINALS = new Set([
+  "\u0E07",
+  "\u0E19",
+  "\u0E13",
+  "\u0E0D",
+  "\u0E21",
+  "\u0E22",
+  "\u0E27",
+  "\u0E23",
+  "\u0E25",
+  "\u0E2C",
+]);
 const STOP_FINALS = new Set([
-  "ก",
-  "ข",
-  "ค",
-  "ฆ",
-  "ด",
-  "จ",
-  "ช",
-  "ซ",
-  "ฎ",
-  "ฏ",
-  "ฐ",
-  "ฑ",
-  "ฒ",
-  "ต",
-  "ถ",
-  "ท",
-  "ธ",
-  "ศ",
-  "ษ",
-  "ส",
-  "บ",
-  "ป",
-  "พ",
-  "ภ",
-  "ฟ",
+  "\u0E01",
+  "\u0E02",
+  "\u0E04",
+  "\u0E06",
+  "\u0E14",
+  "\u0E08",
+  "\u0E0A",
+  "\u0E0B",
+  "\u0E0E",
+  "\u0E0F",
+  "\u0E10",
+  "\u0E11",
+  "\u0E12",
+  "\u0E15",
+  "\u0E16",
+  "\u0E17",
+  "\u0E18",
+  "\u0E28",
+  "\u0E29",
+  "\u0E2A",
+  "\u0E1A",
+  "\u0E1B",
+  "\u0E1E",
+  "\u0E20",
+  "\u0E1F",
 ]);
 const TRAILING_NON_CONSONANTS = new Set([
-  "่",
-  "้",
-  "๊",
-  "๋",
-  "็",
-  "์",
-  "ํ",
-  "ะ",
-  "ั",
-  "า",
-  "ำ",
-  "ิ",
-  "ี",
-  "ึ",
-  "ื",
-  "ุ",
-  "ู",
-  "เ",
-  "แ",
-  "โ",
-  "ใ",
-  "ไ",
+  "\u0E48",
+  "\u0E49",
+  "\u0E4A",
+  "\u0E4B",
+  "\u0E47",
+  "\u0E4C",
+  "\u0E4D",
+  "\u0E30",
+  "\u0E31",
+  "\u0E32",
+  "\u0E33",
+  "\u0E34",
+  "\u0E35",
+  "\u0E36",
+  "\u0E37",
+  "\u0E38",
+  "\u0E39",
+  "\u0E40",
+  "\u0E41",
+  "\u0E42",
+  "\u0E43",
+  "\u0E44",
 ]);
 const SHORT_VOWEL_PATTERNS = [
-  /ะ/u,
-  /ั/u,
-  /ิ/u,
-  /ึ/u,
-  /ุ/u,
-  /็/u,
-  /เ[ก-ฮ]+ะ/u,
-  /แ[ก-ฮ]+ะ/u,
-  /โ[ก-ฮ]+ะ/u,
-  /เ[ก-ฮ]+าะ/u,
-  /เ[ก-ฮ]+อะ/u,
-  /เ[ก-ฮ]+ียะ/u,
-  /เ[ก-ฮ]+ือะ/u,
-  /[ก-ฮ]+ัวะ/u,
-  /ฤ/u,
+  /\u0E30/u,
+  /\u0E31/u,
+  /\u0E34/u,
+  /\u0E36/u,
+  /\u0E38/u,
+  /\u0E47/u,
+  /\u0E40[\u0E01-\u0E2E]+\u0E30/u,
+  /\u0E41[\u0E01-\u0E2E]+\u0E30/u,
+  /\u0E42[\u0E01-\u0E2E]+\u0E30/u,
+  /\u0E40[\u0E01-\u0E2E]+\u0E32\u0E30/u,
+  /\u0E40[\u0E01-\u0E2E]+\u0E2D\u0E30/u,
+  /\u0E40[\u0E01-\u0E2E]+\u0E35\u0E22\u0E30/u,
+  /\u0E40[\u0E01-\u0E2E]+\u0E37\u0E2D\u0E30/u,
+  /[\u0E01-\u0E2E]+\u0E31\u0E27\u0E30/u,
+  /\u0E24/u,
 ];
 const LONG_VOWEL_HINTS = [
-  /า/u,
-  /ี/u,
-  /ื/u,
-  /ู/u,
-  /ๅ/u,
-  /ำ/u,
-  /อ[ก-ฮ]$/u,
-  /เ/u,
-  /แ/u,
-  /โ/u,
-  /ใ/u,
-  /ไ/u,
-  /ัว/u,
-  /เ[ก-ฮ]+ีย/u,
-  /เ[ก-ฮ]+ือ/u,
+  /\u0E32/u,
+  /\u0E35/u,
+  /\u0E37/u,
+  /\u0E39/u,
+  /\u0E46/u,
+  /\u0E33/u,
+  /\u0E2D[\u0E01-\u0E2E]$/u,
+  /\u0E40/u,
+  /\u0E41/u,
+  /\u0E42/u,
+  /\u0E43/u,
+  /\u0E44/u,
+  /\u0E31\u0E27/u,
+  /\u0E40[\u0E01-\u0E2E]+\u0E35\u0E22/u,
+  /\u0E40[\u0E01-\u0E2E]+\u0E37\u0E2D/u,
+];
+const THAI_VOWELS = [
+  "\u0E30",
+  "\u0E32",
+  "\u0E34",
+  "\u0E35",
+  "\u0E36",
+  "\u0E37",
+  "\u0E38",
+  "\u0E39",
+  "\u0E40",
+  "\u0E41",
+  "\u0E42",
+  "\u0E43",
+  "\u0E44",
+  "\u0E33",
+  "\u0E46",
+  "\u0E24",
 ];
 
 function splitRomanizedSyllables(romanization) {
@@ -173,6 +222,18 @@ function countExplicitRomanToneMarks(syllable) {
   return count;
 }
 
+function countThaiSyllables(word) {
+  let count = 0;
+
+  for (const vowel of THAI_VOWELS) {
+    if (word.includes(vowel)) {
+      count += word.split(vowel).length - 1;
+    }
+  }
+
+  return count;
+}
+
 function getThaiConsonants(word) {
   return Array.from(word)
     .map((char, index) => ({ char, index }))
@@ -180,11 +241,11 @@ function getThaiConsonants(word) {
 }
 
 function stripSilentMarkers(word) {
-  return word.replace(/[ก-ฮ]์/gu, "").replace(/์/gu, "");
+  return word.replace(/[\u0E01-\u0E2E]\u0E4C/gu, "").replace(/\u0E4C/gu, "");
 }
 
 function stripToneMarks(word) {
-  return word.replace(/[่้๊๋]/gu, "");
+  return word.replace(/[\u0E48\u0E49\u0E4A\u0E4B]/gu, "");
 }
 
 function getToneMark(word) {
@@ -217,7 +278,7 @@ function getEffectiveInitialClass(word) {
   const baseClass = getConsonantClass(first.char);
 
   if (
-    first.char === "ห" &&
+    first.char === "\u0E2B" &&
     second &&
     second.index === first.index + 1 &&
     HO_NAM_FOLLOWERS.has(second.char)
@@ -239,13 +300,12 @@ function getFinalConsonant(word) {
     consonants.length === 2 &&
     second.index === first.index + 1 &&
     (INITIAL_CLUSTER_SECONDS.has(second.char) ||
-      (first.char === "ห" && HO_NAM_FOLLOWERS.has(second.char)))
+      (first.char === "\u0E2B" && HO_NAM_FOLLOWERS.has(second.char)))
   ) {
     return undefined;
   }
 
   const chars = Array.from(word);
-
   for (let index = chars.length - 1; index >= 0; index -= 1) {
     const char = chars[index];
 
@@ -274,7 +334,7 @@ function isShortVowel(word, hasFinalConsonant) {
 }
 
 function getSyllableType(word) {
-  if (word.endsWith("ำ")) {
+  if (word.endsWith("\u0E33")) {
     return "live";
   }
 
@@ -323,19 +383,19 @@ function calculateThaiToneFromSpelling(thai, romanization) {
     getSyllableType(stripped) === "dead" &&
     isShortVowel(stripped, Boolean(finalConsonant));
 
-  if (toneMark === "่") {
+  if (toneMark === "\u0E48") {
     return initialClass === "low" ? "falling" : "low";
   }
 
-  if (toneMark === "้") {
+  if (toneMark === "\u0E49") {
     return initialClass === "low" ? "high" : "falling";
   }
 
-  if (toneMark === "๊") {
+  if (toneMark === "\u0E4A") {
     return initialClass === "mid" ? "high" : undefined;
   }
 
-  if (toneMark === "๋") {
+  if (toneMark === "\u0E4B") {
     return initialClass === "mid" ? "rising" : undefined;
   }
 
@@ -393,37 +453,134 @@ function getExplicitTonesFromRomanization(romanization) {
   return [];
 }
 
-export function resolveBreakdownTones({ thai, romanization }) {
-  const normalizedThai = typeof thai === "string" ? thai.trim() : "";
-  const normalizedRomanization =
-    typeof romanization === "string" ? romanization.trim() : "";
-
-  if (!normalizedThai) {
+function normalizeProvidedTones(value) {
+  if (!Array.isArray(value)) {
     return [];
   }
 
-  const thaiTone = calculateThaiToneFromSpelling(
-    normalizedThai,
-    normalizedRomanization,
-  );
-  if (thaiTone) {
-    return [thaiTone];
+  return value.filter((tone) => typeof tone === "string" && tone.trim().length > 0);
+}
+
+export function analyzeBreakdownTones({
+  thai,
+  romanization,
+  providedTones,
+  overrideTones,
+}) {
+  const normalizedThai = typeof thai === "string" ? thai.trim() : "";
+  const normalizedRomanization =
+    typeof romanization === "string" ? romanization.trim() : "";
+  const normalizedProvidedTones = normalizeProvidedTones(providedTones);
+  const normalizedOverrideTones = normalizeProvidedTones(overrideTones);
+  const syllableCount = countThaiSyllables(normalizedThai);
+
+  if (normalizedOverrideTones.length > 0) {
+    return {
+      tones: normalizedOverrideTones,
+      confidence: 100,
+      status: "approved",
+      source: "override",
+      needsReview: false,
+      reasons: [],
+      syllableCount,
+    };
+  }
+
+  if (normalizedProvidedTones.length > 0) {
+    return {
+      tones: normalizedProvidedTones,
+      confidence: 100,
+      status: "approved",
+      source: "manual",
+      needsReview: false,
+      reasons: [],
+      syllableCount,
+    };
+  }
+
+  if (!normalizedThai) {
+    return {
+      tones: [],
+      confidence: 0,
+      status: "review",
+      source: "missing",
+      needsReview: true,
+      reasons: ["Missing Thai text"],
+      syllableCount: 0,
+    };
+  }
+
+  if (syllableCount === 1) {
+    const thaiTone = calculateThaiToneFromSpelling(
+      normalizedThai,
+      normalizedRomanization,
+    );
+    if (thaiTone) {
+      return {
+        tones: [thaiTone],
+        confidence: 99,
+        status: "approved",
+        source: "thai-spelling",
+        needsReview: false,
+        reasons: [],
+        syllableCount,
+      };
+    }
   }
 
   if (normalizedRomanization) {
     const explicitRomanizationTones =
       getExplicitTonesFromRomanization(normalizedRomanization);
     if (explicitRomanizationTones.length > 0) {
-      return explicitRomanizationTones;
+      return {
+        tones: explicitRomanizationTones,
+        confidence: explicitRomanizationTones.length === 1 ? 97 : 96,
+        status: "review",
+        source:
+          explicitRomanizationTones.length === 1
+            ? "romanization-explicit"
+            : "romanization-explicit-multi",
+        needsReview: true,
+        reasons: [
+          explicitRomanizationTones.length === 1
+            ? "Tone comes from marked romanization and needs review"
+            : "Multi-syllable tone comes from marked romanization and needs review",
+        ],
+        syllableCount,
+      };
     }
 
     const consensusTone = getRomanizationConsensusTone(normalizedRomanization);
     if (consensusTone) {
-      return [consensusTone];
+      return {
+        tones: [consensusTone],
+        confidence: 90,
+        status: "review",
+        source: "romanization-consensus",
+        needsReview: true,
+        reasons: ["Tone is inferred from romanization consensus and needs review"],
+        syllableCount,
+      };
     }
   }
 
-  return [];
+  return {
+    tones: [],
+    confidence: 0,
+    status: "review",
+    source: "unresolved",
+    needsReview: true,
+    reasons: [
+      syllableCount > 1
+        ? "Multi-syllable word needs manual tone review"
+        : "No reliable tone derivation",
+    ],
+    syllableCount,
+  };
+}
+
+export function resolveBreakdownTones(args) {
+  return analyzeBreakdownTones(args).tones;
 }
 
 export function resolveBreakdownTone(args) {

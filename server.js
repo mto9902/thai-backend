@@ -10,7 +10,7 @@ import OpenAI from "openai";
 import path from "path";
 import textToSpeech from "@google-cloud/text-to-speech";
 import { createHash, randomBytes, randomUUID } from "crypto";
-import { resolveBreakdownTones } from "./breakdownTone.js";
+import { analyzeBreakdownTones } from "./breakdownTone.js";
 import { getPoolStats, pool } from "./db.js";
 import registerJlptRoutes from "./jlpt.js";
 import { registerSRSRoutes, SRS_CONFIG } from "./srs.js";
@@ -139,6 +139,8 @@ const VALID_GRAMMAR_STAGES = new Set([
 ]);
 const VALID_TONES = new Set(["mid", "low", "falling", "high", "rising"]);
 const VALID_DIFFICULTIES = new Set(["easy", "medium", "hard"]);
+const VALID_TONE_STATUSES = new Set(["approved", "review"]);
+const APPROVED_TONE_CONFIDENCE = 99;
 
 function getRequestIdentity(req, prefix = "anon") {
   if (req.userId) {
@@ -257,7 +259,7 @@ function parseGrammarBreakdown(rawBreakdown, contextLabel) {
   }
 }
 
-function normalizeStoredGrammarRow(row, index, grammarId) {
+function normalizeStoredGrammarRow(row, index, grammarId, options = {}) {
   return normalizeGrammarRow(
     {
       thai: row.thai,
@@ -270,6 +272,7 @@ function normalizeStoredGrammarRow(row, index, grammarId) {
       difficulty: row.difficulty,
     },
     index,
+    options,
   );
 }
 
@@ -281,7 +284,11 @@ function readGrammarRowsFromCsvFile(filePath, grammarId) {
       .pipe(csv())
       .on("data", (row) => {
         try {
-          rows.push(normalizeStoredGrammarRow(row, rows.length, grammarId));
+          rows.push(
+            normalizeStoredGrammarRow(row, rows.length, grammarId, {
+              trustProvidedTones: true,
+            }),
+          );
         } catch (err) {
           reject(err);
         }
@@ -314,13 +321,26 @@ async function readGrammarRowsFromCsvDirectory() {
 async function loadGrammarRowsFromDatabase() {
   const result = await pool.query(
     `
-    SELECT grammar_id, thai, romanization, english, breakdown, difficulty, sort_order
+    SELECT
+      id,
+      grammar_id,
+      thai,
+      romanization,
+      english,
+      breakdown,
+      difficulty,
+      sort_order,
+      tone_confidence,
+      tone_status,
+      tone_analysis
     FROM ${GRAMMAR_EXAMPLES_TABLE}
     ORDER BY grammar_id ASC, sort_order ASC, id ASC
     `,
   );
 
   const nextGrammarSentences = {};
+  const updates = [];
+  const grammarsNeedingCsvMirror = new Set();
 
   for (const row of result.rows) {
     if (!nextGrammarSentences[row.grammar_id]) {
@@ -331,8 +351,89 @@ async function loadGrammarRowsFromDatabase() {
       row,
       nextGrammarSentences[row.grammar_id].length,
       row.grammar_id,
+      {
+        trustProvidedTonesByIndex: Array.isArray(row.tone_analysis?.breakdown)
+          ? row.tone_analysis.breakdown.map(
+              (item) =>
+                item?.source === "manual" || item?.source === "override",
+            )
+          : [],
+      },
     );
     nextGrammarSentences[row.grammar_id].push(normalizedRow);
+
+    const storedBreakdown = JSON.stringify(row.breakdown ?? []);
+    const normalizedBreakdown = JSON.stringify(normalizedRow.breakdown);
+    const storedConfidence = Number.isFinite(Number(row.tone_confidence))
+      ? Number(row.tone_confidence)
+      : 0;
+    const storedStatus =
+      typeof row.tone_status === "string" && VALID_TONE_STATUSES.has(row.tone_status)
+        ? row.tone_status
+        : "review";
+    const storedAnalysis = JSON.stringify(row.tone_analysis ?? {});
+    const normalizedAnalysis = JSON.stringify(normalizedRow.toneAnalysis);
+
+    if (
+      storedBreakdown !== normalizedBreakdown ||
+      storedConfidence !== normalizedRow.toneConfidence ||
+      storedStatus !== normalizedRow.toneStatus ||
+      storedAnalysis !== normalizedAnalysis
+    ) {
+      updates.push({
+        id: row.id,
+        breakdown: normalizedRow.breakdown,
+        toneConfidence: normalizedRow.toneConfidence,
+        toneStatus: normalizedRow.toneStatus,
+        toneAnalysis: normalizedRow.toneAnalysis,
+      });
+      grammarsNeedingCsvMirror.add(row.grammar_id);
+    }
+  }
+
+  if (updates.length > 0) {
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      for (const update of updates) {
+        await client.query(
+          `
+          UPDATE ${GRAMMAR_EXAMPLES_TABLE}
+          SET
+            breakdown = $2::jsonb,
+            tone_confidence = $3,
+            tone_status = $4,
+            tone_analysis = $5::jsonb,
+            updated_at = NOW()
+          WHERE id = $1
+          `,
+          [
+            update.id,
+            JSON.stringify(update.breakdown),
+            update.toneConfidence,
+            update.toneStatus,
+            JSON.stringify(update.toneAnalysis),
+          ],
+        );
+      }
+      await client.query("COMMIT");
+    } catch (err) {
+      await client.query("ROLLBACK");
+      throw err;
+    } finally {
+      client.release();
+    }
+
+    for (const grammarId of grammarsNeedingCsvMirror) {
+      const rows = nextGrammarSentences[grammarId];
+      if (Array.isArray(rows)) {
+        writeGrammarRowsToCsvMirror(grammarId, rows);
+      }
+    }
+
+    console.log(
+      `Backfilled tone metadata for ${updates.length} grammar example row${updates.length === 1 ? "" : "s"}`,
+    );
   }
 
   return nextGrammarSentences;
@@ -352,9 +453,20 @@ async function writeGrammarRowsToDatabase(grammarId, rows) {
       await client.query(
         `
         INSERT INTO ${GRAMMAR_EXAMPLES_TABLE}
-          (grammar_id, sort_order, thai, romanization, english, breakdown, difficulty)
+          (
+            grammar_id,
+            sort_order,
+            thai,
+            romanization,
+            english,
+            breakdown,
+            difficulty,
+            tone_confidence,
+            tone_status,
+            tone_analysis
+          )
         VALUES
-          ($1, $2, $3, $4, $5, $6::jsonb, $7)
+          ($1, $2, $3, $4, $5, $6::jsonb, $7, $8, $9, $10::jsonb)
         `,
         [
           grammarId,
@@ -364,6 +476,9 @@ async function writeGrammarRowsToDatabase(grammarId, rows) {
           row.english,
           JSON.stringify(row.breakdown),
           row.difficulty,
+          row.toneConfidence,
+          row.toneStatus,
+          JSON.stringify(row.toneAnalysis),
         ],
       );
     }
@@ -637,7 +752,33 @@ function normalizePlainString(value, fieldName, options = {}) {
   return trimmed;
 }
 
-function normalizeWordBreakdownItem(item, index) {
+function normalizeProvidedTones(value, fieldName) {
+  if (value == null) {
+    return [];
+  }
+
+  if (!Array.isArray(value)) {
+    throw new Error(`${fieldName} must be an array of tone names`);
+  }
+
+  return value.map((entry, index) => {
+    const tone = normalizePlainString(
+      entry,
+      `${fieldName} item ${index + 1}`,
+      { allowEmpty: false },
+    ).toLowerCase();
+
+    if (!VALID_TONES.has(tone)) {
+      throw new Error(
+        `${fieldName} item ${index + 1} must be one of: ${Array.from(VALID_TONES).join(", ")}`,
+      );
+    }
+
+    return tone;
+  });
+}
+
+function normalizeWordBreakdownItem(item, index, options = {}) {
   if (!item || typeof item !== "object") {
     throw new Error(`Breakdown item ${index + 1} must be an object`);
   }
@@ -647,34 +788,28 @@ function normalizeWordBreakdownItem(item, index) {
     item.english,
     `Breakdown item ${index + 1} English`,
   );
-  const providedTone = normalizePlainString(
-    item.tone,
-    `Breakdown item ${index + 1} tone`,
-    { allowEmpty: true },
-  ).toLowerCase();
-
-  if (providedTone && !VALID_TONES.has(providedTone)) {
-    throw new Error(
-      `Breakdown item ${index + 1} tone must be one of: ${Array.from(VALID_TONES).join(", ")}`,
-    );
-  }
   const romanization =
     typeof item.romanization === "string" && item.romanization.trim()
       ? item.romanization.trim()
       : undefined;
-  // Derive tones from spelling / marked romanization instead of trusting
-  // AI-authored one-tone-per-chunk labels, which are often wrong.
-  const tones = resolveBreakdownTones({
+  const providedTones = options.trustProvidedTones
+    ? normalizeProvidedTones(
+        item.tones,
+        `Breakdown item ${index + 1} tones`,
+      )
+    : [];
+  const toneAnalysis = analyzeBreakdownTones({
     thai,
     romanization,
+    providedTones,
   });
 
   const normalized = { thai, english };
 
-  if (tones.length > 0) {
-    normalized.tones = tones;
-    if (tones.length === 1) {
-      normalized.tone = tones[0];
+  if (toneAnalysis.tones.length > 0) {
+    normalized.tones = toneAnalysis.tones;
+    if (toneAnalysis.tones.length === 1) {
+      normalized.tone = toneAnalysis.tones[0];
     }
   }
 
@@ -686,7 +821,40 @@ function normalizeWordBreakdownItem(item, index) {
     normalized.romanization = romanization;
   }
 
-  return normalized;
+  return {
+    item: normalized,
+    toneAnalysis: {
+      confidence: toneAnalysis.confidence,
+      status: toneAnalysis.status,
+      source: toneAnalysis.source,
+      needsReview: toneAnalysis.needsReview,
+      reasons: toneAnalysis.reasons,
+      syllableCount: toneAnalysis.syllableCount,
+    },
+  };
+}
+
+function summarizeRowToneAnalysis(itemAnalyses) {
+  const confidence = itemAnalyses.reduce(
+    (lowest, item) => Math.min(lowest, item.confidence),
+    100,
+  );
+  const flaggedItems = itemAnalyses.filter(
+    (item) => item.needsReview || item.confidence < APPROVED_TONE_CONFIDENCE,
+  );
+
+  return {
+    confidence,
+    status:
+      flaggedItems.length === 0 && confidence >= APPROVED_TONE_CONFIDENCE
+        ? "approved"
+        : "review",
+    flaggedItemCount: flaggedItems.length,
+    reasons: Array.from(
+      new Set(flaggedItems.flatMap((item) => item.reasons || [])),
+    ),
+    breakdown: itemAnalyses,
+  };
 }
 
 function normalizeExample(example) {
@@ -702,8 +870,11 @@ function normalizeExample(example) {
     thai: normalizePlainString(example.thai, "Example Thai"),
     roman: normalizePlainString(example.roman, "Example romanization"),
     english: normalizePlainString(example.english, "Example English"),
-    breakdown: example.breakdown.map((item, index) =>
-      normalizeWordBreakdownItem(item, index),
+    breakdown: example.breakdown.map(
+      (item, index) =>
+        normalizeWordBreakdownItem(item, index, {
+          trustProvidedTones: true,
+        }).item,
     ),
   };
 }
@@ -752,7 +923,7 @@ function normalizeGrammarOverride(override) {
   };
 }
 
-function normalizeGrammarRow(row, index) {
+function normalizeGrammarRow(row, index, options = {}) {
   if (!row || typeof row !== "object") {
     throw new Error(`Row ${index + 1} must be an object`);
   }
@@ -772,6 +943,17 @@ function normalizeGrammarRow(row, index) {
     );
   }
 
+  const normalizedBreakdown = row.breakdown.map((item, breakdownIndex) =>
+    normalizeWordBreakdownItem(item, breakdownIndex, {
+      trustProvidedTones:
+        options.trustProvidedTones === true ||
+        options.trustProvidedTonesByIndex?.[breakdownIndex] === true,
+    }),
+  );
+  const toneAnalysis = summarizeRowToneAnalysis(
+    normalizedBreakdown.map((item) => item.toneAnalysis),
+  );
+
   return {
     thai: normalizePlainString(row.thai, `Row ${index + 1} Thai`),
     romanization: normalizePlainString(
@@ -779,10 +961,11 @@ function normalizeGrammarRow(row, index) {
       `Row ${index + 1} romanization`,
     ),
     english: normalizePlainString(row.english, `Row ${index + 1} English`),
-    breakdown: row.breakdown.map((item, breakdownIndex) =>
-      normalizeWordBreakdownItem(item, breakdownIndex),
-    ),
+    breakdown: normalizedBreakdown.map((item) => item.item),
     difficulty,
+    toneConfidence: toneAnalysis.confidence,
+    toneStatus: toneAnalysis.status,
+    toneAnalysis,
   };
 }
 
@@ -791,7 +974,9 @@ function normalizeGrammarRows(rows) {
     throw new Error("Practice rows must contain at least one sentence");
   }
 
-  return rows.map((row, index) => normalizeGrammarRow(row, index));
+  return rows.map((row, index) =>
+    normalizeGrammarRow(row, index, { trustProvidedTones: true }),
+  );
 }
 
 function escapeCsvValue(value) {
@@ -2498,6 +2683,13 @@ app.get("/admin/grammar", authMiddleware, adminMiddleware, async (_req, res) => 
       ids.map((id) => ({
         id,
         rowCount: Array.isArray(grammarSentences[id]) ? grammarSentences[id].length : 0,
+        approvedRowCount: Array.isArray(grammarSentences[id])
+          ? grammarSentences[id].filter(
+              (row) =>
+                row?.toneStatus === "approved" &&
+                Number(row?.toneConfidence) >= APPROVED_TONE_CONFIDENCE,
+            ).length
+          : 0,
         hasOverride: Boolean(overrides[id]),
       })),
     );
@@ -2975,10 +3167,25 @@ async function startServer() {
         english TEXT NOT NULL,
         breakdown JSONB NOT NULL,
         difficulty TEXT NOT NULL,
+        tone_confidence INTEGER NOT NULL DEFAULT 0,
+        tone_status TEXT NOT NULL DEFAULT 'review',
+        tone_analysis JSONB NOT NULL DEFAULT '{}'::jsonb,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
         updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
         UNIQUE (grammar_id, sort_order)
       );
+    `);
+    await pool.query(`
+      ALTER TABLE ${GRAMMAR_EXAMPLES_TABLE}
+      ADD COLUMN IF NOT EXISTS tone_confidence INTEGER NOT NULL DEFAULT 0
+    `);
+    await pool.query(`
+      ALTER TABLE ${GRAMMAR_EXAMPLES_TABLE}
+      ADD COLUMN IF NOT EXISTS tone_status TEXT NOT NULL DEFAULT 'review'
+    `);
+    await pool.query(`
+      ALTER TABLE ${GRAMMAR_EXAMPLES_TABLE}
+      ADD COLUMN IF NOT EXISTS tone_analysis JSONB NOT NULL DEFAULT '{}'::jsonb
     `);
     await pool.query(`
       CREATE INDEX IF NOT EXISTS idx_grammar_examples_grammar_sort
@@ -3068,10 +3275,17 @@ async function startServer() {
 app.post("/practice-csv", (req, res) => {
   const { grammar, preview } = req.body;
 
-  const matches = grammarSentences[grammar] || [];
+  const matches = (grammarSentences[grammar] || []).filter(
+    (row) =>
+      row?.toneStatus === "approved" &&
+      Number(row?.toneConfidence) >= APPROVED_TONE_CONFIDENCE,
+  );
 
   if (matches.length === 0) {
-    return res.status(404).json({ error: "No sentences found" });
+    return res.status(404).json({
+      error: "No review-approved sentences found",
+      needsToneReview: true,
+    });
   }
 
   if (preview) {
