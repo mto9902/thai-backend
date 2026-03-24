@@ -167,6 +167,7 @@ const LONG_VOWEL_HINTS = [
 ];
 const THAI_VOWELS = [
   "\u0E30",
+  "\u0E31",
   "\u0E32",
   "\u0E34",
   "\u0E35",
@@ -180,9 +181,37 @@ const THAI_VOWELS = [
   "\u0E43",
   "\u0E44",
   "\u0E33",
-  "\u0E46",
   "\u0E24",
+  "\u0E26",
+  "\u0E45",
 ];
+const LEADING_VOWELS = new Set([
+  "\u0E40",
+  "\u0E41",
+  "\u0E42",
+  "\u0E43",
+  "\u0E44",
+]);
+const DEPENDENT_VOWELS = new Set([
+  "\u0E30",
+  "\u0E31",
+  "\u0E32",
+  "\u0E33",
+  "\u0E34",
+  "\u0E35",
+  "\u0E36",
+  "\u0E37",
+  "\u0E38",
+  "\u0E39",
+  "\u0E24",
+  "\u0E26",
+  "\u0E45",
+]);
+const TRUE_INITIAL_CLUSTER_FIRSTS = {
+  "\u0E23": new Set(["\u0E01", "\u0E02", "\u0E04", "\u0E15", "\u0E1B", "\u0E1E"]),
+  "\u0E25": new Set(["\u0E01", "\u0E02", "\u0E04", "\u0E1B", "\u0E1E", "\u0E1F"]),
+  "\u0E27": new Set(["\u0E01", "\u0E02", "\u0E04"]),
+};
 
 function splitRomanizedSyllables(romanization) {
   return romanization
@@ -223,15 +252,68 @@ function countExplicitRomanToneMarks(syllable) {
 }
 
 function countThaiSyllables(word) {
+  const chars = Array.from(stripToneMarks(stripSilentMarkers(word)));
   let count = 0;
 
-  for (const vowel of THAI_VOWELS) {
-    if (word.includes(vowel)) {
-      count += word.split(vowel).length - 1;
+  for (let index = 0; index < chars.length; index += 1) {
+    const char = chars[index];
+
+    if (LEADING_VOWELS.has(char)) {
+      count += 1;
+      continue;
+    }
+
+    if (DEPENDENT_VOWELS.has(char)) {
+      const previous = chars[index - 1];
+      if (!previous || !LEADING_VOWELS.has(previous)) {
+        count += 1;
+      }
     }
   }
 
   return count;
+}
+
+function isValidTrueInitialCluster(first, second) {
+  return Boolean(
+    TRUE_INITIAL_CLUSTER_FIRSTS[second] &&
+      TRUE_INITIAL_CLUSTER_FIRSTS[second].has(first),
+  );
+}
+
+function isConservativeSingleSyllableCandidate(word) {
+  if (!word || /[\s/]/u.test(word) || word.includes("\u0E4C")) {
+    return false;
+  }
+
+  const stripped = stripToneMarks(stripSilentMarkers(word));
+  const consonants = getThaiConsonants(stripped);
+  if (consonants.length === 0) {
+    return false;
+  }
+
+  if (countThaiSyllables(word) !== 1) {
+    return false;
+  }
+
+  if (consonants.length >= 4) {
+    return false;
+  }
+
+  if (consonants.length === 3) {
+    const [first, second] = consonants;
+    if (!second || second.index !== first.index + 1) {
+      return false;
+    }
+
+    const hasHoNamLead =
+      first.char === "\u0E2B" && HO_NAM_FOLLOWERS.has(second.char);
+    if (!hasHoNamLead && !isValidTrueInitialCluster(first.char, second.char)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 function getThaiConsonants(word) {
@@ -510,7 +592,7 @@ export function analyzeBreakdownTones({
     };
   }
 
-  if (syllableCount === 1) {
+  if (syllableCount === 1 && isConservativeSingleSyllableCandidate(normalizedThai)) {
     const thaiTone = calculateThaiToneFromSpelling(
       normalizedThai,
       normalizedRomanization,
