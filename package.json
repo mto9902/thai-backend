@@ -12,7 +12,10 @@
     "report:a11-published-rows": "node ./scripts/reportA11PublishedRows.mjs",
     "apply:a11-manual-review": "node ./scripts/applyA11ManualReview.mjs",
     "apply:a11-content-curation": "node ./scripts/applyA11ContentCuration.mjs",
+    "apply:a11-trimmed-review-wave1": "node ./scripts/applyA11TrimmedReviewWave1.mjs",
+    "apply:a11-full-manual-curation": "node ./scripts/applyA11FullManualCuration.mjs",
     "trim:grammar-rows": "node ./scripts/trimGrammarRows.mjs",
+    "trim:a11-lessons": "node ./scripts/trimA11Lessons.mjs",
     "backfill:breakdown-romanization": "node ./scripts/backfillBreakdownRomanization.mjs",
     "rewrite:legacy-romanization": "node ./scripts/rewriteLegacyRomanization.mjs"
   },
