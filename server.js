@@ -13,6 +13,19 @@ import { createHash, randomBytes, randomUUID } from "crypto";
 import { analyzeBreakdownTones } from "./breakdownTone.js";
 import { getPoolStats, pool } from "./db.js";
 import registerJlptRoutes from "./jlpt.js";
+import {
+  extractPaddleCustomUserId,
+  extractPaddlePriceId,
+  findPaddleCustomerByEmail,
+  getPaddlePublicConfig,
+  isPaddleApiConfigured,
+  isPaddleSubscriptionAccessActive,
+  isPaddleWebhookConfigured,
+  listPaddleSubscriptionsForCustomer,
+  normalizePaddleSubscriptionStatus,
+  paddleApiRequest,
+  verifyPaddleWebhookSignature,
+} from "./paddle.js";
 import { registerSRSRoutes, SRS_CONFIG } from "./srs.js";
 import registerTransformRoute from "./transform.js";
 
@@ -21,7 +34,16 @@ dotenv.config();
 const app = express();
 app.set("trust proxy", true);
 app.use(cors());
-app.use(express.json({ limit: process.env.JSON_BODY_LIMIT || "1mb" }));
+app.use(
+  express.json({
+    limit: process.env.JSON_BODY_LIMIT || "1mb",
+    verify: (req, _res, buffer) => {
+      if (req.originalUrl === "/webhooks/paddle") {
+        req.rawBody = buffer.toString("utf8");
+      }
+    },
+  }),
+);
 
 const registeredRoutes = [];
 const TRACKED_HTTP_METHODS = ["get", "post", "put", "patch", "delete"];
@@ -2109,6 +2131,560 @@ function createSessionToken(user) {
   );
 }
 
+function hasKeystoneAccess(row) {
+  return row?.has_keystone_access === true || row?.paddle_keystone_access === true;
+}
+
+function mapUserAccessRow(row) {
+  if (!row || typeof row !== "object") {
+    return row;
+  }
+
+  return {
+    ...row,
+    has_keystone_access: hasKeystoneAccess(row),
+  };
+}
+
+function createHttpError(status, message) {
+  const error = new Error(message);
+  error.status = status;
+  return error;
+}
+
+function normalizePaddleWebPlan(value) {
+  return value === "monthly" || value === "yearly" ? value : null;
+}
+
+function getConfiguredPaddlePlanPriceIds() {
+  const config = getPaddlePublicConfig();
+  const monthlyPriceId =
+    typeof config?.monthlyPriceId === "string" ? config.monthlyPriceId.trim() : "";
+  const yearlyPriceId =
+    typeof config?.yearlyPriceId === "string" ? config.yearlyPriceId.trim() : "";
+
+  return {
+    monthlyPriceId,
+    yearlyPriceId,
+    isReady: Boolean(monthlyPriceId && yearlyPriceId),
+  };
+}
+
+function inferPaddleWebPlanFromPriceId(priceId) {
+  const normalizedPriceId =
+    typeof priceId === "string" ? priceId.trim() : "";
+  if (!normalizedPriceId) {
+    return null;
+  }
+
+  const { monthlyPriceId, yearlyPriceId } = getConfiguredPaddlePlanPriceIds();
+  if (monthlyPriceId && normalizedPriceId === monthlyPriceId) {
+    return "monthly";
+  }
+
+  if (yearlyPriceId && normalizedPriceId === yearlyPriceId) {
+    return "yearly";
+  }
+
+  return null;
+}
+
+function inferPaddleWebPlanFromSubscription(subscription) {
+  const directPlan = inferPaddleWebPlanFromPriceId(extractPaddlePriceId(subscription));
+  if (directPlan) {
+    return directPlan;
+  }
+
+  const itemInterval =
+    typeof subscription?.items?.[0]?.price?.billing_cycle?.interval === "string"
+      ? subscription.items[0].price.billing_cycle.interval.trim().toLowerCase()
+      : "";
+  if (itemInterval === "month") {
+    return "monthly";
+  }
+  if (itemInterval === "year") {
+    return "yearly";
+  }
+
+  const subscriptionInterval =
+    typeof subscription?.billing_cycle?.interval === "string"
+      ? subscription.billing_cycle.interval.trim().toLowerCase()
+      : "";
+  if (subscriptionInterval === "month") {
+    return "monthly";
+  }
+  if (subscriptionInterval === "year") {
+    return "yearly";
+  }
+
+  return null;
+}
+
+function mapPaddleMoneyTotals(totals) {
+  if (!totals || typeof totals !== "object") {
+    return null;
+  }
+
+  const amount =
+    typeof totals.grand_total === "string"
+      ? totals.grand_total
+      : typeof totals.total === "string"
+        ? totals.total
+        : "";
+  const currencyCode =
+    typeof totals.currency_code === "string" ? totals.currency_code.trim() : "";
+
+  if (!amount || !currencyCode) {
+    return null;
+  }
+
+  return {
+    amount,
+    currencyCode,
+  };
+}
+
+function mapPaddleSubscriptionSummary(subscription) {
+  if (!subscription || typeof subscription !== "object") {
+    return null;
+  }
+
+  const priceId = extractPaddlePriceId(subscription);
+
+  return {
+    subscriptionId:
+      typeof subscription.id === "string" ? subscription.id.trim() : null,
+    subscriptionStatus: normalizePaddleSubscriptionStatus(subscription.status),
+    currentPlan: inferPaddleWebPlanFromSubscription(subscription),
+    currentPriceId: priceId,
+    nextBilledAt:
+      typeof subscription.next_billed_at === "string"
+        ? subscription.next_billed_at
+        : null,
+    currentBillingPeriod:
+      subscription.current_billing_period &&
+      typeof subscription.current_billing_period === "object"
+        ? subscription.current_billing_period
+        : null,
+    billingCycle:
+      subscription.billing_cycle && typeof subscription.billing_cycle === "object"
+        ? subscription.billing_cycle
+        : null,
+    scheduledChange:
+      subscription.scheduled_change && typeof subscription.scheduled_change === "object"
+        ? subscription.scheduled_change
+        : null,
+  };
+}
+
+function mapPaddleSwitchPreview(previewSubscription, currentPlan, targetPlan) {
+  const summary = mapPaddleSubscriptionSummary(previewSubscription) || {};
+
+  return {
+    subscriptionId: summary.subscriptionId,
+    subscriptionStatus: summary.subscriptionStatus,
+    currentPlan,
+    currentPriceId: null,
+    targetPlan,
+    targetPriceId: summary.currentPriceId || null,
+    nextBilledAt: summary.nextBilledAt || null,
+    currentBillingPeriod: summary.currentBillingPeriod || null,
+    billingCycle: summary.billingCycle || null,
+    scheduledChange: summary.scheduledChange || null,
+    prorationBillingMode: "prorated_immediately",
+    immediateCharge: mapPaddleMoneyTotals(
+      previewSubscription?.immediate_transaction?.details?.totals,
+    ),
+    recurringCharge: mapPaddleMoneyTotals(
+      previewSubscription?.recurring_transaction_details?.totals,
+    ),
+  };
+}
+
+function selectBestPaddleSubscription(subscriptions) {
+  const list = Array.isArray(subscriptions) ? subscriptions : [];
+
+  return (
+    list.find((subscription) =>
+      isPaddleSubscriptionAccessActive(subscription?.status),
+    ) ||
+    list.find((subscription) =>
+      ["active", "trialing"].includes(
+        normalizePaddleSubscriptionStatus(subscription?.status) || "",
+      ),
+    ) ||
+    list[0] ||
+    null
+  );
+}
+
+function selectSwitchablePaddleItem(subscription) {
+  const items = Array.isArray(subscription?.items) ? subscription.items : [];
+  const recurringItems = items.filter((item) => item?.recurring !== false);
+
+  if (recurringItems.length !== 1) {
+    return null;
+  }
+
+  const quantity = Number.parseInt(String(recurringItems[0]?.quantity ?? 1), 10);
+
+  return {
+    quantity: Number.isFinite(quantity) && quantity > 0 ? quantity : 1,
+  };
+}
+
+async function findUserForPaddleEntity(entity) {
+  const directUserId = extractPaddleCustomUserId(entity);
+  if (directUserId) {
+    const result = await pool.query(
+      `
+      SELECT id, email, paddle_customer_id, paddle_subscription_id
+      FROM users
+      WHERE id = $1
+      LIMIT 1
+      `,
+      [directUserId],
+    );
+
+    if (result.rows.length > 0) {
+      return result.rows[0];
+    }
+  }
+
+  const subscriptionId =
+    typeof entity?.subscription_id === "string"
+      ? entity.subscription_id.trim()
+      : "";
+  const customerId =
+    typeof entity?.customer_id === "string" ? entity.customer_id.trim() : "";
+
+  if (subscriptionId || customerId) {
+    const result = await pool.query(
+      `
+      SELECT id, email, paddle_customer_id, paddle_subscription_id
+      FROM users
+      WHERE ($1 <> '' AND paddle_subscription_id = $1)
+         OR ($2 <> '' AND paddle_customer_id = $2)
+      LIMIT 1
+      `,
+      [subscriptionId, customerId],
+    );
+
+    if (result.rows.length > 0) {
+      return result.rows[0];
+    }
+  }
+
+  const fallbackEmail =
+    typeof entity?.customer?.email === "string"
+      ? entity.customer.email.trim().toLowerCase()
+      : typeof entity?.custom_data?.keystone_email === "string"
+        ? entity.custom_data.keystone_email.trim().toLowerCase()
+        : "";
+
+  if (!fallbackEmail) {
+    return null;
+  }
+
+  const result = await pool.query(
+    `
+    SELECT id, email, paddle_customer_id, paddle_subscription_id
+    FROM users
+    WHERE LOWER(email) = LOWER($1)
+    LIMIT 1
+    `,
+    [fallbackEmail],
+  );
+
+  return result.rows[0] ?? null;
+}
+
+async function updateUserPaddleAccess(userId, updates) {
+  const {
+    customerId = null,
+    subscriptionId = null,
+    subscriptionStatus = null,
+    priceId = null,
+    hasAccess = null,
+  } = updates ?? {};
+
+  const result = await pool.query(
+    `
+    UPDATE users
+    SET
+      paddle_customer_id = COALESCE($2, paddle_customer_id),
+      paddle_subscription_id = COALESCE($3, paddle_subscription_id),
+      paddle_subscription_status = COALESCE($4, paddle_subscription_status),
+      paddle_price_id = COALESCE($5, paddle_price_id),
+      paddle_keystone_access = COALESCE($6, paddle_keystone_access),
+      paddle_access_updated_at = NOW()
+    WHERE id = $1
+    RETURNING
+      id,
+      email,
+      display_name,
+      is_admin,
+      can_review_content,
+      has_keystone_access,
+      paddle_keystone_access,
+      paddle_customer_id,
+      paddle_subscription_id,
+      paddle_subscription_status,
+      paddle_price_id
+    `,
+    [
+      userId,
+      customerId,
+      subscriptionId,
+      subscriptionStatus,
+      priceId,
+      typeof hasAccess === "boolean" ? hasAccess : null,
+    ],
+  );
+
+  return mapUserAccessRow(result.rows[0] ?? null);
+}
+
+async function getStoredPaddleBillingUser(userId) {
+  const result = await pool.query(
+    `
+    SELECT
+      id,
+      email,
+      display_name,
+      is_admin,
+      can_review_content,
+      has_keystone_access,
+      paddle_keystone_access,
+      paddle_customer_id,
+      paddle_subscription_id,
+      paddle_subscription_status,
+      paddle_price_id
+    FROM users
+    WHERE id = $1
+    LIMIT 1
+    `,
+    [userId],
+  );
+
+  return result.rows[0] ?? null;
+}
+
+async function resolvePaddleBillingStateForUser(userId) {
+  let user = await getStoredPaddleBillingUser(userId);
+  if (!user) {
+    return null;
+  }
+
+  let customerId =
+    typeof user.paddle_customer_id === "string"
+      ? user.paddle_customer_id.trim()
+      : "";
+  if (!customerId) {
+    const customer = await findPaddleCustomerByEmail(user.email);
+    customerId = typeof customer?.id === "string" ? customer.id.trim() : "";
+
+    if (customerId) {
+      user = (await updateUserPaddleAccess(userId, { customerId })) || {
+        ...user,
+        paddle_customer_id: customerId,
+      };
+    }
+  }
+
+  let subscriptionId =
+    typeof user.paddle_subscription_id === "string"
+      ? user.paddle_subscription_id.trim()
+      : "";
+  let subscription = null;
+
+  if (subscriptionId) {
+    try {
+      const response = await paddleApiRequest(`/subscriptions/${subscriptionId}`);
+      subscription = response?.data ?? null;
+    } catch (error) {
+      if (error?.status !== 404) {
+        throw error;
+      }
+
+      subscriptionId = "";
+    }
+  }
+
+  if (!subscription && customerId) {
+    const subscriptions = await listPaddleSubscriptionsForCustomer(customerId);
+    const bestSubscription = selectBestPaddleSubscription(subscriptions);
+    if (bestSubscription) {
+      subscription = bestSubscription;
+      subscriptionId =
+        typeof bestSubscription.id === "string" ? bestSubscription.id.trim() : "";
+    }
+  }
+
+  if (subscription) {
+    const nextCustomerId =
+      typeof subscription.customer_id === "string"
+        ? subscription.customer_id.trim()
+        : customerId;
+    const nextSubscriptionStatus = normalizePaddleSubscriptionStatus(
+      subscription.status,
+    );
+    const nextPriceId = extractPaddlePriceId(subscription);
+
+    user =
+      (await updateUserPaddleAccess(userId, {
+        customerId: nextCustomerId,
+        subscriptionId,
+        subscriptionStatus: nextSubscriptionStatus,
+        priceId: nextPriceId,
+        hasAccess: isPaddleSubscriptionAccessActive(nextSubscriptionStatus),
+      })) || user;
+    customerId = nextCustomerId;
+  }
+
+  return {
+    user: mapUserAccessRow(user),
+    customerId: customerId || null,
+    subscription,
+    summary: mapPaddleSubscriptionSummary(subscription),
+  };
+}
+
+async function resolvePaddlePlanSwitchForUser(userId, rawTargetPlan) {
+  const targetPlan = normalizePaddleWebPlan(rawTargetPlan);
+  if (!targetPlan) {
+    throw createHttpError(400, "Choose monthly or yearly before switching.");
+  }
+
+  const planPriceIds = getConfiguredPaddlePlanPriceIds();
+  if (!planPriceIds.isReady) {
+    throw createHttpError(
+      503,
+      "Monthly and yearly Paddle prices are not configured on the server yet.",
+    );
+  }
+
+  const billingState = await resolvePaddleBillingStateForUser(userId);
+  if (!billingState?.user) {
+    throw createHttpError(404, "User not found");
+  }
+
+  if (!billingState.subscription) {
+    throw createHttpError(404, "No web subscription was found for this account yet.");
+  }
+
+  const currentPlan = billingState.summary?.currentPlan;
+  if (!currentPlan) {
+    throw createHttpError(
+      409,
+      "This subscription can't be switched automatically yet. Use billing management instead.",
+    );
+  }
+
+  if (currentPlan === targetPlan) {
+    throw createHttpError(
+      409,
+      `This subscription already renews ${targetPlan === "monthly" ? "monthly" : "yearly"}.`,
+    );
+  }
+
+  const subscriptionStatus = normalizePaddleSubscriptionStatus(
+    billingState.subscription.status,
+  );
+  if (subscriptionStatus === "past_due") {
+    throw createHttpError(
+      409,
+      "Bring this subscription back into good standing before switching plans.",
+    );
+  }
+
+  if (billingState.subscription?.scheduled_change) {
+    throw createHttpError(
+      409,
+      "This subscription already has a scheduled change. Review it in billing management first.",
+    );
+  }
+
+  const switchableItem = selectSwitchablePaddleItem(billingState.subscription);
+  if (!switchableItem) {
+    throw createHttpError(
+      409,
+      "This subscription has multiple recurring items, so switch it from the Paddle portal for now.",
+    );
+  }
+
+  const targetPriceId =
+    targetPlan === "monthly"
+      ? planPriceIds.monthlyPriceId
+      : planPriceIds.yearlyPriceId;
+
+  return {
+    ...billingState,
+    currentPlan,
+    targetPlan,
+    targetPriceId,
+    requestBody: {
+      proration_billing_mode: "prorated_immediately",
+      on_payment_failure: "prevent_change",
+      items: [
+        {
+          price_id: targetPriceId,
+          quantity: switchableItem.quantity,
+        },
+      ],
+    },
+  };
+}
+
+async function syncPaddleSubscriptionEntity(entity) {
+  const user = await findUserForPaddleEntity(entity);
+  if (!user) {
+    return null;
+  }
+
+  const subscriptionId =
+    typeof entity?.id === "string" ? entity.id.trim() : user.paddle_subscription_id;
+  const customerId =
+    typeof entity?.customer_id === "string"
+      ? entity.customer_id.trim()
+      : user.paddle_customer_id;
+  const subscriptionStatus = normalizePaddleSubscriptionStatus(entity?.status);
+  const priceId = extractPaddlePriceId(entity);
+
+  return updateUserPaddleAccess(user.id, {
+    customerId,
+    subscriptionId,
+    subscriptionStatus,
+    priceId,
+    hasAccess: isPaddleSubscriptionAccessActive(subscriptionStatus),
+  });
+}
+
+async function syncPaddleTransactionEntity(entity) {
+  const user = await findUserForPaddleEntity(entity);
+  if (!user) {
+    return null;
+  }
+
+  const customerId =
+    typeof entity?.customer_id === "string"
+      ? entity.customer_id.trim()
+      : user.paddle_customer_id;
+  const subscriptionId =
+    typeof entity?.subscription_id === "string"
+      ? entity.subscription_id.trim()
+      : user.paddle_subscription_id;
+  const priceId = extractPaddlePriceId(entity);
+
+  return updateUserPaddleAccess(user.id, {
+    customerId,
+    subscriptionId,
+    subscriptionStatus: subscriptionId ? "active" : null,
+    priceId,
+    hasAccess: subscriptionId ? true : null,
+  });
+}
+
 function hashPasswordResetToken(token) {
   return createHash("sha256").update(token).digest("hex");
 }
@@ -2810,7 +3386,8 @@ app.get("/me", authMiddleware, async (req, res) => {
         display_name,
         is_admin,
         can_review_content,
-        has_keystone_access
+        has_keystone_access,
+        paddle_keystone_access
       FROM users
       WHERE id = $1
       LIMIT 1
@@ -2822,7 +3399,7 @@ app.get("/me", authMiddleware, async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.json(result.rows[0]);
+    res.json(mapUserAccessRow(result.rows[0]));
   } catch (err) {
     console.error("Failed to fetch user profile:", err);
     res.status(500).json({ error: "Failed to fetch user profile" });
@@ -2838,7 +3415,14 @@ app.patch("/me", authMiddleware, async (req, res) => {
       UPDATE users
       SET display_name = COALESCE($2, LEFT(split_part(email, '@', 1), 40))
       WHERE id = $1
-      RETURNING id, email, display_name, is_admin, can_review_content, has_keystone_access
+      RETURNING
+        id,
+        email,
+        display_name,
+        is_admin,
+        can_review_content,
+        has_keystone_access,
+        paddle_keystone_access
       `,
       [req.userId, displayName],
     );
@@ -2847,7 +3431,7 @@ app.patch("/me", authMiddleware, async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.json(result.rows[0]);
+    res.json(mapUserAccessRow(result.rows[0]));
   } catch (err) {
     console.error("Failed to update user profile:", err);
     res.status(500).json({ error: "Failed to update user profile" });
@@ -2866,7 +3450,14 @@ app.post("/me/keystone-access", authMiddleware, async (req, res) => {
       SET has_keystone_access = $2,
           keystone_access_updated_at = NOW()
       WHERE id = $1
-      RETURNING id, email, display_name, is_admin, can_review_content, has_keystone_access
+      RETURNING
+        id,
+        email,
+        display_name,
+        is_admin,
+        can_review_content,
+        has_keystone_access,
+        paddle_keystone_access
       `,
       [req.userId, req.body.hasAccess],
     );
@@ -2875,10 +3466,220 @@ app.post("/me/keystone-access", authMiddleware, async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.json(result.rows[0]);
+    res.json(mapUserAccessRow(result.rows[0]));
   } catch (err) {
     console.error("Failed to sync Keystone Access:", err);
     res.status(500).json({ error: "Failed to sync Keystone Access" });
+  }
+});
+
+app.get("/billing/paddle/subscription", authMiddleware, async (req, res) => {
+  try {
+    if (!isPaddleApiConfigured()) {
+      return res.status(503).json({ error: "Paddle billing is not configured" });
+    }
+
+    const billingState = await resolvePaddleBillingStateForUser(req.userId);
+    if (!billingState?.user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (!billingState.subscription || !billingState.summary) {
+      return res.status(404).json({
+        error: "No web subscription was found for this account yet.",
+      });
+    }
+
+    res.json({
+      ...billingState.summary,
+      customerId: billingState.customerId,
+      hasAccess: hasKeystoneAccess(billingState.user),
+    });
+  } catch (err) {
+    console.error("Failed to load Paddle subscription details:", err);
+    res.status(500).json({ error: "Failed to load subscription details" });
+  }
+});
+
+app.post(
+  "/billing/paddle/subscription/switch-preview",
+  authMiddleware,
+  async (req, res) => {
+    try {
+      if (!isPaddleApiConfigured()) {
+        return res.status(503).json({ error: "Paddle billing is not configured" });
+      }
+
+      const switchRequest = await resolvePaddlePlanSwitchForUser(
+        req.userId,
+        req.body?.targetPlan,
+      );
+      const previewResponse = await paddleApiRequest(
+        `/subscriptions/${switchRequest.summary.subscriptionId}/preview`,
+        {
+          method: "PATCH",
+          body: switchRequest.requestBody,
+        },
+      );
+
+      res.json(
+        mapPaddleSwitchPreview(
+          previewResponse?.data ?? null,
+          switchRequest.currentPlan,
+          switchRequest.targetPlan,
+        ),
+      );
+    } catch (err) {
+      const status =
+        Number.isInteger(err?.status) && err.status >= 400 && err.status < 600
+          ? err.status
+          : 500;
+      if (status >= 500) {
+        console.error("Failed to preview Paddle subscription switch:", err);
+      }
+      res
+        .status(status)
+        .json({ error: err?.message || "Failed to preview the plan change" });
+    }
+  },
+);
+
+app.post("/billing/paddle/subscription/switch", authMiddleware, async (req, res) => {
+  try {
+    if (!isPaddleApiConfigured()) {
+      return res.status(503).json({ error: "Paddle billing is not configured" });
+    }
+
+    const switchRequest = await resolvePaddlePlanSwitchForUser(
+      req.userId,
+      req.body?.targetPlan,
+    );
+    const response = await paddleApiRequest(
+      `/subscriptions/${switchRequest.summary.subscriptionId}`,
+      {
+        method: "PATCH",
+        body: switchRequest.requestBody,
+      },
+    );
+    const updatedSubscription = response?.data ?? null;
+    const updatedStatus = normalizePaddleSubscriptionStatus(
+      updatedSubscription?.status,
+    );
+
+    await updateUserPaddleAccess(req.userId, {
+      customerId: switchRequest.customerId,
+      subscriptionId: switchRequest.summary.subscriptionId,
+      subscriptionStatus: updatedStatus,
+      priceId: extractPaddlePriceId(updatedSubscription),
+      hasAccess: isPaddleSubscriptionAccessActive(updatedStatus),
+    });
+
+    res.json({
+      ...mapPaddleSubscriptionSummary(updatedSubscription),
+      customerId: switchRequest.customerId,
+      previousPlan: switchRequest.currentPlan,
+      switched: true,
+      prorationBillingMode: "prorated_immediately",
+      hasAccess: isPaddleSubscriptionAccessActive(updatedStatus),
+    });
+  } catch (err) {
+    const status =
+      Number.isInteger(err?.status) && err.status >= 400 && err.status < 600
+        ? err.status
+        : 500;
+    if (status >= 500) {
+      console.error("Failed to switch Paddle subscription:", err);
+    }
+    res.status(status).json({ error: err?.message || "Failed to switch plans" });
+  }
+});
+
+app.post("/billing/paddle/portal", authMiddleware, async (req, res) => {
+  try {
+    if (!isPaddleApiConfigured()) {
+      return res.status(503).json({ error: "Paddle billing is not configured" });
+    }
+
+    const billingState = await resolvePaddleBillingStateForUser(req.userId);
+    if (!billingState?.user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (!billingState.customerId) {
+      return res.status(404).json({
+        error: "No web subscription was found for this account yet.",
+      });
+    }
+
+    const response = await paddleApiRequest(
+      `/customers/${billingState.customerId}/portal-sessions`,
+      {
+        method: "POST",
+        body: billingState.summary?.subscriptionId
+          ? {
+              subscription_ids: [billingState.summary.subscriptionId],
+            }
+          : {},
+      },
+    );
+    const url =
+      response?.data?.urls?.general?.overview ||
+      response?.data?.urls?.overview ||
+      null;
+
+    if (!url) {
+      return res
+        .status(500)
+        .json({ error: "Paddle did not return a customer portal URL" });
+    }
+
+    res.json({
+      url,
+      customerId: billingState.customerId,
+      subscriptionId: billingState.summary?.subscriptionId || null,
+      subscriptionStatus: billingState.summary?.subscriptionStatus || null,
+    });
+  } catch (err) {
+    console.error("Failed to create Paddle customer portal session:", err);
+    res.status(500).json({ error: "Failed to open billing management" });
+  }
+});
+
+app.post("/webhooks/paddle", async (req, res) => {
+  try {
+    if (!isPaddleWebhookConfigured()) {
+      return res.status(503).json({ error: "Paddle webhook secret is not configured" });
+    }
+
+    const signatureHeader = req.headers["paddle-signature"];
+    const rawBody = typeof req.rawBody === "string" ? req.rawBody : "";
+
+    if (!verifyPaddleWebhookSignature(rawBody, signatureHeader)) {
+      return res.status(401).json({ error: "Invalid Paddle signature" });
+    }
+
+    const eventType =
+      typeof req.body?.event_type === "string" ? req.body.event_type.trim() : "";
+    const entity = req.body?.data ?? null;
+
+    if (!eventType || !entity) {
+      return res.status(400).json({ error: "Invalid Paddle webhook payload" });
+    }
+
+    if (eventType === "transaction.completed") {
+      await syncPaddleTransactionEntity(entity);
+    } else if (
+      eventType === "subscription.created" ||
+      eventType === "subscription.updated" ||
+      eventType === "subscription.canceled"
+    ) {
+      await syncPaddleSubscriptionEntity(entity);
+    }
+
+    res.json({ received: true });
+  } catch (err) {
+    console.error("Failed to process Paddle webhook:", err);
+    res.status(500).json({ error: "Failed to process Paddle webhook" });
   }
 });
 
@@ -3279,6 +4080,7 @@ app.get("/admin/users", authMiddleware, adminMiddleware, async (_req, res) => {
         u.is_admin,
         u.can_review_content,
         u.has_keystone_access,
+        u.paddle_keystone_access,
         u.consent_source,
         NULLIF(
           GREATEST(
@@ -3309,7 +4111,7 @@ app.get("/admin/users", authMiddleware, adminMiddleware, async (_req, res) => {
         display_name: row.display_name,
         is_admin: row.is_admin === true,
         can_review_content: row.can_review_content === true,
-        has_keystone_access: row.has_keystone_access === true,
+        has_keystone_access: hasKeystoneAccess(row),
         consent_source: row.consent_source ?? null,
         last_active_at: row.last_active_at ?? null,
       })),
@@ -3383,12 +4185,20 @@ app.post("/admin/users", authMiddleware, adminMiddleware, async (req, res) => {
         CASE WHEN $6 THEN NOW() ELSE NULL END,
         'admin_created'
       )
-      RETURNING id, email, display_name, is_admin, can_review_content, has_keystone_access, consent_source
+      RETURNING
+        id,
+        email,
+        display_name,
+        is_admin,
+        can_review_content,
+        has_keystone_access,
+        paddle_keystone_access,
+        consent_source
       `,
       [email, passwordHash, displayName, isAdmin, wantsReviewer, wantsPremium],
     );
 
-    res.status(201).json(result.rows[0]);
+    res.status(201).json(mapUserAccessRow(result.rows[0]));
   } catch (err) {
     console.error("Failed to create admin user:", err);
     res.status(500).json({ error: "Failed to create user" });
@@ -3480,12 +4290,20 @@ app.patch("/admin/users/:userId", authMiddleware, adminMiddleware, async (req, r
       UPDATE users
       SET ${updates.join(", ")}
       WHERE id = $1
-      RETURNING id, email, display_name, is_admin, can_review_content, has_keystone_access, consent_source
+      RETURNING
+        id,
+        email,
+        display_name,
+        is_admin,
+        can_review_content,
+        has_keystone_access,
+        paddle_keystone_access,
+        consent_source
       `,
       values,
     );
 
-    res.json(result.rows[0]);
+    res.json(mapUserAccessRow(result.rows[0]));
   } catch (err) {
     console.error("Failed to update admin user:", err);
     res.status(500).json({ error: "Failed to update user" });
@@ -4568,6 +5386,42 @@ async function startServer() {
         ) THEN
           ALTER TABLE users ADD COLUMN keystone_access_updated_at TIMESTAMPTZ;
         END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'paddle_customer_id'
+        ) THEN
+          ALTER TABLE users ADD COLUMN paddle_customer_id TEXT;
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'paddle_subscription_id'
+        ) THEN
+          ALTER TABLE users ADD COLUMN paddle_subscription_id TEXT;
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'paddle_subscription_status'
+        ) THEN
+          ALTER TABLE users ADD COLUMN paddle_subscription_status TEXT;
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'paddle_price_id'
+        ) THEN
+          ALTER TABLE users ADD COLUMN paddle_price_id TEXT;
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'paddle_keystone_access'
+        ) THEN
+          ALTER TABLE users ADD COLUMN paddle_keystone_access BOOLEAN NOT NULL DEFAULT FALSE;
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'users' AND column_name = 'paddle_access_updated_at'
+        ) THEN
+          ALTER TABLE users ADD COLUMN paddle_access_updated_at TIMESTAMPTZ;
+        END IF;
       END $$;
     `);
     await pool.query(`
@@ -4581,6 +5435,16 @@ async function startServer() {
       CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_sub_unique
         ON users (google_sub)
         WHERE google_sub IS NOT NULL;
+    `);
+    await pool.query(`
+      CREATE UNIQUE INDEX IF NOT EXISTS idx_users_paddle_customer_id_unique
+        ON users (paddle_customer_id)
+        WHERE paddle_customer_id IS NOT NULL;
+    `);
+    await pool.query(`
+      CREATE UNIQUE INDEX IF NOT EXISTS idx_users_paddle_subscription_id_unique
+        ON users (paddle_subscription_id)
+        WHERE paddle_subscription_id IS NOT NULL;
     `);
     await pool.query(`
       CREATE TABLE IF NOT EXISTS user_preferences (
