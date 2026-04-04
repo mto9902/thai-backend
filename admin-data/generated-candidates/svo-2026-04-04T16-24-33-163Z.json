@@ -1,0 +1,572 @@
+{
+  "grammarId": "svo",
+  "generatedAt": "2026-04-04T16:24:33.162Z",
+  "model": "kimi-k2-turbo-preview",
+  "baseURL": "https://api.moonshot.ai/v1",
+  "count": 20,
+  "existingRowCount": 25,
+  "reviewNote": "Kimi candidate batch 2026-04-04T16:24:33.162Z (svo)",
+  "prompts": {
+    "generation": "\nYou are helping create production sentence content for a Thai learning app.\n\nGenerate candidate example rows for ONE lesson only.\n\nLesson ID: svo\nLesson title: Basic Sentence Order\nTarget stage: A1.1\nTarget learner: absolute beginner learning Thai\nTarget count: 20 candidates\n\nLESSON GOAL\nThis lesson teaches the most basic Thai affirmative sentence order: SUBJECT + VERB + OBJECT.\n\nThe learner should come away feeling:\n- Thai can be built in a clear, direct order.\n- Simple everyday statements are possible right away.\n- Short useful sentences are better than textbook filler.\n\nSTRICT QUALITY RULES\n- English must sound like something a real person would actually say.\n- Do not generate awkward textbook filler such as:\n  - \"I eat good food\"\n  - \"He drinks tea every day\"\n  - \"She reads a book\"\n  unless the sentence is genuinely natural and useful in real life.\n- Thai must be natural Thai, not literal translation Thai.\n- Romanization must use learner accents and diacritics, not plain ASCII.\n- Good romanization examples: chǎn, khâao, nǎngsǔe, khàwp-khun, pə̀ət, prà-tuu.\n- Never return plain romanization such as \"chan\", \"kin\", \"duem\", or \"nangsue\".\n- Keep the sentence meaning simple, useful, and realistic.\n- Avoid bizarre, empty, repetitive, or contextless examples.\n- Avoid near-duplicates that only swap one noun or pronoun.\n\nSCOPE RULES\n- Focus only on plain affirmative statements.\n- Do not use negation.\n- Do not use yes/no questions.\n- Do not use question words.\n- Do not use possession or location patterns unless absolutely unavoidable.\n- Do not rely on later grammar to make the sentence sound good.\n- Keep vocabulary beginner-safe and common.\n\nGOOD MEANING TERRITORY\n- eating or drinking something ordinary\n- buying something ordinary\n- reading, watching, listening, opening, closing, carrying, or using\n- very normal home, class, and daily routine actions\n- sentences that a beginner could realistically imagine saying or hearing\n\nSUBJECTS\nPrefer natural beginner subjects such as:\n- ฉัน\n- คุณ\n- เขา\n- เธอ\nUse names only if it sounds clearly natural.\n\nVERBS / OBJECTS\nUse common beginner verbs and objects.\nPrefer useful objects like:\n- น้ำ\n- ข้าว\n- หนังสือ\n- เพลง\n- กาแฟ\n- ประตู\n- โทรศัพท์\nOnly use objects if the full sentence still sounds natural.\n\nAVOID THESE EXISTING OR ALREADY-ACCEPTED ROWS\n- ฉันกินข้าว | I eat rice.\n- ฉันดื่มน้ำ | I drink water.\n- ฉันซื้อปลา | I buy fish.\n- ฉันอ่านหนังสือ | I read a book.\n- ฉันดูหนัง | I watch a movie.\n- คุณกินข้าว | You eat rice.\n- คุณดื่มน้ำ | You drink water.\n- คุณซื้อปลา | You buy fish.\n- คุณอ่านหนังสือ | You read a book.\n- คุณดูหนัง | You watch a movie.\n- เขากินข้าว | He eats rice.\n- เขาดื่มน้ำ | He drinks water.\n- เขาซื้อปลา | He buys fish.\n- เขาอ่านหนังสือ | He reads a book.\n- เขาดูหนัง | He watches a movie.\n- เธอกินข้าว | She eats rice.\n- เธอดื่มน้ำ | She drinks water.\n- เธอซื้อปลา | She buys fish.\n- เธออ่านหนังสือ | She reads a book.\n- เธอดูหนัง | She watches a movie.\n- ครูกินข้าว | The teacher eats rice.\n- ครูดื่มน้ำ | The teacher drinks water.\n- ครูซื้อปลา | The teacher buys fish.\n- ครูอ่านหนังสือ | The teacher reads a book.\n- ครูดูหนัง | The teacher watches a movie.\n\nOUTPUT\nReturn JSON only. No commentary.\n\nReturn this exact top-level shape:\n{\n  \"rows\": [\n    {\n      \"english\": \"...\",\n      \"thai\": \"...\",\n      \"romanization\": \"...\",\n      \"breakdown\": [\n        {\n          \"thai\": \"...\",\n          \"english\": \"...\",\n          \"romanization\": \"...\",\n          \"grammar\": true\n        }\n      ],\n      \"difficulty\": \"easy\"\n    }\n  ]\n}\n\nBREAKDOWN RULES\n- Breakdown must exactly match the Thai sentence.\n- One item per meaningful word or chunk.\n- Glosses must help a learner understand the Thai naturally.\n- Romanization must match the Thai exactly.\n- Every romanization field must include tone accents or vowel diacritics for learner readability.\n- Do not omit any visible Thai word from the breakdown.\n\nFINAL BAR\nThe rows should feel like a careful human teacher chose them for a polished beginner Thai course.\n",
+    "review": "\nReview these candidate rows for the Thai learning app lesson \"Basic Sentence Order\" (A1.1).\n\nEvaluate each row for:\n1. natural English\n2. natural Thai\n3. strict fit for This lesson teaches the most basic Thai affirmative sentence order: SUBJECT + VERB + OBJECT.\n4. beginner-safe vocabulary and scope\n5. usefulness in real life\n6. breakdown accuracy\n7. duplicate or near-duplicate meaning\n8. learner-style accented romanization\n\nAlready accepted or existing rows:\n- ฉันกินข้าว | I eat rice.\n- ฉันดื่มน้ำ | I drink water.\n- ฉันซื้อปลา | I buy fish.\n- ฉันอ่านหนังสือ | I read a book.\n- ฉันดูหนัง | I watch a movie.\n- คุณกินข้าว | You eat rice.\n- คุณดื่มน้ำ | You drink water.\n- คุณซื้อปลา | You buy fish.\n- คุณอ่านหนังสือ | You read a book.\n- คุณดูหนัง | You watch a movie.\n- เขากินข้าว | He eats rice.\n- เขาดื่มน้ำ | He drinks water.\n- เขาซื้อปลา | He buys fish.\n- เขาอ่านหนังสือ | He reads a book.\n- เขาดูหนัง | He watches a movie.\n- เธอกินข้าว | She eats rice.\n- เธอดื่มน้ำ | She drinks water.\n- เธอซื้อปลา | She buys fish.\n- เธออ่านหนังสือ | She reads a book.\n- เธอดูหนัง | She watches a movie.\n- ครูกินข้าว | The teacher eats rice.\n- ครูดื่มน้ำ | The teacher drinks water.\n- ครูซื้อปลา | The teacher buys fish.\n- ครูอ่านหนังสือ | The teacher reads a book.\n- ครูดูหนัง | The teacher watches a movie.\n\nRules:\n- If a row is strong, mark it \"keep\".\n- If it could become strong with a small edit, mark it \"revise\" and provide the corrected full row.\n- If it is awkward, unnatural, off-scope, repetitive, or not worth teaching, mark it \"reject\" and give a short reason.\n- Reject or revise rows with plain romanization instead of learner-accented romanization.\n- Be strict. Do not keep weak textbook filler.\n\nReturn JSON only in this shape:\n{\n  \"results\": [\n    {\n      \"decision\": \"keep\" | \"revise\" | \"reject\",\n      \"reason\": \"...\",\n      \"row\": {\n        \"english\": \"...\",\n        \"thai\": \"...\",\n        \"romanization\": \"...\",\n        \"breakdown\": [\n          {\n            \"thai\": \"...\",\n            \"english\": \"...\",\n            \"romanization\": \"...\",\n            \"grammar\": true\n          }\n        ],\n        \"difficulty\": \"easy\"\n      }\n    }\n  ]\n}\n\nCandidate rows to review:\n[\n  {\n    \"thai\": \"ฉันดื่มกาแฟ\",\n    \"english\": \"I drink coffee.\",\n    \"romanization\": \"chǎn dùem gaa-fae\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"ฉัน\",\n        \"english\": \"I\",\n        \"romanization\": \"chǎn\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ดื่ม\",\n        \"english\": \"drink\",\n        \"romanization\": \"dùem\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"กาแฟ\",\n        \"english\": \"coffee\",\n        \"romanization\": \"gaa-fae\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"เธอเปิดประตู\",\n    \"english\": \"She opens the door.\",\n    \"romanization\": \"thəə pə̀ət prá-tuu\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"เธอ\",\n        \"english\": \"she\",\n        \"romanization\": \"thəə\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"เปิด\",\n        \"english\": \"open\",\n        \"romanization\": \"pə̀ət\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ประตู\",\n        \"english\": \"door\",\n        \"romanization\": \"prá-tuu\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"เขาซื้อก๋วยเตี๋ยว\",\n    \"english\": \"He buys noodles.\",\n    \"romanization\": \"khǎo súua gǔuay-dtǐao\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"เขา\",\n        \"english\": \"he\",\n        \"romanization\": \"khǎo\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ซื้อ\",\n        \"english\": \"buy\",\n        \"romanization\": \"súua\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ก๋วยเตี๋ยว\",\n        \"english\": \"noodles\",\n        \"romanization\": \"gǔuay-dtǐao\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"ฉันใช้โทรศัพท์\",\n    \"english\": \"I use a phone.\",\n    \"romanization\": \"chǎn chái tho-rá-sót\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"ฉัน\",\n        \"english\": \"I\",\n        \"romanization\": \"chǎn\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ใช้\",\n        \"english\": \"use\",\n        \"romanization\": \"chái\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"โทรศัพท์\",\n        \"english\": \"telephone\",\n        \"romanization\": \"tho-rá-sót\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"คุณอ่านเมนู\",\n    \"english\": \"You read the menu.\",\n    \"romanization\": \"khun âan mee-nuu\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"คุณ\",\n        \"english\": \"you\",\n        \"romanization\": \"khun\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"อ่าน\",\n        \"english\": \"read\",\n        \"romanization\": \"âan\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"เมนู\",\n        \"english\": \"menu\",\n        \"romanization\": \"mee-nuu\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"ฉันปิดหน้าต่าง\",\n    \"english\": \"I close the window.\",\n    \"romanization\": \"chǎn pìt nâa-dtâang\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"ฉัน\",\n        \"english\": \"I\",\n        \"romanization\": \"chǎn\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ปิด\",\n        \"english\": \"close\",\n        \"romanization\": \"pìt\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"หน้าต่าง\",\n        \"english\": \"window\",\n        \"romanization\": \"nâa-dtâang\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"คุณกินผลไม้\",\n    \"english\": \"You eat fruit.\",\n    \"romanization\": \"khun kin phŏn-lá-mái\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"คุณ\",\n        \"english\": \"you\",\n        \"romanization\": \"khun\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"กิน\",\n        \"english\": \"eat\",\n        \"romanization\": \"kin\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ผลไม้\",\n        \"english\": \"fruit\",\n        \"romanization\": \"phŏn-lá-mái\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"ฉันดื่มชา\",\n    \"english\": \"I drink tea.\",\n    \"romanization\": \"chǎn dùuem chaa\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"ฉัน\",\n        \"english\": \"I\",\n        \"romanization\": \"chǎn\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ดื่ม\",\n        \"english\": \"drink\",\n        \"romanization\": \"dùuem\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ชา\",\n        \"english\": \"tea\",\n        \"romanization\": \"chaa\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"คุณซื้อกาแฟ\",\n    \"english\": \"You buy coffee.\",\n    \"romanization\": \"khun súue kaafae\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"คุณ\",\n        \"english\": \"you\",\n        \"romanization\": \"khun\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ซื้อ\",\n        \"english\": \"buy\",\n        \"romanization\": \"súue\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"กาแฟ\",\n        \"english\": \"coffee\",\n        \"romanization\": \"kaafae\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"เขาเปิดหน้าต่าง\",\n    \"english\": \"He opens the window.\",\n    \"romanization\": \"khǎo pèt nâataang\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"เขา\",\n        \"english\": \"he\",\n        \"romanization\": \"khǎo\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"เปิด\",\n        \"english\": \"open\",\n        \"romanization\": \"pèt\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"หน้าต่าง\",\n        \"english\": \"window\",\n        \"romanization\": \"nâataang\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"ฉันอ่านข่าว\",\n    \"english\": \"I read the news.\",\n    \"romanization\": \"chǎn âan khàaw\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"ฉัน\",\n        \"english\": \"I\",\n        \"romanization\": \"chǎn\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"อ่าน\",\n        \"english\": \"read\",\n        \"romanization\": \"âan\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ข่าว\",\n        \"english\": \"news\",\n        \"romanization\": \"khàaw\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"คุณถือกระเป๋า\",\n    \"english\": \"You carry a bag.\",\n    \"romanization\": \"khun thǔu krapǎw\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"คุณ\",\n        \"english\": \"you\",\n        \"romanization\": \"khun\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ถือ\",\n        \"english\": \"carry\",\n        \"romanization\": \"thǔu\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"กระเป๋า\",\n        \"english\": \"bag\",\n        \"romanization\": \"krapǎw\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"เขาปิดประตู\",\n    \"english\": \"He closes the door.\",\n    \"romanization\": \"khǎo pìt pràtuu\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"เขา\",\n        \"english\": \"he\",\n        \"romanization\": \"khǎo\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ปิด\",\n        \"english\": \"close\",\n        \"romanization\": \"pìt\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ประตู\",\n        \"english\": \"door\",\n        \"romanization\": \"pràtuu\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"เธอใช้ช้อน\",\n    \"english\": \"She uses a spoon.\",\n    \"romanization\": \"thoe chái sɔ́ɔn\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"เธอ\",\n        \"english\": \"she\",\n        \"romanization\": \"thoe\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ใช้\",\n        \"english\": \"use\",\n        \"romanization\": \"chái\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ช้อน\",\n        \"english\": \"spoon\",\n        \"romanization\": \"sɔ́ɔn\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"ฉันดื่มนม\",\n    \"english\": \"I drink milk.\",\n    \"romanization\": \"chǎn dùuem nom\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"ฉัน\",\n        \"english\": \"I\",\n        \"romanization\": \"chǎn\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ดื่ม\",\n        \"english\": \"drink\",\n        \"romanization\": \"dùuem\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"นม\",\n        \"english\": \"milk\",\n        \"romanization\": \"nom\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"คุณซื้อชา\",\n    \"english\": \"You buy tea.\",\n    \"romanization\": \"khun súue chaa\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"คุณ\",\n        \"english\": \"you\",\n        \"romanization\": \"khun\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ซื้อ\",\n        \"english\": \"buy\",\n        \"romanization\": \"súue\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ชา\",\n        \"english\": \"tea\",\n        \"romanization\": \"chaa\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"เขากินไก่\",\n    \"english\": \"He eats chicken.\",\n    \"romanization\": \"khǎo kin kày\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"เขา\",\n        \"english\": \"he\",\n        \"romanization\": \"khǎo\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"กิน\",\n        \"english\": \"eat\",\n        \"romanization\": \"kin\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ไก่\",\n        \"english\": \"chicken\",\n        \"romanization\": \"kày\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"ฉันฟังเพลง\",\n    \"english\": \"I listen to music.\",\n    \"romanization\": \"chǎn fang phleeng\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"ฉัน\",\n        \"english\": \"I\",\n        \"romanization\": \"chǎn\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ฟัง\",\n        \"english\": \"listen\",\n        \"romanization\": \"fang\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"เพลง\",\n        \"english\": \"music\",\n        \"romanization\": \"phleeng\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"เธอดื่มโซดา\",\n    \"english\": \"She drinks soda.\",\n    \"romanization\": \"thoe dʉ̀əm soo-daa\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"เธอ\",\n        \"english\": \"she\",\n        \"romanization\": \"thoe\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ดื่ม\",\n        \"english\": \"drink\",\n        \"romanization\": \"dʉ̀əm\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"โซดา\",\n        \"english\": \"soda\",\n        \"romanization\": \"soo-daa\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"เขาซื้อขนมปัง\",\n    \"english\": \"He buys bread.\",\n    \"romanization\": \"khǎo súu kha-nǒm-pang\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"เขา\",\n        \"english\": \"he\",\n        \"romanization\": \"khǎo\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ซื้อ\",\n        \"english\": \"buy\",\n        \"romanization\": \"súu\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ขนมปัง\",\n        \"english\": \"bread\",\n        \"romanization\": \"kha-nǒm-pang\",\n        \"grammar\": true\n      }\n    ]\n  }\n]\n"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "generated": 9,
+      "kept": 5,
+      "revised": 2,
+      "rejected": 2
+    },
+    {
+      "attempt": 2,
+      "generated": 8,
+      "kept": 3,
+      "revised": 4,
+      "rejected": 1
+    },
+    {
+      "attempt": 3,
+      "generated": 3,
+      "kept": 0,
+      "revised": 0,
+      "rejected": 3
+    },
+    {
+      "attempt": 4,
+      "generated": 6,
+      "kept": 4,
+      "revised": 0,
+      "rejected": 2
+    },
+    {
+      "attempt": 5,
+      "generated": 6,
+      "kept": 2,
+      "revised": 0,
+      "rejected": 2
+    }
+  ],
+  "rows": [
+    {
+      "thai": "ฉันดื่มกาแฟ",
+      "english": "I drink coffee.",
+      "romanization": "chǎn dùem gaa-fae",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "ฉัน",
+          "english": "I",
+          "romanization": "chǎn",
+          "grammar": true
+        },
+        {
+          "thai": "ดื่ม",
+          "english": "drink",
+          "romanization": "dùem",
+          "grammar": true
+        },
+        {
+          "thai": "กาแฟ",
+          "english": "coffee",
+          "romanization": "gaa-fae",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "เธอเปิดประตู",
+      "english": "She opens the door.",
+      "romanization": "thəə pə̀ət prá-tuu",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "เธอ",
+          "english": "she",
+          "romanization": "thəə",
+          "grammar": true
+        },
+        {
+          "thai": "เปิด",
+          "english": "open",
+          "romanization": "pə̀ət",
+          "grammar": true
+        },
+        {
+          "thai": "ประตู",
+          "english": "door",
+          "romanization": "prá-tuu",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "เขาซื้อก๋วยเตี๋ยว",
+      "english": "He buys noodles.",
+      "romanization": "khǎo súua gǔuay-dtǐao",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "เขา",
+          "english": "he",
+          "romanization": "khǎo",
+          "grammar": true
+        },
+        {
+          "thai": "ซื้อ",
+          "english": "buy",
+          "romanization": "súua",
+          "grammar": true
+        },
+        {
+          "thai": "ก๋วยเตี๋ยว",
+          "english": "noodles",
+          "romanization": "gǔuay-dtǐao",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "ฉันใช้โทรศัพท์",
+      "english": "I use a phone.",
+      "romanization": "chǎn chái tho-rá-sót",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "ฉัน",
+          "english": "I",
+          "romanization": "chǎn",
+          "grammar": true
+        },
+        {
+          "thai": "ใช้",
+          "english": "use",
+          "romanization": "chái",
+          "grammar": true
+        },
+        {
+          "thai": "โทรศัพท์",
+          "english": "telephone",
+          "romanization": "tho-rá-sót",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "คุณอ่านเมนู",
+      "english": "You read the menu.",
+      "romanization": "khun âan mee-nuu",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "คุณ",
+          "english": "you",
+          "romanization": "khun",
+          "grammar": true
+        },
+        {
+          "thai": "อ่าน",
+          "english": "read",
+          "romanization": "âan",
+          "grammar": true
+        },
+        {
+          "thai": "เมนู",
+          "english": "menu",
+          "romanization": "mee-nuu",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "ฉันปิดหน้าต่าง",
+      "english": "I close the window.",
+      "romanization": "chǎn pìt nâa-dtâang",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "ฉัน",
+          "english": "I",
+          "romanization": "chǎn",
+          "grammar": true
+        },
+        {
+          "thai": "ปิด",
+          "english": "close",
+          "romanization": "pìt",
+          "grammar": true
+        },
+        {
+          "thai": "หน้าต่าง",
+          "english": "window",
+          "romanization": "nâa-dtâang",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "คุณกินผลไม้",
+      "english": "You eat fruit.",
+      "romanization": "khun kin phŏn-lá-mái",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "คุณ",
+          "english": "you",
+          "romanization": "khun",
+          "grammar": true
+        },
+        {
+          "thai": "กิน",
+          "english": "eat",
+          "romanization": "kin",
+          "grammar": true
+        },
+        {
+          "thai": "ผลไม้",
+          "english": "fruit",
+          "romanization": "phŏn-lá-mái",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "ฉันดื่มชา",
+      "english": "I drink tea.",
+      "romanization": "chǎn dùuem chaa",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "ฉัน",
+          "english": "I",
+          "romanization": "chǎn",
+          "grammar": true
+        },
+        {
+          "thai": "ดื่ม",
+          "english": "drink",
+          "romanization": "dùuem",
+          "grammar": true
+        },
+        {
+          "thai": "ชา",
+          "english": "tea",
+          "romanization": "chaa",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "คุณซื้อกาแฟ",
+      "english": "You buy coffee.",
+      "romanization": "khun súue kaafae",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "คุณ",
+          "english": "you",
+          "romanization": "khun",
+          "grammar": true
+        },
+        {
+          "thai": "ซื้อ",
+          "english": "buy",
+          "romanization": "súue",
+          "grammar": true
+        },
+        {
+          "thai": "กาแฟ",
+          "english": "coffee",
+          "romanization": "kaafae",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "เขาเปิดหน้าต่าง",
+      "english": "He opens the window.",
+      "romanization": "khǎo pèt nâataang",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "เขา",
+          "english": "he",
+          "romanization": "khǎo",
+          "grammar": true
+        },
+        {
+          "thai": "เปิด",
+          "english": "open",
+          "romanization": "pèt",
+          "grammar": true
+        },
+        {
+          "thai": "หน้าต่าง",
+          "english": "window",
+          "romanization": "nâataang",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "ฉันอ่านข่าว",
+      "english": "I read the news.",
+      "romanization": "chǎn âan khàaw",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "ฉัน",
+          "english": "I",
+          "romanization": "chǎn",
+          "grammar": true
+        },
+        {
+          "thai": "อ่าน",
+          "english": "read",
+          "romanization": "âan",
+          "grammar": true
+        },
+        {
+          "thai": "ข่าว",
+          "english": "news",
+          "romanization": "khàaw",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "คุณถือกระเป๋า",
+      "english": "You carry a bag.",
+      "romanization": "khun thǔu krapǎw",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "คุณ",
+          "english": "you",
+          "romanization": "khun",
+          "grammar": true
+        },
+        {
+          "thai": "ถือ",
+          "english": "carry",
+          "romanization": "thǔu",
+          "grammar": true
+        },
+        {
+          "thai": "กระเป๋า",
+          "english": "bag",
+          "romanization": "krapǎw",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "เขาปิดประตู",
+      "english": "He closes the door.",
+      "romanization": "khǎo pìt pràtuu",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "เขา",
+          "english": "he",
+          "romanization": "khǎo",
+          "grammar": true
+        },
+        {
+          "thai": "ปิด",
+          "english": "close",
+          "romanization": "pìt",
+          "grammar": true
+        },
+        {
+          "thai": "ประตู",
+          "english": "door",
+          "romanization": "pràtuu",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "เธอใช้ช้อน",
+      "english": "She uses a spoon.",
+      "romanization": "thoe chái sɔ́ɔn",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "เธอ",
+          "english": "she",
+          "romanization": "thoe",
+          "grammar": true
+        },
+        {
+          "thai": "ใช้",
+          "english": "use",
+          "romanization": "chái",
+          "grammar": true
+        },
+        {
+          "thai": "ช้อน",
+          "english": "spoon",
+          "romanization": "sɔ́ɔn",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "ฉันดื่มนม",
+      "english": "I drink milk.",
+      "romanization": "chǎn dùuem nom",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "ฉัน",
+          "english": "I",
+          "romanization": "chǎn",
+          "grammar": true
+        },
+        {
+          "thai": "ดื่ม",
+          "english": "drink",
+          "romanization": "dùuem",
+          "grammar": true
+        },
+        {
+          "thai": "นม",
+          "english": "milk",
+          "romanization": "nom",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "คุณซื้อชา",
+      "english": "You buy tea.",
+      "romanization": "khun súue chaa",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "คุณ",
+          "english": "you",
+          "romanization": "khun",
+          "grammar": true
+        },
+        {
+          "thai": "ซื้อ",
+          "english": "buy",
+          "romanization": "súue",
+          "grammar": true
+        },
+        {
+          "thai": "ชา",
+          "english": "tea",
+          "romanization": "chaa",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "เขากินไก่",
+      "english": "He eats chicken.",
+      "romanization": "khǎo kin kày",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "เขา",
+          "english": "he",
+          "romanization": "khǎo",
+          "grammar": true
+        },
+        {
+          "thai": "กิน",
+          "english": "eat",
+          "romanization": "kin",
+          "grammar": true
+        },
+        {
+          "thai": "ไก่",
+          "english": "chicken",
+          "romanization": "kày",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "ฉันฟังเพลง",
+      "english": "I listen to music.",
+      "romanization": "chǎn fang phleeng",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "ฉัน",
+          "english": "I",
+          "romanization": "chǎn",
+          "grammar": true
+        },
+        {
+          "thai": "ฟัง",
+          "english": "listen",
+          "romanization": "fang",
+          "grammar": true
+        },
+        {
+          "thai": "เพลง",
+          "english": "music",
+          "romanization": "phleeng",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "เธอดื่มโซดา",
+      "english": "She drinks soda.",
+      "romanization": "thoe dʉ̀əm soo-daa",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "เธอ",
+          "english": "she",
+          "romanization": "thoe",
+          "grammar": true
+        },
+        {
+          "thai": "ดื่ม",
+          "english": "drink",
+          "romanization": "dʉ̀əm",
+          "grammar": true
+        },
+        {
+          "thai": "โซดา",
+          "english": "soda",
+          "romanization": "soo-daa",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "เขาซื้อขนมปัง",
+      "english": "He buys bread.",
+      "romanization": "khǎo súu kha-nǒm-pang",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "เขา",
+          "english": "he",
+          "romanization": "khǎo",
+          "grammar": true
+        },
+        {
+          "thai": "ซื้อ",
+          "english": "buy",
+          "romanization": "súu",
+          "grammar": true
+        },
+        {
+          "thai": "ขนมปัง",
+          "english": "bread",
+          "romanization": "kha-nǒm-pang",
+          "grammar": true
+        }
+      ]
+    }
+  ]
+}
