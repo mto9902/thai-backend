@@ -1,0 +1,156 @@
+{
+  "grammarId": "svo",
+  "generatedAt": "2026-04-04T16:26:59.191Z",
+  "model": "kimi-k2.5",
+  "baseURL": "https://api.moonshot.ai/v1",
+  "count": 4,
+  "existingRowCount": 25,
+  "reviewNote": "Kimi candidate batch 2026-04-04T16:26:59.191Z (svo)",
+  "prompts": {
+    "generation": "\nYou are helping create production sentence content for a Thai learning app.\n\nGenerate candidate example rows for ONE lesson only.\n\nLesson ID: svo\nLesson title: Basic Sentence Order\nTarget stage: A1.1\nTarget learner: absolute beginner learning Thai\nTarget count: 4 candidates\n\nLESSON GOAL\nThis lesson teaches the most basic Thai affirmative sentence order: SUBJECT + VERB + OBJECT.\n\nThe learner should come away feeling:\n- Thai can be built in a clear, direct order.\n- Simple everyday statements are possible right away.\n- Short useful sentences are better than textbook filler.\n\nSTRICT QUALITY RULES\n- English must sound like something a real person would actually say.\n- Do not generate awkward textbook filler such as:\n  - \"I eat good food\"\n  - \"He drinks tea every day\"\n  - \"She reads a book\"\n  unless the sentence is genuinely natural and useful in real life.\n- Thai must be natural Thai, not literal translation Thai.\n- Keep the sentence meaning simple, useful, and realistic.\n- Avoid bizarre, empty, repetitive, or contextless examples.\n- Avoid near-duplicates that only swap one noun or pronoun.\n\nSCOPE RULES\n- Focus only on plain affirmative statements.\n- Do not use negation.\n- Do not use yes/no questions.\n- Do not use question words.\n- Do not use possession or location patterns unless absolutely unavoidable.\n- Do not rely on later grammar to make the sentence sound good.\n- Keep vocabulary beginner-safe and common.\n\nGOOD MEANING TERRITORY\n- eating or drinking something ordinary\n- buying something ordinary\n- reading, watching, listening, opening, closing, carrying, or using\n- very normal home, class, and daily routine actions\n- sentences that a beginner could realistically imagine saying or hearing\n\nSUBJECTS\nPrefer natural beginner subjects such as:\n- ฉัน\n- คุณ\n- เขา\n- เธอ\nUse names only if it sounds clearly natural.\n\nVERBS / OBJECTS\nUse common beginner verbs and objects.\nPrefer useful objects like:\n- น้ำ\n- ข้าว\n- หนังสือ\n- เพลง\n- กาแฟ\n- ประตู\n- โทรศัพท์\nOnly use objects if the full sentence still sounds natural.\n\nAVOID THESE EXISTING OR ALREADY-ACCEPTED ROWS\n- ฉันกินข้าว | I eat rice.\n- ฉันดื่มน้ำ | I drink water.\n- ฉันซื้อปลา | I buy fish.\n- ฉันอ่านหนังสือ | I read a book.\n- ฉันดูหนัง | I watch a movie.\n- คุณกินข้าว | You eat rice.\n- คุณดื่มน้ำ | You drink water.\n- คุณซื้อปลา | You buy fish.\n- คุณอ่านหนังสือ | You read a book.\n- คุณดูหนัง | You watch a movie.\n- เขากินข้าว | He eats rice.\n- เขาดื่มน้ำ | He drinks water.\n- เขาซื้อปลา | He buys fish.\n- เขาอ่านหนังสือ | He reads a book.\n- เขาดูหนัง | He watches a movie.\n- เธอกินข้าว | She eats rice.\n- เธอดื่มน้ำ | She drinks water.\n- เธอซื้อปลา | She buys fish.\n- เธออ่านหนังสือ | She reads a book.\n- เธอดูหนัง | She watches a movie.\n- ครูกินข้าว | The teacher eats rice.\n- ครูดื่มน้ำ | The teacher drinks water.\n- ครูซื้อปลา | The teacher buys fish.\n- ครูอ่านหนังสือ | The teacher reads a book.\n- ครูดูหนัง | The teacher watches a movie.\n\nOUTPUT\nReturn JSON only. No commentary.\n\nReturn this exact top-level shape:\n{\n  \"rows\": [\n    {\n      \"english\": \"...\",\n      \"thai\": \"...\",\n      \"romanization\": \"...\",\n      \"breakdown\": [\n        {\n          \"thai\": \"...\",\n          \"english\": \"...\",\n          \"romanization\": \"...\",\n          \"grammar\": true\n        }\n      ],\n      \"difficulty\": \"easy\"\n    }\n  ]\n}\n\nBREAKDOWN RULES\n- Breakdown must exactly match the Thai sentence.\n- One item per meaningful word or chunk.\n- Glosses must help a learner understand the Thai naturally.\n- Romanization must match the Thai exactly.\n- Do not omit any visible Thai word from the breakdown.\n\nFINAL BAR\nThe rows should feel like a careful human teacher chose them for a polished beginner Thai course.\n",
+    "review": "\nReview these candidate rows for the Thai learning app lesson \"Basic Sentence Order\" (A1.1).\n\nEvaluate each row for:\n1. natural English\n2. natural Thai\n3. strict fit for This lesson teaches the most basic Thai affirmative sentence order: SUBJECT + VERB + OBJECT.\n4. beginner-safe vocabulary and scope\n5. usefulness in real life\n6. breakdown accuracy\n7. duplicate or near-duplicate meaning\n\nAlready accepted or existing rows:\n- ฉันกินข้าว | I eat rice.\n- ฉันดื่มน้ำ | I drink water.\n- ฉันซื้อปลา | I buy fish.\n- ฉันอ่านหนังสือ | I read a book.\n- ฉันดูหนัง | I watch a movie.\n- คุณกินข้าว | You eat rice.\n- คุณดื่มน้ำ | You drink water.\n- คุณซื้อปลา | You buy fish.\n- คุณอ่านหนังสือ | You read a book.\n- คุณดูหนัง | You watch a movie.\n- เขากินข้าว | He eats rice.\n- เขาดื่มน้ำ | He drinks water.\n- เขาซื้อปลา | He buys fish.\n- เขาอ่านหนังสือ | He reads a book.\n- เขาดูหนัง | He watches a movie.\n- เธอกินข้าว | She eats rice.\n- เธอดื่มน้ำ | She drinks water.\n- เธอซื้อปลา | She buys fish.\n- เธออ่านหนังสือ | She reads a book.\n- เธอดูหนัง | She watches a movie.\n- ครูกินข้าว | The teacher eats rice.\n- ครูดื่มน้ำ | The teacher drinks water.\n- ครูซื้อปลา | The teacher buys fish.\n- ครูอ่านหนังสือ | The teacher reads a book.\n- ครูดูหนัง | The teacher watches a movie.\n\nRules:\n- If a row is strong, mark it \"keep\".\n- If it could become strong with a small edit, mark it \"revise\" and provide the corrected full row.\n- If it is awkward, unnatural, off-scope, repetitive, or not worth teaching, mark it \"reject\" and give a short reason.\n- Be strict. Do not keep weak textbook filler.\n\nReturn JSON only in this shape:\n{\n  \"results\": [\n    {\n      \"decision\": \"keep\" | \"revise\" | \"reject\",\n      \"reason\": \"...\",\n      \"row\": {\n        \"english\": \"...\",\n        \"thai\": \"...\",\n        \"romanization\": \"...\",\n        \"breakdown\": [\n          {\n            \"thai\": \"...\",\n            \"english\": \"...\",\n            \"romanization\": \"...\",\n            \"grammar\": true\n          }\n        ],\n        \"difficulty\": \"easy\"\n      }\n    }\n  ]\n}\n\nCandidate rows to review:\n[\n  {\n    \"thai\": \"คุณเปิดประตู\",\n    \"english\": \"You open the door.\",\n    \"romanization\": \"khun bpèrt bprà-dtoo\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"คุณ\",\n        \"english\": \"you\",\n        \"romanization\": \"khun\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"เปิด\",\n        \"english\": \"open\",\n        \"romanization\": \"bpèrt\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ประตู\",\n        \"english\": \"door\",\n        \"romanization\": \"bprà-dtoo\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"เธอใช้โทรศัพท์\",\n    \"english\": \"She uses a phone.\",\n    \"romanization\": \"thəə chái too-rá-sàp\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"เธอ\",\n        \"english\": \"she\",\n        \"romanization\": \"thəə\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ใช้\",\n        \"english\": \"use\",\n        \"romanization\": \"chái\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"โทรศัพท์\",\n        \"english\": \"phone\",\n        \"romanization\": \"too-rá-sàp\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"คุณถือหนังสือ\",\n    \"english\": \"You hold a book.\",\n    \"romanization\": \"khun thǔue nǎng-sǐue\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"คุณ\",\n        \"english\": \"you\",\n        \"romanization\": \"khun\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ถือ\",\n        \"english\": \"hold\",\n        \"romanization\": \"thǔue\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"หนังสือ\",\n        \"english\": \"book\",\n        \"romanization\": \"nǎng-sǐue\",\n        \"grammar\": true\n      }\n    ]\n  },\n  {\n    \"thai\": \"ฉันฟังเพลง\",\n    \"english\": \"I listen to music.\",\n    \"romanization\": \"chǎn fang pleng\",\n    \"difficulty\": \"easy\",\n    \"breakdown\": [\n      {\n        \"thai\": \"ฉัน\",\n        \"english\": \"I\",\n        \"romanization\": \"chǎn\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"ฟัง\",\n        \"english\": \"listen\",\n        \"romanization\": \"fang\",\n        \"grammar\": true\n      },\n      {\n        \"thai\": \"เพลง\",\n        \"english\": \"music\",\n        \"romanization\": \"pleng\",\n        \"grammar\": true\n      }\n    ]\n  }\n]\n"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "generated": 0,
+      "kept": 0,
+      "revised": 0,
+      "rejected": 6
+    },
+    {
+      "attempt": 2,
+      "generated": 5,
+      "kept": 2,
+      "revised": 1,
+      "rejected": 2
+    },
+    {
+      "attempt": 3,
+      "generated": 0,
+      "kept": 0,
+      "revised": 0,
+      "rejected": 6
+    },
+    {
+      "attempt": 4,
+      "generated": 0,
+      "kept": 0,
+      "revised": 0,
+      "rejected": 6
+    },
+    {
+      "attempt": 5,
+      "generated": 6,
+      "kept": 1,
+      "revised": 0,
+      "rejected": 0
+    }
+  ],
+  "rows": [
+    {
+      "thai": "คุณเปิดประตู",
+      "english": "You open the door.",
+      "romanization": "khun bpèrt bprà-dtoo",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "คุณ",
+          "english": "you",
+          "romanization": "khun",
+          "grammar": true
+        },
+        {
+          "thai": "เปิด",
+          "english": "open",
+          "romanization": "bpèrt",
+          "grammar": true
+        },
+        {
+          "thai": "ประตู",
+          "english": "door",
+          "romanization": "bprà-dtoo",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "เธอใช้โทรศัพท์",
+      "english": "She uses a phone.",
+      "romanization": "thəə chái too-rá-sàp",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "เธอ",
+          "english": "she",
+          "romanization": "thəə",
+          "grammar": true
+        },
+        {
+          "thai": "ใช้",
+          "english": "use",
+          "romanization": "chái",
+          "grammar": true
+        },
+        {
+          "thai": "โทรศัพท์",
+          "english": "phone",
+          "romanization": "too-rá-sàp",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "คุณถือหนังสือ",
+      "english": "You hold a book.",
+      "romanization": "khun thǔue nǎng-sǐue",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "คุณ",
+          "english": "you",
+          "romanization": "khun",
+          "grammar": true
+        },
+        {
+          "thai": "ถือ",
+          "english": "hold",
+          "romanization": "thǔue",
+          "grammar": true
+        },
+        {
+          "thai": "หนังสือ",
+          "english": "book",
+          "romanization": "nǎng-sǐue",
+          "grammar": true
+        }
+      ]
+    },
+    {
+      "thai": "ฉันฟังเพลง",
+      "english": "I listen to music.",
+      "romanization": "chǎn fang pleng",
+      "difficulty": "easy",
+      "breakdown": [
+        {
+          "thai": "ฉัน",
+          "english": "I",
+          "romanization": "chǎn",
+          "grammar": true
+        },
+        {
+          "thai": "ฟัง",
+          "english": "listen",
+          "romanization": "fang",
+          "grammar": true
+        },
+        {
+          "thai": "เพลง",
+          "english": "music",
+          "romanization": "pleng",
+          "grammar": true
+        }
+      ]
+    }
+  ]
+}

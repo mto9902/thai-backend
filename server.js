@@ -88,6 +88,7 @@ const TTS_MAX_CONCURRENT = readPositiveIntEnv("TTS_MAX_CONCURRENT", 4);
 const GRAMMAR_EXAMPLES_TABLE = "grammar_examples";
 const GRAMMAR_LESSON_OVERRIDES_TABLE = "grammar_lesson_overrides";
 const GRAMMAR_EXAMPLE_COMMENTS_TABLE = "grammar_example_comments";
+const GRAMMAR_EXAMPLE_REVISIONS_TABLE = "grammar_example_revisions";
 const GRAMMAR_LESSON_COMMENTS_TABLE = "grammar_lesson_comments";
 const WRITE_GRAMMAR_CSV_MIRROR = process.env.WRITE_GRAMMAR_CSV_MIRROR !== "false";
 const PASSWORD_RESET_EXPIRY_MINUTES = readPositiveIntEnv(
@@ -1041,6 +1042,42 @@ function normalizeFocus(focus) {
   };
 }
 
+function normalizeLessonBlocks(lessonBlocks) {
+  if (lessonBlocks == null) {
+    return undefined;
+  }
+
+  if (typeof lessonBlocks !== "object") {
+    throw new Error("Lesson blocks must be an object");
+  }
+
+  const summary = normalizePlainString(
+    lessonBlocks.summary,
+    "Lesson summary",
+    { allowEmpty: true, maxLength: 4000 },
+  );
+  const build = normalizePlainString(
+    lessonBlocks.build,
+    "Lesson build",
+    { allowEmpty: true, maxLength: 4000 },
+  );
+  const use = normalizePlainString(
+    lessonBlocks.use,
+    "Lesson use",
+    { allowEmpty: true, maxLength: 4000 },
+  );
+
+  if (!summary && !build && !use) {
+    return undefined;
+  }
+
+  return {
+    summary,
+    build,
+    use,
+  };
+}
+
 function normalizeGrammarOverride(override) {
   if (!override || typeof override !== "object") {
     throw new Error("Grammar override payload is required");
@@ -1059,7 +1096,7 @@ function normalizeGrammarOverride(override) {
     );
   }
 
-  return {
+  const normalizedOverride = {
     title: normalizePlainString(override.title, "Title"),
     level,
     stage,
@@ -1072,6 +1109,13 @@ function normalizeGrammarOverride(override) {
     example: normalizeExample(override.example),
     focus: normalizeFocus(override.focus),
   };
+
+  const lessonBlocks = normalizeLessonBlocks(override.lessonBlocks);
+  if (lessonBlocks) {
+    normalizedOverride.lessonBlocks = lessonBlocks;
+  }
+
+  return normalizedOverride;
 }
 
 function normalizeGrammarRow(row, index, options = {}) {
@@ -1177,6 +1221,76 @@ function serializeGrammarExampleRow(row, index) {
       : null,
     approvedAt: row.approved_at ?? null,
     sortOrder: Number(row.sort_order) || index,
+  };
+}
+
+function buildExampleRevisionSnapshot(row) {
+  if (!row || typeof row !== "object") {
+    return null;
+  }
+
+  return {
+    thai: row.thai ?? "",
+    romanization: row.romanization ?? "",
+    english: row.english ?? "",
+    breakdown: Array.isArray(row.breakdown) ? row.breakdown : [],
+    difficulty: row.difficulty ?? "easy",
+    reviewStatus: row.reviewStatus ?? "flagged",
+    reviewAssigneeUserId: row.reviewAssigneeUserId ?? null,
+    reviewNote: row.reviewNote ?? null,
+    sortOrder: Number.isFinite(Number(row.sortOrder)) ? Number(row.sortOrder) : 0,
+    toneConfidence: Number.isFinite(Number(row.toneConfidence))
+      ? Number(row.toneConfidence)
+      : 0,
+    toneStatus: row.toneStatus ?? "review",
+  };
+}
+
+function diffExampleRevisionSnapshots(beforeSnapshot, afterSnapshot) {
+  if (!beforeSnapshot && !afterSnapshot) {
+    return [];
+  }
+
+  if (!beforeSnapshot) {
+    return Object.keys(afterSnapshot ?? {});
+  }
+
+  if (!afterSnapshot) {
+    return Object.keys(beforeSnapshot ?? {});
+  }
+
+  const fields = new Set([
+    ...Object.keys(beforeSnapshot),
+    ...Object.keys(afterSnapshot),
+  ]);
+
+  return Array.from(fields).filter(
+    (field) =>
+      JSON.stringify(beforeSnapshot[field]) !==
+      JSON.stringify(afterSnapshot[field]),
+  );
+}
+
+function serializeExampleRevision(row) {
+  return {
+    id: Number(row.id),
+    exampleId: Number(row.example_id),
+    grammarId: row.grammar_id,
+    action: row.action,
+    editedByUserId: row.edited_by_user_id
+      ? Number(row.edited_by_user_id)
+      : null,
+    changedFields: Array.isArray(row.changed_fields) ? row.changed_fields : [],
+    beforeSnapshot: row.before_snapshot ?? null,
+    afterSnapshot: row.after_snapshot ?? null,
+    createdAt: row.created_at,
+    editor: row.edited_by_user_id
+      ? {
+          id: Number(row.edited_by_user_id),
+          email: row.editor_email,
+          display_name: row.editor_display_name ?? null,
+        }
+      : null,
   };
 }
 
@@ -1391,6 +1505,32 @@ async function fetchExampleComments(exampleIds) {
   }
 
   return commentsByExampleId;
+}
+
+async function fetchExampleRevisions(exampleId) {
+  const result = await pool.query(
+    `
+    SELECT
+      r.id,
+      r.example_id,
+      r.grammar_id,
+      r.action,
+      r.edited_by_user_id,
+      r.changed_fields,
+      r.before_snapshot,
+      r.after_snapshot,
+      r.created_at,
+      u.email AS editor_email,
+      u.display_name AS editor_display_name
+    FROM ${GRAMMAR_EXAMPLE_REVISIONS_TABLE} r
+    LEFT JOIN users u ON u.id = r.edited_by_user_id
+    WHERE r.example_id = $1
+    ORDER BY r.created_at DESC, r.id DESC
+    `,
+    [exampleId],
+  );
+
+  return result.rows.map((row) => serializeExampleRevision(row));
 }
 
 async function ensureReviewAssigneeExists(userId) {
@@ -3018,6 +3158,7 @@ const STARTUP_ROUTE_CHECKS = [
   { group: "thai", method: "GET", path: "/review/queue", label: "review queue" },
   { group: "thai", method: "GET", path: "/review/grammar/:grammarId", label: "review grammar detail" },
   { group: "thai", method: "PATCH", path: "/review/grammar/:grammarId/lesson", label: "review lesson save" },
+  { group: "thai", method: "GET", path: "/review/examples/:exampleId/history", label: "review row history" },
   { group: "thai", method: "PATCH", path: "/review/examples/:exampleId", label: "review row save" },
   { group: "thai", method: "POST", path: "/tts/sentence", label: "sentence TTS" },
   { group: "thai", method: "POST", path: "/me/keystone-access", label: "keystone access sync" },
@@ -4565,6 +4706,40 @@ app.get(
   },
 );
 
+app.get(
+  "/review/examples/:exampleId/history",
+  authMiddleware,
+  reviewContentMiddleware,
+  async (req, res) => {
+    try {
+      const exampleId = Number.parseInt(req.params.exampleId, 10);
+      if (!Number.isInteger(exampleId) || exampleId <= 0) {
+        return res.status(400).json({ error: "Invalid example id" });
+      }
+
+      const existingResult = await pool.query(
+        `
+        SELECT id
+        FROM ${GRAMMAR_EXAMPLES_TABLE}
+        WHERE id = $1
+        LIMIT 1
+        `,
+        [exampleId],
+      );
+
+      if (existingResult.rows.length === 0) {
+        return res.status(404).json({ error: "Example row not found" });
+      }
+
+      const revisions = await fetchExampleRevisions(exampleId);
+      res.json({ revisions });
+    } catch (err) {
+      console.error("Failed to fetch review example history:", err);
+      res.status(500).json({ error: "Failed to fetch example history" });
+    }
+  },
+);
+
 app.patch(
   "/review/grammar/:grammarId/lesson",
   authMiddleware,
@@ -4585,6 +4760,7 @@ app.patch(
           stage: req.body?.stage,
           explanation: req.body?.explanation,
           pattern: req.body?.pattern,
+          lessonBlocks: req.body?.lessonBlocks,
           aiPrompt: req.body?.aiPrompt,
           example: req.body?.example,
           focus: req.body?.focus,
@@ -4692,6 +4868,8 @@ app.post(
   authMiddleware,
   reviewContentMiddleware,
   async (req, res) => {
+    const client = await pool.connect();
+    let transactionStarted = false;
     try {
       const { grammarId } = req.params;
 
@@ -4724,7 +4902,7 @@ app.post(
           ? req.body.sortOrder
           : null;
 
-      const sortResult = await pool.query(
+      const sortResult = await client.query(
         `
         SELECT COALESCE(MAX(sort_order), -1) + 1 AS next_sort_order
         FROM ${GRAMMAR_EXAMPLES_TABLE}
@@ -4733,7 +4911,10 @@ app.post(
         [grammarId],
       );
 
-      const result = await pool.query(
+      await client.query("BEGIN");
+      transactionStarted = true;
+
+      const result = await client.query(
         `
         INSERT INTO ${GRAMMAR_EXAMPLES_TABLE} (
           grammar_id,
@@ -4773,7 +4954,25 @@ app.post(
           $15::bigint,
           CASE WHEN $15::bigint IS NOT NULL THEN NOW() ELSE NULL END
         )
-        RETURNING id
+        RETURNING
+          id,
+          grammar_id,
+          thai,
+          romanization,
+          english,
+          breakdown,
+          difficulty,
+          sort_order,
+          tone_confidence,
+          tone_status,
+          tone_analysis,
+          review_status,
+          review_assignee_user_id,
+          review_note,
+          last_edited_by_user_id,
+          last_edited_at,
+          approved_by_user_id,
+          approved_at
         `,
         [
           grammarId,
@@ -4794,19 +4993,53 @@ app.post(
         ],
       );
 
-      const rows = await refreshGrammarRowsForGrammarId(grammarId);
-      const createdId = Number(result.rows[0].id);
-      const createdRow = rows.find((row) => row.id === createdId) ?? null;
+      const createdRow = serializeGrammarExampleRow(
+        result.rows[0],
+        Number(result.rows[0]?.sort_order ?? 0),
+      );
+      const afterSnapshot = buildExampleRevisionSnapshot(createdRow);
+      const changedFields = diffExampleRevisionSnapshots(null, afterSnapshot);
+
+      await client.query(
+        `
+        INSERT INTO ${GRAMMAR_EXAMPLE_REVISIONS_TABLE} (
+          example_id,
+          grammar_id,
+          action,
+          edited_by_user_id,
+          changed_fields,
+          before_snapshot,
+          after_snapshot
+        )
+        VALUES ($1, $2, 'created', $3::bigint, $4::jsonb, $5::jsonb, $6::jsonb)
+        `,
+        [
+          createdRow.id,
+          grammarId,
+          req.userId,
+          JSON.stringify(changedFields),
+          JSON.stringify(null),
+          JSON.stringify(afterSnapshot),
+        ],
+      );
+
+      await client.query("COMMIT");
+      await refreshGrammarRowsForGrammarId(grammarId);
 
       res.status(201).json({
         success: true,
         row: createdRow,
       });
     } catch (err) {
+      if (transactionStarted) {
+        await client.query("ROLLBACK");
+      }
       const message =
         err instanceof Error ? err.message : "Failed to create example row";
       console.error("Failed to create review example row:", err);
       res.status(400).json({ error: message });
+    } finally {
+      client.release();
     }
   },
 );
@@ -4816,15 +5049,35 @@ app.patch(
   authMiddleware,
   reviewContentMiddleware,
   async (req, res) => {
+    const client = await pool.connect();
+    let transactionStarted = false;
     try {
       const exampleId = Number.parseInt(req.params.exampleId, 10);
       if (!Number.isInteger(exampleId) || exampleId <= 0) {
         return res.status(400).json({ error: "Invalid example id" });
       }
 
-      const existingResult = await pool.query(
+      const existingResult = await client.query(
         `
-        SELECT grammar_id, sort_order
+        SELECT
+          id,
+          grammar_id,
+          thai,
+          romanization,
+          english,
+          breakdown,
+          difficulty,
+          sort_order,
+          tone_confidence,
+          tone_status,
+          tone_analysis,
+          review_status,
+          review_assignee_user_id,
+          review_note,
+          last_edited_by_user_id,
+          last_edited_at,
+          approved_by_user_id,
+          approved_at
         FROM ${GRAMMAR_EXAMPLES_TABLE}
         WHERE id = $1
         LIMIT 1
@@ -4837,6 +5090,11 @@ app.patch(
       }
 
       const existing = existingResult.rows[0];
+      const beforeRow = serializeGrammarExampleRow(
+        existing,
+        Number(existing.sort_order ?? 0),
+      );
+      const beforeSnapshot = buildExampleRevisionSnapshot(beforeRow);
       const normalizedRow = normalizeGrammarRow(
         {
           thai: req.body?.thai,
@@ -4861,7 +5119,10 @@ app.patch(
           ? req.body.sortOrder
           : Number(existing.sort_order ?? 0);
 
-      await pool.query(
+      await client.query("BEGIN");
+      transactionStarted = true;
+
+      const updateResult = await client.query(
         `
         UPDATE ${GRAMMAR_EXAMPLES_TABLE}
         SET
@@ -4882,6 +5143,25 @@ app.patch(
           approved_by_user_id = $15::bigint,
           approved_at = CASE WHEN $15::bigint IS NOT NULL THEN NOW() ELSE NULL END
         WHERE id = $1
+        RETURNING
+          id,
+          grammar_id,
+          thai,
+          romanization,
+          english,
+          breakdown,
+          difficulty,
+          sort_order,
+          tone_confidence,
+          tone_status,
+          tone_analysis,
+          review_status,
+          review_assignee_user_id,
+          review_note,
+          last_edited_by_user_id,
+          last_edited_at,
+          approved_by_user_id,
+          approved_at
         `,
         [
           exampleId,
@@ -4902,18 +5182,56 @@ app.patch(
         ],
       );
 
-      const rows = await refreshGrammarRowsForGrammarId(existing.grammar_id);
-      const updatedRow = rows.find((row) => row.id === exampleId) ?? null;
+      const updatedRow = serializeGrammarExampleRow(
+        updateResult.rows[0],
+        Number(updateResult.rows[0]?.sort_order ?? sortOrder),
+      );
+      const afterSnapshot = buildExampleRevisionSnapshot(updatedRow);
+      const changedFields = diffExampleRevisionSnapshots(
+        beforeSnapshot,
+        afterSnapshot,
+      );
+
+      await client.query(
+        `
+        INSERT INTO ${GRAMMAR_EXAMPLE_REVISIONS_TABLE} (
+          example_id,
+          grammar_id,
+          action,
+          edited_by_user_id,
+          changed_fields,
+          before_snapshot,
+          after_snapshot
+        )
+        VALUES ($1, $2, 'updated', $3::bigint, $4::jsonb, $5::jsonb, $6::jsonb)
+        `,
+        [
+          exampleId,
+          existing.grammar_id,
+          req.userId,
+          JSON.stringify(changedFields),
+          JSON.stringify(beforeSnapshot),
+          JSON.stringify(afterSnapshot),
+        ],
+      );
+
+      await client.query("COMMIT");
+      await refreshGrammarRowsForGrammarId(existing.grammar_id);
 
       res.json({
         success: true,
         row: updatedRow,
       });
     } catch (err) {
+      if (transactionStarted) {
+        await client.query("ROLLBACK");
+      }
       const message =
         err instanceof Error ? err.message : "Failed to update example row";
       console.error("Failed to update review example row:", err);
       res.status(400).json({ error: message });
+    } finally {
+      client.release();
     }
   },
 );
@@ -5574,6 +5892,23 @@ async function startServer() {
     await pool.query(`
       CREATE INDEX IF NOT EXISTS idx_grammar_example_comments_example
         ON ${GRAMMAR_EXAMPLE_COMMENTS_TABLE} (example_id, created_at);
+    `);
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS ${GRAMMAR_EXAMPLE_REVISIONS_TABLE} (
+        id BIGSERIAL PRIMARY KEY,
+        example_id BIGINT NOT NULL REFERENCES ${GRAMMAR_EXAMPLES_TABLE}(id) ON DELETE CASCADE,
+        grammar_id TEXT NOT NULL,
+        action TEXT NOT NULL,
+        edited_by_user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+        changed_fields JSONB NOT NULL DEFAULT '[]'::jsonb,
+        before_snapshot JSONB,
+        after_snapshot JSONB,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_grammar_example_revisions_example
+        ON ${GRAMMAR_EXAMPLE_REVISIONS_TABLE} (example_id, created_at DESC);
     `);
     await pool.query(`
       UPDATE ${GRAMMAR_EXAMPLES_TABLE}
