@@ -1246,29 +1246,90 @@ function buildExampleRevisionSnapshot(row) {
   };
 }
 
+function normalizeBreakdownForRevisionDiff(items, options = {}) {
+  const { includeTones = true } = options;
+  if (!Array.isArray(items)) {
+    return [];
+  }
+
+  return items.map((item, index) => ({
+    index,
+    thai: item?.thai ?? "",
+    english: item?.english ?? "",
+    romanization: item?.romanization ?? "",
+    grammar: item?.grammar === true,
+    ...(includeTones
+      ? {
+          tones: Array.isArray(item?.tones) ? item.tones : [],
+        }
+      : {}),
+  }));
+}
+
 function diffExampleRevisionSnapshots(beforeSnapshot, afterSnapshot) {
   if (!beforeSnapshot && !afterSnapshot) {
     return [];
   }
 
-  if (!beforeSnapshot) {
-    return Object.keys(afterSnapshot ?? {});
+  const before = beforeSnapshot ?? {};
+  const after = afterSnapshot ?? {};
+  const changedFields = [];
+
+  const fields = new Set([...Object.keys(before), ...Object.keys(after)]);
+
+  for (const field of fields) {
+    if (field === "breakdown") {
+      continue;
+    }
+
+    if (JSON.stringify(before[field]) !== JSON.stringify(after[field])) {
+      changedFields.push(field);
+    }
   }
 
-  if (!afterSnapshot) {
-    return Object.keys(beforeSnapshot ?? {});
-  }
-
-  const fields = new Set([
-    ...Object.keys(beforeSnapshot),
-    ...Object.keys(afterSnapshot),
-  ]);
-
-  return Array.from(fields).filter(
-    (field) =>
-      JSON.stringify(beforeSnapshot[field]) !==
-      JSON.stringify(afterSnapshot[field]),
+  const beforeBreakdownContent = normalizeBreakdownForRevisionDiff(
+    before.breakdown,
+    { includeTones: false },
   );
+  const afterBreakdownContent = normalizeBreakdownForRevisionDiff(
+    after.breakdown,
+    { includeTones: false },
+  );
+
+  if (
+    JSON.stringify(beforeBreakdownContent) !==
+    JSON.stringify(afterBreakdownContent)
+  ) {
+    changedFields.push("breakdown");
+  }
+
+  const beforeBreakdownTones = normalizeBreakdownForRevisionDiff(
+    before.breakdown,
+    { includeTones: true },
+  ).map((item) => ({
+    index: item.index,
+    thai: item.thai,
+    romanization: item.romanization,
+    tones: item.tones,
+  }));
+  const afterBreakdownTones = normalizeBreakdownForRevisionDiff(
+    after.breakdown,
+    { includeTones: true },
+  ).map((item) => ({
+    index: item.index,
+    thai: item.thai,
+    romanization: item.romanization,
+    tones: item.tones,
+  }));
+
+  if (
+    JSON.stringify(beforeBreakdownTones) !==
+    JSON.stringify(afterBreakdownTones)
+  ) {
+    changedFields.push("tones");
+  }
+
+  return changedFields;
 }
 
 function serializeExampleRevision(row) {
