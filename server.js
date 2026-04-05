@@ -90,6 +90,7 @@ const GRAMMAR_LESSON_OVERRIDES_TABLE = "grammar_lesson_overrides";
 const GRAMMAR_EXAMPLE_COMMENTS_TABLE = "grammar_example_comments";
 const GRAMMAR_EXAMPLE_REVISIONS_TABLE = "grammar_example_revisions";
 const GRAMMAR_LESSON_COMMENTS_TABLE = "grammar_lesson_comments";
+const GRAMMAR_LESSON_PRODUCTION_TABLE = "grammar_lesson_production";
 const WRITE_GRAMMAR_CSV_MIRROR = process.env.WRITE_GRAMMAR_CSV_MIRROR !== "false";
 const PASSWORD_RESET_EXPIRY_MINUTES = readPositiveIntEnv(
   "PASSWORD_RESET_EXPIRY_MINUTES",
@@ -173,7 +174,18 @@ const VALID_REVIEW_STATUSES = new Set([
   "needs_changes",
   "hidden",
 ]);
+const VALID_PUBLISH_STATES = new Set(["published", "staged", "retired"]);
+const VALID_NEXT_WAVE_DECISIONS = new Set([
+  "carry",
+  "revise",
+  "replace",
+  "retire",
+]);
+const VALID_ROW_QUALITY_FLAGS = new Set(["thai_weak"]);
 const APPROVED_TONE_CONFIDENCE = 99;
+const DEFAULT_FINAL_APPROVED_TARGET = 25;
+const DEFAULT_FIRST_PASS_CANDIDATE_TARGET = 40;
+const DEFAULT_SUPPLEMENTAL_BATCH_SIZE = 10;
 
 function getRequestIdentity(req, prefix = "anon") {
   if (req.userId) {
@@ -369,6 +381,14 @@ async function loadGrammarRowsFromDatabase() {
       review_status,
       review_assignee_user_id,
       review_note,
+      publish_state,
+      rewrite_wave_id,
+      source_example_id,
+      quality_flags,
+      next_wave_decision,
+      next_wave_audit_note,
+      next_wave_audited_by_user_id,
+      next_wave_audited_at,
       last_edited_by_user_id,
       last_edited_at,
       approved_by_user_id,
@@ -410,6 +430,15 @@ async function loadGrammarRowsFromDatabase() {
         ? Number(row.review_assignee_user_id)
         : null,
       reviewNote: row.review_note ?? null,
+      publishState: normalizePublishState(row.publish_state, "published"),
+      rewriteWaveId: row.rewrite_wave_id ?? null,
+      sourceExampleId: row.source_example_id ? Number(row.source_example_id) : null,
+      nextWaveDecision: normalizeOptionalNextWaveDecision(row.next_wave_decision),
+      nextWaveAuditNote: row.next_wave_audit_note ?? null,
+      nextWaveAuditedByUserId: row.next_wave_audited_by_user_id
+        ? Number(row.next_wave_audited_by_user_id)
+        : null,
+      nextWaveAuditedAt: row.next_wave_audited_at ?? null,
       lastEditedByUserId: row.last_edited_by_user_id
         ? Number(row.last_edited_by_user_id)
         : null,
@@ -532,6 +561,14 @@ async function writeGrammarRowsToDatabase(grammarId, rows) {
             review_status,
             review_assignee_user_id,
             review_note,
+            publish_state,
+            rewrite_wave_id,
+            source_example_id,
+            quality_flags,
+            next_wave_decision,
+            next_wave_audit_note,
+            next_wave_audited_by_user_id,
+            next_wave_audited_at,
             last_edited_by_user_id,
             last_edited_at,
             approved_by_user_id,
@@ -552,10 +589,17 @@ async function writeGrammarRowsToDatabase(grammarId, rows) {
             $11,
             $12::bigint,
             $13,
-            $14::bigint,
-            CASE WHEN $14::bigint IS NOT NULL THEN NOW() ELSE NULL END,
-            $15::bigint,
-            CASE WHEN $15::bigint IS NOT NULL THEN NOW() ELSE NULL END
+            $14,
+            $15,
+            $16::bigint,
+            $17,
+            $18,
+            $19::bigint,
+            $20,
+            $21::bigint,
+            CASE WHEN $21::bigint IS NOT NULL THEN NOW() ELSE NULL END,
+            $22::bigint,
+            CASE WHEN $22::bigint IS NOT NULL THEN NOW() ELSE NULL END
           )
         `,
         [
@@ -575,6 +619,13 @@ async function writeGrammarRowsToDatabase(grammarId, rows) {
           ),
           row.reviewAssigneeUserId ?? null,
           row.reviewNote ?? null,
+          normalizePublishState(row.publishState, "published"),
+          normalizeOptionalRewriteWaveId(row.rewriteWaveId),
+          row.sourceExampleId ?? null,
+          normalizeOptionalNextWaveDecision(row.nextWaveDecision),
+          row.nextWaveAuditNote ?? null,
+          row.nextWaveAuditedByUserId ?? null,
+          row.nextWaveAuditedAt ?? null,
           row.lastEditedByUserId ?? null,
           row.reviewStatus === "approved"
             ? row.approvedByUserId ?? row.lastEditedByUserId ?? null
@@ -846,6 +897,15 @@ function normalizeReviewStatus(value, fallback = "flagged") {
   return VALID_REVIEW_STATUSES.has(normalized) ? normalized : fallback;
 }
 
+function normalizePublishState(value, fallback = "published") {
+  if (typeof value !== "string") {
+    return fallback;
+  }
+
+  const normalized = value.trim().toLowerCase();
+  return VALID_PUBLISH_STATES.has(normalized) ? normalized : fallback;
+}
+
 function normalizeOptionalReviewNote(value) {
   if (typeof value !== "string") {
     return null;
@@ -862,6 +922,57 @@ function normalizeOptionalAssigneeId(value) {
 
   const parsed = Number.parseInt(String(value), 10);
   return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
+}
+
+function normalizeOptionalRewriteWaveId(value) {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  return trimmed ? trimmed : null;
+}
+
+function normalizeOptionalNextWaveDecision(value) {
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const normalized = value.trim().toLowerCase();
+  return VALID_NEXT_WAVE_DECISIONS.has(normalized) ? normalized : null;
+}
+
+function normalizeOptionalAuditNote(value) {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  return trimmed ? trimmed : null;
+}
+
+function normalizeQualityFlags(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return Array.from(
+    new Set(
+      value
+        .map((item) =>
+          typeof item === "string" ? item.trim().toLowerCase() : "",
+        )
+        .filter((item) => VALID_ROW_QUALITY_FLAGS.has(item)),
+    ),
+  );
+}
+
+function createRewriteWaveId(grammarId) {
+  return `${grammarId}-wave-${Date.now()}`;
 }
 
 function deriveInitialReviewStatus({ toneConfidence, toneStatus }) {
@@ -1212,6 +1323,16 @@ function serializeGrammarExampleRow(row, index) {
       ? Number(row.review_assignee_user_id)
       : null,
     reviewNote: row.review_note ?? null,
+    publishState: normalizePublishState(row.publish_state, "published"),
+    rewriteWaveId: row.rewrite_wave_id ?? null,
+    sourceExampleId: row.source_example_id ? Number(row.source_example_id) : null,
+    qualityFlags: normalizeQualityFlags(row.quality_flags),
+    nextWaveDecision: normalizeOptionalNextWaveDecision(row.next_wave_decision),
+    nextWaveAuditNote: row.next_wave_audit_note ?? null,
+    nextWaveAuditedByUserId: row.next_wave_audited_by_user_id
+      ? Number(row.next_wave_audited_by_user_id)
+      : null,
+    nextWaveAuditedAt: row.next_wave_audited_at ?? null,
     lastEditedByUserId: row.last_edited_by_user_id
       ? Number(row.last_edited_by_user_id)
       : null,
@@ -1238,6 +1359,14 @@ function buildExampleRevisionSnapshot(row) {
     reviewStatus: row.reviewStatus ?? "flagged",
     reviewAssigneeUserId: row.reviewAssigneeUserId ?? null,
     reviewNote: row.reviewNote ?? null,
+    publishState: row.publishState ?? "published",
+    rewriteWaveId: row.rewriteWaveId ?? null,
+    sourceExampleId: row.sourceExampleId ?? null,
+    qualityFlags: normalizeQualityFlags(row.qualityFlags),
+    nextWaveDecision: row.nextWaveDecision ?? null,
+    nextWaveAuditNote: row.nextWaveAuditNote ?? null,
+    nextWaveAuditedByUserId: row.nextWaveAuditedByUserId ?? null,
+    nextWaveAuditedAt: row.nextWaveAuditedAt ?? null,
     sortOrder: Number.isFinite(Number(row.sortOrder)) ? Number(row.sortOrder) : 0,
     toneConfidence: Number.isFinite(Number(row.toneConfidence))
       ? Number(row.toneConfidence)
@@ -1393,12 +1522,21 @@ async function fetchGrammarRowsForGrammarId(grammarId) {
       review_status,
       review_assignee_user_id,
       review_note,
+      publish_state,
+      rewrite_wave_id,
+      source_example_id,
+      quality_flags,
+      next_wave_decision,
+      next_wave_audit_note,
+      next_wave_audited_by_user_id,
+      next_wave_audited_at,
       last_edited_by_user_id,
       last_edited_at,
       approved_by_user_id,
       approved_at
     FROM ${GRAMMAR_EXAMPLES_TABLE}
     WHERE grammar_id = $1
+      AND publish_state <> 'retired'
     ORDER BY sort_order ASC, id ASC
     `,
     [grammarId],
@@ -1472,6 +1610,292 @@ async function fetchGrammarOverrideMetadata() {
       },
     ]),
   );
+}
+
+function deriveLessonProductionWorkflowStatus(summary) {
+  if (!summary) {
+    return "not_started";
+  }
+
+  if (summary.currentWaveReadyCount >= summary.finalTargetCount) {
+    return "ready_to_publish";
+  }
+
+  if (summary.currentWaveApprovedCount >= summary.finalTargetCount) {
+    return "tone_review";
+  }
+
+  if (summary.currentWaveRowCount > 0) {
+    return "reviewing";
+  }
+
+  if (summary.stagedRowCount > 0) {
+    return "generated";
+  }
+
+  if (summary.livePublishedCount >= summary.finalTargetCount) {
+    return "published";
+  }
+
+  return "not_started";
+}
+
+function buildLessonProductionSummary(
+  record,
+  counts,
+  stageFallback = null,
+  grammarIdFallback = null,
+) {
+  const finalTargetCount = Number(
+    record?.final_target_count ?? DEFAULT_FINAL_APPROVED_TARGET,
+  );
+  const firstPassCandidateTarget = Number(
+    record?.first_pass_candidate_target ?? DEFAULT_FIRST_PASS_CANDIDATE_TARGET,
+  );
+  const supplementalCandidateBatchSize = Number(
+    record?.supplemental_candidate_batch_size ?? DEFAULT_SUPPLEMENTAL_BATCH_SIZE,
+  );
+
+  const summary = {
+    grammarId: record?.grammar_id ?? grammarIdFallback ?? null,
+    stage: record?.stage ?? stageFallback ?? null,
+    finalTargetCount,
+    firstPassCandidateTarget,
+    supplementalCandidateBatchSize,
+    currentRewriteWaveId: record?.current_rewrite_wave_id ?? null,
+    lastGeneratedAt: record?.last_generated_at ?? null,
+    lastPublishedAt: record?.last_published_at ?? null,
+    notes: record?.notes ?? null,
+    livePublishedCount: Number(counts?.livePublishedCount ?? 0),
+    publishedRowCount: Number(counts?.publishedRowCount ?? 0),
+    stagedRowCount: Number(counts?.stagedRowCount ?? 0),
+    stagedApprovedCount: Number(counts?.stagedApprovedCount ?? 0),
+    stagedReadyCount: Number(counts?.stagedReadyCount ?? 0),
+    currentWaveRowCount: Number(counts?.currentWaveRowCount ?? 0),
+    currentWaveApprovedCount: Number(counts?.currentWaveApprovedCount ?? 0),
+    currentWaveReadyCount: Number(counts?.currentWaveReadyCount ?? 0),
+    retiredRowCount: Number(counts?.retiredRowCount ?? 0),
+  };
+
+  return {
+    ...summary,
+    remainingForPublish: Math.max(
+      0,
+      finalTargetCount - summary.currentWaveReadyCount,
+    ),
+    workflowStatus: deriveLessonProductionWorkflowStatus(summary),
+    isReadyToPublish: summary.currentWaveReadyCount >= finalTargetCount,
+  };
+}
+
+async function fetchLessonProductionSummaryMap(grammarIds = []) {
+  const recordResult =
+    grammarIds.length > 0
+      ? await pool.query(
+          `
+          SELECT
+            grammar_id,
+            stage,
+            final_target_count,
+            first_pass_candidate_target,
+            supplemental_candidate_batch_size,
+            current_rewrite_wave_id,
+            last_generated_at,
+            last_published_at,
+            notes
+          FROM ${GRAMMAR_LESSON_PRODUCTION_TABLE}
+          WHERE grammar_id = ANY($1::text[])
+          `,
+          [grammarIds],
+        )
+      : await pool.query(
+          `
+          SELECT
+            grammar_id,
+            stage,
+            final_target_count,
+            first_pass_candidate_target,
+            supplemental_candidate_batch_size,
+            current_rewrite_wave_id,
+            last_generated_at,
+            last_published_at,
+            notes
+          FROM ${GRAMMAR_LESSON_PRODUCTION_TABLE}
+          `,
+        );
+
+  const countResult =
+    grammarIds.length > 0
+      ? await pool.query(
+          `
+          SELECT
+            e.grammar_id,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'published'
+                AND e.review_status = 'approved'
+                AND e.tone_status = 'approved'
+                AND e.tone_confidence >= ${APPROVED_TONE_CONFIDENCE}
+            )::int AS live_published_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'published'
+            )::int AS published_row_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'staged'
+            )::int AS staged_row_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'staged'
+                AND e.review_status = 'approved'
+            )::int AS staged_approved_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'staged'
+                AND e.review_status = 'approved'
+                AND e.tone_status = 'approved'
+                AND e.tone_confidence >= ${APPROVED_TONE_CONFIDENCE}
+            )::int AS staged_ready_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'staged'
+                AND e.rewrite_wave_id IS NOT DISTINCT FROM p.current_rewrite_wave_id
+            )::int AS current_wave_row_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'staged'
+                AND e.rewrite_wave_id IS NOT DISTINCT FROM p.current_rewrite_wave_id
+                AND e.review_status = 'approved'
+            )::int AS current_wave_approved_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'staged'
+                AND e.rewrite_wave_id IS NOT DISTINCT FROM p.current_rewrite_wave_id
+                AND e.review_status = 'approved'
+                AND e.tone_status = 'approved'
+                AND e.tone_confidence >= ${APPROVED_TONE_CONFIDENCE}
+            )::int AS current_wave_ready_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'retired'
+            )::int AS retired_row_count
+          FROM ${GRAMMAR_EXAMPLES_TABLE} e
+          LEFT JOIN ${GRAMMAR_LESSON_PRODUCTION_TABLE} p
+            ON p.grammar_id = e.grammar_id
+          WHERE e.grammar_id = ANY($1::text[])
+          GROUP BY e.grammar_id
+          `,
+          [grammarIds],
+        )
+      : await pool.query(
+          `
+          SELECT
+            e.grammar_id,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'published'
+                AND e.review_status = 'approved'
+                AND e.tone_status = 'approved'
+                AND e.tone_confidence >= ${APPROVED_TONE_CONFIDENCE}
+            )::int AS live_published_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'published'
+            )::int AS published_row_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'staged'
+            )::int AS staged_row_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'staged'
+                AND e.review_status = 'approved'
+            )::int AS staged_approved_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'staged'
+                AND e.review_status = 'approved'
+                AND e.tone_status = 'approved'
+                AND e.tone_confidence >= ${APPROVED_TONE_CONFIDENCE}
+            )::int AS staged_ready_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'staged'
+                AND e.rewrite_wave_id IS NOT DISTINCT FROM p.current_rewrite_wave_id
+            )::int AS current_wave_row_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'staged'
+                AND e.rewrite_wave_id IS NOT DISTINCT FROM p.current_rewrite_wave_id
+                AND e.review_status = 'approved'
+            )::int AS current_wave_approved_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'staged'
+                AND e.rewrite_wave_id IS NOT DISTINCT FROM p.current_rewrite_wave_id
+                AND e.review_status = 'approved'
+                AND e.tone_status = 'approved'
+                AND e.tone_confidence >= ${APPROVED_TONE_CONFIDENCE}
+            )::int AS current_wave_ready_count,
+            COUNT(*) FILTER (
+              WHERE e.publish_state = 'retired'
+            )::int AS retired_row_count
+          FROM ${GRAMMAR_EXAMPLES_TABLE} e
+          LEFT JOIN ${GRAMMAR_LESSON_PRODUCTION_TABLE} p
+            ON p.grammar_id = e.grammar_id
+          GROUP BY e.grammar_id
+          `,
+        );
+
+  const recordById = new Map(
+    recordResult.rows.map((row) => [row.grammar_id, row]),
+  );
+  const countById = new Map(
+    countResult.rows.map((row) => [
+      row.grammar_id,
+      {
+        livePublishedCount: row.live_published_count,
+        publishedRowCount: row.published_row_count,
+        stagedRowCount: row.staged_row_count,
+        stagedApprovedCount: row.staged_approved_count,
+        stagedReadyCount: row.staged_ready_count,
+        currentWaveRowCount: row.current_wave_row_count,
+        currentWaveApprovedCount: row.current_wave_approved_count,
+        currentWaveReadyCount: row.current_wave_ready_count,
+        retiredRowCount: row.retired_row_count,
+      },
+    ]),
+  );
+
+  const ids =
+    grammarIds.length > 0
+      ? grammarIds
+      : Array.from(new Set([...recordById.keys(), ...countById.keys()]));
+
+  return new Map(
+    ids.map((grammarId) => [
+      grammarId,
+      buildLessonProductionSummary(
+        recordById.get(grammarId) ?? null,
+        countById.get(grammarId) ?? null,
+        null,
+        grammarId,
+      ),
+    ]),
+  );
+}
+
+async function ensureLessonProductionRecord(grammarId, stage, client = pool) {
+  const result = await client.query(
+    `
+    INSERT INTO ${GRAMMAR_LESSON_PRODUCTION_TABLE} (
+      grammar_id,
+      stage,
+      final_target_count,
+      first_pass_candidate_target,
+      supplemental_candidate_batch_size
+    )
+    VALUES ($1, $2, $3, $4, $5)
+    ON CONFLICT (grammar_id)
+    DO UPDATE SET
+      stage = EXCLUDED.stage,
+      updated_at = NOW()
+    RETURNING *
+    `,
+    [
+      grammarId,
+      stage,
+      DEFAULT_FINAL_APPROVED_TARGET,
+      DEFAULT_FIRST_PASS_CANDIDATE_TARGET,
+      DEFAULT_SUPPLEMENTAL_BATCH_SIZE,
+    ],
+  );
+
+  return result.rows[0] ?? null;
 }
 
 async function fetchReviewerUsers() {
@@ -1786,7 +2210,11 @@ async function fetchReviewQueueItems(filters = {}, currentUserId = null) {
       FROM ${GRAMMAR_EXAMPLES_TABLE} e
       LEFT JOIN ${GRAMMAR_LESSON_OVERRIDES_TABLE} l
         ON l.grammar_id = e.grammar_id
-      ${requestedGrammarId ? "WHERE e.grammar_id = $1" : ""}
+      ${
+        requestedGrammarId
+          ? "WHERE e.grammar_id = $1 AND e.publish_state <> 'retired'"
+          : "WHERE e.publish_state <> 'retired'"
+      }
       ORDER BY e.last_edited_at DESC NULLS LAST, e.id DESC
       `,
       requestedGrammarId ? [requestedGrammarId] : [],
@@ -3219,7 +3647,10 @@ const STARTUP_ROUTE_CHECKS = [
   { group: "thai", method: "GET", path: "/review/queue", label: "review queue" },
   { group: "thai", method: "GET", path: "/review/grammar/:grammarId", label: "review grammar detail" },
   { group: "thai", method: "PATCH", path: "/review/grammar/:grammarId/lesson", label: "review lesson save" },
+  { group: "thai", method: "POST", path: "/review/grammar/:grammarId/publish", label: "review lesson publish" },
+  { group: "thai", method: "POST", path: "/review/grammar/:grammarId/seed-wave", label: "review lesson seed wave" },
   { group: "thai", method: "GET", path: "/review/examples/:exampleId/history", label: "review row history" },
+  { group: "thai", method: "PATCH", path: "/review/examples/:exampleId/audit", label: "review row audit" },
   { group: "thai", method: "PATCH", path: "/review/examples/:exampleId", label: "review row save" },
   { group: "thai", method: "POST", path: "/tts/sentence", label: "sentence TTS" },
   { group: "thai", method: "POST", path: "/me/keystone-access", label: "keystone access sync" },
@@ -4560,26 +4991,24 @@ app.delete("/admin/users/:userId", authMiddleware, adminMiddleware, async (req, 
 app.get("/admin/grammar", authMiddleware, adminMiddleware, async (_req, res) => {
   try {
     const overrideMetadata = await fetchGrammarOverrideMetadata();
+    const productionSummaryMap = await fetchLessonProductionSummaryMap();
     const ids = Array.from(
       new Set([...Object.keys(grammarSentences), ...Array.from(overrideMetadata.keys())]),
     ).sort();
 
     res.json(
-      ids.map((id) => ({
-        id,
-        rowCount: Array.isArray(grammarSentences[id]) ? grammarSentences[id].length : 0,
-        approvedRowCount: Array.isArray(grammarSentences[id])
-          ? grammarSentences[id].filter(
-              (row) =>
-                row?.reviewStatus === "approved" &&
-                row?.toneStatus === "approved" &&
-                Number(row?.toneConfidence) >= APPROVED_TONE_CONFIDENCE,
-            ).length
-          : 0,
-        hasOverride: overrideMetadata.has(id),
-        overrideReviewStatus:
-          overrideMetadata.get(id)?.reviewStatus ?? null,
-      })),
+      ids.map((id) => {
+        const production = productionSummaryMap.get(id) ?? null;
+        return {
+          id,
+          rowCount: Array.isArray(grammarSentences[id]) ? grammarSentences[id].length : 0,
+          approvedRowCount: production?.livePublishedCount ?? 0,
+          hasOverride: overrideMetadata.has(id),
+          overrideReviewStatus:
+            overrideMetadata.get(id)?.reviewStatus ?? null,
+          production,
+        };
+      }),
     );
   } catch (err) {
     console.error("Failed to fetch admin grammar list:", err);
@@ -4599,8 +5028,11 @@ app.get(
         return res.status(400).json({ error: "Invalid grammar id" });
       }
 
+      const [lesson, productionSummary] = await Promise.all([
+        fetchGrammarOverrideRecord(grammarId),
+        fetchLessonProductionSummaryMap([grammarId]),
+      ]);
       const rows = grammarSentences[grammarId];
-      const lesson = await fetchGrammarOverrideRecord(grammarId);
       const override = lesson?.override ?? null;
 
       if (!rows && !lesson) {
@@ -4611,6 +5043,7 @@ app.get(
         override,
         lesson,
         rows: Array.isArray(rows) ? rows : [],
+        production: productionSummary.get(grammarId) ?? null,
       });
     } catch (err) {
       console.error("Failed to fetch admin grammar detail:", err);
@@ -4658,25 +5091,48 @@ app.put(
       }
 
       if (hasRows) {
-        savedRows = normalizeGrammarRows(req.body.rows).map((row) => ({
-          ...row,
-          reviewStatus: normalizeReviewStatus(
-            row.reviewStatus ?? deriveInitialReviewStatus(row),
+        const sourceRows = Array.isArray(req.body.rows) ? req.body.rows : [];
+        savedRows = normalizeGrammarRows(sourceRows).map((row, index) => {
+          const sourceRow = sourceRows[index] ?? {};
+          const reviewStatus = normalizeReviewStatus(
+            sourceRow.reviewStatus ?? deriveInitialReviewStatus(row),
             deriveInitialReviewStatus(row),
-          ),
-          reviewAssigneeUserId: normalizeOptionalAssigneeId(
-            row.reviewAssigneeUserId,
-          ),
-          reviewNote: normalizeOptionalReviewNote(row.reviewNote),
-          lastEditedByUserId: req.userId,
-          approvedByUserId:
-            normalizeReviewStatus(
-              row.reviewStatus ?? deriveInitialReviewStatus(row),
-              deriveInitialReviewStatus(row),
-            ) === "approved"
-              ? req.userId
-              : null,
-        }));
+          );
+
+          return {
+            ...row,
+            reviewStatus,
+            reviewAssigneeUserId: normalizeOptionalAssigneeId(
+              sourceRow.reviewAssigneeUserId,
+            ),
+            reviewNote: normalizeOptionalReviewNote(sourceRow.reviewNote),
+            publishState: normalizePublishState(
+              sourceRow.publishState,
+              "published",
+            ),
+            rewriteWaveId: normalizeOptionalRewriteWaveId(
+              sourceRow.rewriteWaveId,
+            ),
+            sourceExampleId: normalizeOptionalAssigneeId(
+              sourceRow.sourceExampleId,
+            ),
+            nextWaveDecision: normalizeOptionalNextWaveDecision(
+              sourceRow.nextWaveDecision,
+            ),
+            nextWaveAuditNote: normalizeOptionalAuditNote(
+              sourceRow.nextWaveAuditNote,
+            ),
+            nextWaveAuditedByUserId: normalizeOptionalAssigneeId(
+              sourceRow.nextWaveAuditedByUserId,
+            ),
+            nextWaveAuditedAt:
+              typeof sourceRow.nextWaveAuditedAt === "string"
+                ? sourceRow.nextWaveAuditedAt
+                : null,
+            lastEditedByUserId: req.userId,
+            approvedByUserId: reviewStatus === "approved" ? req.userId : null,
+          };
+        });
         await writeGrammarRowsToDatabase(grammarId, savedRows);
         savedRows = await refreshGrammarRowsForGrammarId(grammarId);
       }
@@ -4738,10 +5194,11 @@ app.get(
         return res.status(400).json({ error: "Invalid grammar id" });
       }
 
-      const [lesson, rows, reviewers] = await Promise.all([
+      const [lesson, rows, reviewers, productionSummaryMap] = await Promise.all([
         fetchGrammarOverrideRecord(grammarId),
         fetchGrammarRowsForGrammarId(grammarId),
         fetchReviewerUsers(),
+        fetchLessonProductionSummaryMap([grammarId]),
       ]);
 
       if (!lesson && rows.length === 0) {
@@ -4756,6 +5213,7 @@ app.get(
       res.json({
         lesson,
         rows,
+        production: productionSummaryMap.get(grammarId) ?? null,
         reviewers,
         lessonComments,
         exampleCommentsByExampleId: serializeCommentMap(exampleComments),
@@ -4797,6 +5255,100 @@ app.get(
     } catch (err) {
       console.error("Failed to fetch review example history:", err);
       res.status(500).json({ error: "Failed to fetch example history" });
+    }
+  },
+);
+
+app.post(
+  "/review/grammar/:grammarId/publish",
+  authMiddleware,
+  reviewContentMiddleware,
+  async (req, res) => {
+    const client = await pool.connect();
+    let transactionStarted = false;
+    try {
+      const { grammarId } = req.params;
+
+      if (!isValidGrammarId(grammarId)) {
+        return res.status(400).json({ error: "Invalid grammar id" });
+      }
+
+      const productionSummaryMap = await fetchLessonProductionSummaryMap([grammarId]);
+      const production = productionSummaryMap.get(grammarId) ?? null;
+
+      if (!production?.currentRewriteWaveId) {
+        return res.status(400).json({
+          error: "No active rewrite wave is staged for this lesson",
+        });
+      }
+
+      if (!production.isReadyToPublish) {
+        return res.status(400).json({
+          error: `This lesson is not ready to publish yet. ${production.remainingForPublish} more publish-ready rows are still needed.`,
+        });
+      }
+
+      await client.query("BEGIN");
+      transactionStarted = true;
+
+      await client.query(
+        `
+        UPDATE ${GRAMMAR_EXAMPLES_TABLE}
+        SET
+          publish_state = 'retired',
+          updated_at = NOW()
+        WHERE grammar_id = $1
+          AND publish_state = 'published'
+        `,
+        [grammarId],
+      );
+
+      await client.query(
+        `
+        UPDATE ${GRAMMAR_EXAMPLES_TABLE}
+        SET
+          publish_state = 'published',
+          updated_at = NOW()
+        WHERE grammar_id = $1
+          AND publish_state = 'staged'
+          AND rewrite_wave_id = $2
+          AND review_status = 'approved'
+          AND tone_status = 'approved'
+          AND tone_confidence >= $3
+        `,
+        [grammarId, production.currentRewriteWaveId, APPROVED_TONE_CONFIDENCE],
+      );
+
+      await client.query(
+        `
+        UPDATE ${GRAMMAR_LESSON_PRODUCTION_TABLE}
+        SET
+          last_published_at = NOW(),
+          current_rewrite_wave_id = NULL,
+          updated_at = NOW()
+        WHERE grammar_id = $1
+        `,
+        [grammarId],
+      );
+
+      await client.query("COMMIT");
+      await refreshGrammarRowsForGrammarId(grammarId);
+      const refreshedSummary =
+        (await fetchLessonProductionSummaryMap([grammarId])).get(grammarId) ?? null;
+
+      res.json({
+        success: true,
+        grammarId,
+        production: refreshedSummary,
+      });
+    } catch (err) {
+      if (transactionStarted) {
+        await client.query("ROLLBACK");
+      }
+      console.error("Failed to publish grammar rewrite:", err);
+      res.status(500).json({ error: "Failed to publish grammar rewrite" });
+    } finally {
+      client.release();
     }
   },
 );
@@ -4924,6 +5476,483 @@ app.post(
   },
 );
 
+app.patch(
+  "/review/examples/:exampleId/audit",
+  authMiddleware,
+  reviewContentMiddleware,
+  async (req, res) => {
+    const client = await pool.connect();
+    let transactionStarted = false;
+
+    try {
+      const exampleId = Number.parseInt(req.params.exampleId, 10);
+      if (!Number.isInteger(exampleId) || exampleId <= 0) {
+        return res.status(400).json({ error: "Invalid example id" });
+      }
+
+      const existingResult = await client.query(
+        `
+        SELECT
+          id,
+          grammar_id,
+          thai,
+          romanization,
+          english,
+          breakdown,
+          difficulty,
+          sort_order,
+          tone_confidence,
+          tone_status,
+          tone_analysis,
+          review_status,
+          review_assignee_user_id,
+          review_note,
+          publish_state,
+          rewrite_wave_id,
+          source_example_id,
+          quality_flags,
+          next_wave_decision,
+          next_wave_audit_note,
+          next_wave_audited_by_user_id,
+          next_wave_audited_at,
+          last_edited_by_user_id,
+          last_edited_at,
+          approved_by_user_id,
+          approved_at
+        FROM ${GRAMMAR_EXAMPLES_TABLE}
+        WHERE id = $1
+        LIMIT 1
+        `,
+        [exampleId],
+      );
+
+      if (existingResult.rows.length === 0) {
+        return res.status(404).json({ error: "Example row not found" });
+      }
+
+      const existing = existingResult.rows[0];
+      if (normalizePublishState(existing.publish_state, "published") !== "published") {
+        return res.status(400).json({
+          error: "Only live published rows can be audited for the next wave",
+        });
+      }
+
+      const beforeRow = serializeGrammarExampleRow(
+        existing,
+        Number(existing.sort_order ?? 0),
+      );
+      const beforeSnapshot = buildExampleRevisionSnapshot(beforeRow);
+      const nextWaveDecision = normalizeOptionalNextWaveDecision(
+        req.body?.nextWaveDecision,
+      );
+      const nextWaveAuditNote = normalizeOptionalAuditNote(
+        req.body?.nextWaveAuditNote,
+      );
+      const shouldStampAudit =
+        nextWaveDecision !== null || nextWaveAuditNote !== null;
+
+      await client.query("BEGIN");
+      transactionStarted = true;
+
+      const updateResult = await client.query(
+        `
+        UPDATE ${GRAMMAR_EXAMPLES_TABLE}
+        SET
+          next_wave_decision = $2,
+          next_wave_audit_note = $3,
+          next_wave_audited_by_user_id = $4::bigint,
+          next_wave_audited_at = CASE
+            WHEN $4::bigint IS NOT NULL THEN NOW()
+            ELSE NULL
+          END,
+          updated_at = NOW()
+        WHERE id = $1
+        RETURNING
+          id,
+          grammar_id,
+          thai,
+          romanization,
+          english,
+          breakdown,
+          difficulty,
+          sort_order,
+          tone_confidence,
+          tone_status,
+          tone_analysis,
+          review_status,
+          review_assignee_user_id,
+          review_note,
+          publish_state,
+          rewrite_wave_id,
+          source_example_id,
+          quality_flags,
+          next_wave_decision,
+          next_wave_audit_note,
+          next_wave_audited_by_user_id,
+          next_wave_audited_at,
+          last_edited_by_user_id,
+          last_edited_at,
+          approved_by_user_id,
+          approved_at
+        `,
+        [
+          exampleId,
+          nextWaveDecision,
+          nextWaveAuditNote,
+          shouldStampAudit ? req.userId : null,
+        ],
+      );
+
+      const updatedRow = serializeGrammarExampleRow(
+        updateResult.rows[0],
+        Number(updateResult.rows[0]?.sort_order ?? existing.sort_order ?? 0),
+      );
+      const afterSnapshot = buildExampleRevisionSnapshot(updatedRow);
+      const changedFields = diffExampleRevisionSnapshots(
+        beforeSnapshot,
+        afterSnapshot,
+      );
+
+      await client.query(
+        `
+        INSERT INTO ${GRAMMAR_EXAMPLE_REVISIONS_TABLE} (
+          example_id,
+          grammar_id,
+          action,
+          edited_by_user_id,
+          changed_fields,
+          before_snapshot,
+          after_snapshot
+        )
+        VALUES ($1, $2, 'audited', $3::bigint, $4::jsonb, $5::jsonb, $6::jsonb)
+        `,
+        [
+          updatedRow.id,
+          updatedRow.grammarId,
+          req.userId,
+          JSON.stringify(changedFields),
+          JSON.stringify(beforeSnapshot),
+          JSON.stringify(afterSnapshot),
+        ],
+      );
+
+      await client.query("COMMIT");
+      await refreshGrammarRowsForGrammarId(updatedRow.grammarId);
+
+      res.json({
+        success: true,
+        row: updatedRow,
+      });
+    } catch (err) {
+      if (transactionStarted) {
+        await client.query("ROLLBACK");
+      }
+      console.error("Failed to audit example row:", err);
+      res.status(400).json({
+        error: err instanceof Error ? err.message : "Failed to audit example row",
+      });
+    } finally {
+      client.release();
+    }
+  },
+);
+
+app.post(
+  "/review/grammar/:grammarId/seed-wave",
+  authMiddleware,
+  reviewContentMiddleware,
+  async (req, res) => {
+    const client = await pool.connect();
+    let transactionStarted = false;
+
+    try {
+      const { grammarId } = req.params;
+
+      if (!isValidGrammarId(grammarId)) {
+        return res.status(400).json({ error: "Invalid grammar id" });
+      }
+
+      const stage =
+        typeof req.body?.stage === "string" ? req.body.stage.trim() : "";
+      if (!["B1.1", "B1.2"].includes(stage)) {
+        return res.status(400).json({
+          error: "Seed-from-audit is only available for B1.1 and B1.2 lessons",
+        });
+      }
+
+      const productionBefore =
+        (await fetchLessonProductionSummaryMap([grammarId])).get(grammarId) ?? null;
+
+      if (
+        productionBefore &&
+        (productionBefore.stagedRowCount > 0 || productionBefore.currentRewriteWaveId)
+      ) {
+        return res.status(400).json({
+          error: "This lesson already has a staged rewrite wave. Publish or clear it first.",
+        });
+      }
+
+      const publishedResult = await client.query(
+        `
+        SELECT
+          id,
+          grammar_id,
+          thai,
+          romanization,
+          english,
+          breakdown,
+          difficulty,
+          sort_order,
+          tone_confidence,
+          tone_status,
+          tone_analysis,
+          review_status,
+          review_assignee_user_id,
+          review_note,
+          publish_state,
+          rewrite_wave_id,
+          source_example_id,
+          quality_flags,
+          next_wave_decision,
+          next_wave_audit_note,
+          next_wave_audited_by_user_id,
+          next_wave_audited_at,
+          last_edited_by_user_id,
+          last_edited_at,
+          approved_by_user_id,
+          approved_at
+        FROM ${GRAMMAR_EXAMPLES_TABLE}
+        WHERE grammar_id = $1
+          AND publish_state = 'published'
+        ORDER BY sort_order ASC, id ASC
+        `,
+        [grammarId],
+      );
+
+      if (publishedResult.rows.length === 0) {
+        return res.status(400).json({
+          error: "No live published rows are available to seed from.",
+        });
+      }
+
+      const publishedRows = publishedResult.rows.map((row, index) =>
+        serializeGrammarExampleRow(row, Number(row.sort_order ?? index)),
+      );
+      const carryRows = publishedRows.filter(
+        (row) => row.nextWaveDecision === "carry",
+      );
+      const reviseRows = publishedRows.filter(
+        (row) => row.nextWaveDecision === "revise",
+      );
+      const reusableRows = [...carryRows, ...reviseRows].sort(
+        (a, b) => a.sortOrder - b.sortOrder,
+      );
+
+      if (reusableRows.length < 15) {
+        return res.status(400).json({
+          error:
+            "Fewer than 15 live rows survived audit. Convert this lesson to a full rewrite instead of salvage.",
+        });
+      }
+
+      const waveId = createRewriteWaveId(grammarId);
+
+      await client.query("BEGIN");
+      transactionStarted = true;
+
+      await ensureLessonProductionRecord(grammarId, stage, client);
+      await client.query(
+        `
+        UPDATE ${GRAMMAR_LESSON_PRODUCTION_TABLE}
+        SET
+          current_rewrite_wave_id = $2,
+          last_generated_at = NOW(),
+          updated_at = NOW()
+        WHERE grammar_id = $1
+        `,
+        [grammarId, waveId],
+      );
+
+      const seededRows = [];
+      for (const [index, sourceRow] of reusableRows.entries()) {
+        const shouldCarry = sourceRow.nextWaveDecision === "carry";
+        const seededReviewStatus = shouldCarry ? "approved" : "needs_changes";
+        const seededApprovedByUserId = shouldCarry
+          ? sourceRow.approvedByUserId ?? req.userId
+          : null;
+        const seededReviewNote = shouldCarry
+          ? sourceRow.reviewNote ?? null
+          : `Seeded from live row #${sourceRow.id} for revision.`;
+
+        const insertResult = await client.query(
+          `
+          INSERT INTO ${GRAMMAR_EXAMPLES_TABLE} (
+            grammar_id,
+            thai,
+            romanization,
+            english,
+            breakdown,
+            difficulty,
+            sort_order,
+            tone_confidence,
+            tone_status,
+            tone_analysis,
+            review_status,
+            review_assignee_user_id,
+            review_note,
+            publish_state,
+            rewrite_wave_id,
+            source_example_id,
+            quality_flags,
+            next_wave_decision,
+            next_wave_audit_note,
+            next_wave_audited_by_user_id,
+            next_wave_audited_at,
+            last_edited_by_user_id,
+            last_edited_at,
+            approved_by_user_id,
+            approved_at
+          )
+          VALUES (
+            $1,
+            $2,
+            $3,
+            $4,
+            $5::jsonb,
+            $6,
+            $7,
+            $8,
+            $9,
+            $10::jsonb,
+            $11,
+            $12::bigint,
+            $13,
+            'staged',
+            $14,
+            $15::bigint,
+            $16::jsonb,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            $17::bigint,
+            NOW(),
+            $18::bigint,
+            CASE WHEN $18::bigint IS NOT NULL THEN NOW() ELSE NULL END
+          )
+          RETURNING
+            id,
+            grammar_id,
+            thai,
+            romanization,
+            english,
+            breakdown,
+            difficulty,
+            sort_order,
+            tone_confidence,
+            tone_status,
+            tone_analysis,
+            review_status,
+            review_assignee_user_id,
+            review_note,
+            publish_state,
+            rewrite_wave_id,
+            source_example_id,
+            quality_flags,
+            next_wave_decision,
+            next_wave_audit_note,
+            next_wave_audited_by_user_id,
+            next_wave_audited_at,
+            last_edited_by_user_id,
+            last_edited_at,
+            approved_by_user_id,
+            approved_at
+          `,
+          [
+            grammarId,
+            sourceRow.thai,
+            sourceRow.romanization,
+            sourceRow.english,
+            JSON.stringify(sourceRow.breakdown),
+            sourceRow.difficulty,
+            index,
+            sourceRow.toneConfidence,
+            sourceRow.toneStatus,
+            JSON.stringify(sourceRow.toneAnalysis ?? {}),
+            seededReviewStatus,
+            sourceRow.reviewAssigneeUserId,
+            seededReviewNote,
+            waveId,
+            sourceRow.id,
+            JSON.stringify(sourceRow.qualityFlags ?? []),
+            req.userId,
+            seededApprovedByUserId,
+          ],
+        );
+
+        const seededRow = serializeGrammarExampleRow(
+          insertResult.rows[0],
+          Number(insertResult.rows[0]?.sort_order ?? index),
+        );
+        seededRows.push(seededRow);
+
+        const afterSnapshot = buildExampleRevisionSnapshot(seededRow);
+        const changedFields = diffExampleRevisionSnapshots(null, afterSnapshot);
+        await client.query(
+          `
+          INSERT INTO ${GRAMMAR_EXAMPLE_REVISIONS_TABLE} (
+            example_id,
+            grammar_id,
+            action,
+            edited_by_user_id,
+            changed_fields,
+            before_snapshot,
+            after_snapshot
+          )
+          VALUES ($1, $2, 'seeded_from_live', $3::bigint, $4::jsonb, $5::jsonb, $6::jsonb)
+          `,
+          [
+            seededRow.id,
+            grammarId,
+            req.userId,
+            JSON.stringify(changedFields),
+            JSON.stringify(null),
+            JSON.stringify(afterSnapshot),
+          ],
+        );
+      }
+
+      await client.query("COMMIT");
+      await refreshGrammarRowsForGrammarId(grammarId);
+      const refreshedProduction =
+        (await fetchLessonProductionSummaryMap([grammarId])).get(grammarId) ?? null;
+
+      res.json({
+        success: true,
+        grammarId,
+        waveId,
+        carryCount: carryRows.length,
+        reviseCount: reviseRows.length,
+        seededCount: seededRows.length,
+        production: refreshedProduction,
+      });
+    } catch (err) {
+      if (transactionStarted) {
+        await client.query("ROLLBACK");
+      }
+      console.error("Failed to seed rewrite wave from audit:", err);
+      res.status(400).json({
+        error:
+          err instanceof Error
+            ? err.message
+            : "Failed to seed rewrite wave from audit",
+      });
+    } finally {
+      client.release();
+    }
+  },
+);
+
 app.post(
   "/review/grammar/:grammarId/examples",
   authMiddleware,
@@ -4958,6 +5987,9 @@ app.post(
         deriveInitialReviewStatus(normalizedRow),
       );
       const approvedByUserId = reviewStatus === "approved" ? req.userId : null;
+      const publishState = normalizePublishState(req.body?.publishState, "staged");
+      const rewriteWaveId = normalizeOptionalRewriteWaveId(req.body?.rewriteWaveId);
+      const qualityFlags = normalizeQualityFlags(req.body?.qualityFlags);
       const sortOrder =
         Number.isInteger(req.body?.sortOrder) && req.body.sortOrder >= 0
           ? req.body.sortOrder
@@ -4991,6 +6023,14 @@ app.post(
           review_status,
           review_assignee_user_id,
           review_note,
+          publish_state,
+          rewrite_wave_id,
+          source_example_id,
+          quality_flags,
+          next_wave_decision,
+          next_wave_audit_note,
+          next_wave_audited_by_user_id,
+          next_wave_audited_at,
           last_edited_by_user_id,
           last_edited_at,
           approved_by_user_id,
@@ -5010,10 +6050,17 @@ app.post(
           $11,
           $12::bigint,
           $13,
-          $14::bigint,
+          $14,
+          $15,
+          $16::bigint,
+          $17::jsonb,
+          $18,
+          $19,
+          $20::bigint,
+          $21,
           NOW(),
-          $15::bigint,
-          CASE WHEN $15::bigint IS NOT NULL THEN NOW() ELSE NULL END
+          $23::bigint,
+          CASE WHEN $23::bigint IS NOT NULL THEN NOW() ELSE NULL END
         )
         RETURNING
           id,
@@ -5030,6 +6077,14 @@ app.post(
           review_status,
           review_assignee_user_id,
           review_note,
+          publish_state,
+          rewrite_wave_id,
+          source_example_id,
+          quality_flags,
+          next_wave_decision,
+          next_wave_audit_note,
+          next_wave_audited_by_user_id,
+          next_wave_audited_at,
           last_edited_by_user_id,
           last_edited_at,
           approved_by_user_id,
@@ -5049,6 +6104,14 @@ app.post(
           reviewStatus,
           reviewAssigneeUserId,
           normalizeOptionalReviewNote(req.body?.reviewNote),
+          publishState,
+          rewriteWaveId,
+          null,
+          JSON.stringify(qualityFlags),
+          null,
+          null,
+          null,
+          null,
           req.userId,
           approvedByUserId,
         ],
@@ -5135,6 +6198,14 @@ app.patch(
           review_status,
           review_assignee_user_id,
           review_note,
+          publish_state,
+          rewrite_wave_id,
+          source_example_id,
+          quality_flags,
+          next_wave_decision,
+          next_wave_audit_note,
+          next_wave_audited_by_user_id,
+          next_wave_audited_at,
           last_edited_by_user_id,
           last_edited_at,
           approved_by_user_id,
@@ -5175,6 +6246,32 @@ app.patch(
         deriveInitialReviewStatus(normalizedRow),
       );
       const approvedByUserId = reviewStatus === "approved" ? req.userId : null;
+      const publishState = normalizePublishState(
+        req.body?.publishState,
+        existing.publish_state,
+      );
+      const rewriteWaveId = normalizeOptionalRewriteWaveId(
+        req.body?.rewriteWaveId ?? existing.rewrite_wave_id,
+      );
+      const sourceExampleId = normalizeOptionalAssigneeId(
+        req.body?.sourceExampleId ?? existing.source_example_id,
+      );
+      const qualityFlags = normalizeQualityFlags(
+        req.body?.qualityFlags ?? existing.quality_flags,
+      );
+      const nextWaveDecision = normalizeOptionalNextWaveDecision(
+        req.body?.nextWaveDecision ?? existing.next_wave_decision,
+      );
+      const nextWaveAuditNote = normalizeOptionalAuditNote(
+        req.body?.nextWaveAuditNote ?? existing.next_wave_audit_note,
+      );
+      const nextWaveAuditedByUserId = normalizeOptionalAssigneeId(
+        req.body?.nextWaveAuditedByUserId ?? existing.next_wave_audited_by_user_id,
+      );
+      const nextWaveAuditedAt =
+        typeof req.body?.nextWaveAuditedAt === "string"
+          ? req.body.nextWaveAuditedAt
+          : existing.next_wave_audited_at;
       const sortOrder =
         Number.isInteger(req.body?.sortOrder) && req.body.sortOrder >= 0
           ? req.body.sortOrder
@@ -5199,10 +6296,18 @@ app.patch(
           review_status = $11,
           review_assignee_user_id = $12::bigint,
           review_note = $13,
-          last_edited_by_user_id = $14::bigint,
+          publish_state = $14,
+          rewrite_wave_id = $15,
+          source_example_id = $16::bigint,
+          quality_flags = $17::jsonb,
+          next_wave_decision = $18,
+          next_wave_audit_note = $19,
+          next_wave_audited_by_user_id = $20::bigint,
+          next_wave_audited_at = $21,
+          last_edited_by_user_id = $22::bigint,
           last_edited_at = NOW(),
-          approved_by_user_id = $15::bigint,
-          approved_at = CASE WHEN $15::bigint IS NOT NULL THEN NOW() ELSE NULL END
+          approved_by_user_id = $23::bigint,
+          approved_at = CASE WHEN $23::bigint IS NOT NULL THEN NOW() ELSE NULL END
         WHERE id = $1
         RETURNING
           id,
@@ -5219,6 +6324,14 @@ app.patch(
           review_status,
           review_assignee_user_id,
           review_note,
+          publish_state,
+          rewrite_wave_id,
+          source_example_id,
+          quality_flags,
+          next_wave_decision,
+          next_wave_audit_note,
+          next_wave_audited_by_user_id,
+          next_wave_audited_at,
           last_edited_by_user_id,
           last_edited_at,
           approved_by_user_id,
@@ -5238,6 +6351,14 @@ app.patch(
           reviewStatus,
           reviewAssigneeUserId,
           normalizeOptionalReviewNote(req.body?.reviewNote),
+          publishState,
+          rewriteWaveId,
+          sourceExampleId,
+          JSON.stringify(qualityFlags),
+          nextWaveDecision,
+          nextWaveAuditNote,
+          nextWaveAuditedByUserId,
+          nextWaveAuditedAt,
           req.userId,
           approvedByUserId,
         ],
@@ -5905,8 +7026,56 @@ async function startServer() {
       ADD COLUMN IF NOT EXISTS approved_at TIMESTAMPTZ
     `);
     await pool.query(`
+      ALTER TABLE ${GRAMMAR_EXAMPLES_TABLE}
+      ADD COLUMN IF NOT EXISTS publish_state TEXT NOT NULL DEFAULT 'published'
+    `);
+    await pool.query(`
+      ALTER TABLE ${GRAMMAR_EXAMPLES_TABLE}
+      ADD COLUMN IF NOT EXISTS rewrite_wave_id TEXT
+    `);
+    await pool.query(`
+      ALTER TABLE ${GRAMMAR_EXAMPLES_TABLE}
+      ADD COLUMN IF NOT EXISTS source_example_id BIGINT REFERENCES ${GRAMMAR_EXAMPLES_TABLE}(id) ON DELETE SET NULL
+    `);
+    await pool.query(`
+      ALTER TABLE ${GRAMMAR_EXAMPLES_TABLE}
+      ADD COLUMN IF NOT EXISTS quality_flags JSONB NOT NULL DEFAULT '[]'::jsonb
+    `);
+    await pool.query(`
+      ALTER TABLE ${GRAMMAR_EXAMPLES_TABLE}
+      ADD COLUMN IF NOT EXISTS next_wave_decision TEXT
+    `);
+    await pool.query(`
+      ALTER TABLE ${GRAMMAR_EXAMPLES_TABLE}
+      ADD COLUMN IF NOT EXISTS next_wave_audit_note TEXT
+    `);
+    await pool.query(`
+      ALTER TABLE ${GRAMMAR_EXAMPLES_TABLE}
+      ADD COLUMN IF NOT EXISTS next_wave_audited_by_user_id BIGINT REFERENCES users(id) ON DELETE SET NULL
+    `);
+    await pool.query(`
+      ALTER TABLE ${GRAMMAR_EXAMPLES_TABLE}
+      ADD COLUMN IF NOT EXISTS next_wave_audited_at TIMESTAMPTZ
+    `);
+    await pool.query(`
       CREATE INDEX IF NOT EXISTS idx_grammar_examples_grammar_sort
         ON ${GRAMMAR_EXAMPLES_TABLE} (grammar_id, sort_order);
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_grammar_examples_publish
+        ON ${GRAMMAR_EXAMPLES_TABLE} (grammar_id, publish_state, sort_order);
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_grammar_examples_rewrite_wave
+        ON ${GRAMMAR_EXAMPLES_TABLE} (grammar_id, rewrite_wave_id);
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_grammar_examples_source
+        ON ${GRAMMAR_EXAMPLES_TABLE} (source_example_id);
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_grammar_examples_next_wave_decision
+        ON ${GRAMMAR_EXAMPLES_TABLE} (grammar_id, publish_state, next_wave_decision);
     `);
     await pool.query(`
       CREATE TABLE IF NOT EXISTS ${GRAMMAR_LESSON_OVERRIDES_TABLE} (
@@ -5972,6 +7141,21 @@ async function startServer() {
         ON ${GRAMMAR_EXAMPLE_REVISIONS_TABLE} (example_id, created_at DESC);
     `);
     await pool.query(`
+      CREATE TABLE IF NOT EXISTS ${GRAMMAR_LESSON_PRODUCTION_TABLE} (
+        grammar_id TEXT PRIMARY KEY,
+        stage TEXT NOT NULL,
+        final_target_count INTEGER NOT NULL DEFAULT ${DEFAULT_FINAL_APPROVED_TARGET},
+        first_pass_candidate_target INTEGER NOT NULL DEFAULT ${DEFAULT_FIRST_PASS_CANDIDATE_TARGET},
+        supplemental_candidate_batch_size INTEGER NOT NULL DEFAULT ${DEFAULT_SUPPLEMENTAL_BATCH_SIZE},
+        current_rewrite_wave_id TEXT,
+        notes TEXT,
+        last_generated_at TIMESTAMPTZ,
+        last_published_at TIMESTAMPTZ,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
+    await pool.query(`
       UPDATE ${GRAMMAR_EXAMPLES_TABLE}
       SET review_status = 'approved'
       WHERE review_status = 'flagged'
@@ -5979,6 +7163,11 @@ async function startServer() {
         AND approved_at IS NULL
         AND tone_status = 'approved'
         AND tone_confidence >= ${APPROVED_TONE_CONFIDENCE}
+    `);
+    await pool.query(`
+      UPDATE ${GRAMMAR_EXAMPLES_TABLE}
+      SET publish_state = 'published'
+      WHERE publish_state IS NULL OR publish_state = ''
     `);
     await pool.query(`
       CREATE TABLE IF NOT EXISTS password_reset_tokens (
@@ -6067,6 +7256,7 @@ app.post("/practice-csv", (req, res) => {
 
   const matches = (grammarSentences[grammar] || []).filter(
     (row) =>
+      row?.publishState === "published" &&
       row?.reviewStatus === "approved" &&
       row?.toneStatus === "approved" &&
       Number(row?.toneConfidence) >= APPROVED_TONE_CONFIDENCE,
