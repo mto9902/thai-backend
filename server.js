@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+﻿import bcrypt from "bcrypt";
 import cors from "cors";
 import csv from "csv-parser";
 import dotenv from "dotenv";
@@ -109,22 +109,22 @@ app.use(
 /* =============================== */
 
 const thaiVowels = [
-  "ะ",
-  "า",
-  "ิ",
-  "ี",
-  "ึ",
-  "ื",
-  "ุ",
-  "ู",
-  "เ",
-  "แ",
-  "โ",
-  "ใ",
-  "ไ",
-  "ำ",
-  "ๅ",
-  "ฤ",
+  "\u0E30", // ะ
+  "\u0E32", // า
+  "\u0E34", // ิ
+  "\u0E35", // ี
+  "\u0E36", // ึ
+  "\u0E37", // ื
+  "\u0E38", // ุ
+  "\u0E39", // ู
+  "\u0E40", // เ
+  "\u0E41", // แ
+  "\u0E42", // โ
+  "\u0E43", // ใ
+  "\u0E44", // ไ
+  "\u0E33", // ำ
+  "\u0E45", // ๅ
+  "\u0E24", // ฤ
 ];
 
 function countThaiSyllables(word) {
@@ -150,9 +150,19 @@ const GRAMMAR_OVERRIDES_FILE = path.join(
   ADMIN_DATA_DIR,
   "grammar-overrides.json",
 );
+const GRAMMAR_ORDER_SEED_FILE = path.join(
+  ADMIN_DATA_DIR,
+  "grammar-order-seed.json",
+);
+const SUPPORT_REQUESTS_FILE = path.join(
+  ADMIN_DATA_DIR,
+  "support-requests.ndjson",
+);
+const SUPPORT_INBOX_EMAIL =
+  process.env.SUPPORT_EMAIL?.trim() || "hello@keystonelanguages.com";
 const GRAMMAR_DIR = path.resolve("./grammar");
 const VALID_CEFR_LEVELS = new Set(["A1", "A2", "B1", "B2", "C1", "C2"]);
-const VALID_GRAMMAR_STAGES = new Set([
+const GRAMMAR_STAGE_ORDER = [
   "A1.1",
   "A1.2",
   "A2.1",
@@ -163,7 +173,11 @@ const VALID_GRAMMAR_STAGES = new Set([
   "B2.2",
   "C1",
   "C2",
-]);
+];
+const VALID_GRAMMAR_STAGES = new Set(GRAMMAR_STAGE_ORDER);
+const GRAMMAR_STAGE_ORDER_INDEX = new Map(
+  GRAMMAR_STAGE_ORDER.map((stage, index) => [stage, index]),
+);
 const VALID_TONES = new Set(["mid", "low", "falling", "high", "rising"]);
 const VALID_DIFFICULTIES = new Set(["easy", "medium", "hard"]);
 const VALID_TONE_STATUSES = new Set(["approved", "review"]);
@@ -181,7 +195,7 @@ const VALID_NEXT_WAVE_DECISIONS = new Set([
   "replace",
   "retire",
 ]);
-const VALID_ROW_QUALITY_FLAGS = new Set(["thai_weak"]);
+const VALID_ROW_QUALITY_FLAGS = new Set(["thai_weak", "legacy", "new_gen"]);
 const APPROVED_TONE_CONFIDENCE = 99;
 const DEFAULT_FINAL_APPROVED_TARGET = 25;
 const DEFAULT_FIRST_PASS_CANDIDATE_TARGET = 40;
@@ -412,7 +426,7 @@ async function loadGrammarRowsFromDatabase() {
       nextGrammarSentences[row.grammar_id].length,
       row.grammar_id,
       {
-        trustProvidedTonesByIndex: getToneTrustByIndexFromAnalysis(row.tone_analysis),
+        trustProvidedTonesByIndex: getToneTrustByIndexFromStoredRow(row),
       },
     );
     const defaultReviewStatus = deriveInitialReviewStatus({
@@ -858,12 +872,26 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function ensureAdminDataFiles() {
   fs.mkdirSync(ADMIN_DATA_DIR, { recursive: true });
 
   if (!fs.existsSync(GRAMMAR_OVERRIDES_FILE)) {
     fs.writeFileSync(GRAMMAR_OVERRIDES_FILE, "{}", "utf8");
   }
+}
+
+function appendSupportRequest(record) {
+  ensureAdminDataFiles();
+  fs.appendFileSync(SUPPORT_REQUESTS_FILE, `${JSON.stringify(record)}\n`, "utf8");
 }
 
 function readGrammarOverrides() {
@@ -886,6 +914,86 @@ function writeGrammarOverrides(overrides) {
     JSON.stringify(overrides, null, 2),
     "utf8",
   );
+}
+
+let grammarOrderSeedMapCache = null;
+
+function coerceLessonOrder(value) {
+  if (typeof value === "number" && Number.isInteger(value) && value >= 0) {
+    return value;
+  }
+
+  if (typeof value === "string" && value.trim()) {
+    const parsed = Number.parseInt(value.trim(), 10);
+    if (Number.isInteger(parsed) && parsed >= 0) {
+      return parsed;
+    }
+  }
+
+  return null;
+}
+
+function getGrammarStageOrder(stage) {
+  return GRAMMAR_STAGE_ORDER_INDEX.get(stage) ?? Number.MAX_SAFE_INTEGER;
+}
+
+function readGrammarOrderSeedMap() {
+  if (grammarOrderSeedMapCache) {
+    return grammarOrderSeedMapCache;
+  }
+
+  ensureAdminDataFiles();
+
+  if (!fs.existsSync(GRAMMAR_ORDER_SEED_FILE)) {
+    grammarOrderSeedMapCache = new Map();
+    return grammarOrderSeedMapCache;
+  }
+
+  try {
+    const raw = fs.readFileSync(GRAMMAR_ORDER_SEED_FILE, "utf8");
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      grammarOrderSeedMapCache = new Map();
+      return grammarOrderSeedMapCache;
+    }
+
+    grammarOrderSeedMapCache = new Map(
+      Object.entries(parsed)
+        .map(([grammarId, entry]) => {
+          if (!entry || typeof entry !== "object") {
+            return null;
+          }
+
+          const stage =
+            typeof entry.stage === "string" && VALID_GRAMMAR_STAGES.has(entry.stage)
+              ? entry.stage
+              : null;
+          const lessonOrder = coerceLessonOrder(entry.lessonOrder);
+          if (!stage || lessonOrder === null) {
+            return null;
+          }
+
+          return [
+            grammarId,
+            {
+              stage,
+              stageOrder: getGrammarStageOrder(stage),
+              lessonOrder,
+            },
+          ];
+        })
+        .filter(Boolean),
+    );
+    return grammarOrderSeedMapCache;
+  } catch (err) {
+    console.error("Failed to read grammar order seed:", err);
+    grammarOrderSeedMapCache = new Map();
+    return grammarOrderSeedMapCache;
+  }
+}
+
+function getSeededGrammarOrder(grammarId) {
+  return readGrammarOrderSeedMap().get(grammarId) ?? null;
 }
 
 function normalizeReviewStatus(value, fallback = "flagged") {
@@ -953,6 +1061,19 @@ function normalizeOptionalAuditNote(value) {
 
   const trimmed = value.trim();
   return trimmed ? trimmed : null;
+}
+
+function normalizeLessonOrder(value) {
+  if (value === null || value === undefined || value === "") {
+    return undefined;
+  }
+
+  const parsed = Number.parseInt(String(value), 10);
+  if (!Number.isInteger(parsed) || parsed < 0) {
+    throw new Error("Lesson order must be a non-negative integer");
+  }
+
+  return parsed;
 }
 
 function normalizeQualityFlags(value) {
@@ -1041,6 +1162,24 @@ function normalizeProvidedTones(value, fieldName) {
   });
 }
 
+function normalizeDisplayThaiSegments(value, fieldName) {
+  if (value == null) {
+    return undefined;
+  }
+
+  if (!Array.isArray(value)) {
+    throw new Error(`${fieldName} must be an array of Thai display segments`);
+  }
+
+  return value.map((entry, index) =>
+    normalizePlainString(
+      entry,
+      `${fieldName} item ${index + 1}`,
+      { allowEmpty: false, maxLength: 40 },
+    ),
+  );
+}
+
 function normalizeWordBreakdownItem(item, index, options = {}) {
   if (!item || typeof item !== "object") {
     throw new Error(`Breakdown item ${index + 1} must be an object`);
@@ -1061,6 +1200,10 @@ function normalizeWordBreakdownItem(item, index, options = {}) {
         `Breakdown item ${index + 1} tones`,
       )
     : [];
+  const displayThaiSegments = normalizeDisplayThaiSegments(
+    item.displayThaiSegments,
+    `Breakdown item ${index + 1} displayThaiSegments`,
+  );
   const toneAnalysis = analyzeBreakdownTones({
     thai,
     romanization,
@@ -1082,6 +1225,16 @@ function normalizeWordBreakdownItem(item, index, options = {}) {
 
   if (romanization) {
     normalized.romanization = romanization;
+  }
+
+  if (displayThaiSegments) {
+    if (toneAnalysis.tones.length !== displayThaiSegments.length) {
+      throw new Error(
+        `Breakdown item ${index + 1} displayThaiSegments count must match the tone count`,
+      );
+    }
+
+    normalized.displayThaiSegments = displayThaiSegments;
   }
 
   return {
@@ -1189,6 +1342,33 @@ function normalizeLessonBlocks(lessonBlocks) {
   };
 }
 
+function hasRequiredGrammarOverrideMetadata(override) {
+  return Boolean(
+    override &&
+      typeof override === "object" &&
+      typeof override.title === "string" &&
+      override.title.trim() &&
+      typeof override.level === "string" &&
+      override.level.trim() &&
+      typeof override.stage === "string" &&
+      override.stage.trim() &&
+      typeof override.explanation === "string" &&
+      override.explanation.trim() &&
+      typeof override.pattern === "string" &&
+      override.pattern.trim(),
+  );
+}
+
+function hasRequiredPublishedGrammarCatalogFields(override) {
+  return Boolean(
+    hasRequiredGrammarOverrideMetadata(override) &&
+      override.example &&
+      typeof override.example === "object" &&
+      override.focus &&
+      typeof override.focus === "object",
+  );
+}
+
 function normalizeGrammarOverride(override) {
   if (!override || typeof override !== "object") {
     throw new Error("Grammar override payload is required");
@@ -1196,6 +1376,7 @@ function normalizeGrammarOverride(override) {
 
   const level = normalizePlainString(override.level, "Level");
   const stage = normalizePlainString(override.stage, "Stage");
+  const lessonOrder = normalizeLessonOrder(override.lessonOrder);
 
   if (!VALID_CEFR_LEVELS.has(level)) {
     throw new Error("Level must be one of: A1, A2, B1, B2, C1, C2");
@@ -1211,6 +1392,8 @@ function normalizeGrammarOverride(override) {
     title: normalizePlainString(override.title, "Title"),
     level,
     stage,
+    lessonOrder,
+    hiddenFromLearners: override.hiddenFromLearners === true,
     explanation: normalizePlainString(override.explanation, "Explanation"),
     pattern: normalizePlainString(override.pattern, "Pattern"),
     aiPrompt:
@@ -1293,13 +1476,47 @@ function getToneTrustByIndexFromAnalysis(toneAnalysis) {
     : [];
 }
 
+function getToneTrustByIndexFromStoredBreakdown(rawBreakdown) {
+  try {
+    const breakdown = parseGrammarBreakdown(rawBreakdown, "Stored breakdown");
+    return breakdown.map(
+      (item) =>
+        Array.isArray(item?.tones) &&
+        item.tones.some(
+          (tone) => typeof tone === "string" && tone.trim().length > 0,
+        ),
+    );
+  } catch {
+    return [];
+  }
+}
+
+function mergeToneTrustByIndex(...maps) {
+  const maxLength = maps.reduce(
+    (largest, map) =>
+      Math.max(largest, Array.isArray(map) ? map.length : 0),
+    0,
+  );
+
+  return Array.from({ length: maxLength }, (_, index) =>
+    maps.some((map) => Array.isArray(map) && map[index] === true),
+  );
+}
+
+function getToneTrustByIndexFromStoredRow(row) {
+  return mergeToneTrustByIndex(
+    getToneTrustByIndexFromAnalysis(row?.tone_analysis),
+    getToneTrustByIndexFromStoredBreakdown(row?.breakdown),
+  );
+}
+
 function serializeGrammarExampleRow(row, index) {
   const normalizedRow = normalizeStoredGrammarRow(
     row,
     index,
     row.grammar_id,
     {
-      trustProvidedTonesByIndex: getToneTrustByIndexFromAnalysis(row.tone_analysis),
+      trustProvidedTonesByIndex: getToneTrustByIndexFromStoredRow(row),
     },
   );
   const defaultReviewStatus = deriveInitialReviewStatus({
@@ -1386,6 +1603,9 @@ function normalizeBreakdownForRevisionDiff(items, options = {}) {
     thai: item?.thai ?? "",
     english: item?.english ?? "",
     romanization: item?.romanization ?? "",
+    displayThaiSegments: Array.isArray(item?.displayThaiSegments)
+      ? item.displayThaiSegments
+      : [],
     grammar: item?.grammar === true,
     ...(includeTones
       ? {
@@ -1485,9 +1705,18 @@ function serializeExampleRevision(row) {
 }
 
 function serializeLessonOverrideRecord(row) {
+  const lessonOrder = coerceLessonOrder(row.lesson_order ?? row.content?.lessonOrder);
+  const override =
+    row.content && typeof row.content === "object"
+      ? {
+          ...row.content,
+          ...(lessonOrder !== null ? { lessonOrder } : {}),
+        }
+      : null;
+
   return {
     grammarId: row.grammar_id,
-    override: row.content ?? null,
+    override,
     reviewStatus: normalizeReviewStatus(row.review_status, "flagged"),
     reviewAssigneeUserId: row.review_assignee_user_id
       ? Number(row.review_assignee_user_id)
@@ -1504,7 +1733,40 @@ function serializeLessonOverrideRecord(row) {
   };
 }
 
-async function fetchGrammarRowsForGrammarId(grammarId) {
+function serializePublishedGrammarCatalogEntry(row) {
+  const content =
+    row && typeof row.content === "object" && row.content !== null ? row.content : null;
+  const stage =
+    typeof row.stage === "string" && VALID_GRAMMAR_STAGES.has(row.stage)
+      ? row.stage
+      : content?.stage;
+  const lessonOrder = coerceLessonOrder(row.lesson_order ?? content?.lessonOrder);
+
+  if (!content || !hasRequiredPublishedGrammarCatalogFields(content) || !stage) {
+    return null;
+  }
+
+  return {
+    id: row.grammar_id,
+    title: content.title,
+    level: content.level,
+    stage,
+    stageOrder: getGrammarStageOrder(stage),
+    lessonOrder: lessonOrder ?? undefined,
+    hiddenFromLearners: content.hiddenFromLearners === true,
+    explanation: content.explanation,
+    pattern: content.pattern,
+    lessonBlocks: content.lessonBlocks ?? undefined,
+    aiPrompt: content.aiPrompt ?? undefined,
+    example: content.example,
+    focus: content.focus,
+  };
+}
+
+async function fetchGrammarRowsForGrammarId(
+  grammarId,
+  { includeLegacy = true } = {},
+) {
   const result = await pool.query(
     `
     SELECT
@@ -1536,13 +1798,34 @@ async function fetchGrammarRowsForGrammarId(grammarId) {
       approved_at
     FROM ${GRAMMAR_EXAMPLES_TABLE}
     WHERE grammar_id = $1
-      AND publish_state <> 'retired'
+      AND (
+        publish_state <> 'retired'
+        OR ($2::boolean = TRUE AND quality_flags @> '["legacy"]'::jsonb)
+      )
+      AND (
+        $2::boolean = TRUE
+        OR NOT (quality_flags @> '["legacy"]'::jsonb)
+      )
     ORDER BY sort_order ASC, id ASC
+    `,
+    [grammarId, includeLegacy],
+  );
+
+  return result.rows.map((row, index) => serializeGrammarExampleRow(row, index));
+}
+
+async function fetchLegacyRowCountForGrammarId(grammarId) {
+  const result = await pool.query(
+    `
+    SELECT COUNT(*)::int AS legacy_count
+    FROM ${GRAMMAR_EXAMPLES_TABLE}
+    WHERE grammar_id = $1
+      AND quality_flags @> '["legacy"]'::jsonb
     `,
     [grammarId],
   );
 
-  return result.rows.map((row, index) => serializeGrammarExampleRow(row, index));
+  return Number(result.rows[0]?.legacy_count ?? 0);
 }
 
 async function refreshGrammarRowsForGrammarId(grammarId) {
@@ -1557,6 +1840,8 @@ async function fetchGrammarOverrideRecord(grammarId) {
     `
     SELECT
       grammar_id,
+      stage,
+      lesson_order,
       content,
       review_status,
       review_assignee_user_id,
@@ -1582,16 +1867,97 @@ async function fetchGrammarOverrideRecord(grammarId) {
 async function fetchPublishedGrammarOverridesMap() {
   const result = await pool.query(
     `
-    SELECT grammar_id, content
+    SELECT grammar_id, stage, lesson_order, content
     FROM ${GRAMMAR_LESSON_OVERRIDES_TABLE}
     WHERE review_status = 'approved'
+      OR COALESCE((content->>'hiddenFromLearners')::boolean, false) = true
     ORDER BY grammar_id ASC
     `,
   );
 
   return Object.fromEntries(
-    result.rows.map((row) => [row.grammar_id, row.content]),
+    result.rows.map((row) => {
+      const content =
+        row.content && typeof row.content === "object" ? { ...row.content } : {};
+      const stage =
+        typeof row.stage === "string" && VALID_GRAMMAR_STAGES.has(row.stage)
+          ? row.stage
+          : content.stage;
+      const lessonOrder = coerceLessonOrder(row.lesson_order ?? content.lessonOrder);
+
+      return [
+        row.grammar_id,
+        {
+          ...content,
+          ...(stage ? { stage } : {}),
+          ...(stage ? { stageOrder: getGrammarStageOrder(stage) } : {}),
+          ...(lessonOrder !== null ? { lessonOrder } : {}),
+        },
+      ];
+    }),
   );
+}
+
+async function fetchPublishedGrammarCatalogEntries() {
+  const result = await pool.query(
+    `
+    SELECT grammar_id, stage, lesson_order, content
+    FROM ${GRAMMAR_LESSON_OVERRIDES_TABLE}
+    WHERE review_status = 'approved'
+      OR COALESCE((content->>'hiddenFromLearners')::boolean, false) = true
+    `,
+  );
+
+  return result.rows
+    .map((row) => serializePublishedGrammarCatalogEntry(row))
+    .filter(Boolean)
+    .sort((a, b) => {
+      const stageDelta = (a.stageOrder ?? 9999) - (b.stageOrder ?? 9999);
+      if (stageDelta !== 0) {
+        return stageDelta;
+      }
+
+      const lessonDelta =
+        (a.lessonOrder ?? Number.MAX_SAFE_INTEGER) -
+        (b.lessonOrder ?? Number.MAX_SAFE_INTEGER);
+      if (lessonDelta !== 0) {
+        return lessonDelta;
+      }
+
+      return String(a.id).localeCompare(String(b.id));
+    });
+}
+
+async function fetchPublishedGrammarCatalogEntry(grammarId) {
+  const lesson = await fetchGrammarOverrideRecord(grammarId);
+
+  if (!lesson?.override) {
+    return null;
+  }
+
+  const override = lesson.override;
+  const isPublished =
+    lesson.reviewStatus === "approved" || override.hiddenFromLearners === true;
+
+  if (!isPublished || !hasRequiredPublishedGrammarCatalogFields(override)) {
+    return null;
+  }
+
+  return {
+    id: grammarId,
+    title: override.title,
+    level: override.level,
+    stage: override.stage,
+    stageOrder: getGrammarStageOrder(override.stage),
+    lessonOrder: coerceLessonOrder(override.lessonOrder) ?? undefined,
+    hiddenFromLearners: override.hiddenFromLearners === true,
+    explanation: override.explanation,
+    pattern: override.pattern,
+    lessonBlocks: override.lessonBlocks ?? undefined,
+    aiPrompt: override.aiPrompt ?? undefined,
+    example: override.example,
+    focus: override.focus,
+  };
 }
 
 async function fetchGrammarOverrideMetadata() {
@@ -1730,12 +2096,10 @@ async function fetchLessonProductionSummaryMap(grammarIds = []) {
           `
           SELECT
             e.grammar_id,
-            COUNT(*) FILTER (
-              WHERE e.publish_state = 'published'
-                AND e.review_status = 'approved'
-                AND e.tone_status = 'approved'
-                AND e.tone_confidence >= ${APPROVED_TONE_CONFIDENCE}
-            )::int AS live_published_count,
+              COUNT(*) FILTER (
+                WHERE e.publish_state = 'published'
+                  AND e.review_status = 'approved'
+              )::int AS live_published_count,
             COUNT(*) FILTER (
               WHERE e.publish_state = 'published'
             )::int AS published_row_count,
@@ -1783,12 +2147,10 @@ async function fetchLessonProductionSummaryMap(grammarIds = []) {
           `
           SELECT
             e.grammar_id,
-            COUNT(*) FILTER (
-              WHERE e.publish_state = 'published'
-                AND e.review_status = 'approved'
-                AND e.tone_status = 'approved'
-                AND e.tone_confidence >= ${APPROVED_TONE_CONFIDENCE}
-            )::int AS live_published_count,
+              COUNT(*) FILTER (
+                WHERE e.publish_state = 'published'
+                  AND e.review_status = 'approved'
+              )::int AS live_published_count,
             COUNT(*) FILTER (
               WHERE e.publish_state = 'published'
             )::int AS published_row_count,
@@ -2306,12 +2668,17 @@ async function upsertGrammarLessonOverrideRecord({
   const normalizedReviewStatus = normalizeReviewStatus(reviewStatus, "flagged");
   const approvedByUserId =
     normalizedReviewStatus === "approved" ? editorUserId : null;
+  const seededOrder = getSeededGrammarOrder(grammarId)?.lessonOrder ?? null;
+  const lessonOrder = coerceLessonOrder(override.lessonOrder) ?? seededOrder;
+  const storedOverride =
+    lessonOrder !== null ? { ...override, lessonOrder } : { ...override };
 
   const result = await pool.query(
     `
     INSERT INTO ${GRAMMAR_LESSON_OVERRIDES_TABLE} (
       grammar_id,
       stage,
+      lesson_order,
       content,
       review_status,
       review_assignee_user_id,
@@ -2325,19 +2692,21 @@ async function upsertGrammarLessonOverrideRecord({
     VALUES (
       $1,
       $2,
-      $3::jsonb,
-      $4,
-      $5::bigint,
-      $6,
-      $7::bigint,
-      NOW(),
+      $3::integer,
+      $4::jsonb,
+      $5,
+      $6::bigint,
+      $7,
       $8::bigint,
-      CASE WHEN $8::bigint IS NOT NULL THEN NOW() ELSE NULL END,
+      NOW(),
+      $9::bigint,
+      CASE WHEN $9::bigint IS NOT NULL THEN NOW() ELSE NULL END,
       NOW()
     )
     ON CONFLICT (grammar_id)
     DO UPDATE SET
       stage = EXCLUDED.stage,
+      lesson_order = EXCLUDED.lesson_order,
       content = EXCLUDED.content,
       review_status = EXCLUDED.review_status,
       review_assignee_user_id = EXCLUDED.review_assignee_user_id,
@@ -2352,6 +2721,8 @@ async function upsertGrammarLessonOverrideRecord({
       updated_at = NOW()
     RETURNING
       grammar_id,
+      stage,
+      lesson_order,
       content,
       review_status,
       review_assignee_user_id,
@@ -2363,8 +2734,9 @@ async function upsertGrammarLessonOverrideRecord({
     `,
     [
       grammarId,
-      override.stage,
-      JSON.stringify(override),
+      storedOverride.stage,
+      lessonOrder,
+      JSON.stringify(storedOverride),
       normalizedReviewStatus,
       reviewAssigneeUserId,
       reviewNote,
@@ -2401,13 +2773,28 @@ async function migrateGrammarOverridesFileToDatabase() {
       continue;
     }
 
+    if (!hasRequiredGrammarOverrideMetadata(rawOverride)) {
+      console.warn(
+        `Skipping legacy grammar override ${grammarId}: missing required metadata for database migration`, 
+      );
+      continue;
+    }
+
     try {
       const normalizedOverride = normalizeGrammarOverride(rawOverride);
+      const seededOrder = getSeededGrammarOrder(grammarId)?.lessonOrder ?? null;
+      const lessonOrder =
+        coerceLessonOrder(normalizedOverride.lessonOrder) ?? seededOrder;
+      const storedOverride =
+        lessonOrder !== null
+          ? { ...normalizedOverride, lessonOrder }
+          : normalizedOverride;
       await pool.query(
         `
         INSERT INTO ${GRAMMAR_LESSON_OVERRIDES_TABLE} (
           grammar_id,
           stage,
+          lesson_order,
           content,
           review_status,
           review_note,
@@ -2418,7 +2805,8 @@ async function migrateGrammarOverridesFileToDatabase() {
         VALUES (
           $1,
           $2,
-          $3::jsonb,
+          $3::integer,
+          $4::jsonb,
           'approved',
           'Migrated from grammar-overrides.json',
           NOW(),
@@ -2426,7 +2814,12 @@ async function migrateGrammarOverridesFileToDatabase() {
           NOW()
         )
         `,
-        [grammarId, normalizedOverride.stage, JSON.stringify(normalizedOverride)],
+        [
+          grammarId,
+          storedOverride.stage,
+          lessonOrder,
+          JSON.stringify(storedOverride),
+        ],
       );
       migratedCount += 1;
     } catch (err) {
@@ -2437,6 +2830,60 @@ async function migrateGrammarOverridesFileToDatabase() {
   if (migratedCount > 0) {
     console.log(
       `Migrated ${migratedCount} grammar lesson override${migratedCount === 1 ? "" : "s"} into Postgres`,
+    );
+  }
+}
+
+async function backfillGrammarLessonOrderFromSeed() {
+  const seedMap = readGrammarOrderSeedMap();
+  if (seedMap.size === 0) {
+    return;
+  }
+
+  const result = await pool.query(
+    `
+    SELECT grammar_id, lesson_order, content
+    FROM ${GRAMMAR_LESSON_OVERRIDES_TABLE}
+    `,
+  );
+
+  let updatedCount = 0;
+
+  for (const row of result.rows) {
+    const seededOrder = seedMap.get(row.grammar_id)?.lessonOrder;
+    if (seededOrder == null) {
+      continue;
+    }
+
+    const currentLessonOrder = coerceLessonOrder(
+      row.lesson_order ?? row.content?.lessonOrder,
+    );
+    if (currentLessonOrder !== null) {
+      continue;
+    }
+
+    await pool.query(
+      `
+      UPDATE ${GRAMMAR_LESSON_OVERRIDES_TABLE}
+      SET
+        lesson_order = $2,
+        content = jsonb_set(
+          content,
+          '{lessonOrder}',
+          to_jsonb($2::integer),
+          true
+        ),
+        updated_at = NOW()
+      WHERE grammar_id = $1
+      `,
+      [row.grammar_id, seededOrder],
+    );
+    updatedCount += 1;
+  }
+
+  if (updatedCount > 0) {
+    console.log(
+      `Backfilled lesson order for ${updatedCount} grammar lesson override${updatedCount === 1 ? "" : "s"} from grammar-order-seed.json`,
     );
   }
 }
@@ -3322,7 +3769,7 @@ function isTruthyEnv(value) {
   return typeof value === "string" && ["1", "true", "yes", "on"].includes(value.toLowerCase());
 }
 
-function isPasswordResetEmailConfigured() {
+function isEmailTransportConfigured() {
   return Boolean(
     process.env.SMTP_HOST &&
       process.env.SMTP_PORT &&
@@ -3332,21 +3779,21 @@ function isPasswordResetEmailConfigured() {
   );
 }
 
-let passwordResetTransporter;
+let emailTransporter;
 
-function getPasswordResetTransporter() {
-  if (!isPasswordResetEmailConfigured()) {
-    throw new Error("Password reset email is not configured on the server");
+function getEmailTransporter() {
+  if (!isEmailTransportConfigured()) {
+    throw new Error("SMTP email is not configured on the server");
   }
 
-  if (!passwordResetTransporter) {
+  if (!emailTransporter) {
     const smtpPort = Number.parseInt(process.env.SMTP_PORT || "", 10) || 587;
     const secure =
       process.env.SMTP_SECURE != null
         ? isTruthyEnv(process.env.SMTP_SECURE)
         : smtpPort === 465;
 
-    passwordResetTransporter = nodemailer.createTransport({
+    emailTransporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: smtpPort,
       secure,
@@ -3357,7 +3804,7 @@ function getPasswordResetTransporter() {
     });
   }
 
-  return passwordResetTransporter;
+  return emailTransporter;
 }
 
 function buildPasswordResetUrl(req, token) {
@@ -3371,7 +3818,7 @@ function buildPasswordResetUrl(req, token) {
 }
 
 async function sendPasswordResetEmail({ email, resetUrl }) {
-  const transporter = getPasswordResetTransporter();
+  const transporter = getEmailTransporter();
   const fromEmail = process.env.SMTP_FROM_EMAIL?.trim();
   const fromName = process.env.SMTP_FROM_NAME?.trim() || "Keystone Languages";
 
@@ -3400,6 +3847,46 @@ async function sendPasswordResetEmail({ email, resetUrl }) {
         <p style="margin:0 0 8px;font-size:14px;color:#4a5563;">If the button does not work, copy and paste this link into your browser:</p>
         <p style="margin:0 0 20px;font-size:14px;word-break:break-word;color:#344863;">${resetUrl}</p>
         <p style="margin:0;font-size:14px;color:#4a5563;">If you did not request this, you can ignore this email.</p>
+      </div>
+    `,
+  });
+}
+
+async function sendSupportRequestEmail({
+  accountEmail,
+  contactEmail,
+  userId,
+  message,
+}) {
+  const transporter = getEmailTransporter();
+  const fromEmail = process.env.SMTP_FROM_EMAIL?.trim();
+  const fromName = process.env.SMTP_FROM_NAME?.trim() || "Keystone Languages";
+  const safeMessage = escapeHtml(message).replace(/\n/g, "<br />");
+
+  await transporter.sendMail({
+    from: fromName ? `"${fromName}" <${fromEmail}>` : fromEmail,
+    to: SUPPORT_INBOX_EMAIL,
+    replyTo: contactEmail,
+    subject: `Support request from ${contactEmail}`,
+    text: [
+      `Support request received from ${contactEmail}.`,
+      "",
+      `User ID: ${userId ?? "unknown"}`,
+      `Account email: ${accountEmail || "unknown"}`,
+      `Reply-to email: ${contactEmail}`,
+      "",
+      "Message:",
+      message,
+    ].join("\n"),
+    html: `
+      <div style="font-family:Arial,Helvetica,sans-serif;line-height:1.6;color:#0f1720;max-width:680px;margin:0 auto;padding:24px;">
+        <h1 style="font-size:24px;margin:0 0 12px;">Support request</h1>
+        <p style="margin:0 0 16px;"><strong>Reply-to:</strong> ${escapeHtml(contactEmail)}</p>
+        <p style="margin:0 0 8px;"><strong>User ID:</strong> ${escapeHtml(userId ?? "unknown")}</p>
+        <p style="margin:0 0 20px;"><strong>Account email:</strong> ${escapeHtml(accountEmail || "unknown")}</p>
+        <div style="padding:16px;border:1px solid #d8dde5;background:#faf7f1;">
+          ${safeMessage}
+        </div>
       </div>
     `,
   });
@@ -3753,7 +4240,7 @@ function buildStartupReport() {
           clientIdCount: getConfiguredGoogleClientIds().length,
         },
         passwordResetEmail: {
-          status: isPasswordResetEmailConfigured() ? "configured" : "missing",
+          status: isEmailTransportConfigured() ? "configured" : "missing",
         },
         googleTts: {
           status:
@@ -4036,6 +4523,75 @@ app.get("/me", authMiddleware, async (req, res) => {
   } catch (err) {
     console.error("Failed to fetch user profile:", err);
     res.status(500).json({ error: "Failed to fetch user profile" });
+  }
+});
+
+app.post("/support/request", authMiddleware, async (req, res) => {
+  try {
+    const contactEmail =
+      typeof req.body?.email === "string" ? req.body.email.trim().toLowerCase() : "";
+    const message = typeof req.body?.message === "string" ? req.body.message.trim() : "";
+
+    if (!isValidEmail(contactEmail)) {
+      return res.status(400).json({ error: "Enter a valid email address." });
+    }
+
+    if (!message) {
+      return res.status(400).json({ error: "Describe the problem before sending." });
+    }
+
+    if (message.length > 4000) {
+      return res.status(400).json({ error: "Please keep the message under 4000 characters." });
+    }
+
+    const userResult = await pool.query(
+      `
+      SELECT id, email
+      FROM users
+      WHERE id = $1
+      LIMIT 1
+      `,
+      [req.userId],
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const user = userResult.rows[0];
+    const supportRequest = {
+      id: randomUUID(),
+      createdAt: new Date().toISOString(),
+      userId: user.id,
+      accountEmail: user.email,
+      contactEmail,
+      message,
+      deliveredByEmail: false,
+    };
+
+    try {
+      if (isEmailTransportConfigured()) {
+        await sendSupportRequestEmail({
+          accountEmail: user.email,
+          contactEmail,
+          userId: user.id,
+          message,
+        });
+        supportRequest.deliveredByEmail = true;
+      }
+    } catch (err) {
+      console.error("Failed to send support request email:", err);
+    }
+
+    appendSupportRequest(supportRequest);
+
+    res.json({
+      success: true,
+      deliveredByEmail: supportRequest.deliveredByEmail,
+    });
+  } catch (err) {
+    console.error("Failed to submit support request:", err);
+    res.status(500).json({ error: "Failed to send support request" });
   }
 });
 
@@ -5194,14 +5750,21 @@ app.get(
         return res.status(400).json({ error: "Invalid grammar id" });
       }
 
-      const [lesson, rows, reviewers, productionSummaryMap] = await Promise.all([
-        fetchGrammarOverrideRecord(grammarId),
-        fetchGrammarRowsForGrammarId(grammarId),
-        fetchReviewerUsers(),
-        fetchLessonProductionSummaryMap([grammarId]),
-      ]);
+      const includeLegacy =
+        !("includeLegacy" in req.query) ||
+        req.query.includeLegacy === "1" ||
+        req.query.includeLegacy === "true";
 
-      if (!lesson && rows.length === 0) {
+      const [lesson, rows, legacyRowCount, reviewers, productionSummaryMap] =
+        await Promise.all([
+          fetchGrammarOverrideRecord(grammarId),
+          fetchGrammarRowsForGrammarId(grammarId, { includeLegacy }),
+          fetchLegacyRowCountForGrammarId(grammarId),
+          fetchReviewerUsers(),
+          fetchLessonProductionSummaryMap([grammarId]),
+        ]);
+
+      if (!lesson && rows.length === 0 && legacyRowCount === 0) {
         return res.status(404).json({ error: "Grammar point not found" });
       }
 
@@ -5213,6 +5776,7 @@ app.get(
       res.json({
         lesson,
         rows,
+        legacyRowCount,
         production: productionSummaryMap.get(grammarId) ?? null,
         reviewers,
         lessonComments,
@@ -6646,20 +7210,21 @@ app.post("/track-words", authMiddleware, async (req, res) => {
   }
 });
 
-const THAI_CONS = "[ก-ฮ]";
+const THAI_CONS = "[\u0E01-\u0E2E]";
+const TRAINER_VOWEL_PLACEHOLDER = "\u25CC";
 
 /**
- * Convert a vowel symbol (with ◌ placeholder) into a regex
+ * Convert a vowel symbol (with Ã¢â€”Å’ placeholder) into a regex
  * that matches the vowel wrapped around any Thai consonant(s).
  *
  * Examples:
- *   "เ◌ีย"  → /เ[ก-ฮ]+ีย/    matches เกีย, เครีย
- *   "◌ัว"   → /[ก-ฮ]+ัว/     matches กัว, ตัว
- *   "า"     → /า/             simple presence check
+ *   "Ã Â¹â‚¬Ã¢â€”Å’Ã Â¸ÂµÃ Â¸Â¢"  Ã¢â€ â€™ /Ã Â¹â‚¬[Ã Â¸Â-Ã Â¸Â®]+Ã Â¸ÂµÃ Â¸Â¢/    matches Ã Â¹â‚¬Ã Â¸ÂÃ Â¸ÂµÃ Â¸Â¢, Ã Â¹â‚¬Ã Â¸â€žÃ Â¸Â£Ã Â¸ÂµÃ Â¸Â¢
+ *   "Ã¢â€”Å’Ã Â¸Â±Ã Â¸Â§"   Ã¢â€ â€™ /[Ã Â¸Â-Ã Â¸Â®]+Ã Â¸Â±Ã Â¸Â§/     matches Ã Â¸ÂÃ Â¸Â±Ã Â¸Â§, Ã Â¸â€¢Ã Â¸Â±Ã Â¸Â§
+ *   "Ã Â¸Â²"     Ã¢â€ â€™ /Ã Â¸Â²/             simple presence check
  */
 function vowelToRegex(symbol) {
-  if (symbol.includes("◌")) {
-    const parts = symbol.split("◌");
+  if (symbol.includes(TRAINER_VOWEL_PLACEHOLDER)) {
+    const parts = symbol.split(TRAINER_VOWEL_PLACEHOLDER);
     const escaped = parts.map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
     return new RegExp(escaped.join(THAI_CONS + "+"));
   }
@@ -6680,13 +7245,13 @@ function buildVowelPatterns(vowelSymbols) {
 /* =============================== */
 
 const THAI_DIACRITICS = new Set([
-  "\u0E48", // ่ mai ek
-  "\u0E49", // ้ mai tho
-  "\u0E4A", // ๊ mai tri
-  "\u0E4B", // ๋ mai chattawa
-  "\u0E4C", // ์ thanthakhat (silent)
-  "\u0E4D", // ็ nikhahit
-  "\u0E47", // ็ maitaikhu
+  "\u0E48", // Ã Â¹Ë† mai ek
+  "\u0E49", // Ã Â¹â€° mai tho
+  "\u0E4A", // Ã Â¹Å  mai tri
+  "\u0E4B", // Ã Â¹â€¹ mai chattawa
+  "\u0E4C", // Ã Â¹Å’ thanthakhat (silent)
+  "\u0E4D", // Ã Â¹â€¡ nikhahit
+  "\u0E47", // Ã Â¹â€¡ maitaikhu
 ]);
 
 function coreLength(word) {
@@ -6719,9 +7284,9 @@ app.post("/alphabet-trainer", (req, res) => {
   /*
    * Difficulty criteria (syllables + core character length):
    *
-   * EASY:   1 syllable, max 4 core chars  → กา, ดี, กิน, บ้าน, เก่ง
-   * MEDIUM: 1-2 syllables, max 6 chars     → อร่อย, สวัสดี, ลหุโทษ
-   * HARD:   anything bigger                → ประชาธิปไตย, สันนิษฐาน
+   * EASY:   1 syllable, max 4 core chars  Ã¢â€ â€™ Ã Â¸ÂÃ Â¸Â², Ã Â¸â€Ã Â¸Âµ, Ã Â¸ÂÃ Â¸Â´Ã Â¸â„¢, Ã Â¸Å¡Ã Â¹â€°Ã Â¸Â²Ã Â¸â„¢, Ã Â¹â‚¬Ã Â¸ÂÃ Â¹Ë†Ã Â¸â€¡
+   * MEDIUM: 1-2 syllables, max 6 chars     Ã¢â€ â€™ Ã Â¸Â­Ã Â¸Â£Ã Â¹Ë†Ã Â¸Â­Ã Â¸Â¢, Ã Â¸ÂªÃ Â¸Â§Ã Â¸Â±Ã Â¸ÂªÃ Â¸â€Ã Â¸Âµ, Ã Â¸Â¥Ã Â¸Â«Ã Â¸Â¸Ã Â¹â€šÃ Â¸â€”Ã Â¸Â©
+   * HARD:   anything bigger                Ã¢â€ â€™ Ã Â¸â€ºÃ Â¸Â£Ã Â¸Â°Ã Â¸Å Ã Â¸Â²Ã Â¸ËœÃ Â¸Â´Ã Â¸â€ºÃ Â¹â€žÃ Â¸â€¢Ã Â¸Â¢, Ã Â¸ÂªÃ Â¸Â±Ã Â¸â„¢Ã Â¸â„¢Ã Â¸Â´Ã Â¸Â©Ã Â¸ÂÃ Â¸Â²Ã Â¸â„¢
    */
   function matchesDifficulty(word) {
     const syllables = countThaiSyllables(word);
@@ -7081,6 +7646,7 @@ async function startServer() {
       CREATE TABLE IF NOT EXISTS ${GRAMMAR_LESSON_OVERRIDES_TABLE} (
         grammar_id TEXT PRIMARY KEY,
         stage TEXT NOT NULL,
+        lesson_order INTEGER,
         content JSONB NOT NULL,
         review_status TEXT NOT NULL DEFAULT 'flagged',
         review_assignee_user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
@@ -7094,8 +7660,23 @@ async function startServer() {
       );
     `);
     await pool.query(`
+      ALTER TABLE ${GRAMMAR_LESSON_OVERRIDES_TABLE}
+      ADD COLUMN IF NOT EXISTS lesson_order INTEGER
+    `);
+    await pool.query(`
+      UPDATE ${GRAMMAR_LESSON_OVERRIDES_TABLE}
+      SET lesson_order = (content->>'lessonOrder')::integer
+      WHERE lesson_order IS NULL
+        AND content ? 'lessonOrder'
+        AND (content->>'lessonOrder') ~ '^[0-9]+$'
+    `);
+    await pool.query(`
       CREATE INDEX IF NOT EXISTS idx_grammar_lesson_overrides_status
         ON ${GRAMMAR_LESSON_OVERRIDES_TABLE} (review_status, stage);
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_grammar_lesson_overrides_stage_order
+        ON ${GRAMMAR_LESSON_OVERRIDES_TABLE} (stage, lesson_order, grammar_id);
     `);
     await pool.query(`
       CREATE TABLE IF NOT EXISTS ${GRAMMAR_LESSON_COMMENTS_TABLE} (
@@ -7235,6 +7816,7 @@ async function startServer() {
     ensureAdminDataFiles();
     await syncConfiguredAdminEmails();
     await migrateGrammarOverridesFileToDatabase();
+    await backfillGrammarLessonOrderFromSeed();
 
     await loadDictionary();
     await loadGrammarSentencesIntoMemory();
@@ -7251,31 +7833,60 @@ async function startServer() {
   }
 }
 
-app.post("/practice-csv", (req, res) => {
-  const { grammar, preview } = req.body;
+app.post("/practice-csv", async (req, res) => {
+  try {
+    const { grammar, preview } = req.body;
 
-  const matches = (grammarSentences[grammar] || []).filter(
-    (row) =>
-      row?.publishState === "published" &&
-      row?.reviewStatus === "approved" &&
-      row?.toneStatus === "approved" &&
-      Number(row?.toneConfidence) >= APPROVED_TONE_CONFIDENCE,
-  );
+    const getPublishedApprovedRows = (rows) =>
+      (Array.isArray(rows) ? rows : []).filter(
+        (row) =>
+          row?.publishState === "published" &&
+          row?.reviewStatus === "approved",
+      );
 
-  if (matches.length === 0) {
-    return res.status(404).json({
-      error: "No review-approved sentences found",
-      needsToneReview: true,
-    });
+    // Exercises should prefer the current published non-legacy lesson rows from
+    // Postgres so newly QA'd/published content wins over any stale boot-time
+    // cache. Only fall back to the in-memory cache when a lesson has no current
+    // non-legacy published rows yet.
+    let matches = [];
+
+    if (typeof grammar === "string" && grammar.trim()) {
+      const currentRows = await fetchGrammarRowsForGrammarId(grammar.trim(), {
+        includeLegacy: false,
+      });
+      matches = getPublishedApprovedRows(currentRows);
+    }
+
+    if (matches.length === 0) {
+      matches = getPublishedApprovedRows(grammarSentences[grammar]);
+    }
+
+    // Direct DB publish flows can leave the in-memory lesson cache stale until
+    // the next explicit refresh. Rehydrate this lesson on demand before we
+    // report that no practice rows exist.
+    if (matches.length === 0 && typeof grammar === "string" && grammar.trim()) {
+      const refreshedRows = await refreshGrammarRowsForGrammarId(grammar.trim());
+      matches = getPublishedApprovedRows(refreshedRows);
+    }
+
+    if (matches.length === 0) {
+      return res.status(404).json({
+        error: "No review-approved sentences found",
+        needsToneReview: true,
+      });
+    }
+
+    if (preview) {
+      return res.json(matches[0]);
+    }
+
+    const random = matches[Math.floor(Math.random() * matches.length)];
+
+    res.json(random);
+  } catch (err) {
+    console.error("Failed to load practice CSV row:", err);
+    res.status(500).json({ error: "Failed to load practice sentences" });
   }
-
-  if (preview) {
-    return res.json(matches[0]);
-  }
-
-  const random = matches[Math.floor(Math.random() * matches.length)];
-
-  res.json(random);
 });
 
 app.post("/tts/sentence", sentenceTtsRateLimiter, async (req, res) => {
@@ -7305,6 +7916,38 @@ app.get("/grammar/overrides", async (_req, res) => {
   } catch (err) {
     console.error("Failed to fetch grammar overrides:", err);
     res.status(500).json({ error: "Failed to fetch grammar overrides" });
+  }
+});
+
+app.get("/grammar/catalog", async (_req, res) => {
+  try {
+    res.json({
+      lessons: await fetchPublishedGrammarCatalogEntries(),
+    });
+  } catch (err) {
+    console.error("Failed to fetch grammar catalog:", err);
+    res.status(500).json({ error: "Failed to fetch grammar catalog" });
+  }
+});
+
+app.get("/grammar/catalog/:grammarId", async (req, res) => {
+  try {
+    const { grammarId } = req.params;
+
+    if (!isValidGrammarId(grammarId)) {
+      return res.status(400).json({ error: "Invalid grammar id" });
+    }
+
+    const lesson = await fetchPublishedGrammarCatalogEntry(grammarId);
+
+    if (!lesson) {
+      return res.status(404).json({ error: "Grammar point not found" });
+    }
+
+    res.json({ lesson });
+  } catch (err) {
+    console.error("Failed to fetch grammar catalog lesson:", err);
+    res.status(500).json({ error: "Failed to fetch grammar catalog lesson" });
   }
 });
 
@@ -7440,7 +8083,7 @@ app.post("/password/forgot", authRateLimiter, async (req, res) => {
       });
     }
 
-    if (!isPasswordResetEmailConfigured()) {
+    if (!isEmailTransportConfigured()) {
       return res.status(500).json({
         error: "Password reset email is not configured on the server",
       });
@@ -7730,3 +8373,4 @@ app.post("/auth/google", authRateLimiter, async (req, res) => {
 });
 
 startServer();
+
