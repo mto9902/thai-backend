@@ -1,0 +1,521 @@
+{
+  "requestedModel": "gemini-3.1-pro-preview",
+  "responseModelVersion": "gemini-3.1-pro-preview",
+  "stage": "B2.1",
+  "batch_id": "batch-036",
+  "item_count": 30,
+  "parsedOutput": {
+    "stage": "B2.1",
+    "batch_id": "batch-036",
+    "checked_items": 30,
+    "findings": [
+      {
+        "item_id": "b21-1261",
+        "thai": "เพียงจุดเล็กๆ เท่านั้น",
+        "romanization": "phiiang jut lek lek thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low",
+            "high",
+            "high",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "low",
+          "high",
+          "high",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing the 'high' tone for 'nan' (นั้น) at the end."
+      },
+      {
+        "item_id": "b21-1233",
+        "thai": "เพียงชั่วคราวเท่านั้น",
+        "romanization": "phiiang chua-khraao thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "mid",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "falling",
+          "mid",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing tones for the full syllable count. 'chua' is falling, 'khraao' is mid, 'thao' is falling, 'nan' is high."
+      },
+      {
+        "item_id": "b21-1229",
+        "thai": "เพียงทางออนไลน์เท่านั้น",
+        "romanization": "phiiang thaang on-lai thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "mid",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "mid",
+          "mid",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing tones for the full syllable count. 'on-lai' is mid-mid, 'thao' is falling, 'nan' is high."
+      },
+      {
+        "item_id": "b21-1265",
+        "thai": "เพียงนิดเดียวเท่านั้น",
+        "romanization": "phiiang nit diao thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "high",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "high",
+          "mid",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing the 'high' tone for 'nan' (นั้น) at the end."
+      },
+      {
+        "item_id": "b21-1269",
+        "thai": "เพียงบางส่วนเท่านั้น",
+        "romanization": "phiiang baang suan thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "mid",
+            "rising",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "low",
+          "falling",
+          "high"
+        ],
+        "reason": "'suan' (ส่วน) is low tone, not rising. Also missing the 'high' tone for 'nan' (นั้น)."
+      },
+      {
+        "item_id": "b21-1231",
+        "thai": "เพียงประโยคสั้นๆ เท่านั้น",
+        "romanization": "phiiang bpra-yok san san thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "falling",
+            "falling",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "low",
+          "low",
+          "falling",
+          "falling",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing tones for the full syllable count. 'bpra' is low, 'yok' is low, 'san' is falling, 'san' is falling, 'thao' is falling, 'nan' is high."
+      },
+      {
+        "item_id": "b21-1257",
+        "thai": "เพียงผู้สมัครที่มีประสบการณ์เท่านั้น",
+        "romanization": "phiiang phuu-sa-mak thii mii bpra-sop-gaan thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "falling",
+            "high",
+            "falling",
+            "mid",
+            "low",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "falling",
+          "low",
+          "low",
+          "falling",
+          "mid",
+          "low",
+          "low",
+          "mid",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing tones for the full syllable count (11 syllables total). Corrected to match each syllable."
+      },
+      {
+        "item_id": "b21-1259",
+        "thai": "เพียงยี่สิบคนเท่านั้น",
+        "romanization": "phiiang yii-sip khon thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "falling",
+            "low",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "falling",
+          "low",
+          "mid",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing the 'high' tone for 'nan' (นั้น) at the end."
+      },
+      {
+        "item_id": "b21-1227",
+        "thai": "เพียงรอบเดียวเท่านั้น",
+        "romanization": "phiiang rop diao thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "falling",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "falling",
+          "mid",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing the 'high' tone for 'nan' (นั้น) at the end."
+      },
+      {
+        "item_id": "b21-1241",
+        "thai": "เพียงร้อยบาทเท่านั้น",
+        "romanization": "phiiang roi baat thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "high",
+            "low",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "high",
+          "low",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing the 'high' tone for 'nan' (นั้น) at the end."
+      },
+      {
+        "item_id": "b21-1225",
+        "thai": "เพียงวันเดียวเท่านั้น",
+        "romanization": "phiiang wan diao thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "mid",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "mid",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing the 'high' tone for 'nan' (นั้น) at the end."
+      },
+      {
+        "item_id": "b21-1251",
+        "thai": "เพียงวันเสาร์เท่านั้น",
+        "romanization": "phiiang wan sao thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "mid",
+            "rising",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "rising",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing the 'high' tone for 'nan' (นั้น) at the end."
+      },
+      {
+        "item_id": "b21-1247",
+        "thai": "เพียงแวบเดียวเท่านั้น",
+        "romanization": "phiiang waep diao thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "falling",
+          "mid",
+          "falling",
+          "high"
+        ],
+        "reason": "'waep' (แวบ) is falling tone (or high in common speech, but not low). Also missing the 'high' tone for 'nan' (นั้น)."
+      },
+      {
+        "item_id": "b21-1255",
+        "thai": "เพียงสองข้อเท่านั้น",
+        "romanization": "phiiang song kho thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "rising",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "rising",
+          "falling",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing the 'high' tone for 'nan' (นั้น) at the end."
+      },
+      {
+        "item_id": "b21-1223",
+        "thai": "เพียงสามคนเท่านั้น",
+        "romanization": "phiiang saam khon thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "rising",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "rising",
+          "mid",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing the 'high' tone for 'nan' (นั้น) at the end."
+      },
+      {
+        "item_id": "b21-1235",
+        "thai": "เพียงสิบทีมเท่านั้น",
+        "romanization": "phiiang sip thiim thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "low",
+          "mid",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing the 'high' tone for 'nan' (นั้น) at the end."
+      },
+      {
+        "item_id": "b21-1243",
+        "thai": "เพียงห้าห้องเท่านั้น",
+        "romanization": "phiiang haa hong thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "falling",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "falling",
+          "falling",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing the 'high' tone for 'nan' (นั้น) at the end."
+      },
+      {
+        "item_id": "b21-1245",
+        "thai": "เพียงอีกสิบนาทีเท่านั้น",
+        "romanization": "phiiang iik sip naa-thii thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low",
+            "low",
+            "mid",
+            "high",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "low",
+          "low",
+          "mid",
+          "mid",
+          "falling",
+          "high"
+        ],
+        "reason": "'thii' (ที) is mid tone, not high. Also missing the 'high' tone for 'nan' (นั้น)."
+      },
+      {
+        "item_id": "b21-1249",
+        "thai": "เพียงเอกสารชุดเดียวเท่านั้น",
+        "romanization": "phiiang eek-ga-saan chut diao thao nan",
+        "current_tones_variants": [
+          [
+            "mid",
+            "rising",
+            "high",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "low",
+          "low",
+          "rising",
+          "high",
+          "mid",
+          "falling",
+          "high"
+        ],
+        "reason": "Missing tones for the full syllable count (8 syllables total). Corrected to match each syllable."
+      },
+      {
+        "item_id": "b21-0849",
+        "thai": "เพื่อนแนะนำ",
+        "romanization": "phuean nae-nam",
+        "current_tones_variants": [
+          [
+            "falling",
+            "mid",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "falling",
+          "high",
+          "mid"
+        ],
+        "reason": "'nae' (แนะ) is high tone, not mid."
+      }
+    ]
+  },
+  "rawText": "{\n  \"stage\": \"B2.1\",\n  \"batch_id\": \"batch-036\",\n  \"checked_items\": 30,\n  \"findings\": [\n    {\n      \"item_id\": \"b21-1261\",\n      \"thai\": \"เพียงจุดเล็กๆ เท่านั้น\",\n      \"romanization\": \"phiiang jut lek lek thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"high\",\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"high\",\n        \"high\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1233\",\n      \"thai\": \"เพียงชั่วคราวเท่านั้น\",\n      \"romanization\": \"phiiang chua-khraao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing tones for the full syllable count. 'chua' is falling, 'khraao' is mid, 'thao' is falling, 'nan' is high.\"\n    },\n    {\n      \"item_id\": \"b21-1229\",\n      \"thai\": \"เพียงทางออนไลน์เท่านั้น\",\n      \"romanization\": \"phiiang thaang on-lai thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing tones for the full syllable count. 'on-lai' is mid-mid, 'thao' is falling, 'nan' is high.\"\n    },\n    {\n      \"item_id\": \"b21-1265\",\n      \"thai\": \"เพียงนิดเดียวเท่านั้น\",\n      \"romanization\": \"phiiang nit diao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"high\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"high\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1269\",\n      \"thai\": \"เพียงบางส่วนเท่านั้น\",\n      \"romanization\": \"phiiang baang suan thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"rising\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"low\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"'suan' (ส่วน) is low tone, not rising. Also missing the 'high' tone for 'nan' (นั้น).\"\n    },\n    {\n      \"item_id\": \"b21-1231\",\n      \"thai\": \"เพียงประโยคสั้นๆ เท่านั้น\",\n      \"romanization\": \"phiiang bpra-yok san san thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"falling\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"falling\",\n        \"falling\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing tones for the full syllable count. 'bpra' is low, 'yok' is low, 'san' is falling, 'san' is falling, 'thao' is falling, 'nan' is high.\"\n    },\n    {\n      \"item_id\": \"b21-1257\",\n      \"thai\": \"เพียงผู้สมัครที่มีประสบการณ์เท่านั้น\",\n      \"romanization\": \"phiiang phuu-sa-mak thii mii bpra-sop-gaan thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"high\",\n          \"falling\",\n          \"mid\",\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"low\",\n        \"low\",\n        \"falling\",\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing tones for the full syllable count (11 syllables total). Corrected to match each syllable.\"\n    },\n    {\n      \"item_id\": \"b21-1259\",\n      \"thai\": \"เพียงยี่สิบคนเท่านั้น\",\n      \"romanization\": \"phiiang yii-sip khon thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"low\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1227\",\n      \"thai\": \"เพียงรอบเดียวเท่านั้น\",\n      \"romanization\": \"phiiang rop diao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1241\",\n      \"thai\": \"เพียงร้อยบาทเท่านั้น\",\n      \"romanization\": \"phiiang roi baat thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"high\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"high\",\n        \"low\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1225\",\n      \"thai\": \"เพียงวันเดียวเท่านั้น\",\n      \"romanization\": \"phiiang wan diao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1251\",\n      \"thai\": \"เพียงวันเสาร์เท่านั้น\",\n      \"romanization\": \"phiiang wan sao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"rising\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"rising\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1247\",\n      \"thai\": \"เพียงแวบเดียวเท่านั้น\",\n      \"romanization\": \"phiiang waep diao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"'waep' (แวบ) is falling tone (or high in common speech, but not low). Also missing the 'high' tone for 'nan' (นั้น).\"\n    },\n    {\n      \"item_id\": \"b21-1255\",\n      \"thai\": \"เพียงสองข้อเท่านั้น\",\n      \"romanization\": \"phiiang song kho thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"rising\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"rising\",\n        \"falling\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1223\",\n      \"thai\": \"เพียงสามคนเท่านั้น\",\n      \"romanization\": \"phiiang saam khon thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"rising\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"rising\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1235\",\n      \"thai\": \"เพียงสิบทีมเท่านั้น\",\n      \"romanization\": \"phiiang sip thiim thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1243\",\n      \"thai\": \"เพียงห้าห้องเท่านั้น\",\n      \"romanization\": \"phiiang haa hong thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"falling\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1245\",\n      \"thai\": \"เพียงอีกสิบนาทีเท่านั้น\",\n      \"romanization\": \"phiiang iik sip naa-thii thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"mid\",\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"'thii' (ที) is mid tone, not high. Also missing the 'high' tone for 'nan' (นั้น).\"\n    },\n    {\n      \"item_id\": \"b21-1249\",\n      \"thai\": \"เพียงเอกสารชุดเดียวเท่านั้น\",\n      \"romanization\": \"phiiang eek-ga-saan chut diao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"rising\",\n          \"high\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"rising\",\n        \"high\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing tones for the full syllable count (8 syllables total). Corrected to match each syllable.\"\n    },\n    {\n      \"item_id\": \"b21-0849\",\n      \"thai\": \"เพื่อนแนะนำ\",\n      \"romanization\": \"phuean nae-nam\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"'nae' (แนะ) is high tone, not mid.\"\n    }\n  ]\n}",
+  "rawResponse": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\n  \"stage\": \"B2.1\",\n  \"batch_id\": \"batch-036\",\n  \"checked_items\": 30,\n  \"findings\": [\n    {\n      \"item_id\": \"b21-1261\",\n      \"thai\": \"เพียงจุดเล็กๆ เท่านั้น\",\n      \"romanization\": \"phiiang jut lek lek thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"high\",\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"high\",\n        \"high\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1233\",\n      \"thai\": \"เพียงชั่วคราวเท่านั้น\",\n      \"romanization\": \"phiiang chua-khraao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing tones for the full syllable count. 'chua' is falling, 'khraao' is mid, 'thao' is falling, 'nan' is high.\"\n    },\n    {\n      \"item_id\": \"b21-1229\",\n      \"thai\": \"เพียงทางออนไลน์เท่านั้น\",\n      \"romanization\": \"phiiang thaang on-lai thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing tones for the full syllable count. 'on-lai' is mid-mid, 'thao' is falling, 'nan' is high.\"\n    },\n    {\n      \"item_id\": \"b21-1265\",\n      \"thai\": \"เพียงนิดเดียวเท่านั้น\",\n      \"romanization\": \"phiiang nit diao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"high\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"high\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1269\",\n      \"thai\": \"เพียงบางส่วนเท่านั้น\",\n      \"romanization\": \"phiiang baang suan thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"rising\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"low\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"'suan' (ส่วน) is low tone, not rising. Also missing the 'high' tone for 'nan' (นั้น).\"\n    },\n    {\n      \"item_id\": \"b21-1231\",\n      \"thai\": \"เพียงประโยคสั้นๆ เท่านั้น\",\n      \"romanization\": \"phiiang bpra-yok san san thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"falling\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"falling\",\n        \"falling\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing tones for the full syllable count. 'bpra' is low, 'yok' is low, 'san' is falling, 'san' is falling, 'thao' is falling, 'nan' is high.\"\n    },\n    {\n      \"item_id\": \"b21-1257\",\n      \"thai\": \"เพียงผู้สมัครที่มีประสบการณ์เท่านั้น\",\n      \"romanization\": \"phiiang phuu-sa-mak thii mii bpra-sop-gaan thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"high\",\n          \"falling\",\n          \"mid\",\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"low\",\n        \"low\",\n        \"falling\",\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing tones for the full syllable count (11 syllables total). Corrected to match each syllable.\"\n    },\n    {\n      \"item_id\": \"b21-1259\",\n      \"thai\": \"เพียงยี่สิบคนเท่านั้น\",\n      \"romanization\": \"phiiang yii-sip khon thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"low\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1227\",\n      \"thai\": \"เพียงรอบเดียวเท่านั้น\",\n      \"romanization\": \"phiiang rop diao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1241\",\n      \"thai\": \"เพียงร้อยบาทเท่านั้น\",\n      \"romanization\": \"phiiang roi baat thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"high\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"high\",\n        \"low\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1225\",\n      \"thai\": \"เพียงวันเดียวเท่านั้น\",\n      \"romanization\": \"phiiang wan diao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1251\",\n      \"thai\": \"เพียงวันเสาร์เท่านั้น\",\n      \"romanization\": \"phiiang wan sao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"rising\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"rising\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1247\",\n      \"thai\": \"เพียงแวบเดียวเท่านั้น\",\n      \"romanization\": \"phiiang waep diao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"'waep' (แวบ) is falling tone (or high in common speech, but not low). Also missing the 'high' tone for 'nan' (นั้น).\"\n    },\n    {\n      \"item_id\": \"b21-1255\",\n      \"thai\": \"เพียงสองข้อเท่านั้น\",\n      \"romanization\": \"phiiang song kho thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"rising\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"rising\",\n        \"falling\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1223\",\n      \"thai\": \"เพียงสามคนเท่านั้น\",\n      \"romanization\": \"phiiang saam khon thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"rising\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"rising\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1235\",\n      \"thai\": \"เพียงสิบทีมเท่านั้น\",\n      \"romanization\": \"phiiang sip thiim thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1243\",\n      \"thai\": \"เพียงห้าห้องเท่านั้น\",\n      \"romanization\": \"phiiang haa hong thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"falling\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing the 'high' tone for 'nan' (นั้น) at the end.\"\n    },\n    {\n      \"item_id\": \"b21-1245\",\n      \"thai\": \"เพียงอีกสิบนาทีเท่านั้น\",\n      \"romanization\": \"phiiang iik sip naa-thii thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"mid\",\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"'thii' (ที) is mid tone, not high. Also missing the 'high' tone for 'nan' (นั้น).\"\n    },\n    {\n      \"item_id\": \"b21-1249\",\n      \"thai\": \"เพียงเอกสารชุดเดียวเท่านั้น\",\n      \"romanization\": \"phiiang eek-ga-saan chut diao thao nan\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"rising\",\n          \"high\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"rising\",\n        \"high\",\n        \"mid\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"Missing tones for the full syllable count (8 syllables total). Corrected to match each syllable.\"\n    },\n    {\n      \"item_id\": \"b21-0849\",\n      \"thai\": \"เพื่อนแนะนำ\",\n      \"romanization\": \"phuean nae-nam\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"'nae' (แนะ) is high tone, not mid.\"\n    }\n  ]\n}",
+              "thoughtSignature": "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"
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 4732,
+      "candidatesTokenCount": 3442,
+      "totalTokenCount": 12614,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 4732
+        }
+      ],
+      "thoughtsTokenCount": 4440
+    },
+    "modelVersion": "gemini-3.1-pro-preview",
+    "responseId": "kAfWaZmSC6DMjuMP9J6fgAw"
+  },
+  "usageMetadata": {
+    "promptTokenCount": 4732,
+    "candidatesTokenCount": 3442,
+    "totalTokenCount": 12614,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 4732
+      }
+    ],
+    "thoughtsTokenCount": 4440
+  }
+}

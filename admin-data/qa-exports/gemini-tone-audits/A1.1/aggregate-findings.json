@@ -1,0 +1,155 @@
+{
+  "stage": "A1.1",
+  "manifest": {
+    "stage": "A1.1",
+    "batchSize": 60,
+    "lessonCount": 16,
+    "sentenceCount": 400,
+    "breakdownItemCount": 1492,
+    "uniqueItemCount": 282,
+    "batchCount": 5,
+    "lessons": [
+      {
+        "lessonId": "svo",
+        "lessonOrder": 0
+      },
+      {
+        "lessonId": "negative-mai",
+        "lessonOrder": 1
+      },
+      {
+        "lessonId": "identity-pen",
+        "lessonOrder": 2
+      },
+      {
+        "lessonId": "polite-particles",
+        "lessonOrder": 3
+      },
+      {
+        "lessonId": "name-chue",
+        "lessonOrder": 4
+      },
+      {
+        "lessonId": "question-mai",
+        "lessonOrder": 5
+      },
+      {
+        "lessonId": "question-words",
+        "lessonOrder": 6
+      },
+      {
+        "lessonId": "have-mii",
+        "lessonOrder": 7
+      },
+      {
+        "lessonId": "no-have-mai-mii",
+        "lessonOrder": 8
+      },
+      {
+        "lessonId": "location-yuu",
+        "lessonOrder": 9
+      },
+      {
+        "lessonId": "adjectives",
+        "lessonOrder": 10
+      },
+      {
+        "lessonId": "this-that",
+        "lessonOrder": 11
+      },
+      {
+        "lessonId": "go-come-pai-maa",
+        "lessonOrder": 12
+      },
+      {
+        "lessonId": "origin-maa-jaak",
+        "lessonOrder": 13
+      },
+      {
+        "lessonId": "not-identity-mai-chai",
+        "lessonOrder": 14
+      },
+      {
+        "lessonId": "natural-address-pronouns",
+        "lessonOrder": 15
+      }
+    ],
+    "generatedAt": "2026-04-07T21:47:32.294Z"
+  },
+  "requestedModel": "gemini-3.1-pro-preview",
+  "generatedAt": "2026-04-07T21:50:42.413Z",
+  "batchSummaries": [
+    {
+      "batch_id": "batch-001",
+      "item_count": 60,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.1\\responses\\batch-001.json"
+    },
+    {
+      "batch_id": "batch-002",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.1\\responses\\batch-002.json"
+    },
+    {
+      "batch_id": "batch-003",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.1\\responses\\batch-003.json"
+    },
+    {
+      "batch_id": "batch-004",
+      "item_count": 60,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.1\\responses\\batch-004.json"
+    },
+    {
+      "batch_id": "batch-005",
+      "item_count": 42,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.1\\responses\\batch-005.json"
+    }
+  ],
+  "findingsCount": 2,
+  "findings": [
+    {
+      "item_id": "a11-0130",
+      "thai": "ไหม",
+      "romanization": "mái",
+      "current_tones_variants": [
+        [
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high"
+      ],
+      "reason": "The question particle ไหม is spelled with a rising tone but is pronounced with a high tone in everyday speech, which matches the provided romanization 'mái'."
+    },
+    {
+      "item_id": "a11-0096",
+      "thai": "คอมพิวเตอร์",
+      "romanization": "khawm-phíu-dtêr",
+      "current_tones_variants": [
+        [
+          "mid",
+          "high",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "mid",
+        "mid"
+      ],
+      "reason": "Based on standard Thai spelling rules, 'พิว' (low class consonant + short vowel + sonorant final) is mid tone, and 'เตอร์' (mid class consonant + long vowel + sonorant final) is mid tone. While the colloquial pronunciation is often mid-high-falling (as reflected in the romanization), the standard spelling dictates mid-mid-mid."
+    }
+  ]
+}

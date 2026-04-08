@@ -1,0 +1,213 @@
+{
+  "requestedModel": "gemini-3.1-pro-preview",
+  "responseModelVersion": "gemini-3.1-pro-preview",
+  "stage": "B2.1",
+  "batch_id": "batch-014",
+  "item_count": 30,
+  "parsedOutput": {
+    "stage": "B2.1",
+    "batch_id": "batch-014",
+    "checked_items": 30,
+    "findings": [
+      {
+        "item_id": "b21-1127",
+        "thai": "ความยาวของบทความสองชิ้น",
+        "romanization": "khwaam yaao khawng bot-khwaam sawng chin",
+        "current_tones_variants": [
+          [
+            "mid",
+            "mid",
+            "rising",
+            "low",
+            "mid",
+            "rising",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "rising",
+          "low",
+          "mid",
+          "rising",
+          "high"
+        ],
+        "reason": "The word 'ชิ้น' (chin) has a low-class initial consonant (ช) with a sonorant final and a mai tho tone mark, which results in a high tone, not falling."
+      },
+      {
+        "item_id": "b21-1291",
+        "thai": "ความเร็ว",
+        "romanization": "khwaam reo",
+        "current_tones_variants": [
+          [
+            "rising",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid"
+        ],
+        "reason": "The word 'ความ' (khwaam) has a low-class initial consonant cluster (คว) with a long vowel and a sonorant final, which results in a mid tone, not rising."
+      },
+      {
+        "item_id": "b21-1119",
+        "thai": "ความเสี่ยงของสองแผนนี้",
+        "romanization": "khwaam siang khawng sawng phaen nii",
+        "current_tones_variants": [
+          [
+            "mid",
+            "falling",
+            "rising",
+            "rising",
+            "rising",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "low",
+          "rising",
+          "rising",
+          "rising",
+          "high"
+        ],
+        "reason": "The word 'เสี่ยง' (siang) has a high-class initial consonant (ส) with a mai ek tone mark, which results in a low tone, not falling."
+      },
+      {
+        "item_id": "b21-0455",
+        "thai": "ค่อยๆ ขยาย",
+        "romanization": "khoi khoi kha-yaai",
+        "current_tones_variants": [
+          [
+            "falling",
+            "falling",
+            "rising",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "falling",
+          "falling",
+          "low",
+          "rising"
+        ],
+        "reason": "The word 'ขยาย' (kha-yaai) is pronounced with a low tone for 'kha' (high-class initial with short vowel) and a rising tone for 'yaai' (low-class initial following a high-class initial, taking high-class rules with a sonorant final)."
+      },
+      {
+        "item_id": "b21-0469",
+        "thai": "ค่อยๆ ยิ้ม",
+        "romanization": "khoi khoi yim",
+        "current_tones_variants": [
+          [
+            "falling",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "falling",
+          "falling",
+          "high"
+        ],
+        "reason": "The word 'ยิ้ม' (yim) has a low-class initial consonant (ย) with a mai tho tone mark, which results in a high tone, not falling."
+      },
+      {
+        "item_id": "b21-0450",
+        "thai": "ค่อยๆ สว่างขึ้น",
+        "romanization": "khoi khoi sa-waang khuen",
+        "current_tones_variants": [
+          [
+            "falling",
+            "falling",
+            "low",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "falling",
+          "falling",
+          "low",
+          "low",
+          "falling"
+        ],
+        "reason": "The syllable 'ว่าง' (waang) in 'สว่าง' follows the high-class initial 'ส', so it takes high-class tone rules. With a mai ek tone mark, it results in a low tone, not mid."
+      },
+      {
+        "item_id": "b21-0448",
+        "thai": "ค่อยๆ อธิบาย",
+        "romanization": "khoi khoi a-thi-baai",
+        "current_tones_variants": [
+          [
+            "falling",
+            "falling",
+            "low",
+            "mid",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "falling",
+          "falling",
+          "low",
+          "high",
+          "mid"
+        ],
+        "reason": "The syllable 'ธิ' (thi) has a low-class initial consonant (ธ) with a short vowel and no final consonant (dead syllable), which results in a high tone, not mid."
+      }
+    ]
+  },
+  "rawText": "{\n  \"stage\": \"B2.1\",\n  \"batch_id\": \"batch-014\",\n  \"checked_items\": 30,\n  \"findings\": [\n    {\n      \"item_id\": \"b21-1127\",\n      \"thai\": \"ความยาวของบทความสองชิ้น\",\n      \"romanization\": \"khwaam yaao khawng bot-khwaam sawng chin\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"rising\",\n          \"low\",\n          \"mid\",\n          \"rising\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"rising\",\n        \"low\",\n        \"mid\",\n        \"rising\",\n        \"high\"\n      ],\n      \"reason\": \"The word 'ชิ้น' (chin) has a low-class initial consonant (ช) with a sonorant final and a mai tho tone mark, which results in a high tone, not falling.\"\n    },\n    {\n      \"item_id\": \"b21-1291\",\n      \"thai\": \"ความเร็ว\",\n      \"romanization\": \"khwaam reo\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"The word 'ความ' (khwaam) has a low-class initial consonant cluster (คว) with a long vowel and a sonorant final, which results in a mid tone, not rising.\"\n    },\n    {\n      \"item_id\": \"b21-1119\",\n      \"thai\": \"ความเสี่ยงของสองแผนนี้\",\n      \"romanization\": \"khwaam siang khawng sawng phaen nii\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"rising\",\n          \"rising\",\n          \"rising\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"rising\",\n        \"rising\",\n        \"rising\",\n        \"high\"\n      ],\n      \"reason\": \"The word 'เสี่ยง' (siang) has a high-class initial consonant (ส) with a mai ek tone mark, which results in a low tone, not falling.\"\n    },\n    {\n      \"item_id\": \"b21-0455\",\n      \"thai\": \"ค่อยๆ ขยาย\",\n      \"romanization\": \"khoi khoi kha-yaai\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"falling\",\n          \"rising\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"falling\",\n        \"low\",\n        \"rising\"\n      ],\n      \"reason\": \"The word 'ขยาย' (kha-yaai) is pronounced with a low tone for 'kha' (high-class initial with short vowel) and a rising tone for 'yaai' (low-class initial following a high-class initial, taking high-class rules with a sonorant final).\"\n    },\n    {\n      \"item_id\": \"b21-0469\",\n      \"thai\": \"ค่อยๆ ยิ้ม\",\n      \"romanization\": \"khoi khoi yim\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"The word 'ยิ้ม' (yim) has a low-class initial consonant (ย) with a mai tho tone mark, which results in a high tone, not falling.\"\n    },\n    {\n      \"item_id\": \"b21-0450\",\n      \"thai\": \"ค่อยๆ สว่างขึ้น\",\n      \"romanization\": \"khoi khoi sa-waang khuen\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"falling\",\n        \"low\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"The syllable 'ว่าง' (waang) in 'สว่าง' follows the high-class initial 'ส', so it takes high-class tone rules. With a mai ek tone mark, it results in a low tone, not mid.\"\n    },\n    {\n      \"item_id\": \"b21-0448\",\n      \"thai\": \"ค่อยๆ อธิบาย\",\n      \"romanization\": \"khoi khoi a-thi-baai\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"falling\",\n        \"low\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"The syllable 'ธิ' (thi) has a low-class initial consonant (ธ) with a short vowel and no final consonant (dead syllable), which results in a high tone, not mid.\"\n    }\n  ]\n}",
+  "rawResponse": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\n  \"stage\": \"B2.1\",\n  \"batch_id\": \"batch-014\",\n  \"checked_items\": 30,\n  \"findings\": [\n    {\n      \"item_id\": \"b21-1127\",\n      \"thai\": \"ความยาวของบทความสองชิ้น\",\n      \"romanization\": \"khwaam yaao khawng bot-khwaam sawng chin\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"rising\",\n          \"low\",\n          \"mid\",\n          \"rising\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"rising\",\n        \"low\",\n        \"mid\",\n        \"rising\",\n        \"high\"\n      ],\n      \"reason\": \"The word 'ชิ้น' (chin) has a low-class initial consonant (ช) with a sonorant final and a mai tho tone mark, which results in a high tone, not falling.\"\n    },\n    {\n      \"item_id\": \"b21-1291\",\n      \"thai\": \"ความเร็ว\",\n      \"romanization\": \"khwaam reo\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"The word 'ความ' (khwaam) has a low-class initial consonant cluster (คว) with a long vowel and a sonorant final, which results in a mid tone, not rising.\"\n    },\n    {\n      \"item_id\": \"b21-1119\",\n      \"thai\": \"ความเสี่ยงของสองแผนนี้\",\n      \"romanization\": \"khwaam siang khawng sawng phaen nii\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"rising\",\n          \"rising\",\n          \"rising\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"rising\",\n        \"rising\",\n        \"rising\",\n        \"high\"\n      ],\n      \"reason\": \"The word 'เสี่ยง' (siang) has a high-class initial consonant (ส) with a mai ek tone mark, which results in a low tone, not falling.\"\n    },\n    {\n      \"item_id\": \"b21-0455\",\n      \"thai\": \"ค่อยๆ ขยาย\",\n      \"romanization\": \"khoi khoi kha-yaai\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"falling\",\n          \"rising\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"falling\",\n        \"low\",\n        \"rising\"\n      ],\n      \"reason\": \"The word 'ขยาย' (kha-yaai) is pronounced with a low tone for 'kha' (high-class initial with short vowel) and a rising tone for 'yaai' (low-class initial following a high-class initial, taking high-class rules with a sonorant final).\"\n    },\n    {\n      \"item_id\": \"b21-0469\",\n      \"thai\": \"ค่อยๆ ยิ้ม\",\n      \"romanization\": \"khoi khoi yim\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"The word 'ยิ้ม' (yim) has a low-class initial consonant (ย) with a mai tho tone mark, which results in a high tone, not falling.\"\n    },\n    {\n      \"item_id\": \"b21-0450\",\n      \"thai\": \"ค่อยๆ สว่างขึ้น\",\n      \"romanization\": \"khoi khoi sa-waang khuen\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"falling\",\n        \"low\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"The syllable 'ว่าง' (waang) in 'สว่าง' follows the high-class initial 'ส', so it takes high-class tone rules. With a mai ek tone mark, it results in a low tone, not mid.\"\n    },\n    {\n      \"item_id\": \"b21-0448\",\n      \"thai\": \"ค่อยๆ อธิบาย\",\n      \"romanization\": \"khoi khoi a-thi-baai\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"falling\",\n        \"low\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"The syllable 'ธิ' (thi) has a low-class initial consonant (ธ) with a short vowel and no final consonant (dead syllable), which results in a high tone, not mid.\"\n    }\n  ]\n}",
+              "thoughtSignature": "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"
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 4781,
+      "candidatesTokenCount": 1352,
+      "totalTokenCount": 9668,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 4781
+        }
+      ],
+      "thoughtsTokenCount": 3535
+    },
+    "modelVersion": "gemini-3.1-pro-preview",
+    "responseId": "GgPWaYCfHIusjuMPssSjmQI"
+  },
+  "usageMetadata": {
+    "promptTokenCount": 4781,
+    "candidatesTokenCount": 1352,
+    "totalTokenCount": 9668,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 4781
+      }
+    ],
+    "thoughtsTokenCount": 3535
+  }
+}

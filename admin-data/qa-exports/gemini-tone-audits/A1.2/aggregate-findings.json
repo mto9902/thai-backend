@@ -1,0 +1,232 @@
+{
+  "stage": "A1.2",
+  "manifest": {
+    "stage": "A1.2",
+    "batchSize": 60,
+    "lessonCount": 16,
+    "sentenceCount": 400,
+    "breakdownItemCount": 1859,
+    "uniqueItemCount": 539,
+    "batchCount": 9,
+    "lessons": [
+      {
+        "lessonId": "place-words",
+        "lessonOrder": 0
+      },
+      {
+        "lessonId": "possession-khong",
+        "lessonOrder": 1
+      },
+      {
+        "lessonId": "want-yaak",
+        "lessonOrder": 2
+      },
+      {
+        "lessonId": "request-khor",
+        "lessonOrder": 3
+      },
+      {
+        "lessonId": "classifiers",
+        "lessonOrder": 4
+      },
+      {
+        "lessonId": "price-thaorai",
+        "lessonOrder": 5
+      },
+      {
+        "lessonId": "time-expressions",
+        "lessonOrder": 6
+      },
+      {
+        "lessonId": "imperatives",
+        "lessonOrder": 7
+      },
+      {
+        "lessonId": "negative-imperative-ya",
+        "lessonOrder": 8
+      },
+      {
+        "lessonId": "can-dai",
+        "lessonOrder": 9
+      },
+      {
+        "lessonId": "future-ja",
+        "lessonOrder": 10
+      },
+      {
+        "lessonId": "very-maak",
+        "lessonOrder": 11
+      },
+      {
+        "lessonId": "progressive-kamlang",
+        "lessonOrder": 12
+      },
+      {
+        "lessonId": "experience-koey",
+        "lessonOrder": 13
+      },
+      {
+        "lessonId": "conjunction-and-but",
+        "lessonOrder": 14
+      },
+      {
+        "lessonId": "because-phraw",
+        "lessonOrder": 15
+      }
+    ],
+    "generatedAt": "2026-04-07T22:37:47.161Z"
+  },
+  "requestedModel": "gemini-3.1-pro-preview",
+  "generatedAt": "2026-04-07T22:46:04.740Z",
+  "batchSummaries": [
+    {
+      "batch_id": "batch-001",
+      "item_count": 60,
+      "findings_count": 2,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.2\\responses\\batch-001.json"
+    },
+    {
+      "batch_id": "batch-002",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.2\\responses\\batch-002.json"
+    },
+    {
+      "batch_id": "batch-003",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.2\\responses\\batch-003.json"
+    },
+    {
+      "batch_id": "batch-004",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.2\\responses\\batch-004.json"
+    },
+    {
+      "batch_id": "batch-005",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.2\\responses\\batch-005.json"
+    },
+    {
+      "batch_id": "batch-006",
+      "item_count": 60,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.2\\responses\\batch-006.json"
+    },
+    {
+      "batch_id": "batch-007",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.2\\responses\\batch-007.json"
+    },
+    {
+      "batch_id": "batch-008",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.2\\responses\\batch-008.json"
+    },
+    {
+      "batch_id": "batch-009",
+      "item_count": 59,
+      "findings_count": 2,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A1.2\\responses\\batch-009.json"
+    }
+  ],
+  "findingsCount": 5,
+  "findings": [
+    {
+      "item_id": "a12-0099",
+      "thai": "ไหม",
+      "romanization": "mái",
+      "current_tones_variants": [
+        [
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high"
+      ],
+      "reason": "As a question particle, ไหม is pronounced with a high tone, which matches the provided romanization 'mái'."
+    },
+    {
+      "item_id": "a12-0305",
+      "thai": "ฉัน",
+      "romanization": "chán",
+      "current_tones_variants": [
+        [
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high"
+      ],
+      "reason": "The romanization 'chán' indicates a high tone, reflecting the common spoken pronunciation of ฉัน, rather than its formal rising tone."
+    },
+    {
+      "item_id": "a12-0472",
+      "thai": "ช็อกโกแลต",
+      "romanization": "chók-go-làet",
+      "current_tones_variants": [
+        [
+          "high",
+          "mid",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "mid",
+        "falling"
+      ],
+      "reason": "The syllable 'แลต' (low class initial, long vowel, dead ending) has a falling tone according to Thai spelling rules, not a high tone."
+    },
+    {
+      "item_id": "a12-0138",
+      "thai": "สำหรับ",
+      "romanization": "sǎm-ràp",
+      "current_tones_variants": [
+        [
+          "rising",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "high"
+      ],
+      "reason": "The syllable 'รับ' (ràp) has a high tone (low-class consonant ร, short vowel, dead syllable)."
+    },
+    {
+      "item_id": "a12-0427",
+      "thai": "ออฟฟิศ",
+      "romanization": "òpfít",
+      "current_tones_variants": [
+        [
+          "high",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "high"
+      ],
+      "reason": "Based on Thai spelling rules and the provided romanization (òpfít), 'ออฟ' has a low tone (mid-class consonant, dead syllable) and 'ฟิศ' has a high tone."
+    }
+  ]
+}

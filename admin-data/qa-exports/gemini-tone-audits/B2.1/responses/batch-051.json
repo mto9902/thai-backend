@@ -1,0 +1,111 @@
+{
+  "requestedModel": "gemini-3.1-pro-preview",
+  "responseModelVersion": "gemini-3.1-pro-preview",
+  "stage": "B2.1",
+  "batch_id": "batch-051",
+  "item_count": 16,
+  "parsedOutput": {
+    "stage": "B2.1",
+    "batch_id": "batch-051",
+    "checked_items": 16,
+    "findings": [
+      {
+        "item_id": "b21-0483",
+        "thai": "แอบถ่ายรูป",
+        "romanization": "aep thai ruup",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "low",
+          "falling"
+        ],
+        "reason": "The word 'ถ่าย' (thai) has a high-class initial consonant (ถ) with a mai ek tone mark, which produces a low tone, not a falling tone."
+      },
+      {
+        "item_id": "b21-0514",
+        "thai": "แอบปลูก",
+        "romanization": "aep pluuk",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "low"
+        ],
+        "reason": "The word 'ปลูก' (pluuk) has a mid-class initial consonant cluster (ปล) with a long vowel and a dead ending (ก), which produces a low tone, not a falling tone."
+      },
+      {
+        "item_id": "b21-1154",
+        "thai": "แอปนี้",
+        "romanization": "aep nii",
+        "current_tones_variants": [
+          [
+            "low",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "high"
+        ],
+        "reason": "Although 'แอป' follows low tone rules strictly by spelling (mid-class initial, long vowel, dead ending), it is an English loanword ('app') and is commonly pronounced with a high tone in Thai."
+      }
+    ]
+  },
+  "rawText": "{\n  \"stage\": \"B2.1\",\n  \"batch_id\": \"batch-051\",\n  \"checked_items\": 16,\n  \"findings\": [\n    {\n      \"item_id\": \"b21-0483\",\n      \"thai\": \"แอบถ่ายรูป\",\n      \"romanization\": \"aep thai ruup\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"The word 'ถ่าย' (thai) has a high-class initial consonant (ถ) with a mai ek tone mark, which produces a low tone, not a falling tone.\"\n    },\n    {\n      \"item_id\": \"b21-0514\",\n      \"thai\": \"แอบปลูก\",\n      \"romanization\": \"aep pluuk\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\"\n      ],\n      \"reason\": \"The word 'ปลูก' (pluuk) has a mid-class initial consonant cluster (ปล) with a long vowel and a dead ending (ก), which produces a low tone, not a falling tone.\"\n    },\n    {\n      \"item_id\": \"b21-1154\",\n      \"thai\": \"แอปนี้\",\n      \"romanization\": \"aep nii\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\"\n      ],\n      \"reason\": \"Although 'แอป' follows low tone rules strictly by spelling (mid-class initial, long vowel, dead ending), it is an English loanword ('app') and is commonly pronounced with a high tone in Thai.\"\n    }\n  ]\n}",
+  "rawResponse": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\n  \"stage\": \"B2.1\",\n  \"batch_id\": \"batch-051\",\n  \"checked_items\": 16,\n  \"findings\": [\n    {\n      \"item_id\": \"b21-0483\",\n      \"thai\": \"แอบถ่ายรูป\",\n      \"romanization\": \"aep thai ruup\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"The word 'ถ่าย' (thai) has a high-class initial consonant (ถ) with a mai ek tone mark, which produces a low tone, not a falling tone.\"\n    },\n    {\n      \"item_id\": \"b21-0514\",\n      \"thai\": \"แอบปลูก\",\n      \"romanization\": \"aep pluuk\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\"\n      ],\n      \"reason\": \"The word 'ปลูก' (pluuk) has a mid-class initial consonant cluster (ปล) with a long vowel and a dead ending (ก), which produces a low tone, not a falling tone.\"\n    },\n    {\n      \"item_id\": \"b21-1154\",\n      \"thai\": \"แอปนี้\",\n      \"romanization\": \"aep nii\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\"\n      ],\n      \"reason\": \"Although 'แอป' follows low tone rules strictly by spelling (mid-class initial, long vowel, dead ending), it is an English loanword ('app') and is commonly pronounced with a high tone in Thai.\"\n    }\n  ]\n}",
+              "thoughtSignature": "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"
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 2392,
+      "candidatesTokenCount": 511,
+      "totalTokenCount": 4925,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 2392
+        }
+      ],
+      "thoughtsTokenCount": 2022
+    },
+    "modelVersion": "gemini-3.1-pro-preview",
+    "responseId": "LArWaYXrIsHOg8UP7tuVsQs"
+  },
+  "usageMetadata": {
+    "promptTokenCount": 2392,
+    "candidatesTokenCount": 511,
+    "totalTokenCount": 4925,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2392
+      }
+    ],
+    "thoughtsTokenCount": 2022
+  }
+}

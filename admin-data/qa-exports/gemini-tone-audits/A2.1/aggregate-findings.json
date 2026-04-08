@@ -1,0 +1,248 @@
+{
+  "stage": "A2.1",
+  "manifest": {
+    "stage": "A2.1",
+    "batchSize": 60,
+    "lessonCount": 14,
+    "sentenceCount": 350,
+    "breakdownItemCount": 1880,
+    "uniqueItemCount": 613,
+    "batchCount": 11,
+    "lessons": [
+      {
+        "lessonId": "past-laew",
+        "lessonOrder": 0
+      },
+      {
+        "lessonId": "recent-past-phoeng",
+        "lessonOrder": 1
+      },
+      {
+        "lessonId": "duration-penwela-manan",
+        "lessonOrder": 2
+      },
+      {
+        "lessonId": "female-particles-kha-kha",
+        "lessonOrder": 3
+      },
+      {
+        "lessonId": "frequency-adverbs",
+        "lessonOrder": 4
+      },
+      {
+        "lessonId": "like-chorp",
+        "lessonOrder": 5
+      },
+      {
+        "lessonId": "knowledge-ruu-ruujak",
+        "lessonOrder": 6
+      },
+      {
+        "lessonId": "skill-pen",
+        "lessonOrder": 7
+      },
+      {
+        "lessonId": "permission-dai",
+        "lessonOrder": 8
+      },
+      {
+        "lessonId": "quantifiers-thuk-bang-lai",
+        "lessonOrder": 9
+      },
+      {
+        "lessonId": "sequence-conjunctions",
+        "lessonOrder": 10
+      },
+      {
+        "lessonId": "comparison-kwaa",
+        "lessonOrder": 11
+      },
+      {
+        "lessonId": "relative-thi",
+        "lessonOrder": 12
+      },
+      {
+        "lessonId": "reported-speech",
+        "lessonOrder": 13
+      }
+    ],
+    "generatedAt": "2026-04-07T23:36:03.627Z"
+  },
+  "requestedModel": "gemini-3.1-pro-preview",
+  "generatedAt": "2026-04-07T23:57:18.407Z",
+  "batchSummaries": [
+    {
+      "batch_id": "batch-001",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.1\\responses\\batch-001.json"
+    },
+    {
+      "batch_id": "batch-002",
+      "item_count": 60,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.1\\responses\\batch-002.json"
+    },
+    {
+      "batch_id": "batch-003",
+      "item_count": 60,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.1\\responses\\batch-003.json"
+    },
+    {
+      "batch_id": "batch-004",
+      "item_count": 60,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.1\\responses\\batch-004.json"
+    },
+    {
+      "batch_id": "batch-005",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.1\\responses\\batch-005.json"
+    },
+    {
+      "batch_id": "batch-006",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.1\\responses\\batch-006.json"
+    },
+    {
+      "batch_id": "batch-007",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.1\\responses\\batch-007.json"
+    },
+    {
+      "batch_id": "batch-008",
+      "item_count": 60,
+      "findings_count": 2,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.1\\responses\\batch-008.json"
+    },
+    {
+      "batch_id": "batch-009",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.1\\responses\\batch-009.json"
+    },
+    {
+      "batch_id": "batch-010",
+      "item_count": 60,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.1\\responses\\batch-010.json"
+    },
+    {
+      "batch_id": "batch-011",
+      "item_count": 13,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.1\\responses\\batch-011.json"
+    }
+  ],
+  "findingsCount": 6,
+  "findings": [
+    {
+      "item_id": "a21-0223",
+      "thai": "ไหม",
+      "romanization": "mái",
+      "current_tones_variants": [
+        [
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high"
+      ],
+      "reason": "The romanization 'mái' and the common spoken form of the question particle indicate a high tone, despite the spelling rules for ไหม which would normally dictate a rising tone."
+    },
+    {
+      "item_id": "a21-0013",
+      "thai": "เขา",
+      "romanization": "kháo",
+      "current_tones_variants": [
+        [
+          "high"
+        ]
+      ],
+      "status": "uncertain",
+      "corrected_tones": [
+        "rising"
+      ],
+      "reason": "The word 'เขา' is spelled with a rising tone according to Thai orthography rules (high class consonant + live syllable). However, it is commonly pronounced with a high tone in spoken Thai. Flagged for review to ensure it aligns with the curriculum's policy on written vs. spoken tones."
+    },
+    {
+      "item_id": "a21-0414",
+      "thai": "ใหม่",
+      "romanization": "mai",
+      "current_tones_variants": [
+        [
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (new) has a low tone, dictated by the high-class leading consonant ห, the low-class consonant ม, and the tone mark mai ek (่). The current tone 'falling' is incorrect (which would be for 'ไม่')."
+    },
+    {
+      "item_id": "a21-0193",
+      "thai": "ปริ้น",
+      "romanization": "prín",
+      "current_tones_variants": [
+        [
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high"
+      ],
+      "reason": "The loanword 'print' is commonly pronounced with a high tone, matching the romanization 'prín', despite the spelling ปริ้น which technically indicates a falling tone."
+    },
+    {
+      "item_id": "a21-0370",
+      "thai": "โปสการ์ด",
+      "romanization": "poosagaaat",
+      "current_tones_variants": [
+        [
+          "high",
+          "low",
+          "high"
+        ]
+      ],
+      "status": "uncertain",
+      "corrected_tones": [],
+      "reason": "The word โปสการ์ด is typically 2 syllables (pòot-gáat or póot-gáat). The romanization 'poosagaaat' suggests 3 syllables. The tones ['high', 'low', 'high'] might reflect a colloquial pronunciation (póot-sà-gáat), but standard spelling rules dictate ['low', 'low', 'low'] (pòot-sà-gàat). Needs review."
+    },
+    {
+      "item_id": "a21-0094",
+      "thai": "เอกสาร",
+      "romanization": "àyk-sǎan",
+      "current_tones_variants": [
+        [
+          "low",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "low",
+        "rising"
+      ],
+      "reason": "The word เอกสาร is pronounced with 3 syllables (เอก-กะ-สาร), so the tones should be low, low, rising."
+    }
+  ]
+}

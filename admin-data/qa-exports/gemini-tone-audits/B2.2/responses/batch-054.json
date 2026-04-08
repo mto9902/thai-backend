@@ -1,0 +1,485 @@
+{
+  "requestedModel": "gemini-3.1-pro-preview",
+  "responseModelVersion": "gemini-3.1-pro-preview",
+  "stage": "B2.2",
+  "batch_id": "batch-054",
+  "item_count": 25,
+  "parsedOutput": {
+    "stage": "B2.2",
+    "batch_id": "batch-054",
+    "checked_items": 25,
+    "findings": [
+      {
+        "item_id": "b22-1273",
+        "thai": "เวลาจำกัดมาก",
+        "romanization": "wee-laa jam-gat maak",
+        "current_tones_variants": [
+          [
+            "mid",
+            "mid",
+            "low",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "mid",
+          "low",
+          "falling"
+        ],
+        "reason": "Romanization has 5 syllables. 'jam' is mid tone, 'gat' is low tone, and 'maak' is falling tone."
+      },
+      {
+        "item_id": "b22-0082",
+        "thai": "เวลาน้อยแบบนี้",
+        "romanization": "wee-laa noi baep nii",
+        "current_tones_variants": [
+          [
+            "mid",
+            "mid",
+            "falling",
+            "low",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "high",
+          "low",
+          "high"
+        ],
+        "reason": "'noi' (น้อย) is high tone."
+      },
+      {
+        "item_id": "b22-1062",
+        "thai": "เวลาเริ่มงานนี้เช้าเกินไป",
+        "romanization": "wee-laa roem ngaan nii chao gern bpai",
+        "current_tones_variants": [
+          [
+            "mid",
+            "mid",
+            "falling",
+            "mid",
+            "high",
+            "falling",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "falling",
+          "mid",
+          "high",
+          "high",
+          "mid",
+          "mid"
+        ],
+        "reason": "Romanization has 8 syllables. 'chao' (เช้า) is high tone."
+      },
+      {
+        "item_id": "b22-0274",
+        "thai": "ส่งข้อความไป",
+        "romanization": "song khaw-khwaam bpai",
+        "current_tones_variants": [
+          [
+            "rising",
+            "falling",
+            "high",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "falling",
+          "mid",
+          "mid"
+        ],
+        "reason": "'song' (ส่ง) is low tone, 'khwaam' (ความ) is mid tone."
+      },
+      {
+        "item_id": "b22-0150",
+        "thai": "ส่งข้อความย้ำอีกครั้ง",
+        "romanization": "song khaw-khwaam yam iik khrang",
+        "current_tones_variants": [
+          [
+            "rising",
+            "falling",
+            "high",
+            "mid",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "falling",
+          "mid",
+          "high",
+          "low",
+          "high"
+        ],
+        "reason": "Romanization has 6 syllables. 'song' is low tone, 'khwaam' is mid tone, 'yam' is high tone, 'iik' is low tone, 'khrang' is high tone."
+      },
+      {
+        "item_id": "b22-0770",
+        "thai": "ส่งงานก่อนเที่ยง",
+        "romanization": "song ngaan gawn thiang",
+        "current_tones_variants": [
+          [
+            "rising",
+            "mid",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "mid",
+          "low",
+          "falling"
+        ],
+        "reason": "'song' (ส่ง) is low tone, 'gawn' (ก่อน) is low tone."
+      },
+      {
+        "item_id": "b22-0144",
+        "thai": "ส่งฉบับนี้ให้เขาดูก่อน",
+        "romanization": "song cha-bap nii hai khao duu gawn",
+        "current_tones_variants": [
+          [
+            "rising",
+            "low",
+            "high",
+            "falling",
+            "rising",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "low",
+          "low",
+          "high",
+          "falling",
+          "rising",
+          "mid",
+          "low"
+        ],
+        "reason": "Romanization has 8 syllables. 'song' is low tone, 'cha' is low tone, 'bap' is low tone, 'gawn' is low tone."
+      },
+      {
+        "item_id": "b22-0793",
+        "thai": "ส่งไปแล้ว",
+        "romanization": "song bpai laeo",
+        "current_tones_variants": [
+          [
+            "low",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "mid",
+          "high"
+        ],
+        "reason": "'laeo' (แล้ว) is high tone."
+      },
+      {
+        "item_id": "b22-0740",
+        "thai": "ส่งไฟล์ใหม่",
+        "romanization": "song fai mai",
+        "current_tones_variants": [
+          [
+            "rising",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "mid",
+          "low"
+        ],
+        "reason": "'song' (ส่ง) is low tone, 'mai' (ใหม่) is low tone."
+      },
+      {
+        "item_id": "b22-1146",
+        "thai": "สถานที่เดิมไม่พอ",
+        "romanization": "sa-thaan-thii doem mai phaaw",
+        "current_tones_variants": [
+          [
+            "low",
+            "mid",
+            "falling",
+            "falling",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "rising",
+          "falling",
+          "mid",
+          "falling",
+          "mid"
+        ],
+        "reason": "Romanization has 6 syllables. 'thaan' is rising tone, 'doem' is mid tone."
+      },
+      {
+        "item_id": "b22-0432",
+        "thai": "สนุกด้วย",
+        "romanization": "sa-nuk duay",
+        "current_tones_variants": [
+          [
+            "low",
+            "high",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "low",
+          "falling"
+        ],
+        "reason": "'nuk' (นุก) is low tone."
+      },
+      {
+        "item_id": "b22-1272",
+        "thai": "สมาธิลดลง",
+        "romanization": "song-phon hai sa-maa-thi lot long",
+        "current_tones_variants": [
+          [
+            "low",
+            "rising",
+            "falling",
+            "low",
+            "mid",
+            "high",
+            "low",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "rising",
+          "falling",
+          "low",
+          "mid",
+          "high",
+          "high",
+          "mid"
+        ],
+        "reason": "'lot' (ลด) is high tone."
+      },
+      {
+        "item_id": "b22-0477",
+        "thai": "สรุปได้เร็วด้วย",
+        "romanization": "sa-rup dai reo duay",
+        "current_tones_variants": [
+          [
+            "low",
+            "high",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "low",
+          "falling",
+          "mid",
+          "falling"
+        ],
+        "reason": "Romanization has 5 syllables. 'rup' is low tone, 'dai' is falling tone."
+      },
+      {
+        "item_id": "b22-0574",
+        "thai": "สรุปสั้นๆ",
+        "romanization": "sa-rup san-san",
+        "current_tones_variants": [
+          [
+            "low",
+            "high",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "low",
+          "falling",
+          "falling"
+        ],
+        "reason": "Romanization has 4 syllables. 'rup' is low tone, 'san' is falling tone."
+      },
+      {
+        "item_id": "b22-0053",
+        "thai": "ส่วนกำหนดส่ง",
+        "romanization": "suan gam-not song",
+        "current_tones_variants": [
+          [
+            "falling",
+            "low",
+            "low"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "mid",
+          "low",
+          "low"
+        ],
+        "reason": "Romanization has 4 syllables. 'suan' is low tone, 'gam' is mid tone, 'not' is low tone, 'song' is low tone."
+      },
+      {
+        "item_id": "b22-0043",
+        "thai": "ส่วนเรื่องค่าใช้จ่าย",
+        "romanization": "suan rueang khaa-chai-jaai",
+        "current_tones_variants": [
+          [
+            "falling",
+            "falling",
+            "falling",
+            "high",
+            "low"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "falling",
+          "falling",
+          "high",
+          "low"
+        ],
+        "reason": "'suan' (ส่วน) is low tone."
+      },
+      {
+        "item_id": "b22-0035",
+        "thai": "ส่วนลูกค้ารายเก่า",
+        "romanization": "suan luuk-khaa raai gao",
+        "current_tones_variants": [
+          [
+            "falling",
+            "falling",
+            "high",
+            "mid",
+            "low"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "falling",
+          "high",
+          "mid",
+          "low"
+        ],
+        "reason": "'suan' (ส่วน) is low tone."
+      },
+      {
+        "item_id": "b22-0475",
+        "thai": "สว่างด้วย",
+        "romanization": "sa-waang duay",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "low",
+          "falling"
+        ],
+        "reason": "'waang' (ว่าง in สว่าง) is low tone."
+      },
+      {
+        "item_id": "b22-0458",
+        "thai": "สอนวิธีคิดด้วย",
+        "romanization": "saawn wi-thii khit duay",
+        "current_tones_variants": [
+          [
+            "rising",
+            "mid",
+            "falling",
+            "high",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "high",
+          "mid",
+          "high",
+          "falling"
+        ],
+        "reason": "'wi' (วิ) is high tone, 'thii' (ธี) is mid tone."
+      }
+    ]
+  },
+  "rawText": "{\n  \"stage\": \"B2.2\",\n  \"batch_id\": \"batch-054\",\n  \"checked_items\": 25,\n  \"findings\": [\n    {\n      \"item_id\": \"b22-1273\",\n      \"thai\": \"เวลาจำกัดมาก\",\n      \"romanization\": \"wee-laa jam-gat maak\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"Romanization has 5 syllables. 'jam' is mid tone, 'gat' is low tone, and 'maak' is falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0082\",\n      \"thai\": \"เวลาน้อยแบบนี้\",\n      \"romanization\": \"wee-laa noi baep nii\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"falling\",\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"high\",\n        \"low\",\n        \"high\"\n      ],\n      \"reason\": \"'noi' (น้อย) is high tone.\"\n    },\n    {\n      \"item_id\": \"b22-1062\",\n      \"thai\": \"เวลาเริ่มงานนี้เช้าเกินไป\",\n      \"romanization\": \"wee-laa roem ngaan nii chao gern bpai\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"falling\",\n          \"mid\",\n          \"high\",\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"mid\",\n        \"high\",\n        \"high\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"Romanization has 8 syllables. 'chao' (เช้า) is high tone.\"\n    },\n    {\n      \"item_id\": \"b22-0274\",\n      \"thai\": \"ส่งข้อความไป\",\n      \"romanization\": \"song khaw-khwaam bpai\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"falling\",\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"falling\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"'song' (ส่ง) is low tone, 'khwaam' (ความ) is mid tone.\"\n    },\n    {\n      \"item_id\": \"b22-0150\",\n      \"thai\": \"ส่งข้อความย้ำอีกครั้ง\",\n      \"romanization\": \"song khaw-khwaam yam iik khrang\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"falling\",\n          \"high\",\n          \"mid\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"falling\",\n        \"mid\",\n        \"high\",\n        \"low\",\n        \"high\"\n      ],\n      \"reason\": \"Romanization has 6 syllables. 'song' is low tone, 'khwaam' is mid tone, 'yam' is high tone, 'iik' is low tone, 'khrang' is high tone.\"\n    },\n    {\n      \"item_id\": \"b22-0770\",\n      \"thai\": \"ส่งงานก่อนเที่ยง\",\n      \"romanization\": \"song ngaan gawn thiang\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"'song' (ส่ง) is low tone, 'gawn' (ก่อน) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0144\",\n      \"thai\": \"ส่งฉบับนี้ให้เขาดูก่อน\",\n      \"romanization\": \"song cha-bap nii hai khao duu gawn\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"low\",\n          \"high\",\n          \"falling\",\n          \"rising\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\",\n        \"low\",\n        \"high\",\n        \"falling\",\n        \"rising\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"Romanization has 8 syllables. 'song' is low tone, 'cha' is low tone, 'bap' is low tone, 'gawn' is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0793\",\n      \"thai\": \"ส่งไปแล้ว\",\n      \"romanization\": \"song bpai laeo\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"'laeo' (แล้ว) is high tone.\"\n    },\n    {\n      \"item_id\": \"b22-0740\",\n      \"thai\": \"ส่งไฟล์ใหม่\",\n      \"romanization\": \"song fai mai\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"'song' (ส่ง) is low tone, 'mai' (ใหม่) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-1146\",\n      \"thai\": \"สถานที่เดิมไม่พอ\",\n      \"romanization\": \"sa-thaan-thii doem mai phaaw\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"mid\",\n          \"falling\",\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"falling\",\n        \"mid\",\n        \"falling\",\n        \"mid\"\n      ],\n      \"reason\": \"Romanization has 6 syllables. 'thaan' is rising tone, 'doem' is mid tone.\"\n    },\n    {\n      \"item_id\": \"b22-0432\",\n      \"thai\": \"สนุกด้วย\",\n      \"romanization\": \"sa-nuk duay\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"'nuk' (นุก) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-1272\",\n      \"thai\": \"สมาธิลดลง\",\n      \"romanization\": \"song-phon hai sa-maa-thi lot long\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"rising\",\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"high\",\n          \"low\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"falling\",\n        \"low\",\n        \"mid\",\n        \"high\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"'lot' (ลด) is high tone.\"\n    },\n    {\n      \"item_id\": \"b22-0477\",\n      \"thai\": \"สรุปได้เร็วด้วย\",\n      \"romanization\": \"sa-rup dai reo duay\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"high\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\",\n        \"falling\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"Romanization has 5 syllables. 'rup' is low tone, 'dai' is falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0574\",\n      \"thai\": \"สรุปสั้นๆ\",\n      \"romanization\": \"sa-rup san-san\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"high\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\",\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"Romanization has 4 syllables. 'rup' is low tone, 'san' is falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0053\",\n      \"thai\": \"ส่วนกำหนดส่ง\",\n      \"romanization\": \"suan gam-not song\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"low\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"low\",\n        \"low\"\n      ],\n      \"reason\": \"Romanization has 4 syllables. 'suan' is low tone, 'gam' is mid tone, 'not' is low tone, 'song' is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0043\",\n      \"thai\": \"ส่วนเรื่องค่าใช้จ่าย\",\n      \"romanization\": \"suan rueang khaa-chai-jaai\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"falling\",\n          \"falling\",\n          \"high\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"falling\",\n        \"falling\",\n        \"high\",\n        \"low\"\n      ],\n      \"reason\": \"'suan' (ส่วน) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0035\",\n      \"thai\": \"ส่วนลูกค้ารายเก่า\",\n      \"romanization\": \"suan luuk-khaa raai gao\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"falling\",\n          \"high\",\n          \"mid\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"falling\",\n        \"high\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"'suan' (ส่วน) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0475\",\n      \"thai\": \"สว่างด้วย\",\n      \"romanization\": \"sa-waang duay\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"'waang' (ว่าง in สว่าง) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0458\",\n      \"thai\": \"สอนวิธีคิดด้วย\",\n      \"romanization\": \"saawn wi-thii khit duay\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\",\n          \"falling\",\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"high\",\n        \"mid\",\n        \"high\",\n        \"falling\"\n      ],\n      \"reason\": \"'wi' (วิ) is high tone, 'thii' (ธี) is mid tone.\"\n    }\n  ]\n}",
+  "rawResponse": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\n  \"stage\": \"B2.2\",\n  \"batch_id\": \"batch-054\",\n  \"checked_items\": 25,\n  \"findings\": [\n    {\n      \"item_id\": \"b22-1273\",\n      \"thai\": \"เวลาจำกัดมาก\",\n      \"romanization\": \"wee-laa jam-gat maak\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"Romanization has 5 syllables. 'jam' is mid tone, 'gat' is low tone, and 'maak' is falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0082\",\n      \"thai\": \"เวลาน้อยแบบนี้\",\n      \"romanization\": \"wee-laa noi baep nii\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"falling\",\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"high\",\n        \"low\",\n        \"high\"\n      ],\n      \"reason\": \"'noi' (น้อย) is high tone.\"\n    },\n    {\n      \"item_id\": \"b22-1062\",\n      \"thai\": \"เวลาเริ่มงานนี้เช้าเกินไป\",\n      \"romanization\": \"wee-laa roem ngaan nii chao gern bpai\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"falling\",\n          \"mid\",\n          \"high\",\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"mid\",\n        \"high\",\n        \"high\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"Romanization has 8 syllables. 'chao' (เช้า) is high tone.\"\n    },\n    {\n      \"item_id\": \"b22-0274\",\n      \"thai\": \"ส่งข้อความไป\",\n      \"romanization\": \"song khaw-khwaam bpai\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"falling\",\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"falling\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"'song' (ส่ง) is low tone, 'khwaam' (ความ) is mid tone.\"\n    },\n    {\n      \"item_id\": \"b22-0150\",\n      \"thai\": \"ส่งข้อความย้ำอีกครั้ง\",\n      \"romanization\": \"song khaw-khwaam yam iik khrang\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"falling\",\n          \"high\",\n          \"mid\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"falling\",\n        \"mid\",\n        \"high\",\n        \"low\",\n        \"high\"\n      ],\n      \"reason\": \"Romanization has 6 syllables. 'song' is low tone, 'khwaam' is mid tone, 'yam' is high tone, 'iik' is low tone, 'khrang' is high tone.\"\n    },\n    {\n      \"item_id\": \"b22-0770\",\n      \"thai\": \"ส่งงานก่อนเที่ยง\",\n      \"romanization\": \"song ngaan gawn thiang\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"'song' (ส่ง) is low tone, 'gawn' (ก่อน) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0144\",\n      \"thai\": \"ส่งฉบับนี้ให้เขาดูก่อน\",\n      \"romanization\": \"song cha-bap nii hai khao duu gawn\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"low\",\n          \"high\",\n          \"falling\",\n          \"rising\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\",\n        \"low\",\n        \"high\",\n        \"falling\",\n        \"rising\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"Romanization has 8 syllables. 'song' is low tone, 'cha' is low tone, 'bap' is low tone, 'gawn' is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0793\",\n      \"thai\": \"ส่งไปแล้ว\",\n      \"romanization\": \"song bpai laeo\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"'laeo' (แล้ว) is high tone.\"\n    },\n    {\n      \"item_id\": \"b22-0740\",\n      \"thai\": \"ส่งไฟล์ใหม่\",\n      \"romanization\": \"song fai mai\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"'song' (ส่ง) is low tone, 'mai' (ใหม่) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-1146\",\n      \"thai\": \"สถานที่เดิมไม่พอ\",\n      \"romanization\": \"sa-thaan-thii doem mai phaaw\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"mid\",\n          \"falling\",\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"falling\",\n        \"mid\",\n        \"falling\",\n        \"mid\"\n      ],\n      \"reason\": \"Romanization has 6 syllables. 'thaan' is rising tone, 'doem' is mid tone.\"\n    },\n    {\n      \"item_id\": \"b22-0432\",\n      \"thai\": \"สนุกด้วย\",\n      \"romanization\": \"sa-nuk duay\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"'nuk' (นุก) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-1272\",\n      \"thai\": \"สมาธิลดลง\",\n      \"romanization\": \"song-phon hai sa-maa-thi lot long\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"rising\",\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"high\",\n          \"low\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"falling\",\n        \"low\",\n        \"mid\",\n        \"high\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"'lot' (ลด) is high tone.\"\n    },\n    {\n      \"item_id\": \"b22-0477\",\n      \"thai\": \"สรุปได้เร็วด้วย\",\n      \"romanization\": \"sa-rup dai reo duay\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"high\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\",\n        \"falling\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"Romanization has 5 syllables. 'rup' is low tone, 'dai' is falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0574\",\n      \"thai\": \"สรุปสั้นๆ\",\n      \"romanization\": \"sa-rup san-san\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"high\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\",\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"Romanization has 4 syllables. 'rup' is low tone, 'san' is falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0053\",\n      \"thai\": \"ส่วนกำหนดส่ง\",\n      \"romanization\": \"suan gam-not song\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"low\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"low\",\n        \"low\"\n      ],\n      \"reason\": \"Romanization has 4 syllables. 'suan' is low tone, 'gam' is mid tone, 'not' is low tone, 'song' is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0043\",\n      \"thai\": \"ส่วนเรื่องค่าใช้จ่าย\",\n      \"romanization\": \"suan rueang khaa-chai-jaai\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"falling\",\n          \"falling\",\n          \"high\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"falling\",\n        \"falling\",\n        \"high\",\n        \"low\"\n      ],\n      \"reason\": \"'suan' (ส่วน) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0035\",\n      \"thai\": \"ส่วนลูกค้ารายเก่า\",\n      \"romanization\": \"suan luuk-khaa raai gao\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"falling\",\n          \"high\",\n          \"mid\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"falling\",\n        \"high\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"'suan' (ส่วน) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0475\",\n      \"thai\": \"สว่างด้วย\",\n      \"romanization\": \"sa-waang duay\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"'waang' (ว่าง in สว่าง) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0458\",\n      \"thai\": \"สอนวิธีคิดด้วย\",\n      \"romanization\": \"saawn wi-thii khit duay\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\",\n          \"falling\",\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"high\",\n        \"mid\",\n        \"high\",\n        \"falling\"\n      ],\n      \"reason\": \"'wi' (วิ) is high tone, 'thii' (ธี) is mid tone.\"\n    }\n  ]\n}",
+              "thoughtSignature": "EsJuCr9uAb4+9vvcf+rzoyzR1MlXv5zhSEsjqR5OiDC8fZW0St1s+FXh1Gak6A1Rwrx1amLgyizGDbQn7qNH5XwPBncoWhylw7cmrzPOEK2mpCCbiGde57LY60PpxvvKY6vpO5fsXnpEHMDEpY1AOSnk5K3YEsDuje0MVwr1SBpJtsMVEvbGKM3+iIERM63x9YkN7yDfiuTpDYDLS4s9NaItFWMQZHjmSjxXtGXTE0/S0JZVoIcOrPfg+bhT1/SvSHDamJHPf9KqyGcrUrSWTXsxdS0Ae9HS5CjQOV37FN0kquMLxkn+ZPH6iU/HqhnqWguyPMTAalcQ+ioZ/C3uF/dyxu8x9zzIYHoEpzhURfLhq0UV4Tm6Lj7f+NzDsaa/5XWt++tRZuJvSuGpns4hpZmCJ4uf7rHX402gjSQPWvpVLbSKdWaVRfWIzFfFFKgfN42FtVpezzf4xT8tH+DwVIh271T227PojO95LEohY2JCJejhc3ZeqGVrFzIsWoN32wNhTj4cfhMeAOTVPPEveohDM9uZzNgH1T0eFdC14BaXJFxxmxmdY2maTEzJz/WcPqTgCrBKYN5RZ74KUVzKicwKK5V9uQMqE7Kz830B6IkwWfJ/af3xZc9Tn3QT4PLyQ+3aplWY1BP8vSLs8nVPIXVpHW3n87SKWKKt4w5O6fdIB7Y+AEtzuAX/WPOTzpJSIKuwd3dGFFaagh/XQGbWHvFiDOBRHoI1iSCgb7b3LrU2UlO8Nidjydga+b9+J1hKjS0idiKvpCLTbr5V+EcFSzTXUdQ3n5z+J71lpIFyVqFjQiVUR8x5GplGkxyw8BkehcrnYI6Tcv5zMyNfMt5ng7wU1kkPAm0phXkjO5/t9o1D3ygXfg3f9DmbkYpmDSmq9oso5i02BW3pAkGciXgHjNmJmKL+WeIwAiONrmUxsf2OSqK0E/GIBtxDfn96hCWvStIrS4vX1x/4+58cWdljNckL9hDQdFbuEezTcV2QfyMq4A7vDJRwDtM1zEvgPUpZPDmpu4RUki+p0PqjYwPrVRn3gBUn92WTuoHqcheBZZVtFcSlxFQLOTZcC9GqbblzztKyEU9MtEirGiy1afL+vNCuFsXxL4phXBUj04qTmGXU6S6mFUJZqlPwU6KIg6HfIMiicrZRCAzksANnrP6t/3f7GnKhcxrQRQnH54lOn6DBdpZuj+P/GGFCfe6C/+wabdG687jtlizTK4+frSWcouztkXWoVkeEO+mGu1bue/vmdEt0AJN1bQD5rwmKBnuL5+wK5ThNAoj9ejfX9j84I0+fiK4DbgJE2wmzjAuZ8OnaHtIIk74b6bAIvKZbNJxMOVBXwcnvcok/d8G16ZsK9LT/W/zg3J/GpjzOwH0NCbxIl2kV+1fTuPwyXt132hibMLBodqthRkYlZF66fLFzcL6pu4yhN6/UfI9Kzu2dTePWH7CdLew936Irb+P/TcY9LDpviqES9HpFE9JlT+Gax3LRhQJjCmMcKaYA1Oo0aDDNJrMaVt4rHQdbMESaz06r+q/RL8bCY3EZFovgbYPyqhI+Q6cjvQrtvtwaHuV1MKpnzPem2wWsbc1Dd+sIDQiz2D5122bJK1UsPTMI+D8MtITMTRaHpFmChDykIVRlGERb1LIVmWI/36VCCIhz+HzdIjZ00nn/H1kEJqy7wRElp5oPGiZM3oVeAhiq1kxLwsPQlZxNq1Rd+kuJWJ8yXmb3/xa+cMAk2i5IemW5dyd0O25QQpoLgztyQ2bm8jXE/BvIs2F8rW0QuCmW7Lr8Yo6la8PfeAaGqlG4WTDa2y4v7qwFp0TAHjZMQpqZZRqDm861kfPCo0O8jsjd65cRc0PmmjcEnEHFt/MrGftMoQXf4vyLwYgBn8F3dHiGpjK6t/RGpcn28+jh9lJfDKWuUYtCV5mskCZeNsKWCbPszpmg1ZqPc02O8bC4QZGa3ME7idbWoMWjawXIFGiYUCdDngIcJDRD4Flw8Y5SMTJxMm3xT4KXNWMp/fRmeTePmXwjZ7xk+Oe3t2dF8uzCZlbJGaBi4YgfYOrCgUZDXU2FLJdkq2iKxxTw2PmhyOq3VjcBVTYvy1pQ0TdFIy49KyDtuLcRcCpmPgYWCLa4lCRIAwpS0xSDCcHjau/881nFPQMLPODkws4flmEjj8xm0fmuab2s6X44AgoRnEgEwcZWCB5pE9643dxmKHKZY3VNmY7CYXjwQOMATVSr8YtniM4rgNXt8ege5BTlEH9hTH0jOmnwMx41kPSltcOh2Lnqcn3aGzYYBk5wEaQh6XLYpLq7hSSZz7VzwKXumgQuCjs8NhUG5ZHpKeiGZ9kZD8yDPNILcyicsPLuxu/pDAthV+rovISMaCpmTgtphTEJkvo/bjld8ugaRijk/5XKa7iYez5Ecoju/ThDb9r/JfZEjDd6OVNdO/GwV0qaGlMh+UvmAMzpNcQbE39OtQaqmqNxg9eHqxZr15KVwH83aWPbKdgRAUcsO4D71FFl3MbDGdMTMy7rdeKF4L5sft2sQqHYZkoNxU2zAmrRAMNgsEbtS8HrHGz5lTxs+O+uROWMoa//hauKzH6i7ZLRMUDJZMps/6hTcu03Y9zTCVbCjjCgCeAwHm7CrebJ/SRe0Q9mlc7PkzFv+wj99YhDRnX3GRPwjugry6Xuj3JPfs9lJSKkPCbfCV5Urwl4b6QTXPtAxvDje1cSRFlA0ci+rMXEcY3bs6AB+QVU5EhQHU26D3JQZwjsVQ7pGLQ4C6PWmwuAUEt58SXOTT6qR1ycimW+aiBySXIKsa9X9mA+2rryLfqSpMYgDrx53fYqoTFUDtgrHXRO1bUZ+Annb53JPd89suSPzcn12pkL1lvF+J5llBF5zHogQ4tDseNWeLoS5F19dYihyw5xbDRP68GsazB0n9Mm/wjpuETAuQM3IfgGHcoez+VhF3SyUJHVcrujDAewsFJ/GWYEyxqEGmi8sESIhC/rLMMOFIbCpFH7Ij+0t/R+zBS33m20/NFR5HVUyvplGZul1lwoWQ0VzsQ+rTZYnmWT6NxiBBlBzCjPbj6CxbtNs/Pr9OLchwXpl9XekBUd7Y6a0krWASGfHL/p/DIFOAbe0FEoyn9huTs5WUkNCdmXEylgLVwDldFVaK9+o+FZpnD/0f+5RI2wwrbFtIPbQ3/z9BT/G41i0+x+YBuJu2FeVMxRIMEBylKlhnmhG8R99SI7T/n/R+cH/dffpA8SW3DX3ZBtuJNbFKpSRhKaQR9zsL8vNoiWd/qJlnMLyV73FybGqNkIBfFLul/I/9y4HncClnDVZsPRkCfHUgC7HH8fYPOvQ9gnNn1Wr8vAMI+JPqvpIeuJs/y/I+MdOEcU7+EnCt9kGsgKS39gdVPcyu58QzkCagu3mSPj5Vo5aq1zLaY6BBZsl9vathjmT3ZUDrjzB8dXmLfs3yz61ZX8+sEjUxEOIICwuuoZTjTi+xAUa1QsSWVriSeWCUYC1/Fejj4w064QcUaKbGl2mM2EYYqlHuM+p5yqbN/ujlSfNduh95gzs3sjUAERous5iBRazh/zP+V5Cy8r4cftr6ePgNsImMbJM0noMNg2YB5eAq1R4CdRIKar/27/OmvOUtRAb8f+0KX/8RgfyhhB0nucji9Az0HA61xcwbyG49iau+EoVx4m24lqTA98ynVZJRfoP3xObFpf8k1oA1zzDjAbHSj1AgE4SjDYS17umox/j15AM3hMiP12CWOU33MrxsBsn3945NqWEXUovl6oPRBnACH37/qTg9jAu+66q252aNp8z9uZcggxbaKonkBArMw4/IF826Xf4S/3vjK6fknq2+8q0pCMhs1vNJ4/Jbkn3ZA2F6uYEyPKrW1qkEOXHSWZx+F7atLIIfAPAziulTyQi2lReyz30tRHHRwIYtEqLVEdqsq2ZM2c/bzQ2s/XHfOxdZpg2trJ5kENkO8VwHzkpozAh4nmobXTvN39V6lGrPKZ+dv+DtoZGcQm+GvKQ6QgHKkbrG9bl0O+eWhNNhE/MOgvs6q7UMJtjFto4cBpjvK4BgY613qFvmZfRVeAYCBrnJhzqL4uDLL9epjDoCKNQ+B3uvkHooTrL4M00WLJV/7LmALGiZWFh+FRqQKNuxPPpRanz+bSOtU5ypE7gMUPyFIbMg2G8Gn+Tg5NutJ0u5imvIhjr/cr2ruYcW1fUmy6SGnk9wOc4Eq9cNBUzBoEGolL/33IWqZknwvbEvPtN3WZAFqGu1WtjqRw+NIJtWJioZYEsM7JiroUsXRDjdZQ8Nm6ixptY6ZPhBb8b/Bqk/5Hig7nYP5TmjJt6ZghxXM9kAbxdiGLuag2P9nxNSq9OBfrpNjfYe4PD+uz0GhseX7Iy+X8VWVhKCFKJrcLmjxv5utBJKKJ4/RJZgWCG1te+UkBcD8G0+rbyart5jYyqHS72XK/6K8keB8sVUEs8rH6jc8ekET3d83/JMURcilfIx6MXQkQc8of5XRE3e/IG0/bxDpEKRvfjKI3sIvqWi6aM5UG7m0K3FuKaJ+O90rHEcgNfOHELQgDEQvHI3kkB9QUwDiZ6p5bIEcDffhjiq1U7cOQpfStFYF2sfmltQnXGV7x05rApa38qpBDb5rQNRCys70tlcQUjzkeYV9jmQatKJo5RS8F8vG+TnLnbRbmKd8T5C1Jcc+eYmyKrGi0U7KdyyVJwdbz+QlljmDA9pY+rKhZjTUZfkUg7pOxKUN5qzclLbg2VB65XjbIdanhpNSr2ywNoVOZaE2F4GnRfaDLyMlp1LbMyZGJLcRBqc9HFy08q4hzMuv58zQw4MWzYUgJ/XKT7vW+FKVurPIgJ4knvewXTQC1ysVHvtFhGKvsm8r4fYvKWDGni2/PVqAb4WBRxJEumIsNTo+qVwdm8uFKZFPR6mowx/Gr263jTFtxtZVCGxYA2M1JtoEElEkZHnt5qncXD2R+262PCS6HjblPlg0P0wSJVsMIuIjZ1MhilF5Hqj+raDJrwTyeLn+4Ju2FlV2cOflQwWYbYSa9cTmmx4XgJeRT5OzVWBf1DWGE1gS3Gj63wIkOReqQjP3TgUWmCpyS71RXCXqr+8mSkcg/rtxMb13ZIMAzaWoyVtu6/szLJxlN5WcmPUq+BvIfb4rdlTpZpnbcnPNGA+YaCLjhDwSjs91yEWzlIQbJYYKKuNXR/xkpwTGw2C585R908Qol0UP8CTGTG1ygk3X2rIiwmE1G1tSiNKfnGvSYeuGEYhQE8mQe628MHNhZKno+EoF6UFQHUERo/vWe9EdKBHFcZSE+GxI4sMEfPVGbk5+6tIbHVhToP87isFVPRWzDzWqvcqTHHymye/51kLZM/zkQ+LwPboy7bK/Jq1Y4CyYstVh+NvPHA02auxgMGwDgFZrGPMYZQbd6UiMD8KjXG9TmUHoXssE3ZLOLKxKf3zCjXYm4dNtN8nDWGtSuDbW4UQb4s8K9EwnNC2qA/IGEUCA+NLtSVHad/ea+lTLJ6mKsetZDDdixxR4nPvJRhOkH0OTSTR4iqOSBbqfUIHBS1MZ9xVc6MEwvaw2kMoYOuGlo4kHw1jT+Hnd433fnSWYSJgC5BR8FqvD5MU5qHJBFCGkZNK71tQ3fSJGcipRUcBwQ+f0p2we0z4wN7mnkHzyvi1V2JXBSXrPzZc9u4cyF3F4DAROnbWlSEb6lOOkZh/5uXcbOrYbWLG/uxyBwKA2sfdNavxmve1nB8QCzpcXXxrEOPAe6UgENaOoYDvOLd0UB6gU6FFANEsWtJ/6yTQjOTOqWG9wUTV4GYYbAfi42XTONi0BNa0En2+gnRAzh690sC85YD3AaKochLLCEz49qPyP0AWdBCMTVzmOzcxh2xUWTOHBfQIgo578csf9TK20fntsZxeIN8WhW71ImXLxRv0bl4inWQzYZRjAswgswk83yYKBm46X4cEr7th75D8uPR8TobIz+aoAEGEf5+kG6rNjmLDu71hdPu1bO8tx3DDwtp+47cVdCNTfmdAiK8AY+Tge3Aggw50nCkg7HmkeZer3qDndnsO/vUO7qIbOswRVMowq1d8o81/lNuFFAzj6MJIjtvyItVM5jX/Ahnrjgf39SOmM+uw1KCfww8xfYZpkqljIcj8j2/WcuEYKaul8FsdLxMAep4/aGfIgNQ6RaAOiIirwMr3MGJN8PGXKtIk9F0Oluf5vEZR5Flucp05pVqJP19gM0Q8k13+d5ACzQ6AKAwgAkZH1Lg6gnJXJXfq5AxSIj7Yo52DK4YlrsRBp2WwkUMUczxSqJYIsP+qcLtGH+7fk3bb1yvjU/24p875Wqh8g6eDF9zrMePw9dS7ToeXwzcOzuQtQAYPNbScd59vxYM2YOY1BNM9gnuGIrDW/xsY74GzBLVWdN/11gWIDQu11D8JN2gnUq5cHvfDF2QXytSKTCkbHXYreFh9szlMnh4NDGCwrCQOC2IWEU1qIP1lYyteecIsJj6P57v0wf1oXRh+kh0GFpb0e6EVjl3EtpqBAcVtGkUyXHSlewyFrRFOo9QbIwXMWZrUFgkdMRCRuiZlpv3tHl4iqmSmjr46ehbafhYVfFNzC1ePs26gc+O7btCsReZouNmMAMGAR86skqC1KIaeC5BjU1PnTuJ7nChYi7FyvlUrdzbXN1lAYTzkLfMHrFL8+saiQ/sg3U9Xz1daY5Gf06/ZRH/JDN8B1lD4OxdN4cBVhsF5qa/BoS0XdUbCJhsjdopFB2o8/ufhZH8f8Zq0ZnlvRZYKSVL2b1fGRXEY47wTiGf+j+j8Co1J22YdP9dUivfYTOko+Ambnn+quVHzlKKkkrUC32J/eH6IhAVhFUYrWH301M+6jJKvG91srpaFsEAstJ+Jv5qzUryTFwD8NSjY0cC2phdE36ACxzzxWrpoGbQLG+vvvo+FNMUzioFXrQxOC8sCYKCOD6jUJ2+f7iZCi5EBojui1gsZjaa4qfiiQYBRgal/tKN1EMmL1cZ1AB2IDlZ2Pwm4aOc1BGAowj9EA9J0t90N+fnWiG0SCVCi8KZz+TMYr5zcGho1qnZKWjZRROWOAu2XEKJThGy7q7LeOupFYNux49IuPZ+0P7g3j0H+7Ycc/a/Jnr+Mqr7ix2G6AXZYbxgpkOLHvgBfBE7ZK6XWEwBDgh0h/sD6Yi9PcjVYApaWIzx2CMXPh+rHq/WQeoM/qrzegPZAaEbVgZfe5XI/2gjijbVz2ubskkQii07FmcY0xTi9vfijQO2+d/zs+Ha3x22wQsdLunMzN69N1r303HTwA83H21Edi0b9g1rsl8svxquGM3noRbC5egBmXwEol1Zecyf2AX+4nfGKnVrWPPKl+POHvx0lQ4aJiucSCVtr18yw949U+iE2djSMJhVKOUxNNCFx5QeBOUAK8s2NvrnIRgf9fv2/abJRN1VJFD8j5CoShyjZT738NJdL4ItaNJTAbiv/4j9WC/UPFL872oDh2b3cye/JA3lMrpNWdwTIZIAhphd4oJjZfxEnzzx5cQ82RKmHDPsZVufBcxFzUX0/LYVxjuXsW8pdWWuHID6UJj7aIWoa8NoYEnaJtr/Gm9adNH9dBdkJwfFnX5qsF7t5YRw2Ns4wVDfXh43IQHV1+K1+yXese5VYKh1NhnyDE2MHJNGUcYFzL5OEhQ6AlQMxLHFRPWxnR/FgSmmbVhGjZFeLtjmL0pFescZqoCnSnEg43Fke8sksc+yGsr+15S83YU69Zxmk0o6JO9zlnWHpG0Z6pzXF8mPbOy/jGxLCjDGi5Y+I1kKiM0WqeT8zlpppEMxrlkB7U+ANwmudvSzd+gUIna+saGoQs6GVMQcB0uXO7CSKoDH9datJa6QoZtvagKLbRxYonWmRDZZUnTRBszv7D6BPb13YfF/v7NlVk9ron1TttU7AsnvjxaoM6HWxfAtHt0p6+4MIPb26wOA4MrRBOIsOveNK+K/FpOYOj3y24Q0OY2/dN/aOPhdxIHEUFi4Z12o2RsiRmZHDP0WiY0YKggv/Uz/z/vHk5oUyP2X+CLeO0/kj4q0vRQtf+zeaCcrJINoAFjksBToTwGyMokfVGsPvKLERgUBVZP1c+DddQr8EjPBkw2nTxkcmbbX3ehYoa4IuWTa8TWYxU+5357xO9djf3+YMCQLzxnHe1EIP+VQKmuiC3Ep4ErR6fTkMYNH77pRUj0lx/l6GHGfzUoYJwSjhSq63xYQ38nYf8q+tq4EzNSQB7UNuuy4P05tgEhbnhKFW6W8SbBlKIEgybeS7w9Y6k+pVGiPHnmCOEXaWUV/IBVG+Mnpig2R/NNZnU7o1sCTyhgJv9sGg5+2wMFZMCMxJYqSvyRe0312Z0HZwoUL0xKg5HVmGOA5HHjvJRH2xUH2jHuKMnKPY5mg08xZ7WCR7NqglXGf8gMiieTqgWFkS/dLjjaMrkch/ReG4uUywQpOfx/UvhnalxUsxtWmzB41spB982ktyP1wWc0NsNGLNhBwVx7/0IACvzwcFWP5gteXvpqSktTmnciiagpmo+RmMOegA6ML0xR4XR62iuNcGQgvt96ArHPEQfqVVh2rnYT+smfbggYw/4dyjshfcSOqNgroDhw2UXupCtc3kO025OWub4vtC76TFFj5x0gfmYQLfjEGoN439sUwtag0rkWOkL229byMacl1DobNUCQgF2j7XPyAsQu+oXlTUR1dHL9TwB2eVkMssM0bJ8HNRE+fkEX5BsgPXL6W42bPyKuCSIUBM7esHkLWV7peB2mAlRalCKOHG/EhDA1hRjYgVuJXIy5/2THjutH8OHkLpvvYD2YKBXWyAwT6wYxU3sqLLk7ayvaJKv+GdS/MEG9muutIUdXgSsMCFaDcGBBg5QH9Iv2ffOt/zOEoONyPRbXRYZSGOAEmZYerZDd7K7ZoH2uwmGFdpuBpkgshcinA8NF6Ccu2LyJ5UfmYFtCmpIwVKYQLrck5v6NyMArMaPKLTFiCAFJVT1g8rh4A3gWumc5FOOp5hEr4jZVxN8BOX4QU3XfAd+GsV4byMgBILC0k8/ZOraNkR0+DZI+8FRBERCwF+EnJ7GN5FTS1kAsiHB70AgIJrX7PUOFr3vLSJGHXDtObx7JvL5a4iP38l3I5QWJ+bzpmIs1cplUkTCUMTKT+NUlX5zmQn/LLqht4TbevArfvCJJBBmp5GB14XLLHJ1Iz8ES5Tqr9tZKJ9ITOZ8EdHCumjEP+a/gXcZ8a1/R5M0FnMZ1vl+uC/PwOUlf34ckQ1HzrLb24YxdAcE2XAPtTRD95eGtCf+3AbyGbVT888GpdpLKMpOKoiWf0yA0qpP+brPWKwIsS9WbhUPY0wdmKM3+9LbvX9rBo0e8SfGhdtPQdOdZtqaZbUV2zNTu6GvpIz6zhn1JDHnleRymaI6i/tFKxP45XJhQKza8OozFEtKK+SwpKub0wgpqdoGpXWBtbawaDZqUJwRgIg+qN7HC5f2qOM2dENS9ZIIPY6eoBZlMq6SFurg7ul61IpEzZ3eEgdddLYWGrnUroAObK7CoTXP6xc57V6SrHvtChECBkFov7Wi75rfs1zIL2vMaQd8EcFOzRwAcj0jEP7ngbSsD6eLXeoV0eHhH5Yxf06BM0un8tX2EVn9QQYUulC6PUQ9s79g0Fkbm0zWCxsxUu9NV+9rYQAtfzcO8OI6dGsxvIrZmQeSC/8cv5kaYDKzMJkdSC5VjXVICMRi7f2U72u1BYKho5ZcqDIbkiE8RU4Llr6fnqq8F68l2TpDG8t9TLiqRz2DQX5cgdNJ0nvge98r/qtVu68QeXeRqJCnUIbSugHMtd6yt8CGsr/0pHXBPhWA3fWG44Mt0avb97JTDfTRTu3Pm46S8tBCLfoBJ0saaRKYpyW1ZDE7AS0oiAIhqv/grlCDFTw+dzWZxT7X87EoA2cRfiP3IY8T0NcA8WLU6VoV8GKBPPWEJypTaZN+163jCtW8M8Y2PGY1ivRgchHejQJEooAB8bkA8N5rXQWAY1vmZmtwpB8zig/mIQPVDFcsv68D/luQgn2x6HE6rtagxAD11T8vAJ/lciYMhdxbzvrZW5zqldV5W0T1PWeAYDa/RaRdWFX231+Ge5Dy7n4ZPbR9EGT3RvRY3fH+qjdJf+LsVwowOwY2XB2BhWFyELIr9FmfCvrevhcNiw0bm0tnUQzMAJbSm22f+fcQMIJ2l9CWd/5VpV4TQ4FiUiDCAhkcjUgVyFKVBzTFG2GULFi87YNZk8Mhref3lISv7PnBw4JWnw0HF0GZ9/MJZ1TbSQlIM62JtwAYmZsuA5efrHLhu0IFUGTWW8YOwDpJmGPp4CPKe9UFQYRV1XzzfwT3ggHL6+p4BHXr5jrC7dVGeyPPH8LIssej6ekzb5AaTgcKLQmTT536hSFE5k3s7lD9TEs5bFg2bFxDjuklI3J0EiErsZOf8f/DyIKxqxOWpyyspvifPbbQj4bgE8RW6M0L+T1CtsZHQVxVGR0hDiEcC+cTcZ1qj+4sCnh2gv4teHcraJR8ZSjSEg4y2oD6WbxIw+m1WLZRjuD6589mSQsoPWO1dKKSgO9aYKk2kpjCquqX+GCmgW/N1elkYC/Tsgn0x9MNjXRG7gIZVq86AWDCz/QEp52RFdnRqnKT+kWjPtXemCmq8qWZNruHWJhLbzUhVFhsjUvHAh4oDKbbRhno5iN0clNQfSSVH/a/ormf/hNIoaGFqUfcjd/Jso9LJkl6NXJxw6WUhIIPOsuuz5aJDveY760DaB/CCIMRo9yLGn0RXkBrUI2K62krunSRyP1NfwIaj33WWFhfi5AngeUnXijctCZiFZXPDhXG3W8S0bLrFaMxg8S+duvKjr1XXe3O5ASaRMM0/O/xrqJT4NkjcA2PynfCxkLGwYoZ+dyPNNdboMxfUzvLUe4rTJit8hL7ZwfZtDxlAojtBmpgSpizkC6KUg2nHrCb5vLnYquKV58g40gj72TRIMNktwsVw/17UOGhow8w2698O9kLq1DeQzltvJn4PsWRxgX7K2rb9SXPxJWk4lk5BjLjIoW39DbG23qvph2LizD5K7Qd2ghb4r8buY6Zc6mGl3evwbrdQEBURxsZNz2uqXqT5Zsk8SD+0SX10HmbYwI21PLhapH1L4nXJH71jVF8I7Xxi32W/BJQjoqFgWs3T0xS/4TCYjyfKFlW1xujTnqJK4ozbsruN9eEN8T/YYrcI7wJSmBk6BbeKne2y+bNNbsCsMfLwknWc9UMDjM7r65cyM56GXARwMhXVqMCMDNKoZDIfvh+roVZNNDId4F5SdA+IPFrIobLCcT2VRX5rMnsa8Dg9w4rRRBb7skrQAMyt86Vu/ybLjUDALm4VxtaDNtbcI/W78uWbtfqDAqyYFptyDje7qdEC+2szCx/k3ajcSUL05fYaeztO4FehR7AFVUmaZirPkAS91OH2qJh0zW2MKa99JOQdQZvaW90+MyjP5XkvVI5AfH5Pv+T/USwW8kh/DxhtAmg0ZXcdS5uA+j5zPkMs8v0p+Q+4s61IaC1PyLES5rj7VLvXjjZx29zgUyDOI0ysBt2lTjRSAq9sC0KjpObqvfu/+YNRHhV5hXoOG0hpSa0saEjSIRvOuoa4/b3LJxi/LKsf7PRqVUgFNRpELRrxqyoI606/hzrsCKuoOK8lL8TcQRePmuXHS76HpIaFJGu4tBzUwBvPFDgJx+K0Sv0UCX+Q2ra4wJUSGMC9yWqvlvyT0xxlahUinV7yQB8tS34fjzV5IDL+bOKsYtOxOOCa5JecWAefOYOIWvd0mp7yBuvZ2tVS77wGPU/nWmIra5AjEzfiNI1dsLzrS4t5tvMQf87v7JDwO9dZFIc0RSr8WZ5OOoUFx9e7BcpSnyrDV4IKg3++UL0OJrCx7UhTRpMWh8Fwh28nyNUOJunc9ImlxuRjvs1Q4It+xpqF8zBa4Fz7L7zOxzWDHG8H0DCEebW8zGyr0Ldwni2Ci8Iys8a4SjzAdKn+NP6XdGtOorR/5df1bBrbf0hGVLoFEY5onSPMghoCFVQl9GqMXf8/9snLJcSGABb/MsfXFM2G1GB5btLBuzyIACGr+t4oIS6UuZ0fK1O+O5CoIUc57EyznjehLvN7KKmyf1YbglXL4BXJwg9wr4DJACsTDrRam4ByFprTaYdSZKj+QIko1TdPc62L9ZrVdWSZAGO2eYI8Mp9VTkO1HMO2o2M3a02fheyAl3z51zJGbl/5fNdQ+ztlOhHCJ/36RP5b14N+R7S6py0xZXmKffJ99Db8eswqGnqFiomV6edsfpy2bMeVgzaaxVl/JmpxLGxn4t1Ocoe553Ry4QzHj7XV+UxYTTTBpvywl6BpiqeLjXXQP4tHsF4b8WnPBe6reFOjDBUrHe/kOcDadAOG+tNG87VKX1ranv97DMgUvJkopLJU0ewpRJZL2WCq3ctcr2MpOmyl6/K6DA6x+20dEe156Bd+kPe4GrrvV4gmlDmfSQQdgXLpp8QnW5pfp0TISV4kZbn8QNtNu7zHfjUspG6K0KlnEBQzKUpj3eFJHni3V0HUqP0P1+QeFpCmlzefcYibm6u3APFF5xPjjo+D+g5yLC/bFIpc0HnnpfVLy3rkhLSPchWGi+2KG+7fF26ZcBodc8DL/g/I3jDuKEfoD1PyavKPGshSXmyri2jkowO2wIdt4z0RDejp9WCD4aDRX7VmjcSCBP/f0fnPnK/+/WXQna4413hA59MmyUnpEoE3fuFVcDP+FaWwUAzBd+EhrzVIkJLdtJXlgsSNQeJsH5RMX9lyDf+xTRRaY+c+U7BAMc2Kvdfhuwuo8IADQ3xUwzhC1rtIOXA5HtljlypEFCpD+tCcmsEzyPQ+WspPZ5g3AN3G6tPOHI/DEA9RUEriqFlM7PZmusL/nAbJGXYzLazgw/bBszPBUpNkKMqS2yq+ONjL+4JKh5ysVt20UdpUjt/z+2mrB8IOniWaoGutznAqKgKYuvwUjU60sJmzrvZVGuO+4OnkPqGNrH2914XWxPgX5KzPu5zoCWtBwvvhYUO/Ne8gPg+lYScPZTCmxEBQPpODvy/FIFbws/k5MC7Hb1Gw5PPyMb/86k8bTWcfk6N9F++ytQ2jn4kYTyearymvi8St2l6vdCMUdybCgnXDxBIgLrrFoJqzzBc+R5HgE/x+wP68T3gjb9tjzjYj9YRcx5mqudWWxNOnRn1XKdLLI5LmqTg7gFJgHPMikJ4HMmSiHggn2dFWoA47bwfZj65BTBcOUTU6Q/Ja8NeDb1WKTfLW+gq38f4O+KNw3WilNf4jhStQ5T/N3DjgqgLgkw2UljuRYj7kSNxeqEDflDYnYgBg9nh+UWJc28Nm+Hv452bRmfXTZFZHz1icEtTqupLcxxD1Jxb6rBqRVgUNUgOCKw2kGGEw9d2I31A/4erUNDRvERPv/T/iEtmqCB2c+2BQ/ZpMEGdfmRW9BVWQA4v6vT79OXtiTIixc4zO97ayKPsQ40IbBMOdvB8oFLSn968ln4k6zn9t9Aplq+xGJxo3Ru5W5DTe/Vj/AH1weG7tl0uc1MJMrVT5v4ChYR/gZFs13PWJGJOvPCCcN1dodHFTqowMwjX3y6jvz9l/Rn5/vvHJve4WtPf2yNnEbjWJJpEbYVQ/OPbyvA4ZSKZbYgNrxiqEsUSDpqKpqNxEQ+JQ+j3wRFC5gMTDbYzdsJuFhPjy49yqZFqouPCN5/KFxgZPAFXOGbIy4qkvqqgRm/xAslP7TnBnhtA0RK0GAJ69PTlgFz/3TXdukeq6iL4aT36STNO4f7COQCsizAya4WWLTiBOlX5/2Ruk3LNXrbnETx2rADZGm4G7++ccuw/jmEfw2d/pwYxqv+kte4v51O0T/JRCYrtC677tT6chuSGeOTl8MqTvUN/ZwKxkIlvBHDuC661zy72xt8T38uTtGDSOS17hkB2XaoEg6OdpJNPIS5lJRAhAaigrfUbp7ad20d0i+2SJojPL7bP6V3F2wju70hERyeYYuAVp2rtQsonYDw3hXL5w7qwwgFWjURvX3QK+gW2EPehuobKuEBiDmd9Z2d/Gk46ujU3LBP6aMk6JQ4CiMa3ULxG0dbB7tSL7MmGxFUOG/gF73KMUz3VjS3bnYX2I1BcYVfBmGYhQ1jLwbur10jzEeeTle7ziSn03qxCstP0U3W5saqQ8fU8HgI3qzR5HXKuP4V/6NT16KjSziyWu8OtYpqatk14PckTl++91ceWRbODblTJIUHRh6J0OGy9/rF2Y6ip21LDsoWqHUEulKGKIbHs4D2F4/P/rduaqNySPPM6f36Fq3zobfPhkTcT2Z4PeBP2IbfkLVwsDMPm/yKiMGqUUeuSOmApCaAWCIwx5kSk4LgjOKuhKnBp7LpzBpQXLFAaThgRg3AoipjhXQEtItdxuECRCsN3M5x/O4dwQhKtyrfss2V9FWyNeB2NSFojQ+FFS007qezFGwAsipoqkprU9TKwU1sUmvLb++pGFP3wklfin9AS1Z+TBdyY95UL3eH0rSrsoYQ3By5DLbZimhM3+ckGo+BTych64iRAMYaFuPIbOilYr2Dh4VewAJAO6/zio4vjkOthUedwOPUpwrC6/aHk80jjGfrJinjSqPcYFhRCLAnJJIdtUWNlSGkEH3N59FDVLlXezy1qf7/n/A6v5ZMDYjKsBEWAyoi6y6jj8w66BJWayrPIl9LwvMvv4TGjr2KIcS2QsYoUcxrFYtdGJdjEvND585Nmct4eRSnOuPJKWbP4Li6vw7aRUIO9/ggAuNRIo9zHibTri7eZLLQuSU7y6tych0uh5ANGx1a2jXvtT/HeES0qMqTxSbI+6bWrcyz2GmBpUY2hCXPSALviwWYjCT39bHyX5p6Qrq6Ay3TX0T+dIzBUzg76EsZR67sW7XK4cVcDReWZT1dmG+Yo/arg5uqc8W9de1Gzdi0MRPIW5ZRVP8je7GpUm3SsGEX5FFYY6LxTfE2fLpt41PoMNhwR8sWB7YWSaMWOI8jWoOgN7Oe8VDDS6HHvOHAhl6OGXGd97JjEZsHaV+sBXMuMm8bor6lCHn1O0qWbOkyt4NEvsj0Lk02Qd521tMe/9i7a2gnn/tKzYJs1pNhuwK2cDKsRNuaUgSwxvQxcIkMHop62eJKWPfk9C8Xxy5oMC4+/jYiMUlUKH0Wlt6F9Vshr4p2zriC2gmloIA9vqCEF5DXOdvAybCkftAT+xCR3zul+F6eLUml9yA3nnjkg+MhJw+UvDEt03WJbKmkAWIV0tDszn95t+v7vsmmCPjC3n8/aO/8kNL55PLN9AHbDG2LskJROUIM1sGyd9bYlsV/FXRfpzXrPY9DTiNUNSGzMa019fVnNH0Ii0v7abxerQmnwlAiKlOhqchlnDx2vZZS0hsy6Vo2bCT7DKFBP0nW4npT3cDHx+2sp6KN45OwBNW4W4H+uZ8NpIBCGEg4vRIaOsiJQCAzf5DXhd9bBq0N/v14OqZ5F1aYPYvQEOXbeemPStLkwLzdEBa4Lyfun80kbgJOcoBnRB3bEt1INN2vNlSa8iTcVlbFWEMfc+GEhIyMBEEJwiRcVfDE8fnUBMQVL81UW65bENbKOXnhqMcOVBgWncr/RFdiMfza0Qz5pX7uEy+ng8Ib6MIXgYifF62+oIkckOK8SGlHZrtHHAbEL3JYIfIX2uaWg1Kwf6Cx8qmZPbA+TqWbcFxv+RBgZIGzthK2Lvxj6nv06mX38tCm4pTHjs4F+y4HmgbttfVq52NOT0KB8tsq31AJORLrvM1s5DF4koqhgb44SpmA4D1fWQEl77kBlI0dzll9Gh0L/cRD8L7ph95wGJ6skC3RSVcN2QaDj56dPv7DY42VZRPIJI6p73jamggy+FQny6SEZG64BaMfwUSMR0twxuyTdGZko7HG2QZCZ74KG6f5RdAUgsKtdR1AF9gmU2dQN8l9v3+QYoXpRRqeQQAzM5G2PAPLeqkT65OhVf9hp3MJPRdGkIiuv8UYjphltbWuAE6DYQzJQ/Y5xgYKO0lNrgABl/bAmaFkpQ/zOYxuW85GPvjn0ELjalfidf+syTB/b5VgDg/EHW5edKRpHnNMSW6fNTxziXcYuqz+J9E4APKvBv64NKoEcYg6PphnpWGuHj6SyP353Fs2FyIqAB30KKmYa6sOXK1nQjt2UJ/N/w7McqtdrXVoC+CAk62AD4zGvYCJZApVotooqcohK80PazdKSHCdrEWI+LIWMcZZgIqxLpXqYvgZBNhpADhcWDnPSg0Gal7aENttXgptWy1qRmjxM8atqKk31abu+ZEBW7MBXmJs5TwqsEKX6sH+GPwM75tFJpSe/Oiuv0Za6Bv3+U+2QqF4XH5g6+JSp4H0TiIdODVujVXAr0A66pj1isTdIB5107RmdaHe/xOryRaxdW9i11H+b/Nbs3tawURDZ46g8MsuvolJdiFv+WHPnbFcuv/1WjdVbvEFOlHilL3R8WMtEION13hFrxpZfDZNcFi5vG04djLb5P0HWzqRCeJRJZQt0qaBktNWOGc2YZ7Lo/1shZwulywj8qwYDa/YSuoB/z03yAjRg60x05y2Z2xv5LnrQNMJFb/gcovqgqk63khlUwbjvswGnsPKIUT7h+Tjnvnhy5rakqzaWFM1rr/Qz0T1lNg0RrirCvV7dLJzrWUd6ZRJV2S1aEajo2RLuX3lYDTnQQ3TW00d4/aeS7oZ2XmZxqBJ+R/5pyEDLGiEP/RylcOPOjYrNex0Q9Bs8yTJun2LwonXZA43pclpyKe4JJ0Qt2Ws+PyMVXGa0cN45dVrkND4WzqqnfYt5FONSmr4Y4KmjUpiUr+uUOq8OIzG4oqA57RV9t9fFBw/lS2BKk0dl/SxWGcIrVf+DOA2Us15xutPH314skMxVGnA/8HYwqKTP7Yysa1ekvwvcfDJPiRmDcSyeGx5rEauVJ9991Z959QhVMkEnjXRJvnBMAPUGUYnR5428ZgM6WHYHZkODjd4vTrkWbXQW+d7ciR72BmWg6QW0GKGDhYIDaepRV8ITLK958MZ7BB0xGpsuncw/M3TqGzrl8SEza4Xd8m7N+WSdgzDPMXCxi9VI7vnAFlDXFK+Oocnne/R/QoXZr60m9wc87CwBZ4p+JdeuREIUfeMn9e3B8hynWGCVLxXBuWxbL/tpWKwGCtCF9VSPH7QEK6hI3HWpQFT4tQuatXLTv/FhJA0Q7e6Psq26nOYH0EltOdN9TTy9hwUdTOSrjkfA5EUsPZyGs5ER3b1cfIlovI8U0h0JvnMbsKxh8Akl1nFmrMsS9nt3FlgGplL4KHn5M2NpxKS/3lXmxFpSnDQz+2O7PW9IDC6OfoRUHMK0N8sRFvEHE3CEjKAMK+jVDPI9h3EBI4YXt7YZbFHAFifWS9flDKvtcVFUcFIXhrYcIVeWHzv8Ggxe0E33YyCZS6WC0vItoef/6UI/FdIj2iDOms60zvUXj6I7m7DpJld5le+MPFLaMmbm1cz9I9XGOPoJ5rf7wpcC+MJ/DOq6juGJkMYR4PUWSN7u5T16Qh/tNmTTUY2CxHc1QtrcYj7X4YDrhTwrfGhUcadDu2gFbRPceMVpSEDHNQa875HciOsGKIkDeMITFDox6BssYglHHzw3Yvo814vEwR9gGuAnUVPBEIEkl23zQt3hBEkqAYxPqpyVGlN91PaWnV0hTPrEaICPB32vuTygzJYe+5ZXh+MDcZPuGqHWXsodmErBROulJZa2MCcD8DdHluzQeTFfdz6s++Jvv3miHKlB18CDyCss0XbYDVDxe8FYz66f+B9GP+JuwHZoElcOLW414h+T+MyMK7p6NjH+bHy0y8G2Q/66rrFP60HfXz7cDJusw8K5tG//lEjEcWHFqnEPxXxQDTXQFPnV4s0oKZuA0vSlQUHxH5V0p88IMAoV8UVz5H/QDLGHT/Vzf+gbAReCtjwtOiRMdh4ps+oiXlvybqQnptenLneozplmLw9XLwiZYWMSDpROsMfwXVXThyTu38ExNjR36awm+gNkshc08j3j4RzYD2e3xLwLX5H7KCg4kfFsqmsa1JO1O9oDlgj8MGAhE+7WciEXHBBgMjJng0hXNxnv84txYOW98nlNOrHdoMmrOYpXcoIxnquOyYHILdlkI+4st3WD8YBC/vTPXpDUVZEAopei0dCsJCDVKP/5HxqVwxMC2PED0N4IgBb3OttYlJx+1If0wYON7EBzM7khi2LuYefIHXYuB3cY9xQDLlpaBYyf0g/yMMXN4pQZDOCqY7H/9whTKFdfSF3p0cxvPqqayGkKNnmO8W8vrFiB/Kwq16llHznYJ1LmTUBaYldTinmAd6JZgFv3vvlIPFgLwQzYh+4SPr1fXJod9VLBqiNhMeoGOAO1l0ge16G7PRGuOnNmbrwioFaBPRRwiQ+TVwufN0okfgA5RFOZBx1QprOWUWxQkzZzEhTJf+Q3t9CVH9ndXi66h8hB2twSxgysJ7MA9x9bo2PFLIPttzsuV5lD9TZPRBdiLXFfZ2laQ3jKFUKxQMVbSQXj0SC13zDWfqvNH6rLQhnVOhIX90+O+tSqAs7WlNh4yEHJx9/gCfs70MQiNdByEbMA9srXN9fwambgUC8gzhsi8XMEU3ifuFh2+4p4GLMt7QHbS7MfIsccfSfu4ftgZjX4Qoj/5AwkkSUi7KebsMW0h9bwrmU+VJvGK6mLKgc3//H7BCnhKiO54Ze5i0B3/vYMm48+rrL8ykuuSZH1AxR5z2GcFM8u6de2ilHF/BC2bK+yPvrGNKzgeouYscy3pL+MAX911StrHyfqjscOArBSUopw2erUuDKSRlHuh+VuapA5olEUfwNPBNru6PkaNADuZUHUrNQ9Ks2gYl37FXLHeYGNW+0e/UeuBg//uBRlZypuqEBpmzO+970Hj1A=="
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 4238,
+      "candidatesTokenCount": 3151,
+      "totalTokenCount": 12120,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 4238
+        }
+      ],
+      "thoughtsTokenCount": 4731
+    },
+    "modelVersion": "gemini-3.1-pro-preview",
+    "responseId": "3RfWabCKFMCq4-EPlYOvmQw"
+  },
+  "usageMetadata": {
+    "promptTokenCount": 4238,
+    "candidatesTokenCount": 3151,
+    "totalTokenCount": 12120,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 4238
+      }
+    ],
+    "thoughtsTokenCount": 4731
+  }
+}

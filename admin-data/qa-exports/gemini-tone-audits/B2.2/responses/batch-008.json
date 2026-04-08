@@ -1,0 +1,504 @@
+{
+  "requestedModel": "gemini-3.1-pro-preview",
+  "responseModelVersion": "gemini-3.1-pro-preview",
+  "stage": "B2.2",
+  "batch_id": "batch-008",
+  "item_count": 25,
+  "parsedOutput": {
+    "stage": "B2.2",
+    "batch_id": "batch-008",
+    "checked_items": 25,
+    "findings": [
+      {
+        "item_id": "b22-0688",
+        "thai": "ข่าวนี้",
+        "romanization": "khaao nii",
+        "current_tones_variants": [
+          [
+            "falling",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high"
+        ],
+        "reason": "ข่าว (khaao) is a high-class consonant with a long vowel and mai ek, which produces a low tone."
+      },
+      {
+        "item_id": "b22-1264",
+        "thai": "ข่าวลือแพร่เร็ว",
+        "romanization": "khaao-lue phrae reo",
+        "current_tones_variants": [
+          [
+            "falling",
+            "mid",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "mid",
+          "falling",
+          "mid"
+        ],
+        "reason": "The phrase has 4 syllables. ข่าว (khaao) is low tone, ลือ (lue) is mid tone, แพร่ (phrae) is falling tone, and เร็ว (reo) is mid tone."
+      },
+      {
+        "item_id": "b22-0979",
+        "thai": "เขาก็เงียบไปพักหนึ่ง",
+        "romanization": "khao gaaw ngiap bpai phak neung",
+        "current_tones_variants": [
+          [
+            "high",
+            "falling",
+            "low",
+            "mid",
+            "high",
+            "low"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "falling",
+          "falling",
+          "mid",
+          "high",
+          "low"
+        ],
+        "reason": "เขา (khao) is standardly a rising tone. เงียบ (ngiap) is a low-class consonant with a long vowel and a stop final, which produces a falling tone."
+      },
+      {
+        "item_id": "b22-1333",
+        "thai": "เขาก็ตอบทันที",
+        "romanization": "khao gaaw dtaawp than-thii",
+        "current_tones_variants": [
+          [
+            "high",
+            "falling",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "falling",
+          "low",
+          "mid",
+          "mid"
+        ],
+        "reason": "The phrase has 5 syllables. เขา (khao) is rising, ก็ (gaaw) is falling, ตอบ (dtaawp) is low, ทัน (than) is mid, and ที (thii) is mid."
+      },
+      {
+        "item_id": "b22-1375",
+        "thai": "เขาก็ตื่นเลย",
+        "romanization": "khao gaaw dteun loei",
+        "current_tones_variants": [
+          [
+            "high",
+            "falling",
+            "low",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "falling",
+          "low",
+          "mid"
+        ],
+        "reason": "เขา (khao) is standardly a rising tone."
+      },
+      {
+        "item_id": "b22-0550",
+        "thai": "เขาก็ไม่ดื่ม",
+        "romanization": "khao gor mai deum",
+        "current_tones_variants": [
+          [
+            "rising",
+            "falling",
+            "falling",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "falling",
+          "falling",
+          "low"
+        ],
+        "reason": "ดื่ม (deum) is a mid-class consonant with mai ek, which produces a low tone."
+      },
+      {
+        "item_id": "b22-1351",
+        "thai": "เขาก็เริ่มกิน",
+        "romanization": "khao gaaw roem gin",
+        "current_tones_variants": [
+          [
+            "high",
+            "falling",
+            "falling",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "falling",
+          "falling",
+          "mid"
+        ],
+        "reason": "เขา (khao) is standardly a rising tone."
+      },
+      {
+        "item_id": "b22-0851",
+        "thai": "เขากลับมาช่วย",
+        "romanization": "khao glap maa chuai",
+        "current_tones_variants": [
+          [
+            "high",
+            "low",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "low",
+          "mid",
+          "falling"
+        ],
+        "reason": "เขา (khao) is standardly a rising tone."
+      },
+      {
+        "item_id": "b22-0706",
+        "thai": "เขาเก่งขึ้น",
+        "romanization": "khao geng kheun",
+        "current_tones_variants": [
+          [
+            "rising",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "low",
+          "falling"
+        ],
+        "reason": "เก่ง (geng) is a mid-class consonant with mai ek, which produces a low tone."
+      },
+      {
+        "item_id": "b22-0164",
+        "thai": "เขาเก่งมาก",
+        "romanization": "khao keng maak",
+        "current_tones_variants": [
+          [
+            "rising",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "low",
+          "falling"
+        ],
+        "reason": "เก่ง (keng) is a mid-class consonant with mai ek, which produces a low tone."
+      },
+      {
+        "item_id": "b22-0319",
+        "thai": "เขาเข้าใจเร็ว",
+        "romanization": "khao khao-jai reo",
+        "current_tones_variants": [
+          [
+            "rising",
+            "rising",
+            "mid",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "falling",
+          "mid",
+          "mid"
+        ],
+        "reason": "เข้า (khao) is a high-class consonant with mai tho, which produces a falling tone."
+      },
+      {
+        "item_id": "b22-1088",
+        "thai": "เขาควรขอโทษก่อน",
+        "romanization": "khao khuan khaaw-thot gawn",
+        "current_tones_variants": [
+          [
+            "high",
+            "mid",
+            "falling",
+            "low",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "mid",
+          "rising",
+          "falling",
+          "low"
+        ],
+        "reason": "เขา (khao) is rising tone. ขอ (khaaw) is rising tone. โทษ (thot) is falling tone. ก่อน (gawn) is low tone."
+      },
+      {
+        "item_id": "b22-1102",
+        "thai": "เขาควรฟังให้จบก่อน",
+        "romanization": "khao khuan fang hai jop gawn",
+        "current_tones_variants": [
+          [
+            "high",
+            "mid",
+            "mid",
+            "falling",
+            "low",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "mid",
+          "mid",
+          "falling",
+          "low",
+          "low"
+        ],
+        "reason": "เขา (khao) is rising tone. ก่อน (gawn) is low tone."
+      },
+      {
+        "item_id": "b22-0930",
+        "thai": "เขาเคยเจอปัญหาแบบนี้มาก่อน",
+        "romanization": "khao khoei jee bpan-haa baaep nii maa gawn",
+        "current_tones_variants": [
+          [
+            "high",
+            "mid",
+            "mid",
+            "mid",
+            "rising",
+            "low",
+            "high",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "mid",
+          "mid",
+          "mid",
+          "rising",
+          "low",
+          "high",
+          "mid",
+          "low"
+        ],
+        "reason": "เขา (khao) is rising tone. ก่อน (gawn) is low tone."
+      },
+      {
+        "item_id": "b22-0667",
+        "thai": "เขาเงียบไป",
+        "romanization": "khao ngiap bpai",
+        "current_tones_variants": [
+          [
+            "rising",
+            "low",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "falling",
+          "mid"
+        ],
+        "reason": "เงียบ (ngiap) is a low-class consonant with a long vowel and a stop final, which produces a falling tone."
+      },
+      {
+        "item_id": "b22-0528",
+        "thai": "เขาจะเข้าประชุม",
+        "romanization": "khao ja khao bpra-chum",
+        "current_tones_variants": [
+          [
+            "rising",
+            "low",
+            "rising",
+            "low",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "low",
+          "falling",
+          "low",
+          "mid"
+        ],
+        "reason": "เข้า (khao) is a high-class consonant with mai tho, which produces a falling tone."
+      },
+      {
+        "item_id": "b22-0920",
+        "thai": "เขาจะตอบภายในวันนี้",
+        "romanization": "khao ja dtaawp phaai-nai wan-nii",
+        "current_tones_variants": [
+          [
+            "high",
+            "low",
+            "falling",
+            "mid",
+            "mid",
+            "high",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "low",
+          "low",
+          "mid",
+          "mid",
+          "mid",
+          "high"
+        ],
+        "reason": "เขา (khao) is rising tone. ตอบ (dtaawp) is low tone. วัน (wan) is mid tone."
+      },
+      {
+        "item_id": "b22-0513",
+        "thai": "เขาจะติดต่อมาก่อน",
+        "romanization": "khao ja dtit-dtaw maa gawn",
+        "current_tones_variants": [
+          [
+            "rising",
+            "low",
+            "low",
+            "mid",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "low",
+          "low",
+          "low",
+          "mid",
+          "low"
+        ],
+        "reason": "ต่อ (dtaw) is a mid-class consonant with mai ek, which produces a low tone. ก่อน (gawn) is also low tone."
+      },
+      {
+        "item_id": "b22-0904",
+        "thai": "เขาจะมาสายอีก",
+        "romanization": "khao ja maa saai iik",
+        "current_tones_variants": [
+          [
+            "high",
+            "low",
+            "mid",
+            "rising",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "low",
+          "mid",
+          "rising",
+          "low"
+        ],
+        "reason": "เขา (khao) is rising tone. อีก (iik) is a mid-class consonant with a long vowel and a stop final, which produces a low tone."
+      },
+      {
+        "item_id": "b22-0522",
+        "thai": "เขาจะไม่เปลี่ยนแผน",
+        "romanization": "khao ja mai bplian phaen",
+        "current_tones_variants": [
+          [
+            "rising",
+            "low",
+            "falling",
+            "low",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "low",
+          "falling",
+          "low",
+          "rising"
+        ],
+        "reason": "แผน (phaen) is a high-class consonant with a long vowel and a sonorant final, which produces a rising tone."
+      }
+    ]
+  },
+  "rawText": "{\n  \"stage\": \"B2.2\",\n  \"batch_id\": \"batch-008\",\n  \"checked_items\": 25,\n  \"findings\": [\n    {\n      \"item_id\": \"b22-0688\",\n      \"thai\": \"ข่าวนี้\",\n      \"romanization\": \"khaao nii\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\"\n      ],\n      \"reason\": \"ข่าว (khaao) is a high-class consonant with a long vowel and mai ek, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b22-1264\",\n      \"thai\": \"ข่าวลือแพร่เร็ว\",\n      \"romanization\": \"khaao-lue phrae reo\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"falling\",\n        \"mid\"\n      ],\n      \"reason\": \"The phrase has 4 syllables. ข่าว (khaao) is low tone, ลือ (lue) is mid tone, แพร่ (phrae) is falling tone, and เร็ว (reo) is mid tone.\"\n    },\n    {\n      \"item_id\": \"b22-0979\",\n      \"thai\": \"เขาก็เงียบไปพักหนึ่ง\",\n      \"romanization\": \"khao gaaw ngiap bpai phak neung\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"high\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"falling\",\n        \"mid\",\n        \"high\",\n        \"low\"\n      ],\n      \"reason\": \"เขา (khao) is standardly a rising tone. เงียบ (ngiap) is a low-class consonant with a long vowel and a stop final, which produces a falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-1333\",\n      \"thai\": \"เขาก็ตอบทันที\",\n      \"romanization\": \"khao gaaw dtaawp than-thii\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"falling\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"low\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"The phrase has 5 syllables. เขา (khao) is rising, ก็ (gaaw) is falling, ตอบ (dtaawp) is low, ทัน (than) is mid, and ที (thii) is mid.\"\n    },\n    {\n      \"item_id\": \"b22-1375\",\n      \"thai\": \"เขาก็ตื่นเลย\",\n      \"romanization\": \"khao gaaw dteun loei\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"falling\",\n          \"low\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"low\",\n        \"mid\"\n      ],\n      \"reason\": \"เขา (khao) is standardly a rising tone.\"\n    },\n    {\n      \"item_id\": \"b22-0550\",\n      \"thai\": \"เขาก็ไม่ดื่ม\",\n      \"romanization\": \"khao gor mai deum\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"falling\",\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"falling\",\n        \"low\"\n      ],\n      \"reason\": \"ดื่ม (deum) is a mid-class consonant with mai ek, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b22-1351\",\n      \"thai\": \"เขาก็เริ่มกิน\",\n      \"romanization\": \"khao gaaw roem gin\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"falling\",\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"falling\",\n        \"mid\"\n      ],\n      \"reason\": \"เขา (khao) is standardly a rising tone.\"\n    },\n    {\n      \"item_id\": \"b22-0851\",\n      \"thai\": \"เขากลับมาช่วย\",\n      \"romanization\": \"khao glap maa chuai\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"เขา (khao) is standardly a rising tone.\"\n    },\n    {\n      \"item_id\": \"b22-0706\",\n      \"thai\": \"เขาเก่งขึ้น\",\n      \"romanization\": \"khao geng kheun\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"เก่ง (geng) is a mid-class consonant with mai ek, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0164\",\n      \"thai\": \"เขาเก่งมาก\",\n      \"romanization\": \"khao keng maak\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"เก่ง (keng) is a mid-class consonant with mai ek, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0319\",\n      \"thai\": \"เขาเข้าใจเร็ว\",\n      \"romanization\": \"khao khao-jai reo\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"rising\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"เข้า (khao) is a high-class consonant with mai tho, which produces a falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-1088\",\n      \"thai\": \"เขาควรขอโทษก่อน\",\n      \"romanization\": \"khao khuan khaaw-thot gawn\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"mid\",\n          \"falling\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"mid\",\n        \"rising\",\n        \"falling\",\n        \"low\"\n      ],\n      \"reason\": \"เขา (khao) is rising tone. ขอ (khaaw) is rising tone. โทษ (thot) is falling tone. ก่อน (gawn) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-1102\",\n      \"thai\": \"เขาควรฟังให้จบก่อน\",\n      \"romanization\": \"khao khuan fang hai jop gawn\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"mid\",\n          \"mid\",\n          \"falling\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"low\",\n        \"low\"\n      ],\n      \"reason\": \"เขา (khao) is rising tone. ก่อน (gawn) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0930\",\n      \"thai\": \"เขาเคยเจอปัญหาแบบนี้มาก่อน\",\n      \"romanization\": \"khao khoei jee bpan-haa baaep nii maa gawn\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"rising\",\n          \"low\",\n          \"high\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"rising\",\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"เขา (khao) is rising tone. ก่อน (gawn) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0667\",\n      \"thai\": \"เขาเงียบไป\",\n      \"romanization\": \"khao ngiap bpai\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"low\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"mid\"\n      ],\n      \"reason\": \"เงียบ (ngiap) is a low-class consonant with a long vowel and a stop final, which produces a falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0528\",\n      \"thai\": \"เขาจะเข้าประชุม\",\n      \"romanization\": \"khao ja khao bpra-chum\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"low\",\n          \"rising\",\n          \"low\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"falling\",\n        \"low\",\n        \"mid\"\n      ],\n      \"reason\": \"เข้า (khao) is a high-class consonant with mai tho, which produces a falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0920\",\n      \"thai\": \"เขาจะตอบภายในวันนี้\",\n      \"romanization\": \"khao ja dtaawp phaai-nai wan-nii\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"mid\",\n          \"high\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"เขา (khao) is rising tone. ตอบ (dtaawp) is low tone. วัน (wan) is mid tone.\"\n    },\n    {\n      \"item_id\": \"b22-0513\",\n      \"thai\": \"เขาจะติดต่อมาก่อน\",\n      \"romanization\": \"khao ja dtit-dtaw maa gawn\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"low\",\n          \"low\",\n          \"mid\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"ต่อ (dtaw) is a mid-class consonant with mai ek, which produces a low tone. ก่อน (gawn) is also low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0904\",\n      \"thai\": \"เขาจะมาสายอีก\",\n      \"romanization\": \"khao ja maa saai iik\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"low\",\n          \"mid\",\n          \"rising\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"mid\",\n        \"rising\",\n        \"low\"\n      ],\n      \"reason\": \"เขา (khao) is rising tone. อีก (iik) is a mid-class consonant with a long vowel and a stop final, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0522\",\n      \"thai\": \"เขาจะไม่เปลี่ยนแผน\",\n      \"romanization\": \"khao ja mai bplian phaen\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"low\",\n          \"falling\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"falling\",\n        \"low\",\n        \"rising\"\n      ],\n      \"reason\": \"แผน (phaen) is a high-class consonant with a long vowel and a sonorant final, which produces a rising tone.\"\n    }\n  ]\n}",
+  "rawResponse": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\n  \"stage\": \"B2.2\",\n  \"batch_id\": \"batch-008\",\n  \"checked_items\": 25,\n  \"findings\": [\n    {\n      \"item_id\": \"b22-0688\",\n      \"thai\": \"ข่าวนี้\",\n      \"romanization\": \"khaao nii\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\"\n      ],\n      \"reason\": \"ข่าว (khaao) is a high-class consonant with a long vowel and mai ek, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b22-1264\",\n      \"thai\": \"ข่าวลือแพร่เร็ว\",\n      \"romanization\": \"khaao-lue phrae reo\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"falling\",\n        \"mid\"\n      ],\n      \"reason\": \"The phrase has 4 syllables. ข่าว (khaao) is low tone, ลือ (lue) is mid tone, แพร่ (phrae) is falling tone, and เร็ว (reo) is mid tone.\"\n    },\n    {\n      \"item_id\": \"b22-0979\",\n      \"thai\": \"เขาก็เงียบไปพักหนึ่ง\",\n      \"romanization\": \"khao gaaw ngiap bpai phak neung\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"high\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"falling\",\n        \"mid\",\n        \"high\",\n        \"low\"\n      ],\n      \"reason\": \"เขา (khao) is standardly a rising tone. เงียบ (ngiap) is a low-class consonant with a long vowel and a stop final, which produces a falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-1333\",\n      \"thai\": \"เขาก็ตอบทันที\",\n      \"romanization\": \"khao gaaw dtaawp than-thii\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"falling\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"low\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"The phrase has 5 syllables. เขา (khao) is rising, ก็ (gaaw) is falling, ตอบ (dtaawp) is low, ทัน (than) is mid, and ที (thii) is mid.\"\n    },\n    {\n      \"item_id\": \"b22-1375\",\n      \"thai\": \"เขาก็ตื่นเลย\",\n      \"romanization\": \"khao gaaw dteun loei\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"falling\",\n          \"low\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"low\",\n        \"mid\"\n      ],\n      \"reason\": \"เขา (khao) is standardly a rising tone.\"\n    },\n    {\n      \"item_id\": \"b22-0550\",\n      \"thai\": \"เขาก็ไม่ดื่ม\",\n      \"romanization\": \"khao gor mai deum\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"falling\",\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"falling\",\n        \"low\"\n      ],\n      \"reason\": \"ดื่ม (deum) is a mid-class consonant with mai ek, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b22-1351\",\n      \"thai\": \"เขาก็เริ่มกิน\",\n      \"romanization\": \"khao gaaw roem gin\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"falling\",\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"falling\",\n        \"mid\"\n      ],\n      \"reason\": \"เขา (khao) is standardly a rising tone.\"\n    },\n    {\n      \"item_id\": \"b22-0851\",\n      \"thai\": \"เขากลับมาช่วย\",\n      \"romanization\": \"khao glap maa chuai\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"low\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"เขา (khao) is standardly a rising tone.\"\n    },\n    {\n      \"item_id\": \"b22-0706\",\n      \"thai\": \"เขาเก่งขึ้น\",\n      \"romanization\": \"khao geng kheun\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"เก่ง (geng) is a mid-class consonant with mai ek, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0164\",\n      \"thai\": \"เขาเก่งมาก\",\n      \"romanization\": \"khao keng maak\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"เก่ง (keng) is a mid-class consonant with mai ek, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0319\",\n      \"thai\": \"เขาเข้าใจเร็ว\",\n      \"romanization\": \"khao khao-jai reo\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"rising\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"เข้า (khao) is a high-class consonant with mai tho, which produces a falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-1088\",\n      \"thai\": \"เขาควรขอโทษก่อน\",\n      \"romanization\": \"khao khuan khaaw-thot gawn\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"mid\",\n          \"falling\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"mid\",\n        \"rising\",\n        \"falling\",\n        \"low\"\n      ],\n      \"reason\": \"เขา (khao) is rising tone. ขอ (khaaw) is rising tone. โทษ (thot) is falling tone. ก่อน (gawn) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-1102\",\n      \"thai\": \"เขาควรฟังให้จบก่อน\",\n      \"romanization\": \"khao khuan fang hai jop gawn\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"mid\",\n          \"mid\",\n          \"falling\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"low\",\n        \"low\"\n      ],\n      \"reason\": \"เขา (khao) is rising tone. ก่อน (gawn) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0930\",\n      \"thai\": \"เขาเคยเจอปัญหาแบบนี้มาก่อน\",\n      \"romanization\": \"khao khoei jee bpan-haa baaep nii maa gawn\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"rising\",\n          \"low\",\n          \"high\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"rising\",\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"เขา (khao) is rising tone. ก่อน (gawn) is low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0667\",\n      \"thai\": \"เขาเงียบไป\",\n      \"romanization\": \"khao ngiap bpai\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"low\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"falling\",\n        \"mid\"\n      ],\n      \"reason\": \"เงียบ (ngiap) is a low-class consonant with a long vowel and a stop final, which produces a falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0528\",\n      \"thai\": \"เขาจะเข้าประชุม\",\n      \"romanization\": \"khao ja khao bpra-chum\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"low\",\n          \"rising\",\n          \"low\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"falling\",\n        \"low\",\n        \"mid\"\n      ],\n      \"reason\": \"เข้า (khao) is a high-class consonant with mai tho, which produces a falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0920\",\n      \"thai\": \"เขาจะตอบภายในวันนี้\",\n      \"romanization\": \"khao ja dtaawp phaai-nai wan-nii\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"mid\",\n          \"high\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"เขา (khao) is rising tone. ตอบ (dtaawp) is low tone. วัน (wan) is mid tone.\"\n    },\n    {\n      \"item_id\": \"b22-0513\",\n      \"thai\": \"เขาจะติดต่อมาก่อน\",\n      \"romanization\": \"khao ja dtit-dtaw maa gawn\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"low\",\n          \"low\",\n          \"mid\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"ต่อ (dtaw) is a mid-class consonant with mai ek, which produces a low tone. ก่อน (gawn) is also low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0904\",\n      \"thai\": \"เขาจะมาสายอีก\",\n      \"romanization\": \"khao ja maa saai iik\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"low\",\n          \"mid\",\n          \"rising\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"mid\",\n        \"rising\",\n        \"low\"\n      ],\n      \"reason\": \"เขา (khao) is rising tone. อีก (iik) is a mid-class consonant with a long vowel and a stop final, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b22-0522\",\n      \"thai\": \"เขาจะไม่เปลี่ยนแผน\",\n      \"romanization\": \"khao ja mai bplian phaen\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"low\",\n          \"falling\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\",\n        \"falling\",\n        \"low\",\n        \"rising\"\n      ],\n      \"reason\": \"แผน (phaen) is a high-class consonant with a long vowel and a sonorant final, which produces a rising tone.\"\n    }\n  ]\n}",
+              "thoughtSignature": "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"
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 4237,
+      "candidatesTokenCount": 3424,
+      "totalTokenCount": 14640,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 4237
+        }
+      ],
+      "thoughtsTokenCount": 6979
+    },
+    "modelVersion": "gemini-3.1-pro-preview",
+    "responseId": "HA3WadezHKK34-EPqvausAs"
+  },
+  "usageMetadata": {
+    "promptTokenCount": 4237,
+    "candidatesTokenCount": 3424,
+    "totalTokenCount": 14640,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 4237
+      }
+    ],
+    "thoughtsTokenCount": 6979
+  }
+}

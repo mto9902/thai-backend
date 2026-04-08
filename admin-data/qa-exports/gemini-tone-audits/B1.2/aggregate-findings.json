@@ -1,0 +1,2672 @@
+{
+  "stage": "B1.2",
+  "manifest": {
+    "stage": "B1.2",
+    "batchSize": 30,
+    "lessonCount": 23,
+    "sentenceCount": 575,
+    "breakdownItemCount": 2319,
+    "uniqueItemCount": 1126,
+    "batchCount": 38,
+    "lessons": [
+      {
+        "lessonId": "not-yet-yang",
+        "lessonOrder": 0
+      },
+      {
+        "lessonId": "intermediate-negation",
+        "lessonOrder": 1
+      },
+      {
+        "lessonId": "reflexive-tua-eng",
+        "lessonOrder": 2
+      },
+      {
+        "lessonId": "distributive-tae-la",
+        "lessonOrder": 3
+      },
+      {
+        "lessonId": "intention-tang-jai",
+        "lessonOrder": 4
+      },
+      {
+        "lessonId": "almost-kueap",
+        "lessonOrder": 5
+      },
+      {
+        "lessonId": "barely-thaep-ja",
+        "lessonOrder": 6
+      },
+      {
+        "lessonId": "extent-jon",
+        "lessonOrder": 7
+      },
+      {
+        "lessonId": "since-tang-tae",
+        "lessonOrder": 8
+      },
+      {
+        "lessonId": "every-time-thuk-khrang-thi",
+        "lessonOrder": 9
+      },
+      {
+        "lessonId": "depends-on-khun-yu-kap",
+        "lessonOrder": 10
+      },
+      {
+        "lessonId": "so-that-ja-dai",
+        "lessonOrder": 11
+      },
+      {
+        "lessonId": "instead-of-thaen-thi-ja",
+        "lessonOrder": 12
+      },
+      {
+        "lessonId": "indirect-questions-ru-plao",
+        "lessonOrder": 13
+      },
+      {
+        "lessonId": "expanded-relative-structures",
+        "lessonOrder": 14
+      },
+      {
+        "lessonId": "perspective-marker-samrap",
+        "lessonOrder": 15
+      },
+      {
+        "lessonId": "opinion-marker-nai-khwam-hen",
+        "lessonOrder": 16
+      },
+      {
+        "lessonId": "stance-marker-tam-thi-chan-hen",
+        "lessonOrder": 17
+      },
+      {
+        "lessonId": "nominalization-karn-khwam",
+        "lessonOrder": 18
+      },
+      {
+        "lessonId": "contrast-tae-thawaa",
+        "lessonOrder": 19
+      },
+      {
+        "lessonId": "concession-maewaa",
+        "lessonOrder": 20
+      },
+      {
+        "lessonId": "concession-thang-thi",
+        "lessonOrder": 21
+      },
+      {
+        "lessonId": "result-complements-b1",
+        "lessonOrder": 22
+      }
+    ],
+    "generatedAt": "2026-04-08T06:50:04.730Z"
+  },
+  "requestedModel": "gemini-3.1-pro-preview",
+  "generatedAt": "2026-04-08T07:11:04.939Z",
+  "batchSummaries": [
+    {
+      "batch_id": "batch-001",
+      "item_count": 30,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-001.json"
+    },
+    {
+      "batch_id": "batch-002",
+      "item_count": 30,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-002.json"
+    },
+    {
+      "batch_id": "batch-003",
+      "item_count": 30,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-003.json"
+    },
+    {
+      "batch_id": "batch-004",
+      "item_count": 30,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-004.json"
+    },
+    {
+      "batch_id": "batch-005",
+      "item_count": 30,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-005.json"
+    },
+    {
+      "batch_id": "batch-006",
+      "item_count": 30,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-006.json"
+    },
+    {
+      "batch_id": "batch-007",
+      "item_count": 30,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-007.json"
+    },
+    {
+      "batch_id": "batch-008",
+      "item_count": 30,
+      "findings_count": 2,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-008.json"
+    },
+    {
+      "batch_id": "batch-009",
+      "item_count": 30,
+      "findings_count": 2,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-009.json"
+    },
+    {
+      "batch_id": "batch-010",
+      "item_count": 30,
+      "findings_count": 2,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-010.json"
+    },
+    {
+      "batch_id": "batch-011",
+      "item_count": 30,
+      "findings_count": 7,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-011.json"
+    },
+    {
+      "batch_id": "batch-012",
+      "item_count": 30,
+      "findings_count": 2,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-012.json"
+    },
+    {
+      "batch_id": "batch-013",
+      "item_count": 30,
+      "findings_count": 2,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-013.json"
+    },
+    {
+      "batch_id": "batch-014",
+      "item_count": 30,
+      "findings_count": 2,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-014.json"
+    },
+    {
+      "batch_id": "batch-015",
+      "item_count": 30,
+      "findings_count": 6,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-015.json"
+    },
+    {
+      "batch_id": "batch-016",
+      "item_count": 30,
+      "findings_count": 6,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-016.json"
+    },
+    {
+      "batch_id": "batch-017",
+      "item_count": 30,
+      "findings_count": 4,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-017.json"
+    },
+    {
+      "batch_id": "batch-018",
+      "item_count": 30,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-018.json"
+    },
+    {
+      "batch_id": "batch-019",
+      "item_count": 30,
+      "findings_count": 3,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-019.json"
+    },
+    {
+      "batch_id": "batch-020",
+      "item_count": 30,
+      "findings_count": 5,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-020.json"
+    },
+    {
+      "batch_id": "batch-021",
+      "item_count": 30,
+      "findings_count": 3,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-021.json"
+    },
+    {
+      "batch_id": "batch-022",
+      "item_count": 30,
+      "findings_count": 0,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-022.json"
+    },
+    {
+      "batch_id": "batch-023",
+      "item_count": 30,
+      "findings_count": 2,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-023.json"
+    },
+    {
+      "batch_id": "batch-024",
+      "item_count": 30,
+      "findings_count": 2,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-024.json"
+    },
+    {
+      "batch_id": "batch-025",
+      "item_count": 30,
+      "findings_count": 7,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-025.json"
+    },
+    {
+      "batch_id": "batch-026",
+      "item_count": 30,
+      "findings_count": 3,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-026.json"
+    },
+    {
+      "batch_id": "batch-027",
+      "item_count": 30,
+      "findings_count": 5,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-027.json"
+    },
+    {
+      "batch_id": "batch-028",
+      "item_count": 30,
+      "findings_count": 2,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-028.json"
+    },
+    {
+      "batch_id": "batch-029",
+      "item_count": 30,
+      "findings_count": 5,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-029.json"
+    },
+    {
+      "batch_id": "batch-030",
+      "item_count": 30,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-030.json"
+    },
+    {
+      "batch_id": "batch-031",
+      "item_count": 30,
+      "findings_count": 6,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-031.json"
+    },
+    {
+      "batch_id": "batch-032",
+      "item_count": 30,
+      "findings_count": 4,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-032.json"
+    },
+    {
+      "batch_id": "batch-033",
+      "item_count": 30,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-033.json"
+    },
+    {
+      "batch_id": "batch-034",
+      "item_count": 30,
+      "findings_count": 5,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-034.json"
+    },
+    {
+      "batch_id": "batch-035",
+      "item_count": 30,
+      "findings_count": 4,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-035.json"
+    },
+    {
+      "batch_id": "batch-036",
+      "item_count": 30,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-036.json"
+    },
+    {
+      "batch_id": "batch-037",
+      "item_count": 30,
+      "findings_count": 6,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-037.json"
+    },
+    {
+      "batch_id": "batch-038",
+      "item_count": 16,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\B1.2\\responses\\batch-038.json"
+    }
+  ],
+  "findingsCount": 103,
+  "findings": [
+    {
+      "item_id": "b12-0654",
+      "thai": "ลูกค้าใหม่",
+      "romanization": "lûuk-kháa mài",
+      "current_tones_variants": [
+        [
+          "falling",
+          "high",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "high",
+        "low"
+      ],
+      "reason": "The word ใหม่ (mài) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0058",
+      "thai": "ไหม",
+      "romanization": "mái",
+      "current_tones_variants": [
+        [
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high"
+      ],
+      "reason": "As a question particle, 'ไหม' is pronounced with a high tone in spoken Thai, which matches the provided romanization 'mái'."
+    },
+    {
+      "item_id": "b12-1113",
+      "thai": "ก่อนมันเลี้ยวออก",
+      "romanization": "kon man liao ok",
+      "current_tones_variants": [
+        [
+          "low",
+          "mid",
+          "falling",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "mid",
+        "high",
+        "low"
+      ],
+      "reason": "The word 'เลี้ยว' (liao) has a high tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0910",
+      "thai": "การรีบเริ่มแล้วเลิก",
+      "romanization": "kaan riip roem laeo loek",
+      "current_tones_variants": [
+        [
+          "mid",
+          "falling",
+          "falling",
+          "high",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "falling",
+        "falling",
+        "high",
+        "falling"
+      ],
+      "reason": "The word 'เลิก' (loek) has a falling tone (low class consonant ล + long vowel เ-อ + dead ending ก)."
+    },
+    {
+      "item_id": "b12-1085",
+      "thai": "เก็บเอกสาร",
+      "romanization": "kep ekasaan",
+      "current_tones_variants": [
+        [
+          "low",
+          "low",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "low",
+        "low",
+        "rising"
+      ],
+      "reason": "The phrase 'เก็บเอกสาร' has 4 syllables (kep eek-ga-saan). The current array is missing a syllable, and the final syllable 'สาร' (saan) has a rising tone (high class consonant ส + long vowel า + live ending ร)."
+    },
+    {
+      "item_id": "b12-0944",
+      "thai": "ข้อเสนอเดิมดูน่าสนใจ",
+      "romanization": "kho sanoe doem duu naa sonjai",
+      "current_tones_variants": [
+        [
+          "falling",
+          "low",
+          "mid",
+          "mid",
+          "falling",
+          "rising",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "low",
+        "rising",
+        "mid",
+        "mid",
+        "falling",
+        "rising",
+        "mid"
+      ],
+      "reason": "The word 'เสนอ' (sanoe) has two syllables: 'เส' (low) and 'นอ' (rising). The current tones array is missing one tone, having 7 tones for 8 syllables."
+    },
+    {
+      "item_id": "b12-0930",
+      "thai": "เขาเข้าใจปัญหา",
+      "romanization": "khao khaojai panhaa",
+      "current_tones_variants": [
+        [
+          "rising",
+          "falling",
+          "mid",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "falling",
+        "mid",
+        "mid",
+        "rising"
+      ],
+      "reason": "The phrase has 5 syllables: เขา (rising), เข้า (falling), ใจ (mid), ปัญ (mid), หา (rising). The current tones array only has 4 tones, missing one of the mid tones."
+    },
+    {
+      "item_id": "b12-0924",
+      "thai": "เขาตอบเร็ว",
+      "romanization": "khao top reo",
+      "current_tones_variants": [
+        [
+          "rising",
+          "high",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "low",
+        "mid"
+      ],
+      "reason": "The syllable 'ตอบ' (top) has a low tone, not high."
+    },
+    {
+      "item_id": "b12-1112",
+      "thai": "เขาตามแท็กซี่",
+      "romanization": "khao taam thaeksii",
+      "current_tones_variants": [
+        [
+          "rising",
+          "mid",
+          "high",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "mid",
+        "high",
+        "falling"
+      ],
+      "reason": "The syllable 'ซี่' (sii) has a falling tone, not mid."
+    },
+    {
+      "item_id": "b12-0959",
+      "thai": "เขาพยายามเต็มที่",
+      "romanization": "khao phayaayaam tem thii",
+      "current_tones_variants": [
+        [
+          "rising",
+          "high",
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "high",
+        "mid",
+        "mid",
+        "mid",
+        "falling"
+      ],
+      "reason": "The word 'พยายาม' (phayaayaam) consists of 3 syllables (high, mid, mid). The current tones array is missing tones for the extra syllables."
+    },
+    {
+      "item_id": "b12-0947",
+      "thai": "เขามีประสบการณ์มาก",
+      "romanization": "khao mii prasopkaan maak",
+      "current_tones_variants": [
+        [
+          "rising",
+          "mid",
+          "low",
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "mid",
+        "low",
+        "low",
+        "mid",
+        "falling"
+      ],
+      "reason": "The word 'ประสบการณ์' (prasopkaan) consists of 3 syllables (low, low, mid). The current tones array is missing the tone for 'สบ' (sop)."
+    },
+    {
+      "item_id": "b12-1060",
+      "thai": "เขามีแผนอยู่แล้ว",
+      "romanization": "khao mii phaen yuu laeo",
+      "current_tones_variants": [
+        [
+          "rising",
+          "mid",
+          "mid",
+          "low",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "mid",
+        "rising",
+        "low",
+        "high"
+      ],
+      "reason": "The syllable 'แผน' (phaen) has a rising tone, not mid."
+    },
+    {
+      "item_id": "b12-1035",
+      "thai": "เขายังตอบไม่ตรงคำถาม",
+      "romanization": "khao yang top mai trong khamthaam",
+      "current_tones_variants": [
+        [
+          "rising",
+          "mid",
+          "high",
+          "falling",
+          "mid",
+          "mid",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "mid",
+        "low",
+        "falling",
+        "mid",
+        "mid",
+        "rising"
+      ],
+      "reason": "The syllable 'ตอบ' (top) has a low tone, not high."
+    },
+    {
+      "item_id": "b12-1061",
+      "thai": "เขายังเปลี่ยนใจตอนท้าย",
+      "romanization": "khao yang plianjai ton thaai",
+      "current_tones_variants": [
+        [
+          "rising",
+          "mid",
+          "falling",
+          "mid",
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "mid",
+        "low",
+        "mid",
+        "mid",
+        "high"
+      ],
+      "reason": "The syllable 'เปลี่ยน' (plian) has a low tone, not falling. The syllable 'ท้าย' (thaai) has a high tone, not falling."
+    },
+    {
+      "item_id": "b12-0404",
+      "thai": "เขาใส่แว่น",
+      "romanization": "khǎo sài wâen",
+      "current_tones_variants": [
+        [
+          "rising",
+          "falling",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "low",
+        "falling"
+      ],
+      "reason": "The word 'ใส่' (sài) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0768",
+      "thai": "คนที่มีเวลาน้อย",
+      "romanization": "khon thîi mii wee-laa nói",
+      "current_tones_variants": [
+        [
+          "mid",
+          "falling",
+          "mid",
+          "mid",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "falling",
+        "mid",
+        "mid",
+        "mid",
+        "high"
+      ],
+      "reason": "The current tones array is missing a syllable for 'เวลา' (wee-laa) which consists of two mid tones, and 'น้อย' (nói) has a high tone, not a low tone."
+    },
+    {
+      "item_id": "b12-0509",
+      "thai": "คำแนะนำนี้",
+      "romanization": "kham-nae-nam níi",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "mid",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "high",
+        "mid",
+        "high"
+      ],
+      "reason": "The syllable 'แนะ' (nae) has a high tone, not mid."
+    },
+    {
+      "item_id": "b12-0953",
+      "thai": "คำอธิบายของเขาละเอียดดี",
+      "romanization": "kham athibai khong khao laiat dii",
+      "current_tones_variants": [
+        [
+          "mid",
+          "low",
+          "high",
+          "rising",
+          "rising",
+          "low",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "low",
+        "high",
+        "mid",
+        "rising",
+        "rising",
+        "high",
+        "low",
+        "mid"
+      ],
+      "reason": "The current tones array is missing two tones. The phrase has 9 syllables: คำ (mid) อ (low) ธิ (high) บาย (mid) ของ (rising) เขา (rising) ละ (high) เอียด (low) ดี (mid)."
+    },
+    {
+      "item_id": "b12-0957",
+      "thai": "งานวิจัยชิ้นนี้น่าสนใจ",
+      "romanization": "ngaan wijai chin nii naa sonjai",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "mid",
+          "high",
+          "falling",
+          "rising",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "high",
+        "mid",
+        "high",
+        "high",
+        "falling",
+        "rising",
+        "mid"
+      ],
+      "reason": "The phrase has 8 syllables: งาน (mid) วิ (high) จัย (mid) ชิ้น (high) นี้ (high) น่า (falling) สน (rising) ใจ (mid). The current tones array only has 7 items and contains incorrect tones."
+    },
+    {
+      "item_id": "b12-1073",
+      "thai": "จองตั๋ว",
+      "romanization": "jaawng tua",
+      "current_tones_variants": [
+        [
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "rising"
+      ],
+      "reason": "The word ตั๋ว (tua) has a rising tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0993",
+      "thai": "ฉันก็ยังจำรายละเอียดได้",
+      "romanization": "chan ko yang jam raailaaiat dai",
+      "current_tones_variants": [
+        [
+          "rising",
+          "falling",
+          "mid",
+          "mid",
+          "mid",
+          "low",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "falling",
+        "mid",
+        "mid",
+        "mid",
+        "high",
+        "low",
+        "falling"
+      ],
+      "reason": "The word 'รายละเอียด' (raai-la-iat) has 3 syllables (mid, high, low). The current array is missing the high tone for 'ละ' and has 7 elements for 8 syllables."
+    },
+    {
+      "item_id": "b12-1009",
+      "thai": "ฉันก็ลองใหม่อีกครั้ง",
+      "romanization": "chan ko long mai iik khrang",
+      "current_tones_variants": [
+        [
+          "rising",
+          "falling",
+          "mid",
+          "falling",
+          "low",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "falling",
+        "mid",
+        "low",
+        "low",
+        "high"
+      ],
+      "reason": "The word 'ใหม่' (mai) has a low tone, not falling."
+    },
+    {
+      "item_id": "b12-0992",
+      "thai": "ฉันจะลืมสมุด",
+      "romanization": "chan cha luem samut",
+      "current_tones_variants": [
+        [
+          "rising",
+          "low",
+          "mid",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "low",
+        "mid",
+        "low",
+        "low"
+      ],
+      "reason": "The word 'สมุด' (sa-mut) has two syllables, both with low tones. The current array is missing one tone."
+    },
+    {
+      "item_id": "b12-0928",
+      "thai": "ฉันชอบแผนนี้",
+      "romanization": "chan chop phaen nii",
+      "current_tones_variants": [
+        [
+          "rising",
+          "falling",
+          "mid",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "falling",
+        "rising",
+        "high"
+      ],
+      "reason": "The word 'แผน' (phaen) has a rising tone, not mid."
+    },
+    {
+      "item_id": "b12-0457",
+      "thai": "ฉันได้ไอเดียใหม่",
+      "romanization": "chǎn dâai ai-dia mài",
+      "current_tones_variants": [
+        [
+          "rising",
+          "falling",
+          "mid",
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "falling",
+        "mid",
+        "mid",
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (mai) has a low tone, not falling."
+    },
+    {
+      "item_id": "b12-1042",
+      "thai": "ฉันตั้งใจพัก",
+      "romanization": "chan tangjai phak",
+      "current_tones_variants": [
+        [
+          "rising",
+          "falling",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "falling",
+        "mid",
+        "high"
+      ],
+      "reason": "The word 'ตั้งใจ' (tang-jai) has two syllables (falling, mid). The current array is missing the mid tone for 'ใจ'."
+    },
+    {
+      "item_id": "b12-0402",
+      "thai": "ฉันไม่ได้กลับไปที่นั่น",
+      "romanization": "chǎn mâi dâai glàp bpai thîi nân",
+      "current_tones_variants": [
+        [
+          "rising",
+          "falling",
+          "falling",
+          "low",
+          "mid",
+          "falling",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "falling",
+        "falling",
+        "low",
+        "mid",
+        "falling",
+        "falling"
+      ],
+      "reason": "The word 'นั่น' (nân) has a falling tone, not a high tone."
+    },
+    {
+      "item_id": "b12-0941",
+      "thai": "ฉันยังไม่สบายใจ",
+      "romanization": "chan yang mai sabaai jai",
+      "current_tones_variants": [
+        [
+          "rising",
+          "mid",
+          "falling",
+          "mid",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "mid",
+        "falling",
+        "low",
+        "mid",
+        "mid"
+      ],
+      "reason": "The word 'สบาย' (sa-baai) consists of two syllables with low and mid tones respectively. The current tones array was missing a syllable."
+    },
+    {
+      "item_id": "b12-1054",
+      "thai": "ฉันอธิบายละเอียดแล้ว",
+      "romanization": "chan athibai laiat laeo",
+      "current_tones_variants": [
+        [
+          "rising",
+          "low",
+          "high",
+          "low",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "low",
+        "high",
+        "mid",
+        "high",
+        "low",
+        "high"
+      ],
+      "reason": "The words 'อธิบาย' (a-thi-bai: low, high, mid) and 'ละเอียด' (la-iat: high, low) contain multiple syllables. The current tones array was missing syllables."
+    },
+    {
+      "item_id": "b12-0913",
+      "thai": "ฉันอยากไป",
+      "romanization": "chan yaak pai",
+      "current_tones_variants": [
+        [
+          "rising",
+          "falling",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "low",
+        "mid"
+      ],
+      "reason": "The word 'อยาก' (yaak) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0889",
+      "thai": "ช่วงนี้",
+      "romanization": "chuang nii",
+      "current_tones_variants": [
+        [
+          "mid",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "high"
+      ],
+      "reason": "The word 'ช่วง' (chuang) has a falling tone, not a mid tone."
+    },
+    {
+      "item_id": "b12-0857",
+      "thai": "ช่วยให้ฉันมีสมาธิ",
+      "romanization": "chuai hai chan mii samathi",
+      "current_tones_variants": [
+        [
+          "falling",
+          "falling",
+          "rising",
+          "mid",
+          "rising",
+          "high",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "falling",
+        "rising",
+        "mid",
+        "low",
+        "mid",
+        "high"
+      ],
+      "reason": "The word 'สมาธิ' (sa-maa-thi) has low, mid, and high tones respectively. The current tones (rising, high, mid) are incorrect."
+    },
+    {
+      "item_id": "b12-0250",
+      "thai": "เชียงใหม่",
+      "romanization": "chiang-mài",
+      "current_tones_variants": [
+        [
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (mài) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0692",
+      "thai": "เชียงใหม่",
+      "romanization": "chiiang-mài",
+      "current_tones_variants": [
+        [
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (mài) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0418",
+      "thai": "ซื้อใบใหม่",
+      "romanization": "sʉ́ʉ bai mài",
+      "current_tones_variants": [
+        [
+          "high",
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "mid",
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (mài) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0616",
+      "thai": "ซื้อใหม่",
+      "romanization": "sʉ́ʉ mài",
+      "current_tones_variants": [
+        [
+          "high",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (mài) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0254",
+      "thai": "ไดอารี",
+      "romanization": "dai-aa-rîi",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "uncertain",
+      "corrected_tones": [
+        "mid",
+        "mid",
+        "mid"
+      ],
+      "reason": "The Thai spelling 'ไดอารี' indicates a mid tone for the final syllable ('รี'), but the romanization and common pronunciation use a falling tone ('rîi' / 'รี่'). Please verify if the spelling should be updated to 'ไดอารี่' or if the tone should be changed to 'mid'."
+    },
+    {
+      "item_id": "b12-0900",
+      "thai": "ต้องมาก่อนเสมอ",
+      "romanization": "tong maa kon samoe",
+      "current_tones_variants": [
+        [
+          "falling",
+          "mid",
+          "low",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "mid",
+        "low",
+        "low",
+        "rising"
+      ],
+      "reason": "The word เสมอ (sa-moe) consists of two syllables with low and rising tones respectively. The tones array should have 5 elements."
+    },
+    {
+      "item_id": "b12-0891",
+      "thai": "ตอบข้อความเร็ว",
+      "romanization": "top khokhwaam reo",
+      "current_tones_variants": [
+        [
+          "high",
+          "low",
+          "mid",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "falling",
+        "mid",
+        "mid"
+      ],
+      "reason": "ตอบ has a low tone, and ข้อ has a falling tone."
+    },
+    {
+      "item_id": "b12-1095",
+      "thai": "ตอบลูกค้า",
+      "romanization": "top luukkhaa",
+      "current_tones_variants": [
+        [
+          "high",
+          "falling",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "falling",
+        "high"
+      ],
+      "reason": "ตอบ has a low tone, not a high tone."
+    },
+    {
+      "item_id": "b12-1031",
+      "thai": "ถนนก็ยังลื่น",
+      "romanization": "thanon ko yang luen",
+      "current_tones_variants": [
+        [
+          "low",
+          "mid",
+          "falling",
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "rising",
+        "falling",
+        "mid",
+        "falling"
+      ],
+      "reason": "The word 'ถนน' (tha-non) has two syllables with low and rising tones respectively. The current tones incorrectly list the second syllable as mid."
+    },
+    {
+      "item_id": "b12-0420",
+      "thai": "ถนนเส้นนี้รถติด",
+      "romanization": "thanǒn sên níi rót tìt",
+      "current_tones_variants": [
+        [
+          "rising",
+          "falling",
+          "high",
+          "high",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "rising",
+        "falling",
+        "high",
+        "high",
+        "low"
+      ],
+      "reason": "The word 'ถนน' (tha-non) consists of two syllables (low, rising). The current array is missing a syllable and incorrectly groups it as a single rising tone."
+    },
+    {
+      "item_id": "b12-0290",
+      "thai": "ทะเลาะกัน",
+      "romanization": "thá-láw-gan",
+      "current_tones_variants": [
+        [
+          "high",
+          "mid",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "high",
+        "mid"
+      ],
+      "reason": "The syllable 'เลาะ' (law) has a high tone, not a mid tone."
+    },
+    {
+      "item_id": "b12-1044",
+      "thai": "ทางนี้ใกล้กว่า",
+      "romanization": "thaang nii glai kwaa",
+      "current_tones_variants": [
+        [
+          "mid",
+          "high",
+          "mid",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "high",
+        "falling",
+        "low"
+      ],
+      "reason": "The word 'ใกล้' (glai) has a falling tone, not a mid tone."
+    },
+    {
+      "item_id": "b12-1121",
+      "thai": "ทีมทำสไลด์",
+      "romanization": "thiim tham salai",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "mid",
+        "low",
+        "high"
+      ],
+      "reason": "The loanword 'สไลด์' (sa-lai) has two syllables (low, high). The current array is missing the final high tone syllable."
+    },
+    {
+      "item_id": "b12-0948",
+      "thai": "ทีมยังไม่คุ้นกับวิธีทำงานของเขา",
+      "romanization": "thiim yang mai khun kap withii thamngaan khong khao",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "falling",
+          "high",
+          "low",
+          "mid",
+          "mid",
+          "mid",
+          "rising",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "mid",
+        "falling",
+        "high",
+        "low",
+        "high",
+        "mid",
+        "mid",
+        "mid",
+        "rising",
+        "rising"
+      ],
+      "reason": "The phrase has 11 syllables: thiim (mid), yang (mid), mai (falling), khun (high), kap (low), wi (high), thii (mid), tham (mid), ngaan (mid), khong (rising), khao (rising). The current tones array is missing a tone and has incorrect tones for 'withii'."
+    },
+    {
+      "item_id": "b12-1015",
+      "thai": "ทุกคนก็ยังอยากฟังความเห็นของเขา",
+      "romanization": "thuk khon ko yang yaak fang khwaam hen khong khao",
+      "current_tones_variants": [
+        [
+          "high",
+          "mid",
+          "falling",
+          "mid",
+          "falling",
+          "mid",
+          "mid",
+          "rising",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "mid",
+        "falling",
+        "mid",
+        "low",
+        "mid",
+        "mid",
+        "rising",
+        "rising",
+        "rising"
+      ],
+      "reason": "The phrase has 10 syllables. The current tones array is missing a tone and incorrectly labels 'yaak' (อยาก) as falling instead of low."
+    },
+    {
+      "item_id": "b12-1040",
+      "thai": "เธอมีประสบการณ์",
+      "romanization": "thoe mii prasopkaan",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "low",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "mid",
+        "low",
+        "low",
+        "mid"
+      ],
+      "reason": "The word 'ประสบการณ์' (prasopkaan) has 3 syllables: pra (low), sop (low), kaan (mid). The current tones array is missing the tone for 'sop'."
+    },
+    {
+      "item_id": "b12-0920",
+      "thai": "บ้านอยู่ใกล้",
+      "romanization": "baan yuu glai",
+      "current_tones_variants": [
+        [
+          "falling",
+          "low",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "low",
+        "falling"
+      ],
+      "reason": "The word 'ใกล้' (glâi) has a falling tone, not a mid tone."
+    },
+    {
+      "item_id": "b12-0956",
+      "thai": "ปัญหานี้ไม่คาดไว้",
+      "romanization": "panhaa nii mai khaat wai",
+      "current_tones_variants": [
+        [
+          "rising",
+          "rising",
+          "high",
+          "falling",
+          "falling",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "rising",
+        "high",
+        "falling",
+        "falling",
+        "high"
+      ],
+      "reason": "The syllable 'ปัญ' (bpan) has a mid tone, not a rising tone."
+    },
+    {
+      "item_id": "b12-1013",
+      "thai": "ผลลัพธ์ก็คุ้มค่า",
+      "romanization": "phonlap ko khumkhaa",
+      "current_tones_variants": [
+        [
+          "rising",
+          "high",
+          "falling",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "high",
+        "falling",
+        "high",
+        "falling"
+      ],
+      "reason": "The word has 5 syllables but only 4 tones were provided. Missing the high tone for 'คุ้ม' (khum)."
+    },
+    {
+      "item_id": "b12-0863",
+      "thai": "ผ่านช่วงยากๆได้",
+      "romanization": "phaan chuang yaak yaak dai",
+      "current_tones_variants": [
+        [
+          "falling",
+          "mid",
+          "falling",
+          "falling",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "falling",
+        "falling",
+        "falling",
+        "falling"
+      ],
+      "reason": "'ผ่าน' (phaan) is a low tone, and 'ช่วง' (chuang) is a falling tone."
+    },
+    {
+      "item_id": "b12-0949",
+      "thai": "แผนนี้ประหยัดกว่า",
+      "romanization": "phaen nii prayat kwaa",
+      "current_tones_variants": [
+        [
+          "mid",
+          "high",
+          "low",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "high",
+        "low",
+        "low",
+        "low"
+      ],
+      "reason": "The phrase has 5 syllables: แผน (rising), นี้ (high), ประ (low), หยัด (low), กว่า (low). The current tones array is missing a syllable and has the wrong tone for 'แผน'."
+    },
+    {
+      "item_id": "b12-0497",
+      "thai": "แผนสำรอง",
+      "romanization": "phǎen sǎm-ràawng",
+      "current_tones_variants": [
+        [
+          "rising",
+          "rising",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "rising",
+        "mid"
+      ],
+      "reason": "The syllable 'รอง' (raawng) has a mid tone, not a low tone."
+    },
+    {
+      "item_id": "b12-1063",
+      "thai": "พนักงานก็ยังยุ่งมาก",
+      "romanization": "phanakngaan ko yang yung maak",
+      "current_tones_variants": [
+        [
+          "high",
+          "mid",
+          "falling",
+          "mid",
+          "falling",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "high",
+        "mid",
+        "falling",
+        "mid",
+        "falling",
+        "falling"
+      ],
+      "reason": "The phrase has 7 syllables: พะ (high), นัก (high), งาน (mid), ก็ (falling), ยัง (mid), ยุ่ง (falling), มาก (falling). The current tones array is missing one syllable."
+    },
+    {
+      "item_id": "b12-0586",
+      "thai": "พยายาม",
+      "romanization": "pha-yaa-yaam",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "mid",
+        "mid"
+      ],
+      "reason": "The syllable 'พะ' (pha) has a high tone, not a mid tone."
+    },
+    {
+      "item_id": "b12-0979",
+      "thai": "พ่อก็กินกับเราเล็กน้อย",
+      "romanization": "pho ko kin kap rao lek noi",
+      "current_tones_variants": [
+        [
+          "falling",
+          "falling",
+          "mid",
+          "low",
+          "mid",
+          "high",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "falling",
+        "mid",
+        "low",
+        "mid",
+        "high",
+        "high"
+      ],
+      "reason": "The syllable 'น้อย' (noi) has a high tone, not a low tone."
+    },
+    {
+      "item_id": "b12-0412",
+      "thai": "พ่อทำงานกับบริษัทนี้",
+      "romanization": "phâw tham-ngaan gàp bàw-rí-sàt níi",
+      "current_tones_variants": [
+        [
+          "falling",
+          "mid",
+          "mid",
+          "low",
+          "low",
+          "high",
+          "low",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "mid",
+        "mid",
+        "low",
+        "mid",
+        "high",
+        "low",
+        "high"
+      ],
+      "reason": "The syllable 'บอ' (bɔɔ) in 'บริษัท' has a mid tone, not a low tone."
+    },
+    {
+      "item_id": "b12-0430",
+      "thai": "พ่อพักระหว่างทาง",
+      "romanization": "phâw phák rá-wàang thaang",
+      "current_tones_variants": [
+        [
+          "falling",
+          "high",
+          "high",
+          "falling",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "high",
+        "high",
+        "low",
+        "mid"
+      ],
+      "reason": "The syllable 'หว่าง' (wàang) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0613",
+      "thai": "พูดแทรก",
+      "romanization": "phûut sàaek",
+      "current_tones_variants": [
+        [
+          "falling",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "falling"
+      ],
+      "reason": "The word 'แทรก' (sàaek) has a falling tone (low-class consonant cluster ทร pronounced as ซ, long vowel, dead syllable)."
+    },
+    {
+      "item_id": "b12-0875",
+      "thai": "ฟังให้จบก่อนตอบ",
+      "romanization": "fang hai jop kon top",
+      "current_tones_variants": [
+        [
+          "mid",
+          "falling",
+          "low",
+          "low",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "falling",
+        "low",
+        "low",
+        "low"
+      ],
+      "reason": "The word 'ตอบ' (top) has a low tone (mid-class consonant, long vowel, dead syllable)."
+    },
+    {
+      "item_id": "b12-0996",
+      "thai": "ภาษาไทยจะยากสำหรับเขา",
+      "romanization": "phaasaa thai cha yaak samrap khao",
+      "current_tones_variants": [
+        [
+          "rising",
+          "mid",
+          "mid",
+          "low",
+          "falling",
+          "rising",
+          "low",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "rising",
+        "mid",
+        "low",
+        "falling",
+        "rising",
+        "low",
+        "rising"
+      ],
+      "reason": "The word 'ภาษา' (phaa-sǎa) consists of 'ภา' (mid tone) and 'ษา' (rising tone). The current tones incorrectly list 'rising' then 'mid'."
+    },
+    {
+      "item_id": "b12-0737",
+      "thai": "มีประโยชน์มาก",
+      "romanization": "mii bprà-yòot mâak",
+      "current_tones_variants": [
+        [
+          "mid",
+          "low",
+          "low",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "low",
+        "falling",
+        "falling"
+      ],
+      "reason": "The word 'โยชน์' (yòot) has a low-class initial consonant (ย), a long vowel, and a dead ending, which results in a falling tone, not a low tone."
+    },
+    {
+      "item_id": "b12-0722",
+      "thai": "มือใหม่",
+      "romanization": "mʉʉ-mài",
+      "current_tones_variants": [
+        [
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (mài) has a high-class initial cluster (หม) and a mai ek tone mark, which results in a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0610",
+      "thai": "เมนูใหม่",
+      "romanization": "mee-nuu mài",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "mid",
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (mài) has a high-class initial cluster (หม) and a mai ek tone mark, which results in a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0344",
+      "thai": "เมื่อยขา",
+      "romanization": "mʉ̀ai khǎa",
+      "current_tones_variants": [
+        [
+          "low",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "rising"
+      ],
+      "reason": "The word 'เมื่อย' (mʉ̀ai) has a low-class initial consonant (ม) and a mai ek tone mark, which results in a falling tone, not a low tone."
+    },
+    {
+      "item_id": "b12-0368",
+      "thai": "เมื่อยหลัง",
+      "romanization": "mʉ̀ai lǎng",
+      "current_tones_variants": [
+        [
+          "low",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "rising"
+      ],
+      "reason": "The word 'เมื่อย' (mʉ̀ai) has a low-class initial consonant (ม) and a mai ek tone mark, which results in a falling tone, not a low tone."
+    },
+    {
+      "item_id": "b12-0328",
+      "thai": "ไม่ได้คุยกับใคร",
+      "romanization": "mâi dâai khui gàp khrai",
+      "current_tones_variants": [
+        [
+          "falling",
+          "falling",
+          "mid",
+          "low",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "falling",
+        "mid",
+        "low",
+        "mid"
+      ],
+      "reason": "The word 'ใคร' (khrai) has a mid tone, not a rising tone."
+    },
+    {
+      "item_id": "b12-0535",
+      "thai": "ไม่ต้องรีบพรุ่งนี้",
+      "romanization": "mâi dtâwng rîip phrûng-níi",
+      "current_tones_variants": [
+        [
+          "falling",
+          "falling",
+          "falling",
+          "mid",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "falling",
+        "falling",
+        "falling",
+        "high"
+      ],
+      "reason": "The word 'พรุ่ง' (phrûng) has a falling tone, not a mid tone."
+    },
+    {
+      "item_id": "b12-0521",
+      "thai": "ไม่หิวระหว่างทาง",
+      "romanization": "mâi hǐu rá-wàang thaang",
+      "current_tones_variants": [
+        [
+          "falling",
+          "rising",
+          "high",
+          "falling",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "rising",
+        "high",
+        "low",
+        "mid"
+      ],
+      "reason": "The word 'หว่าง' (wàang) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0954",
+      "thai": "ยังฟังยากสำหรับมือใหม่",
+      "romanization": "yang fang yaak samrap mue mai",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "falling",
+          "rising",
+          "low",
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "mid",
+        "falling",
+        "rising",
+        "low",
+        "mid",
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (mài) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0929",
+      "thai": "ยังมีจุดเสี่ยง",
+      "romanization": "yang mii jut siang",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "low",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "mid",
+        "low",
+        "low"
+      ],
+      "reason": "The word 'เสี่ยง' (sìang) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0946",
+      "thai": "ยังไม่ตอบโจทย์ลูกค้า",
+      "romanization": "yang mai top jot luukkhaa",
+      "current_tones_variants": [
+        [
+          "mid",
+          "falling",
+          "high",
+          "low",
+          "falling",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "falling",
+        "low",
+        "low",
+        "falling",
+        "high"
+      ],
+      "reason": "The word 'ตอบ' (dtɔ̀ɔp) has a low tone, not a high tone."
+    },
+    {
+      "item_id": "b12-0923",
+      "thai": "ยังไม่อยากพัก",
+      "romanization": "yang mai yaak phak",
+      "current_tones_variants": [
+        [
+          "mid",
+          "falling",
+          "falling",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "falling",
+        "low",
+        "high"
+      ],
+      "reason": "The word 'อยาก' (yàak) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0951",
+      "thai": "ร้านนั้นอยู่ใกล้กว่า",
+      "romanization": "raan nan yuu glai kwaa",
+      "current_tones_variants": [
+        [
+          "high",
+          "high",
+          "low",
+          "mid",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "high",
+        "low",
+        "falling",
+        "low"
+      ],
+      "reason": "The word 'ใกล้' (glai, near) has a falling tone, not a mid tone."
+    },
+    {
+      "item_id": "b12-0822",
+      "thai": "ร้านนี้ลูกค้าน้อยลง",
+      "romanization": "ráan-níi lûuk-kháa nói long",
+      "current_tones_variants": [
+        [
+          "high",
+          "high",
+          "falling",
+          "high",
+          "low",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "high",
+        "falling",
+        "high",
+        "high",
+        "mid"
+      ],
+      "reason": "The word 'น้อย' (nói) has a high tone, not a low tone."
+    },
+    {
+      "item_id": "b12-0918",
+      "thai": "ร้านนี้อร่อย",
+      "romanization": "raan nii aroi",
+      "current_tones_variants": [
+        [
+          "high",
+          "high",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "high",
+        "low",
+        "low"
+      ],
+      "reason": "The word 'อร่อย' (a-roi) consists of two syllables, both with a low tone. The current tones array is missing a syllable."
+    },
+    {
+      "item_id": "b12-0239",
+      "thai": "ร้านใหม่",
+      "romanization": "ráan mài",
+      "current_tones_variants": [
+        [
+          "high",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (mài) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-1021",
+      "thai": "ร้านอยู่ใกล้",
+      "romanization": "raan yuu glai",
+      "current_tones_variants": [
+        [
+          "high",
+          "low",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "low",
+        "falling"
+      ],
+      "reason": "The word 'ใกล้' (glai) has a falling tone, not a mid tone."
+    },
+    {
+      "item_id": "b12-1033",
+      "thai": "เราก็ยังลืมเอกสาร",
+      "romanization": "rao ko yang luem ekasaan",
+      "current_tones_variants": [
+        [
+          "mid",
+          "falling",
+          "mid",
+          "mid",
+          "low",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "falling",
+        "mid",
+        "mid",
+        "low",
+        "low",
+        "rising"
+      ],
+      "reason": "The word 'เอกสาร' (eek-ga-saan) has three syllables with tones low, low, rising. The current array is missing the final rising tone."
+    },
+    {
+      "item_id": "b12-1116",
+      "thai": "เราแก้ปัญหานี้",
+      "romanization": "rao gae panhaa nii",
+      "current_tones_variants": [
+        [
+          "mid",
+          "falling",
+          "rising",
+          "rising",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "falling",
+        "mid",
+        "rising",
+        "high"
+      ],
+      "reason": "The first syllable of 'ปัญหา' (pan) has a mid tone, not a rising tone."
+    },
+    {
+      "item_id": "b12-0452",
+      "thai": "เราไปเชียงใหม่",
+      "romanization": "rao bpai chiiang-mài",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "mid",
+        "mid",
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (mài) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0547",
+      "thai": "เริ่มงานพรุ่งนี้",
+      "romanization": "rêem-ngaan phrûng-níi",
+      "current_tones_variants": [
+        [
+          "falling",
+          "mid",
+          "mid",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "mid",
+        "falling",
+        "high"
+      ],
+      "reason": "The word 'พรุ่ง' (phrûng) has a falling tone, not a mid tone."
+    },
+    {
+      "item_id": "b12-0413",
+      "thai": "เริ่มเปิดบริษัท",
+      "romanization": "rêem bpə̀ət bàw-rí-sàt",
+      "current_tones_variants": [
+        [
+          "falling",
+          "low",
+          "low",
+          "high",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "low",
+        "mid",
+        "high",
+        "low"
+      ],
+      "reason": "The syllable 'บอ' (bàw/bo) in 'บริษัท' has a mid tone, not a low tone."
+    },
+    {
+      "item_id": "b12-0886",
+      "thai": "ลดปัญหา",
+      "romanization": "lot panhaa",
+      "current_tones_variants": [
+        [
+          "high",
+          "rising",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "mid",
+        "rising"
+      ],
+      "reason": "The syllable 'ปัญ' (pan) in 'ปัญหา' has a mid tone, not a rising tone."
+    },
+    {
+      "item_id": "b12-1003",
+      "thai": "ลูกค้าก็นั่งข้างนอกกันเยอะ",
+      "romanization": "luukkhaa ko nang khaang nok kan yoe",
+      "current_tones_variants": [
+        [
+          "falling",
+          "high",
+          "falling",
+          "falling",
+          "falling",
+          "mid",
+          "mid",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "high",
+        "falling",
+        "falling",
+        "falling",
+        "falling",
+        "mid",
+        "high"
+      ],
+      "reason": "The word 'นอก' (nok) has a low-class initial consonant (น), a long vowel (อ), and a dead ending (ก), which results in a falling tone, not a mid tone."
+    },
+    {
+      "item_id": "b12-0845",
+      "thai": "วางแผนล่วงหน้า",
+      "romanization": "waang phaen luang naa",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "falling",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "rising",
+        "falling",
+        "falling"
+      ],
+      "reason": "The word 'แผน' (phaen) has a rising tone, not a mid tone."
+    },
+    {
+      "item_id": "b12-0836",
+      "thai": "วิธีนี้เหมาะกับมือใหม่",
+      "romanization": "wí-thii-níi mɔ̀ʔ gàp mʉʉ-mài",
+      "current_tones_variants": [
+        [
+          "high",
+          "mid",
+          "high",
+          "low",
+          "low",
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "mid",
+        "high",
+        "low",
+        "low",
+        "mid",
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (mài) has a low tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0546",
+      "thai": "ส่งไฟล์คืนนี้",
+      "romanization": "sòng fai khʉʉn-níi",
+      "current_tones_variants": [
+        [
+          "low",
+          "mid",
+          "falling",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "mid",
+        "mid",
+        "high"
+      ],
+      "reason": "The word 'คืน' (khʉʉn) has a mid tone, not a falling tone."
+    },
+    {
+      "item_id": "b12-0477",
+      "thai": "สถานการณ์",
+      "romanization": "sà-thǎan-na-gaan",
+      "current_tones_variants": [
+        [
+          "low",
+          "rising",
+          "mid",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "rising",
+        "high",
+        "mid"
+      ],
+      "reason": "The syllable 'ณ' (na) in 'สถานการณ์' is pronounced with a high tone."
+    },
+    {
+      "item_id": "b12-0909",
+      "thai": "สม่ำเสมอ",
+      "romanization": "samer samoe",
+      "current_tones_variants": [
+        [
+          "falling",
+          "rising",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "low",
+        "low",
+        "rising"
+      ],
+      "reason": "The word 'สม่ำเสมอ' is pronounced 'sà-màm-sà-mə̌ə', which consists of 4 syllables with tones: low, low, low, rising."
+    },
+    {
+      "item_id": "b12-1092",
+      "thai": "สำหรับพรุ่งนี้",
+      "romanization": "samrap phrungnii",
+      "current_tones_variants": [
+        [
+          "rising",
+          "low",
+          "mid",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "low",
+        "falling",
+        "high"
+      ],
+      "reason": "The word 'พรุ่ง' (phrûng) has a falling tone, not mid."
+    },
+    {
+      "item_id": "b12-0789",
+      "thai": "สำหรับสี่คน",
+      "romanization": "sǎm-ràp sìi khon",
+      "current_tones_variants": [
+        [
+          "rising",
+          "low",
+          "falling",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "low",
+        "low",
+        "mid"
+      ],
+      "reason": "The word 'สี่' (sìi) has a low tone, not falling."
+    },
+    {
+      "item_id": "b12-0890",
+      "thai": "สูงกว่าปกติ",
+      "romanization": "suung kwaa pokkati",
+      "current_tones_variants": [
+        [
+          "rising",
+          "low",
+          "low",
+          "low",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
+      "reason": "The word 'ปกติ' (bpòk-gà-dtì) consists of three low tones. The last syllable 'ติ' (dtì) has a low tone, not mid."
+    },
+    {
+      "item_id": "b12-1056",
+      "thai": "เสื้อผ้าพร้อมแล้ว",
+      "romanization": "sueapha phrom laeo",
+      "current_tones_variants": [
+        [
+          "falling",
+          "high",
+          "high",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "falling",
+        "high",
+        "high"
+      ],
+      "reason": "The word 'ผ้า' (phâa) has a falling tone, not high."
+    },
+    {
+      "item_id": "b12-0932",
+      "thai": "ห้องนี้สว่าง",
+      "romanization": "hong nii sawaang",
+      "current_tones_variants": [
+        [
+          "falling",
+          "high",
+          "low",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "high",
+        "low",
+        "low"
+      ],
+      "reason": "The word สว่าง (sà-wàang) consists of two syllables, both with a low tone. The leading high-class consonant ส causes the low-class consonant ว to follow high-class tone rules, making the second syllable a low tone, not falling."
+    },
+    {
+      "item_id": "b12-0263",
+      "thai": "ใหม่",
+      "romanization": "mài",
+      "current_tones_variants": [
+        [
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low"
+      ],
+      "reason": "The word 'ใหม่' (mài) has a low tone (high-class leading consonant ห + sonorant ม + mai ek tone mark = low tone), not a falling tone."
+    },
+    {
+      "item_id": "b12-0911",
+      "thai": "ให้เวลาตัวเองพักบ้าง",
+      "romanization": "hai welaa tua eng phak baang",
+      "current_tones_variants": [
+        [
+          "falling",
+          "mid",
+          "mid",
+          "mid",
+          "high",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "mid",
+        "mid",
+        "mid",
+        "mid",
+        "high",
+        "falling"
+      ],
+      "reason": "The phrase has 7 syllables: ให้ (falling), เว (mid), ลา (mid), ตัว (mid), เอง (mid), พัก (high), บ้าง (falling). The current array only has 6 tones and ends with an incorrect 'mid' tone."
+    },
+    {
+      "item_id": "b12-0205",
+      "thai": "อย่างละเอียด",
+      "romanization": "yàang là-ìiat",
+      "current_tones_variants": [
+        [
+          "low",
+          "low",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "high",
+        "low"
+      ],
+      "reason": "The syllable 'ละ' (là) has a high tone (low-class consonant ล + short vowel + dead syllable = high tone), not a low tone."
+    },
+    {
+      "item_id": "b12-0564",
+      "thai": "ออกกำลังกายสม่ำเสมอ",
+      "romanization": "àawk-gam-lang-gaai sà-màm-sà-mə̌ə",
+      "current_tones_variants": [
+        [
+          "low",
+          "mid",
+          "mid",
+          "mid",
+          "low",
+          "falling",
+          "low",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "mid",
+        "mid",
+        "mid",
+        "low",
+        "low",
+        "low",
+        "rising"
+      ],
+      "reason": "The syllable 'ม่ำ' in 'สม่ำเสมอ' has a low tone (the leading high-class ส makes the low-class ม follow high-class tone rules; high-class + mai ek = low tone), not a falling tone."
+    },
+    {
+      "item_id": "b12-0858",
+      "thai": "ออกกำลังกายสม่ำเสมอ",
+      "romanization": "ok kamlangkaai samer samoe",
+      "current_tones_variants": [
+        [
+          "low",
+          "mid",
+          "mid",
+          "rising",
+          "falling",
+          "rising"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "mid",
+        "mid",
+        "mid",
+        "low",
+        "low",
+        "low",
+        "rising"
+      ],
+      "reason": "The phrase has 8 syllables: ออก (low), กำ (mid), ลัง (mid), กาย (mid), ส (low), ม่ำ (low), ส (low), เสมอ (rising). The current array only has 6 tones and is completely mismatched."
+    },
+    {
+      "item_id": "b12-1002",
+      "thai": "อากาศจะร้อน",
+      "romanization": "aakaat cha ron",
+      "current_tones_variants": [
+        [
+          "low",
+          "low",
+          "low",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "mid",
+        "low",
+        "low",
+        "high"
+      ],
+      "reason": "The syllable 'อา' (aa) has a mid tone, not a low tone."
+    },
+    {
+      "item_id": "b12-0558",
+      "thai": "อ่านเงื่อนไขให้ครบ",
+      "romanization": "àan ngʉ̀an-khǎi hâi khróp",
+      "current_tones_variants": [
+        [
+          "low",
+          "low",
+          "rising",
+          "falling",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "falling",
+        "rising",
+        "falling",
+        "high"
+      ],
+      "reason": "The word 'เงื่อน' (ngʉ̀an) has a falling tone (low class consonant ง with mai ek tone mark)."
+    }
+  ]
+}

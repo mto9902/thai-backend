@@ -1,0 +1,759 @@
+{
+  "stage": "A2.1",
+  "policy": "standard-pronunciation",
+  "sourceStack": [
+    "Wiktionary standard IPA/Paiboon when available",
+    "Thai orthographic tone rules for regular forms",
+    "Manual source review for loanwords and irregular compounds"
+  ],
+  "decisions": {
+    "a21-0028": {
+      "decision": "accept",
+      "finalTones": [
+        "mid"
+      ]
+    },
+    "a21-0413": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "low"
+      ]
+    },
+    "a21-0285": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "rising"
+      ]
+    },
+    "a21-0179": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "low"
+      ]
+    },
+    "a21-0109": {
+      "decision": "accept",
+      "finalTones": [
+        "mid"
+      ]
+    },
+    "a21-0223": {
+      "decision": "keep_current",
+      "note": "Keep standard rising tone for the question particle ???; Gemini is following the colloquial/romanization pull."
+    },
+    "a21-0380": {
+      "decision": "accept",
+      "finalTones": [
+        "mid"
+      ]
+    },
+    "a21-0356": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0400": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0252": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "high",
+        "low"
+      ]
+    },
+    "a21-0234": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "high",
+        "high",
+        "mid"
+      ]
+    },
+    "a21-0058": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "mid"
+      ]
+    },
+    "a21-0201": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "rising"
+      ]
+    },
+    "a21-0057": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "rising",
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0307": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "falling",
+        "high"
+      ]
+    },
+    "a21-0144": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "rising"
+      ]
+    },
+    "a21-0218": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "mid",
+        "low",
+        "mid"
+      ]
+    },
+    "a21-0023": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0054": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0073": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0116": {
+      "decision": "accept",
+      "finalTones": [
+        "rising"
+      ]
+    },
+    "a21-0091": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0317": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "low",
+        "low"
+      ]
+    },
+    "a21-0118": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "falling"
+      ]
+    },
+    "a21-0300": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0181": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "high"
+      ]
+    },
+    "a21-0435": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "mid",
+        "high",
+        "low"
+      ]
+    },
+    "a21-0241": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "low",
+        "mid"
+      ]
+    },
+    "a21-0278": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "low",
+        "mid"
+      ]
+    },
+    "a21-0426": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "low",
+        "mid"
+      ]
+    },
+    "a21-0017": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "mid"
+      ]
+    },
+    "a21-0362": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "rising"
+      ]
+    },
+    "a21-0016": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "low"
+      ]
+    },
+    "a21-0261": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "falling"
+      ]
+    },
+    "a21-0302": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "falling"
+      ]
+    },
+    "a21-0203": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "high"
+      ]
+    },
+    "a21-0268": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0216": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "high"
+      ]
+    },
+    "a21-0288": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0303": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0048": {
+      "decision": "accept",
+      "finalTones": [
+        "mid"
+      ]
+    },
+    "a21-0439": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "mid"
+      ]
+    },
+    "a21-0432": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "falling",
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0443": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "mid",
+        "high"
+      ]
+    },
+    "a21-0463": {
+      "decision": "accept",
+      "finalTones": [
+        "rising",
+        "high"
+      ]
+    },
+    "a21-0296": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "mid",
+        "low",
+        "low"
+      ]
+    },
+    "a21-0089": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "high",
+        "high"
+      ]
+    },
+    "a21-0067": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "high",
+        "low"
+      ]
+    },
+    "a21-0225": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0430": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "low",
+        "low"
+      ]
+    },
+    "a21-0347": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "low",
+        "rising"
+      ]
+    },
+    "a21-0465": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0283": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "rising"
+      ]
+    },
+    "a21-0592": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "high"
+      ]
+    },
+    "a21-0364": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "mid"
+      ]
+    },
+    "a21-0468": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0092": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "falling"
+      ]
+    },
+    "a21-0313": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "low",
+        "mid"
+      ]
+    },
+    "a21-0461": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "high",
+        "falling"
+      ]
+    },
+    "a21-0320": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "mid",
+        "low",
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0193": {
+      "decision": "keep_current",
+      "note": "Keep falling for ????? because the spelling uses mai tho on a mid-class initial, so the standard-tone reading is falling."
+    },
+    "a21-0386": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "falling",
+        "high"
+      ]
+    },
+    "a21-0351": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "low",
+        "low",
+        "mid"
+      ]
+    },
+    "a21-0117": {
+      "decision": "accept",
+      "finalTones": [
+        "low"
+      ]
+    },
+    "a21-0370": {
+      "decision": "keep_current",
+      "note": "Keep source-backed high/low/high for ????????, matching the standard Wiktionary variant bp?ot-s?-g?at rather than collapsing it to all-low."
+    },
+    "a21-0210": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0099": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "high",
+        "mid",
+        "low",
+        "rising"
+      ]
+    },
+    "a21-0213": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "falling"
+      ]
+    },
+    "a21-0448": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "low",
+        "low"
+      ]
+    },
+    "a21-0248": {
+      "decision": "accept",
+      "finalTones": [
+        "mid",
+        "low",
+        "rising"
+      ]
+    },
+    "a21-0208": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0104": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0373": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "mid",
+        "high"
+      ]
+    },
+    "a21-0011": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "mid"
+      ]
+    },
+    "a21-0232": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "mid"
+      ]
+    },
+    "a21-0246": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "mid"
+      ]
+    },
+    "a21-0412": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "low",
+        "low"
+      ]
+    },
+    "a21-0368": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "mid"
+      ]
+    },
+    "a21-0198": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "mid",
+        "rising"
+      ]
+    },
+    "a21-0357": {
+      "decision": "accept",
+      "finalTones": [
+        "mid"
+      ]
+    },
+    "a21-0374": {
+      "decision": "accept",
+      "finalTones": [
+        "mid"
+      ]
+    },
+    "a21-0355": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "rising"
+      ]
+    },
+    "a21-0029": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "low",
+        "mid"
+      ]
+    },
+    "a21-0384": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0290": {
+      "decision": "accept",
+      "finalTones": [
+        "falling"
+      ]
+    },
+    "a21-0280": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0244": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0377": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0378": {
+      "decision": "accept",
+      "finalTones": [
+        "high",
+        "high",
+        "high"
+      ]
+    },
+    "a21-0343": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "rising",
+        "mid",
+        "mid"
+      ]
+    },
+    "a21-0338": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0228": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "mid"
+      ]
+    },
+    "a21-0360": {
+      "decision": "accept",
+      "finalTones": [
+        "rising",
+        "mid",
+        "high"
+      ]
+    },
+    "a21-0385": {
+      "decision": "accept",
+      "finalTones": [
+        "rising",
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0323": {
+      "decision": "accept",
+      "finalTones": [
+        "rising",
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0367": {
+      "decision": "accept",
+      "finalTones": [
+        "rising",
+        "high",
+        "mid"
+      ]
+    },
+    "a21-0453": {
+      "decision": "accept",
+      "finalTones": [
+        "low"
+      ]
+    },
+    "a21-0082": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "high"
+      ]
+    },
+    "a21-0239": {
+      "decision": "accept",
+      "finalTones": [
+        "falling",
+        "mid"
+      ]
+    },
+    "a21-0013": {
+      "decision": "accept",
+      "finalTones": [
+        "rising"
+      ]
+    },
+    "a21-0414": {
+      "decision": "accept",
+      "finalTones": [
+        "low"
+      ]
+    },
+    "a21-0094": {
+      "decision": "accept",
+      "finalTones": [
+        "low",
+        "low",
+        "rising"
+      ]
+    }
+  }
+}

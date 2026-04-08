@@ -34,9 +34,38 @@ const REVIEW_MODEL =
   process.env.MOONSHOT_REVIEW_MODEL ||
   process.env.MOONSHOT_MODEL ||
   "kimi-k2-thinking";
+const REVIEW_FALLBACK_MODEL =
+  process.env.MOONSHOT_REVIEW_FALLBACK_MODEL || "kimi-k2-turbo-preview";
 const BASE_URL = process.env.MOONSHOT_BASE_URL || "https://api.moonshot.ai/v1";
 const MAX_ATTEMPTS = 10;
-const MAX_MODEL_RETRIES = 5;
+const MAX_MODEL_RETRIES = Number.parseInt(
+  process.env.MOONSHOT_MAX_MODEL_RETRIES || "8",
+  10,
+);
+const MODEL_RETRY_BASE_MS = Number.parseInt(
+  process.env.MOONSHOT_RETRY_BASE_MS || "10000",
+  10,
+);
+const MODEL_RETRY_MAX_MS = Number.parseInt(
+  process.env.MOONSHOT_RETRY_MAX_MS || "90000",
+  10,
+);
+const REVIEW_REQUEST_COOLDOWN_MS = Number.parseInt(
+  process.env.MOONSHOT_REVIEW_COOLDOWN_MS || "3000",
+  10,
+);
+const REQUEST_TIMEOUT_MS = Number.parseInt(
+  process.env.MOONSHOT_REQUEST_TIMEOUT_MS || "120000",
+  10,
+);
+const GENERATION_REQUEST_MIN_CANDIDATES = Number.parseInt(
+  process.env.MOONSHOT_GENERATION_MIN_CANDIDATES || "6",
+  10,
+);
+const GENERATION_REQUEST_MAX_CANDIDATES = Number.parseInt(
+  process.env.MOONSHOT_GENERATION_MAX_CANDIDATES || "8",
+  10,
+);
 const BATCH_NOTE_PREFIX = "Production candidate batch";
 const ACCENTED_ROMANIZATION_REGEX =
   /[\u0300-\u036fàáâãäåèéêëìíîïòóôõöùúûüýÿāēīōūǎěǐǒǔḿńňŕśťźžÀÁÂÃÄÅÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝŸĀĒĪŌŪǍĚǏǑǓḾŃŇŔŚŤŹŽ]/u;
@@ -175,6 +204,28 @@ function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
+}
+
+async function withTimeout(promise, timeoutMs, label) {
+  let timeoutHandle = null;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise((_, reject) => {
+        timeoutHandle = setTimeout(() => {
+          reject(
+            new Error(
+              `${label} request timed out after ${timeoutMs}ms`,
+            ),
+          );
+        }, timeoutMs);
+      }),
+    ]);
+  } finally {
+    if (timeoutHandle) {
+      clearTimeout(timeoutHandle);
+    }
+  }
 }
 
 async function fetchExistingRows(grammarId) {
@@ -456,15 +507,19 @@ async function callJsonObject(openai, model, label, systemPrompt, userPrompt) {
 
   for (let attempt = 1; attempt <= MAX_MODEL_RETRIES; attempt += 1) {
     try {
-      const response = await openai.chat.completions.create({
-        model,
-        temperature: 1,
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt },
-        ],
-      });
+      const response = await withTimeout(
+        openai.chat.completions.create({
+          model,
+          temperature: 1,
+          response_format: { type: "json_object" },
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userPrompt },
+          ],
+        }),
+        REQUEST_TIMEOUT_MS,
+        `${label} model (${model})`,
+      );
 
       const content = response.choices?.[0]?.message?.content;
       if (!content) {
@@ -488,7 +543,10 @@ async function callJsonObject(openai, model, label, systemPrompt, userPrompt) {
         throw error;
       }
 
-      const waitMs = 2500 * attempt;
+      const waitMs = Math.min(
+        MODEL_RETRY_BASE_MS * Math.pow(2, attempt - 1),
+        MODEL_RETRY_MAX_MS,
+      );
       console.log(
         `${label} model (${model}) retry ${attempt}/${MAX_MODEL_RETRIES} after ${waitMs}ms: ${message}`,
       );
@@ -497,6 +555,18 @@ async function callJsonObject(openai, model, label, systemPrompt, userPrompt) {
   }
 
   throw lastError ?? new Error(`${label} model request failed`);
+}
+
+function isRetryableModelError(error) {
+  const status = typeof error?.status === "number" ? error.status : undefined;
+  const message = error instanceof Error ? error.message : String(error ?? "");
+  return (
+    status === 429 ||
+    status === 408 ||
+    status === 409 ||
+    (typeof status === "number" && status >= 500) ||
+    /overloaded|timed out|timeout|temporarily unavailable/i.test(message)
+  );
 }
 
 function isDuplicateRow(existingRows, acceptedRows, row) {
@@ -514,6 +584,7 @@ function isDuplicateRow(existingRows, acceptedRows, row) {
 async function generateAcceptedRows(openai, config, batchTarget, existingRows, stageLessons) {
   const acceptedRows = [];
   const attempts = [];
+  let activeReviewModel = REVIEW_MODEL;
 
   for (
     let attempt = 1;
@@ -521,7 +592,10 @@ async function generateAcceptedRows(openai, config, batchTarget, existingRows, s
     attempt += 1
   ) {
     const missing = batchTarget - acceptedRows.length;
-    const generationCount = Math.min(Math.max(missing + 3, 8), 12);
+    const generationCount = Math.min(
+      Math.max(missing + 2, GENERATION_REQUEST_MIN_CANDIDATES),
+      GENERATION_REQUEST_MAX_CANDIDATES,
+    );
     const generationPrompt = buildGenerationPrompt(
       config,
       generationCount,
@@ -556,7 +630,7 @@ async function generateAcceptedRows(openai, config, batchTarget, existingRows, s
           normalizedGenerated.push(normalized);
         }
       } catch (error) {
-        console.warn(
+        console.log(
           `${config.id}: skipped generated candidate ${index + 1}: ${
             error instanceof Error ? error.message : "invalid row"
           }`,
@@ -575,17 +649,50 @@ async function generateAcceptedRows(openai, config, batchTarget, existingRows, s
       continue;
     }
 
+    if (REVIEW_REQUEST_COOLDOWN_MS > 0) {
+      console.log(
+        `${config.id}: waiting ${REVIEW_REQUEST_COOLDOWN_MS}ms before review pass`,
+      );
+      await sleep(REVIEW_REQUEST_COOLDOWN_MS);
+    }
+
     const reviewPrompt = buildReviewPrompt(config, normalizedGenerated, [
       ...existingRows,
       ...acceptedRows,
     ]);
-    const reviewPayload = await callJsonObject(
-      openai,
-      REVIEW_MODEL,
-      "Review",
-      "You are a strict CEFR-aligned Thai course editor. Return strict JSON only and reject weak rows.",
-      reviewPrompt,
-    );
+    let reviewPayload;
+    try {
+      reviewPayload = await callJsonObject(
+        openai,
+        activeReviewModel,
+        activeReviewModel === REVIEW_MODEL ? "Review" : "Review fallback",
+        "You are a strict CEFR-aligned Thai course editor. Return strict JSON only and reject weak rows.",
+        reviewPrompt,
+      );
+    } catch (error) {
+      const canFallback =
+        REVIEW_FALLBACK_MODEL &&
+        REVIEW_FALLBACK_MODEL !== activeReviewModel &&
+        isRetryableModelError(error);
+      if (!canFallback) {
+        throw error;
+      }
+
+      const previousReviewModel = activeReviewModel;
+      activeReviewModel = REVIEW_FALLBACK_MODEL;
+      console.log(
+        `${config.id}: review fallback from ${previousReviewModel} to ${activeReviewModel} after ${
+          error instanceof Error ? error.message : "review failure"
+        }; using fallback reviewer for the rest of this lesson`,
+      );
+      reviewPayload = await callJsonObject(
+        openai,
+        activeReviewModel,
+        "Review fallback",
+        "You are a strict CEFR-aligned Thai course editor. Return strict JSON only and reject weak rows.",
+        reviewPrompt,
+      );
+    }
     const results = Array.isArray(reviewPayload.results) ? reviewPayload.results : [];
 
     let kept = 0;
@@ -622,7 +729,7 @@ async function generateAcceptedRows(openai, config, batchTarget, existingRows, s
         }
       } catch (error) {
         rejected += 1;
-        console.warn(
+        console.log(
           `${config.id}: rejected reviewed row due to invalid shape: ${
             error instanceof Error ? error.message : "invalid row"
           }`,
@@ -840,6 +947,8 @@ async function main() {
   const openai = new OpenAI({
     apiKey: process.env.MOONSHOT_API_KEY,
     baseURL: BASE_URL,
+    timeout: REQUEST_TIMEOUT_MS,
+    maxRetries: 0,
   });
 
   const results = [];

@@ -1,0 +1,127 @@
+{
+  "requestedModel": "gemini-3.1-pro-preview",
+  "responseModelVersion": "gemini-3.1-pro-preview",
+  "stage": "B1.2",
+  "batch_id": "batch-026",
+  "item_count": 30,
+  "parsedOutput": {
+    "stage": "B1.2",
+    "batch_id": "batch-026",
+    "checked_items": 30,
+    "findings": [
+      {
+        "item_id": "b12-0613",
+        "thai": "พูดแทรก",
+        "romanization": "phûut sàaek",
+        "current_tones_variants": [
+          [
+            "falling",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "falling",
+          "falling"
+        ],
+        "reason": "The word 'แทรก' (sàaek) has a falling tone (low-class consonant cluster ทร pronounced as ซ, long vowel, dead syllable)."
+      },
+      {
+        "item_id": "b12-0875",
+        "thai": "ฟังให้จบก่อนตอบ",
+        "romanization": "fang hai jop kon top",
+        "current_tones_variants": [
+          [
+            "mid",
+            "falling",
+            "low",
+            "low",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "falling",
+          "low",
+          "low",
+          "low"
+        ],
+        "reason": "The word 'ตอบ' (top) has a low tone (mid-class consonant, long vowel, dead syllable)."
+      },
+      {
+        "item_id": "b12-0996",
+        "thai": "ภาษาไทยจะยากสำหรับเขา",
+        "romanization": "phaasaa thai cha yaak samrap khao",
+        "current_tones_variants": [
+          [
+            "rising",
+            "mid",
+            "mid",
+            "low",
+            "falling",
+            "rising",
+            "low",
+            "rising"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "rising",
+          "mid",
+          "low",
+          "falling",
+          "rising",
+          "low",
+          "rising"
+        ],
+        "reason": "The word 'ภาษา' (phaa-sǎa) consists of 'ภา' (mid tone) and 'ษา' (rising tone). The current tones incorrectly list 'rising' then 'mid'."
+      }
+    ]
+  },
+  "rawText": "{\n  \"stage\": \"B1.2\",\n  \"batch_id\": \"batch-026\",\n  \"checked_items\": 30,\n  \"findings\": [\n    {\n      \"item_id\": \"b12-0613\",\n      \"thai\": \"พูดแทรก\",\n      \"romanization\": \"phûut sàaek\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"The word 'แทรก' (sàaek) has a falling tone (low-class consonant cluster ทร pronounced as ซ, long vowel, dead syllable).\"\n    },\n    {\n      \"item_id\": \"b12-0875\",\n      \"thai\": \"ฟังให้จบก่อนตอบ\",\n      \"romanization\": \"fang hai jop kon top\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"low\",\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"low\",\n        \"low\",\n        \"low\"\n      ],\n      \"reason\": \"The word 'ตอบ' (top) has a low tone (mid-class consonant, long vowel, dead syllable).\"\n    },\n    {\n      \"item_id\": \"b12-0996\",\n      \"thai\": \"ภาษาไทยจะยากสำหรับเขา\",\n      \"romanization\": \"phaasaa thai cha yaak samrap khao\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\",\n          \"mid\",\n          \"low\",\n          \"falling\",\n          \"rising\",\n          \"low\",\n          \"rising\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"rising\",\n        \"mid\",\n        \"low\",\n        \"falling\",\n        \"rising\",\n        \"low\",\n        \"rising\"\n      ],\n      \"reason\": \"The word 'ภาษา' (phaa-sǎa) consists of 'ภา' (mid tone) and 'ษา' (rising tone). The current tones incorrectly list 'rising' then 'mid'.\"\n    }\n  ]\n}",
+  "rawResponse": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\n  \"stage\": \"B1.2\",\n  \"batch_id\": \"batch-026\",\n  \"checked_items\": 30,\n  \"findings\": [\n    {\n      \"item_id\": \"b12-0613\",\n      \"thai\": \"พูดแทรก\",\n      \"romanization\": \"phûut sàaek\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"The word 'แทรก' (sàaek) has a falling tone (low-class consonant cluster ทร pronounced as ซ, long vowel, dead syllable).\"\n    },\n    {\n      \"item_id\": \"b12-0875\",\n      \"thai\": \"ฟังให้จบก่อนตอบ\",\n      \"romanization\": \"fang hai jop kon top\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"falling\",\n          \"low\",\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"falling\",\n        \"low\",\n        \"low\",\n        \"low\"\n      ],\n      \"reason\": \"The word 'ตอบ' (top) has a low tone (mid-class consonant, long vowel, dead syllable).\"\n    },\n    {\n      \"item_id\": \"b12-0996\",\n      \"thai\": \"ภาษาไทยจะยากสำหรับเขา\",\n      \"romanization\": \"phaasaa thai cha yaak samrap khao\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\",\n          \"mid\",\n          \"low\",\n          \"falling\",\n          \"rising\",\n          \"low\",\n          \"rising\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"rising\",\n        \"mid\",\n        \"low\",\n        \"falling\",\n        \"rising\",\n        \"low\",\n        \"rising\"\n      ],\n      \"reason\": \"The word 'ภาษา' (phaa-sǎa) consists of 'ภา' (mid tone) and 'ษา' (rising tone). The current tones incorrectly list 'rising' then 'mid'.\"\n    }\n  ]\n}",
+              "thoughtSignature": "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"
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 4421,
+      "candidatesTokenCount": 582,
+      "totalTokenCount": 7292,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 4421
+        }
+      ],
+      "thoughtsTokenCount": 2289
+    },
+    "modelVersion": "gemini-3.1-pro-preview",
+    "responseId": "Af7VacLqNqydjuMPpdaV4Qk"
+  },
+  "usageMetadata": {
+    "promptTokenCount": 4421,
+    "candidatesTokenCount": 582,
+    "totalTokenCount": 7292,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 4421
+      }
+    ],
+    "thoughtsTokenCount": 2289
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "requestedModel": "gemini-3.1-pro-preview",
+  "responseModelVersion": "gemini-3.1-pro-preview",
+  "stage": "B2.2",
+  "batch_id": "batch-002",
+  "item_count": 25,
+  "parsedOutput": {
+    "stage": "B2.2",
+    "batch_id": "batch-002",
+    "checked_items": 25,
+    "findings": [
+      {
+        "item_id": "b22-1033",
+        "thai": "สำหรับ",
+        "romanization": "samrap",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "rising",
+          "low"
+        ],
+        "reason": "The first syllable 'สำ' (sam) has a high-class initial consonant with a sonorant final, resulting in a rising tone. The second syllable 'หรับ' (rap) has a high-class leading consonant, short vowel, and dead ending, resulting in a low tone."
+      },
+      {
+        "item_id": "b22-1078",
+        "thai": "อย่างไรก็",
+        "romanization": "yaang-rai gaaw",
+        "current_tones_variants": [
+          [
+            "falling",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "mid",
+          "falling"
+        ],
+        "reason": "The first syllable 'อย่าง' (yaang) has a mid-class leading consonant (อ) with a tone mark 1 (mai ek), resulting in a low tone, not a falling tone."
+      },
+      {
+        "item_id": "b22-0564",
+        "thai": "ลูกค้า",
+        "romanization": "luuk-khaa",
+        "current_tones_variants": [
+          [
+            "falling",
+            "high"
+          ],
+          [
+            "high",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "falling",
+          "high"
+        ],
+        "reason": "The first syllable 'ลูก' (luuk) has a low-class initial consonant, long vowel, and dead ending, resulting in a falling tone. The variant ['high', 'high'] is incorrect."
+      },
+      {
+        "item_id": "b22-0215",
+        "thai": "แกล้งทำเป็น",
+        "romanization": "klaeng tham-bpen",
+        "current_tones_variants": [
+          [
+            "falling",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "falling",
+          "mid",
+          "mid"
+        ],
+        "reason": "The word consists of 3 syllables ('klaeng', 'tham', 'bpen'), but only 2 tones were provided. The correct tones are falling, mid, and mid respectively."
+      },
+      {
+        "item_id": "b22-0256",
+        "thai": "ซะก่อน",
+        "romanization": "sa gawn",
+        "current_tones_variants": [
+          [
+            "high",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "low"
+        ],
+        "reason": "The second syllable 'ก่อน' (gawn) has a mid-class initial consonant with a tone mark 1 (mai ek), resulting in a low tone, not a falling tone."
+      }
+    ]
+  },
+  "rawText": "{\n  \"stage\": \"B2.2\",\n  \"batch_id\": \"batch-002\",\n  \"checked_items\": 25,\n  \"findings\": [\n    {\n      \"item_id\": \"b22-1033\",\n      \"thai\": \"สำหรับ\",\n      \"romanization\": \"samrap\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\"\n      ],\n      \"reason\": \"The first syllable 'สำ' (sam) has a high-class initial consonant with a sonorant final, resulting in a rising tone. The second syllable 'หรับ' (rap) has a high-class leading consonant, short vowel, and dead ending, resulting in a low tone.\"\n    },\n    {\n      \"item_id\": \"b22-1078\",\n      \"thai\": \"อย่างไรก็\",\n      \"romanization\": \"yaang-rai gaaw\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"The first syllable 'อย่าง' (yaang) has a mid-class leading consonant (อ) with a tone mark 1 (mai ek), resulting in a low tone, not a falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0564\",\n      \"thai\": \"ลูกค้า\",\n      \"romanization\": \"luuk-khaa\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"high\"\n        ],\n        [\n          \"high\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"The first syllable 'ลูก' (luuk) has a low-class initial consonant, long vowel, and dead ending, resulting in a falling tone. The variant ['high', 'high'] is incorrect.\"\n    },\n    {\n      \"item_id\": \"b22-0215\",\n      \"thai\": \"แกล้งทำเป็น\",\n      \"romanization\": \"klaeng tham-bpen\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"The word consists of 3 syllables ('klaeng', 'tham', 'bpen'), but only 2 tones were provided. The correct tones are falling, mid, and mid respectively.\"\n    },\n    {\n      \"item_id\": \"b22-0256\",\n      \"thai\": \"ซะก่อน\",\n      \"romanization\": \"sa gawn\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\"\n      ],\n      \"reason\": \"The second syllable 'ก่อน' (gawn) has a mid-class initial consonant with a tone mark 1 (mai ek), resulting in a low tone, not a falling tone.\"\n    }\n  ]\n}",
+  "rawResponse": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\n  \"stage\": \"B2.2\",\n  \"batch_id\": \"batch-002\",\n  \"checked_items\": 25,\n  \"findings\": [\n    {\n      \"item_id\": \"b22-1033\",\n      \"thai\": \"สำหรับ\",\n      \"romanization\": \"samrap\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"rising\",\n        \"low\"\n      ],\n      \"reason\": \"The first syllable 'สำ' (sam) has a high-class initial consonant with a sonorant final, resulting in a rising tone. The second syllable 'หรับ' (rap) has a high-class leading consonant, short vowel, and dead ending, resulting in a low tone.\"\n    },\n    {\n      \"item_id\": \"b22-1078\",\n      \"thai\": \"อย่างไรก็\",\n      \"romanization\": \"yaang-rai gaaw\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"The first syllable 'อย่าง' (yaang) has a mid-class leading consonant (อ) with a tone mark 1 (mai ek), resulting in a low tone, not a falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0564\",\n      \"thai\": \"ลูกค้า\",\n      \"romanization\": \"luuk-khaa\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"high\"\n        ],\n        [\n          \"high\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"The first syllable 'ลูก' (luuk) has a low-class initial consonant, long vowel, and dead ending, resulting in a falling tone. The variant ['high', 'high'] is incorrect.\"\n    },\n    {\n      \"item_id\": \"b22-0215\",\n      \"thai\": \"แกล้งทำเป็น\",\n      \"romanization\": \"klaeng tham-bpen\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"The word consists of 3 syllables ('klaeng', 'tham', 'bpen'), but only 2 tones were provided. The correct tones are falling, mid, and mid respectively.\"\n    },\n    {\n      \"item_id\": \"b22-0256\",\n      \"thai\": \"ซะก่อน\",\n      \"romanization\": \"sa gawn\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\"\n      ],\n      \"reason\": \"The second syllable 'ก่อน' (gawn) has a mid-class initial consonant with a tone mark 1 (mai ek), resulting in a low tone, not a falling tone.\"\n    }\n  ]\n}",
+              "thoughtSignature": "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"
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 8509,
+      "candidatesTokenCount": 840,
+      "totalTokenCount": 12722,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 8509
+        }
+      ],
+      "thoughtsTokenCount": 3373
+    },
+    "modelVersion": "gemini-3.1-pro-preview",
+    "responseId": "1AvWadbSLML14-EPoeWz-Qg"
+  },
+  "usageMetadata": {
+    "promptTokenCount": 8509,
+    "candidatesTokenCount": 840,
+    "totalTokenCount": 12722,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 8509
+      }
+    ],
+    "thoughtsTokenCount": 3373
+  }
+}

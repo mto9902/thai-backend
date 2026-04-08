@@ -1,0 +1,81 @@
+{
+  "requestedModel": "gemini-3.1-pro-preview",
+  "responseModelVersion": "gemini-3.1-pro-preview",
+  "stage": "B1.2",
+  "batch_id": "batch-038",
+  "item_count": 16,
+  "parsedOutput": {
+    "stage": "B1.2",
+    "batch_id": "batch-038",
+    "checked_items": 16,
+    "findings": [
+      {
+        "item_id": "b12-0558",
+        "thai": "อ่านเงื่อนไขให้ครบ",
+        "romanization": "àan ngʉ̀an-khǎi hâi khróp",
+        "current_tones_variants": [
+          [
+            "low",
+            "low",
+            "rising",
+            "falling",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "falling",
+          "rising",
+          "falling",
+          "high"
+        ],
+        "reason": "The word 'เงื่อน' (ngʉ̀an) has a falling tone (low class consonant ง with mai ek tone mark)."
+      }
+    ]
+  },
+  "rawText": "{\n  \"stage\": \"B1.2\",\n  \"batch_id\": \"batch-038\",\n  \"checked_items\": 16,\n  \"findings\": [\n    {\n      \"item_id\": \"b12-0558\",\n      \"thai\": \"อ่านเงื่อนไขให้ครบ\",\n      \"romanization\": \"àan ngʉ̀an-khǎi hâi khróp\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"low\",\n          \"rising\",\n          \"falling\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"falling\",\n        \"rising\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"The word 'เงื่อน' (ngʉ̀an) has a falling tone (low class consonant ง with mai ek tone mark).\"\n    }\n  ]\n}",
+  "rawResponse": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\n  \"stage\": \"B1.2\",\n  \"batch_id\": \"batch-038\",\n  \"checked_items\": 16,\n  \"findings\": [\n    {\n      \"item_id\": \"b12-0558\",\n      \"thai\": \"อ่านเงื่อนไขให้ครบ\",\n      \"romanization\": \"àan ngʉ̀an-khǎi hâi khróp\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"low\",\n          \"rising\",\n          \"falling\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"falling\",\n        \"rising\",\n        \"falling\",\n        \"high\"\n      ],\n      \"reason\": \"The word 'เงื่อน' (ngʉ̀an) has a falling tone (low class consonant ง with mai ek tone mark).\"\n    }\n  ]\n}",
+              "thoughtSignature": "EsYrCsMrAb4+9vv4hvHo+Q/+p2cK48440sZDqYy467eHu7l2pZtZvPwCl9os7vjKiXEgrjStLk/lhouqxu3d8vU+ssU42yvc/4vasx67Q3wbtuNHvwKTd35NdMTVB/swHMIdGRRGvbxI5FPIZeP1VWtfYXi8WRnpz21/AIPL+QqlPsLbzDwf6uS1uDMk/K+UGEg0YgBzUSwC7RsN5M6NBu49CIAe2l27mJeBW2ZSkC2+2XHQJ/GeJyrB129nepvnS8B6fGfkxTGEog7OXbB2IRtuMBgEsgL7rlF5xBfvOU3XK1UY7BC0JHqJGIm9FNubTuXmlTU7oLPUkiZb4X/AWj7F1EIeq91BXHumMz1GIZSmxKnluW8yp2if7UmMXrz02Pjbxz2NrMfglqGsyGKKHCgTSTG6rWCnQTJXClJ3cQZIuu2qiNUY6HVRwyPfCAdxVzdBiu5LznjHEvu/tRcgQuG0Lt2DmGte7zy0/sU0lB7cHa2HXXCcGno8+NaY9uJYotQMbvKcwAKl4q5Xo8MNChtSsMXfOuX7+JtcmvPi7Uen1Bb5qKmv+6MC/FO1mnynqQKRfZMWorrN0xUcqhCHb0CRbvlWBh9FNZiWgHB2xUwuuX7JY4whU+UQX305ACcVX/0fUBvb4rHmuWk35tWmo0MSJvcs1ZFwGfliLn7jyIFApJf7HALQyjdheS94ODrUF445nVpISRyHVuDotHwqRCaiIIfWxHaU0aGoVajTpTlLUvEYvpomYratbwH+KdH+zPpCIj4v3A5dGbYYE44uBXBs2BL4SMUI1x90V5l9jSbfcmtnXeVBQBx2OpSMEzU3p6K0Cprw76ZO7hQ4DyxAk/g12cXbPIr75zyvg3PhxupXPAQ35ny/nbWhUH646UBtu68WqqKb5HFiPIclt/t2BEDvtiNxE9V5xvyfNExvIJI/AxTMek3+OnZvSCVb1fEX8U5r9LyqXI/eX/Gy5kfm1wFQas2HxZ1TzTG0sWskhYZ3aZpwCbw7hNcgV6ZQI4lN1TOWZC0u2lp/zT0dXdbxN/q1gRepMOvPGutSeor0Xptij7nXQOArKG9jviBMgyUJNj/Jp1J7LhMP42ZG+fApbpfibBqyRcpU3CCARVY/YFwWOC8zWi/fZMhdMJA7mhl8IMrpeRDvWpPNVhTR+6JBfJNi8UxWkN5FxdjQSPoayjS4raAoozLotFe9gSYRwuNrKb2wwcIAZBBtVZdnz4I5A+QZevSCHMXj4Fv+TOtW5NTaO4GnediCmMq6SM+WjBz8duoPIDt1lGwLSOtBX/TtLM38WkV1pH3OnLwIEq63zr5juwqgNyMhpapfEaXyDE2c+4v8tiAumg+SmftbdWZDeeKDBc29uiJ1nbDZyJO75ANXAG/7VWUW/PYXfoYeHSwmkwiLtb2BKGgM6Buc9NOGlA4s03FYDGDwKEE9S0hWaRvhbCwW/1d8tJInQcoW0kQ5qDn0Bh0vTcleTpz2B53LHmwFucsir/v8xDn33DqWOKzeHTiieY8YT3D1hKdQ9i84tDNPjxqcP2Oyyrb+yhTTD15fbnZ11zcCgz9FsImqJCSFr5P8KlOa+fjiTHGkVidnmQPY/m1CmCQDthp4/4lcGXsufO2dtrN7czyDnqkqyq06D7xHAaYxCVs7zTfL/hBZJti8UOreNFfHjBYBILU3L1TSwoxiUQe7eg9jS8CfvLsCSwLS8ZlwvIvh8qKnfTF5lr3s5Fc5fbvKBZmVdDq9tiQbDj7i4p6bZAg3yBTEKDcNoKbyPo+59Ga/BylZT3GHlRXzt9biAa/+Xj/JlD5cGqXLA3PxmQauPjLGDGy59R65o/By0EntPRAh3q98yZY6kRznsKYx7HI/+KWEdAc3XoAC9vSCVIo+HfHWpEBvHJNY/IuXmpAD7HiB8MCdaPOV5dAeZkJeWkPk9jDBFKdoscr4+O5Gjseimh2EBMkmvpHUp18MUJ7biMT/jM2BFBcLiwoaLp6p5mGTf+viV8gINLjZ6ZDneAssYrH0x3cVZZjDf+2rpuk5H9+MTJdMTfVlzaPrO0BFI7IHNxQLYLTgC/Kedg/0V8hk1dZqjlrak62I/4lWGBfCcJQw91PZqZ3494DMAgx3GNiEicliSqdSJUKLIDHJYbFGvPLYyC68hsmvMQUxxfzBTnMQ+LbcwejXh5KGS9OLzoWLe+kuHN6MPrxgPcxDxzl1dNtkw4Kiavsj24FRB4OqPMvkw45dcHFmgPGRnzuo5Eb0SpwRE1sQPpIaMuftc7kx+hSxGjb2KwYwI1t/5pb/y3Tem/LxAIt0PPUDmg+SRj3JW4UIYDroo3+FPQZEYXClA4L2BmQeRtheX26XIAlasgcnVdFwG8cQ0ZSDq1JUDpoSHFPVJMM6UNbXs/WNhWjMLbqK84Ll1N34DMd8XpON50oehhD24GuRrBpEwP2YWg7dJB5gs4RRZ792+wtc5hZZzL1u+MN7rFaKixHqZZ7NjC7h2Yn6SLgTWlMmeFTAkSdRJReg3GzzIny1ofUk50CnM8NxGuffnePhxUlOgUYKD2IM2XZ6Cg8nOpvZL531HVoRnQYsOK1/p1vIk7iI/qj96dE078Vg2Dbp5hqpm76w5xivlU7Z+x0JCIoPrM1UlhnmZ1mRuNv2rOyuec7uFxq3C4lCScmiR0LaFzBzeyP6wfxlTg/hSjWOMV2Iw3ACyHPhXE4UqsbGXOph+ee8HIzaya/+rRdwzBFFurwTXdAIHEh3qTiHG/qAp7ZfW5Ew0GgYCd3I0MaV3yoLoEZIgiCFnv5rV5Jk2We+xRYY55oRu8zUV/J0oAO3c1IkzA74Vuv5brm2LTCH8JDxVTykZ3PUFUkhuDIQTZFOW0MxmXcZTCo1gEJ67Eqi4YqdsfRcwth97sepfnWpspsGAUpOLHHefJy1/snGNT/u713uqmMy7yZHPEoHNFyMK+m9kvK5YqutARnl0t1FhKB/Sd+Z357sn8nJ7Hj7/cxoc/nYY3RcBMW0np7TVsuzCiHPGTvxqfFN9Lr8Ld8Pyw6lOUWOae6kTui4T4LeaC4r/uV0sihhX+yhqdynXc2KYUeyz4N5V0jTmbNmShkIUxyalZlSWLUYwqG7FouXupJeFhcgosb4jjPXhEd3kTItdfRdYnFyXRwBiXGQ2QyRFCeHnArNOOuMinqul2MS4dWD3EHDh8keX3w9fNYUvbxhdxV6TFaoted8I/cekURmWlwpAUxdellz4/RuFUvopHBFYK+YOuAVf+5rK9JypvcMMQuwS74NdgKjyALprCbaKKuT1uIgefTdYfVeUSrpazPOQNKSMWIDnMOvZ8qNhyGhcWwJ60K61hTvsWj2Hbm85/WiONTRMjvW3nYF7oKEm0d+VnszZnBDMLUtw1fyVDqRXYz0Gfja26VLZxIKGxXWNqwlp9CeSUsoeH0qWFNPA2UDhufE4izXnRyQZ6E4sB3pVjV5MeswaLiVxIc7RHmGXrTcYqBvrZGv288VfsAFX900NLmp9WrPJeEdmZ6KTA/etHBgJJvuIZtzd/UT+3sbZkRC1ca6fuG8DCz2jraec3Et5aRNOETmUX3Xjd5FWyYcPPG2EME5iX/HBG5Ufoe0kBHLfxBTKqniUw0EZXYkJ6YJzRqlzpcoy1efzAcQyS9T7yBr88LWFiD1VZo587qrwIDqpiXEvIQG/t2c//mSa1ga+PZRSh7eSyAopkgBNS1nGPDltHsLqrtDB0vzkoiLv+Ck+c+nliHPP4FRGlPg6ox4gBuJblfTxYlI1R0xMmVmkKWUQsZLKKGIdP9vj6ZbSjOXnLVMgFK1sUAHsyjIBRFZC/GXZx1uhvcNyNGwt9QH3dpbmLICI+rixjaAhGE0DDPqecHRzVf17rXpfCx9dTQVsvh6/BO8wueBWYbRGJuF+WPqdl1zgl3YV2J5zNfMqtQLhIyaPle+G5qvr/BDx0K9GouRwfISXn/YJ8MWpxA2VgtSzjCcZ+mLT/ELPWBTPC7poh6vyA6p9T5Cc+kuvcPStbrBVIzOQM2FBK9U5vyMKs29U15rM4O27GiwUXWIWZ8zV5Xh52qNktxq6qo8gAAfv2hYW752Pq7qGoQ5ZvsXeiw0Yc2S5ntOpS/2U2WGL4zpDYBDvkvKBcAHa1zIBYvLbOPblPSEL1HePgKJb/A9CtpQRGIsO9UA0Saelis8DRhQhsLnt2dLvUsRZZc9xg0XV7R3+WYOPVv81Skmgpsb8nvUuGa9AYP4lEVA4YqvEZdFW5AzR0iKUNgp2WmpI3ZJGsta/bcn5RY084lo+R4ZZ2KFYar7aHTV9zwqzvlmJhzrPQf5/1QE1GU1zSYzr2lA+DRSAAln2e3VoAAdQoA72bWrD4zsKXPt3/MnRzl6yWXndHkReR9ABW/P+KjkQzlb360BiNTazd1tE0a4OGMQoVEm/4eUnCggI4Lkp5chst1TPa+kQse+d1HHvwWQS27IMhg2PitAflkoDeNN+AKBv8QB2RBM4E9/iGTuT8h76O8DGShnD3JtmBmHEHwQu/h6QG20g/xHkEWDERBDGho4q2qNbcAscTsrVePyC982OLrpYEUn2iKbimMNotyzyOrwEFDE1YQ56XvdktGW2IzDt+LsWVptX4ucIN9AveUgW+NVbsTFfY8QM24da40z5iw7bMAGqdK7vhsgto96PrByM8vhLIQdvgplORxK9rSI+K14BJWQ/XsLHBAfhPxK/U73yTKUSdJ2OgdNvWRUieIGu6VuuS46qAbQ9h2LmJpjoJzPjnj2Qc8/LgHH2NCSDsIUB9/xXpYJPSDlE1elGyepM9LJkieFMvcrIkkbfTjdAKWD0k6iYqJvgtqn7uK77KdVAsJNMiV+w/LDY0CURBNP25ftHgnyy1uSVZZXPBTlNqnhZmgAqEAqVRfEfLs30iap/OjEpZeU23FfTCrlFLfpUVmCPxQsqGFtQoS94Yy55edPa1J5sjndGGXutmPy6y/za7yY6k/BySLSd31RMdXXBPd8BVh1LtbA9sZjj14trLyKmvIQ22akpumJNmJ5aL57NnhgpLAy+3GUUzrCr8KhtTTFVK3VT6aWuH+jl4Yqnotkq8lmkOSOmuT6y7VLGWKo4Yndi3cq+xo4qk+Bnn4LuUmjkIu54v/XE89k3iXZwO0macYOa7fXUkEhjtp74hgoLMHe1d6guY50xE8jEQjpIj61SddS4Yy7RQtZ02CUic3mIPl7mMreH6xE/Ry0nFiSl5tkpW/b5B5K1GoVv+reA9L6BR/PcSNVdaYBm+95/1QnVoBc+4HmucJt8aDIKEg+JQyXHVRgby1VEGHh/FEahBTsumx79PM9XdwxSYcX13tnBhFxYTjPXiKnAZmXQzZeYNaWs+F3BE+r4yWDh+3h4LWz2einnw5Hw8wUct12blmIX7ZSyuE4lSv7DBzjpxbWws+KrJBmGiHxUl/Geie+O8EYmKWlMT+BI2HuxSCWJEYCimnyg79y15YtwVo7YrK4QKV5EdXLYDsqzpl9xYm8mSBjUuatVn1nmLEbojcoM0IFC7AhpgTEbXaruAur1HNha0U6qPCi2ECwlF+R2lOt9FeomvlRR09RImpT82H8LO5mOBDKj6htwqTTfNhnUiRAU5wEYMTqCn3utJxRUD1wzFXsxyZqmRryHpTvKTqfb25JtCNuwJK9w7egYti7nipegPYKjhzDiTn0HL6zEohhsbCihhNgPoRY6NRSMGsNzsWxBiXcDsZR29Wo/HlbY+QYmBVVsHIlbOfiRfizWdgfrTb1SYB9zd4G5SJ8i1enfDI9hnncymoG3/vM+9T/XOAtearmNOP93H+hifYRuMRJrRaHnvt8mq4PWsmMPwF6kxQxrg2yjHZozn/F35eHsKNpM+zetkt8b1jXvJD2AAbxKyX9cNfXR5BI4l6aABqthR01TjSv6LbwNe0WteC2/RRJl85QyjQqjfLh/FUWb6T3GTkUJsEbVJenAjAicIPDgH/ucnmW5lRbTKXeFfAh6nzj4qRzz3ySZ2TV/oRoby1BdSn/hyCkRt+iljGjiOaKPdCE/kU+MFmlViTnPTKoszMy7OyBSY27DDPKxAQvCRG9aLSXMsPBXFtm9qAHOyE+ohcqfusI1SQC6SUrPjRMyAOaBrwet+1NYGht+mNRzugwJtdBKIpkoRlERYCXT93OAghI+EN91tdKtU2yObyK1WDGRfaMrbM73+8lSKNbJCzBPj/fJ7IJmSzpsabsESjS+ZDqfR2TlelVLifAjomr3ZF2hjjxaHs1GAtzMr/qfyTaK80NbDKxkVu079cCxqLyXIJZopWsBdn6Q2KrCDguEuALdDgcL6FUgjCDyatQ5k/Zyzm6r0zQV/csdNV9fno0Xx8V0F7qlW0CemPvCOCSQtpH4kcX4QrXlMJOSyG+6+IA6Lu5pPz3MK7eN2RW8tWKOl39Bzh1w+PLNpkiPm66sNJrQW+W2CPFjMxV221Rr5IPoBkWW0AC5dqG4lhJot55hLggKSwxg6st4szvwmlcWshFI+2hvQogTf104h0iJjWZGCuE/gPrBQYQFku+XRCdYenwVdcJny879jB2fpz1NetrfmClF0R6vaIrsrARRsJQWmmGZ9i9aAuzskFKM7jv/qehqza6FhxXyr72w4jmPaNxR5TPYXHO9reubJjvNVJXoRB6chUFyq0GVhVDmf2YjyBf8oRgwO8Rjb6aK5ElEbogWefJ8LSnd9G33ritQANWxZuy4T+aMV5wsNLAqyGXXEzX2zWZZGLNmLbhP1LC2fJxFy1Hngk93eA8wegK121TeTO3k0jndREnOQ/dLX+SKKKJitG2WcnBTm3ToDas4Q8PCwm3+sWwOM3gLnG/u9WLqnf7KGSDSXdrDBMnOekudPSIx21Qqmuy1zfpaBQyTj884oHpS2/5MlUpUXbOSGCCEZ5Plt0/3SyigJvh8r9bqY8Z3Yy423XO5pW1OXo3pm1vxaE0Bq5Xfe3cBBEN65H92Q2aACvZW7J5GZ9GyENODx0VzrKWCab1rbFCuvjPJqdjjo6ocJwM1ejGviwo/NrEE2CvCz9dP6jrLaHuXu3oPtZhcvJMEvUgIM3WrxCY2k9FRvCtQkIbhmuE3z0Wv5SVN34/0K9fYW1SXTISDHK6ikTGuzxCN8nBAKcOckrX0PSgvYx1QUTeMr5WoTwB1B70EJuWlGFL1BF+kO5QgHCLaCv8kKjAWSrafHMrS6GcvVfjTcpWT3Ry49uaQh5jdAwsOKrXG6Ily+SEwTEHKNN/48/EjSG8VnxqtIxe5q/AzdJ67jWqeCU8ZHApkdLer37u+9xuF47lI2WLELYrnPnYb3k+qjOGOptWGoUybz6/RI271u/zUMe9wkO9OHpypY1UTCgCFnQtIU5D9gI9hdadI+eUIHyXalTYYqH5JUuiRiytkazf2W9i8JXcUf71xsDPF03asm/qRAoM"
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 2598,
+      "candidatesTokenCount": 227,
+      "totalTokenCount": 4608,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 2598
+        }
+      ],
+      "thoughtsTokenCount": 1783
+    },
+    "modelVersion": "gemini-3.1-pro-preview",
+    "responseId": "h__Vacz7N7-6qfkPiq7NmAw"
+  },
+  "usageMetadata": {
+    "promptTokenCount": 2598,
+    "candidatesTokenCount": 227,
+    "totalTokenCount": 4608,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2598
+      }
+    ],
+    "thoughtsTokenCount": 1783
+  }
+}

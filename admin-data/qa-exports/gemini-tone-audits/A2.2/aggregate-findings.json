@@ -1,0 +1,502 @@
+{
+  "stage": "A2.2",
+  "manifest": {
+    "stage": "A2.2",
+    "batchSize": 60,
+    "lessonCount": 12,
+    "sentenceCount": 300,
+    "breakdownItemCount": 1473,
+    "uniqueItemCount": 383,
+    "batchCount": 7,
+    "lessons": [
+      {
+        "lessonId": "endurance-wai",
+        "lessonOrder": 0
+      },
+      {
+        "lessonId": "superlative",
+        "lessonOrder": 1
+      },
+      {
+        "lessonId": "must-tong",
+        "lessonOrder": 2
+      },
+      {
+        "lessonId": "should-khuan",
+        "lessonOrder": 3
+      },
+      {
+        "lessonId": "prefix-naa-adjective",
+        "lessonOrder": 4
+      },
+      {
+        "lessonId": "feelings-rusuek",
+        "lessonOrder": 5
+      },
+      {
+        "lessonId": "try-lawng",
+        "lessonOrder": 6
+      },
+      {
+        "lessonId": "resultative-ok-samret",
+        "lessonOrder": 7
+      },
+      {
+        "lessonId": "passive-tuuk",
+        "lessonOrder": 8
+      },
+      {
+        "lessonId": "conditionals",
+        "lessonOrder": 9
+      },
+      {
+        "lessonId": "change-state-khuen-long",
+        "lessonOrder": 10
+      },
+      {
+        "lessonId": "in-order-to-phuea",
+        "lessonOrder": 11
+      }
+    ],
+    "generatedAt": "2026-04-08T05:21:58.190Z"
+  },
+  "requestedModel": "gemini-3.1-pro-preview",
+  "generatedAt": "2026-04-08T05:26:34.117Z",
+  "batchSummaries": [
+    {
+      "batch_id": "batch-001",
+      "item_count": 60,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.2\\responses\\batch-001.json"
+    },
+    {
+      "batch_id": "batch-002",
+      "item_count": 60,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.2\\responses\\batch-002.json"
+    },
+    {
+      "batch_id": "batch-003",
+      "item_count": 60,
+      "findings_count": 4,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.2\\responses\\batch-003.json"
+    },
+    {
+      "batch_id": "batch-004",
+      "item_count": 60,
+      "findings_count": 7,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.2\\responses\\batch-004.json"
+    },
+    {
+      "batch_id": "batch-005",
+      "item_count": 60,
+      "findings_count": 5,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.2\\responses\\batch-005.json"
+    },
+    {
+      "batch_id": "batch-006",
+      "item_count": 60,
+      "findings_count": 4,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.2\\responses\\batch-006.json"
+    },
+    {
+      "batch_id": "batch-007",
+      "item_count": 23,
+      "findings_count": 1,
+      "reused": false,
+      "responsePath": "C:\\Users\\Lux\\thai-generator\\ai-server\\admin-data\\qa-exports\\gemini-tone-audits\\A2.2\\responses\\batch-007.json"
+    }
+  ],
+  "findingsCount": 23,
+  "findings": [
+    {
+      "item_id": "a22-0247",
+      "thai": "สำเร็จ",
+      "romanization": "sam-ret",
+      "current_tones_variants": [
+        [
+          "rising",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "high"
+      ],
+      "reason": "The syllable 'เร็จ' (ret) has a low-class initial consonant (ร), a short vowel, and a dead ending (จ), which produces a high tone, not a low tone."
+    },
+    {
+      "item_id": "a22-0098",
+      "thai": "เช้า",
+      "romanization": "chao",
+      "current_tones_variants": [
+        [
+          "falling"
+        ],
+        [
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high"
+      ],
+      "reason": "The word 'เช้า' (chao) has a low-class initial consonant (ช) with a mai tho (้) tone mark, which produces a high tone. The 'falling' variant is incorrect."
+    },
+    {
+      "item_id": "a22-0288",
+      "thai": "ซ้ำ",
+      "romanization": "sam",
+      "current_tones_variants": [
+        [
+          "falling"
+        ],
+        [
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high"
+      ],
+      "reason": "ซ (low class consonant) + -ำ (sonorant ending) + mai tho (้) produces a high tone. The 'falling' variant is incorrect."
+    },
+    {
+      "item_id": "a22-0120",
+      "thai": "มืด",
+      "romanization": "muet",
+      "current_tones_variants": [
+        [
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling"
+      ],
+      "reason": "ม (low class consonant) + long vowel (ื) + dead ending (ด) produces a falling tone, not a low tone."
+    },
+    {
+      "item_id": "a22-0258",
+      "thai": "แยก",
+      "romanization": "yaek",
+      "current_tones_variants": [
+        [
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling"
+      ],
+      "reason": "ย (low class consonant) + long vowel (แ-) + dead ending (ก) produces a falling tone, not a low tone."
+    },
+    {
+      "item_id": "a22-0242",
+      "thai": "เลือก",
+      "romanization": "lueak",
+      "current_tones_variants": [
+        [
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling"
+      ],
+      "reason": "ล (low class consonant) + long vowel (เ-ือ) + dead ending (ก) produces a falling tone, not a low tone."
+    },
+    {
+      "item_id": "a22-0177",
+      "thai": "ขนม",
+      "romanization": "kha-nom",
+      "current_tones_variants": [
+        [
+          "rising",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "rising"
+      ],
+      "reason": "ขนม is pronounced as ขะ-หนม. 'ขะ' is a high-class consonant with a short vowel and dead ending, resulting in a low tone. 'หนม' is a high-class leading consonant with a live ending, resulting in a rising tone."
+    },
+    {
+      "item_id": "a22-0194",
+      "thai": "ข่าว",
+      "romanization": "khaao",
+      "current_tones_variants": [
+        [
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low"
+      ],
+      "reason": "ข่าว has a high-class consonant (ข) with tone mark 1 (ไม้เอก), which produces a low tone."
+    },
+    {
+      "item_id": "a22-0220",
+      "thai": "เครียด",
+      "romanization": "khriat",
+      "current_tones_variants": [
+        [
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling"
+      ],
+      "reason": "เครียด has a low-class consonant cluster (คร) with a long vowel and a dead ending (ด), which produces a falling tone."
+    },
+    {
+      "item_id": "a22-0314",
+      "thai": "ชัด",
+      "romanization": "chat",
+      "current_tones_variants": [
+        [
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high"
+      ],
+      "reason": "ชัด has a low-class consonant (ช) with a short vowel and a dead ending (ด), which produces a high tone."
+    },
+    {
+      "item_id": "a22-0363",
+      "thai": "ชัดๆ",
+      "romanization": "chat chat",
+      "current_tones_variants": [
+        [
+          "low",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "high"
+      ],
+      "reason": "ชัด has a low-class consonant with a short vowel and a dead ending, producing a high tone. The reduplication makes it high, high."
+    },
+    {
+      "item_id": "a22-0221",
+      "thai": "ตื่นเต้น",
+      "romanization": "tuen-ten",
+      "current_tones_variants": [
+        [
+          "falling",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "falling"
+      ],
+      "reason": "ตื่น has a mid-class consonant (ต) with tone mark 1 (ไม้เอก), producing a low tone. เต้น has a mid-class consonant with tone mark 2 (ไม้โท), producing a falling tone."
+    },
+    {
+      "item_id": "a22-0362",
+      "thai": "แถวหน้า",
+      "romanization": "thaeo naa",
+      "current_tones_variants": [
+        [
+          "mid",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "rising",
+        "falling"
+      ],
+      "reason": "แถว has a high-class consonant (ถ) with a live ending, producing a rising tone. หน้า has a high-class leading consonant (ห) with tone mark 2 (ไม้โท), producing a falling tone."
+    },
+    {
+      "item_id": "a22-0357",
+      "thai": "ธนาคาร",
+      "romanization": "tha-naa-khaan",
+      "current_tones_variants": [
+        [
+          "mid",
+          "mid",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "mid",
+        "mid"
+      ],
+      "reason": "The first syllable 'ธ' (tha) is a low-class consonant with an implied short vowel, which produces a high tone."
+    },
+    {
+      "item_id": "a22-0183",
+      "thai": "น่าสงสาร",
+      "romanization": "naa-song-saan",
+      "current_tones_variants": [
+        [
+          "falling",
+          "rising",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "rising",
+        "rising"
+      ],
+      "reason": "The syllable 'สาร' (saan) has a high-class initial consonant (ส), a long vowel, and a sonorant final, which produces a rising tone."
+    },
+    {
+      "item_id": "a22-0244",
+      "thai": "ประโยค",
+      "romanization": "pra-yok",
+      "current_tones_variants": [
+        [
+          "low",
+          "high"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "falling"
+      ],
+      "reason": "The syllable 'โยค' (yok) has a low-class initial consonant (ย), a long vowel, and a dead final consonant (ค), which produces a falling tone."
+    },
+    {
+      "item_id": "a22-0382",
+      "thai": "ประหยัด",
+      "romanization": "pra-yat",
+      "current_tones_variants": [
+        [
+          "low",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "low"
+      ],
+      "reason": "The syllable 'หยัด' (yat) has a high-class leading consonant (ห) making the initial follow high-class rules, a short vowel, and a dead final consonant (ด), which produces a low tone."
+    },
+    {
+      "item_id": "a22-0224",
+      "thai": "ประหลาดใจ",
+      "romanization": "pra-laat-jai",
+      "current_tones_variants": [
+        [
+          "low",
+          "falling",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "low",
+        "mid"
+      ],
+      "reason": "The syllable 'หลาด' (laat) has a high-class leading consonant (ห) making the initial follow high-class rules, a long vowel, and a dead final consonant (ด), which produces a low tone."
+    },
+    {
+      "item_id": "a22-0307",
+      "thai": "เริ่ม",
+      "romanization": "roem",
+      "current_tones_variants": [
+        [
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling"
+      ],
+      "reason": "The word เริ่ม (roem) has a low-class initial consonant (ร), a live ending (ม), and a mai ek tone mark (่), which results in a falling tone, not a low tone."
+    },
+    {
+      "item_id": "a22-0213",
+      "thai": "โล่งใจ",
+      "romanization": "lohng-jai",
+      "current_tones_variants": [
+        [
+          "low",
+          "mid"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "falling",
+        "mid"
+      ],
+      "reason": "The syllable โล่ง (lohng) has a low-class initial consonant (ล), a live ending (ง), and a mai ek tone mark (่), which results in a falling tone, not a low tone."
+    },
+    {
+      "item_id": "a22-0246",
+      "thai": "วิธี",
+      "romanization": "wi-thii",
+      "current_tones_variants": [
+        [
+          "high",
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "high",
+        "mid"
+      ],
+      "reason": "The syllable ธี (thii) has a low-class initial consonant (ธ) and a long vowel with a live ending, which results in a mid tone, not a falling tone."
+    },
+    {
+      "item_id": "a22-0223",
+      "thai": "สงบ",
+      "romanization": "sa-ngop",
+      "current_tones_variants": [
+        [
+          "rising",
+          "low"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low",
+        "low"
+      ],
+      "reason": "The word สงบ is pronounced สะ-หงบ (sa-ngop). The first syllable สะ has a high-class initial with a short vowel (dead ending), resulting in a low tone. The second syllable หงบ follows high-class rules due to the leading ส, with a dead ending, resulting in a low tone. Therefore, the tones are low, low."
+    },
+    {
+      "item_id": "a22-0376",
+      "thai": "หั่น",
+      "romanization": "han",
+      "current_tones_variants": [
+        [
+          "falling"
+        ]
+      ],
+      "status": "corrected",
+      "corrected_tones": [
+        "low"
+      ],
+      "reason": "ห (high class consonant) + ั (short vowel) + น (live ending) + ่ (mai ek tone mark) produces a low tone, not a falling tone."
+    }
+  ]
+}

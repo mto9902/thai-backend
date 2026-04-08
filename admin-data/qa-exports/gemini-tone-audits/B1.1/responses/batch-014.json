@@ -1,0 +1,216 @@
+{
+  "requestedModel": "gemini-3.1-pro-preview",
+  "responseModelVersion": "gemini-3.1-pro-preview",
+  "stage": "B1.1",
+  "batch_id": "batch-014",
+  "item_count": 60,
+  "parsedOutput": {
+    "stage": "B1.1",
+    "batch_id": "batch-014",
+    "checked_items": 60,
+    "findings": [
+      {
+        "item_id": "b11-0410",
+        "thai": "วิธีใช้",
+        "romanization": "wíthii chái",
+        "current_tones_variants": [
+          [
+            "high",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "mid",
+          "high"
+        ],
+        "reason": "The word 'วิธีใช้' has three syllables (wí-thii-chái) with tones high, mid, high. The current tones array is missing the mid tone for 'ธี'."
+      },
+      {
+        "item_id": "b11-0289",
+        "thai": "วิศวกร",
+        "romanization": "wít sa wa kon",
+        "current_tones_variants": [
+          [
+            "high",
+            "low",
+            "mid",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "low",
+          "high",
+          "mid"
+        ],
+        "reason": "The standard pronunciation of 'วิศวกร' is wít-sà-wá-gɔɔn. The syllable 'วะ' (wá) has a high tone, not mid."
+      },
+      {
+        "item_id": "b11-0481",
+        "thai": "สถานการณ์",
+        "romanization": "sà-thăan-gaan",
+        "current_tones_variants": [
+          [
+            "low",
+            "rising",
+            "mid"
+          ]
+        ],
+        "status": "uncertain",
+        "corrected_tones": [
+          "low",
+          "rising",
+          "high",
+          "mid"
+        ],
+        "reason": "The standard pronunciation is 4 syllables: sà-thăa-ná-gaan (low, rising, high, mid). The 3-syllable colloquial pronunciation 'sà-thăan-gaan' matches the current tones (low, rising, mid), but standard curriculum usually uses the 4-syllable breakdown."
+      },
+      {
+        "item_id": "b11-0832",
+        "thai": "สถานี",
+        "romanization": "sa-thaa-nii",
+        "current_tones_variants": [
+          [
+            "low",
+            "mid",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "rising",
+          "mid"
+        ],
+        "reason": "The syllable 'ถา' (thăa) has a rising tone, not mid."
+      },
+      {
+        "item_id": "b11-0244",
+        "thai": "สถานีรถไฟ",
+        "romanization": "sa-thăa-nii rótfai",
+        "current_tones_variants": [
+          [
+            "low",
+            "mid",
+            "mid",
+            "high",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "rising",
+          "mid",
+          "high",
+          "mid"
+        ],
+        "reason": "The syllable 'ถา' (thăa) has a rising tone, not mid."
+      },
+      {
+        "item_id": "b11-0202",
+        "thai": "สนามบิน",
+        "romanization": "sa-năam-bin",
+        "current_tones_variants": [
+          [
+            "rising",
+            "mid",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "rising",
+          "mid"
+        ],
+        "reason": "The word 'สนามบิน' is pronounced sà-năam-bin. The first syllable 'ส' (sà) has a low tone, and 'นาม' (năam) has a rising tone."
+      },
+      {
+        "item_id": "b11-0247",
+        "thai": "สนามบิน",
+        "romanization": "sa-nǎam-bin",
+        "current_tones_variants": [
+          [
+            "rising",
+            "mid",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "rising",
+          "mid"
+        ],
+        "reason": "The word 'สนามบิน' is pronounced sà-năam-bin. The first syllable 'ส' (sà) has a low tone, and 'นาม' (năam) has a rising tone."
+      },
+      {
+        "item_id": "b11-0463",
+        "thai": "สัปดาห์หน้า",
+        "romanization": "sàp-daah nâa",
+        "current_tones_variants": [
+          [
+            "low",
+            "mid",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "mid",
+          "falling"
+        ],
+        "reason": "The word 'หน้า' (nâa) has a falling tone, not high."
+      }
+    ]
+  },
+  "rawText": "{\n  \"stage\": \"B1.1\",\n  \"batch_id\": \"batch-014\",\n  \"checked_items\": 60,\n  \"findings\": [\n    {\n      \"item_id\": \"b11-0410\",\n      \"thai\": \"วิธีใช้\",\n      \"romanization\": \"wíthii chái\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"The word 'วิธีใช้' has three syllables (wí-thii-chái) with tones high, mid, high. The current tones array is missing the mid tone for 'ธี'.\"\n    },\n    {\n      \"item_id\": \"b11-0289\",\n      \"thai\": \"วิศวกร\",\n      \"romanization\": \"wít sa wa kon\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"low\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"The standard pronunciation of 'วิศวกร' is wít-sà-wá-gɔɔn. The syllable 'วะ' (wá) has a high tone, not mid.\"\n    },\n    {\n      \"item_id\": \"b11-0481\",\n      \"thai\": \"สถานการณ์\",\n      \"romanization\": \"sà-thăan-gaan\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"rising\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"uncertain\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"The standard pronunciation is 4 syllables: sà-thăa-ná-gaan (low, rising, high, mid). The 3-syllable colloquial pronunciation 'sà-thăan-gaan' matches the current tones (low, rising, mid), but standard curriculum usually uses the 4-syllable breakdown.\"\n    },\n    {\n      \"item_id\": \"b11-0832\",\n      \"thai\": \"สถานี\",\n      \"romanization\": \"sa-thaa-nii\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"mid\"\n      ],\n      \"reason\": \"The syllable 'ถา' (thăa) has a rising tone, not mid.\"\n    },\n    {\n      \"item_id\": \"b11-0244\",\n      \"thai\": \"สถานีรถไฟ\",\n      \"romanization\": \"sa-thăa-nii rótfai\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"mid\",\n          \"mid\",\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"mid\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"The syllable 'ถา' (thăa) has a rising tone, not mid.\"\n    },\n    {\n      \"item_id\": \"b11-0202\",\n      \"thai\": \"สนามบิน\",\n      \"romanization\": \"sa-năam-bin\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"mid\"\n      ],\n      \"reason\": \"The word 'สนามบิน' is pronounced sà-năam-bin. The first syllable 'ส' (sà) has a low tone, and 'นาม' (năam) has a rising tone.\"\n    },\n    {\n      \"item_id\": \"b11-0247\",\n      \"thai\": \"สนามบิน\",\n      \"romanization\": \"sa-nǎam-bin\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"mid\"\n      ],\n      \"reason\": \"The word 'สนามบิน' is pronounced sà-năam-bin. The first syllable 'ส' (sà) has a low tone, and 'นาม' (năam) has a rising tone.\"\n    },\n    {\n      \"item_id\": \"b11-0463\",\n      \"thai\": \"สัปดาห์หน้า\",\n      \"romanization\": \"sàp-daah nâa\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"mid\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"The word 'หน้า' (nâa) has a falling tone, not high.\"\n    }\n  ]\n}",
+  "rawResponse": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\n  \"stage\": \"B1.1\",\n  \"batch_id\": \"batch-014\",\n  \"checked_items\": 60,\n  \"findings\": [\n    {\n      \"item_id\": \"b11-0410\",\n      \"thai\": \"วิธีใช้\",\n      \"romanization\": \"wíthii chái\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"The word 'วิธีใช้' has three syllables (wí-thii-chái) with tones high, mid, high. The current tones array is missing the mid tone for 'ธี'.\"\n    },\n    {\n      \"item_id\": \"b11-0289\",\n      \"thai\": \"วิศวกร\",\n      \"romanization\": \"wít sa wa kon\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"low\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"The standard pronunciation of 'วิศวกร' is wít-sà-wá-gɔɔn. The syllable 'วะ' (wá) has a high tone, not mid.\"\n    },\n    {\n      \"item_id\": \"b11-0481\",\n      \"thai\": \"สถานการณ์\",\n      \"romanization\": \"sà-thăan-gaan\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"rising\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"uncertain\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"The standard pronunciation is 4 syllables: sà-thăa-ná-gaan (low, rising, high, mid). The 3-syllable colloquial pronunciation 'sà-thăan-gaan' matches the current tones (low, rising, mid), but standard curriculum usually uses the 4-syllable breakdown.\"\n    },\n    {\n      \"item_id\": \"b11-0832\",\n      \"thai\": \"สถานี\",\n      \"romanization\": \"sa-thaa-nii\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"mid\"\n      ],\n      \"reason\": \"The syllable 'ถา' (thăa) has a rising tone, not mid.\"\n    },\n    {\n      \"item_id\": \"b11-0244\",\n      \"thai\": \"สถานีรถไฟ\",\n      \"romanization\": \"sa-thăa-nii rótfai\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"mid\",\n          \"mid\",\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"mid\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"The syllable 'ถา' (thăa) has a rising tone, not mid.\"\n    },\n    {\n      \"item_id\": \"b11-0202\",\n      \"thai\": \"สนามบิน\",\n      \"romanization\": \"sa-năam-bin\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"mid\"\n      ],\n      \"reason\": \"The word 'สนามบิน' is pronounced sà-năam-bin. The first syllable 'ส' (sà) has a low tone, and 'นาม' (năam) has a rising tone.\"\n    },\n    {\n      \"item_id\": \"b11-0247\",\n      \"thai\": \"สนามบิน\",\n      \"romanization\": \"sa-nǎam-bin\",\n      \"current_tones_variants\": [\n        [\n          \"rising\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"rising\",\n        \"mid\"\n      ],\n      \"reason\": \"The word 'สนามบิน' is pronounced sà-năam-bin. The first syllable 'ส' (sà) has a low tone, and 'นาม' (năam) has a rising tone.\"\n    },\n    {\n      \"item_id\": \"b11-0463\",\n      \"thai\": \"สัปดาห์หน้า\",\n      \"romanization\": \"sàp-daah nâa\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"mid\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"The word 'หน้า' (nâa) has a falling tone, not high.\"\n    }\n  ]\n}",
+              "thoughtSignature": "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"
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 8072,
+      "candidatesTokenCount": 1356,
+      "totalTokenCount": 16290,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 8072
+        }
+      ],
+      "thoughtsTokenCount": 6862
+    },
+    "modelVersion": "gemini-3.1-pro-preview",
+    "responseId": "xOvVac36FuKz4-EPodjAoQw"
+  },
+  "usageMetadata": {
+    "promptTokenCount": 8072,
+    "candidatesTokenCount": 1356,
+    "totalTokenCount": 16290,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 8072
+      }
+    ],
+    "thoughtsTokenCount": 6862
+  }
+}

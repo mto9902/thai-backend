@@ -1,0 +1,516 @@
+{
+  "requestedModel": "gemini-3.1-pro-preview",
+  "responseModelVersion": "gemini-3.1-pro-preview",
+  "stage": "B2.2",
+  "batch_id": "batch-045",
+  "item_count": 25,
+  "parsedOutput": {
+    "stage": "B2.2",
+    "batch_id": "batch-045",
+    "checked_items": 25,
+    "findings": [
+      {
+        "item_id": "b22-1310",
+        "thai": "ระบบเก่าราคาถูก",
+        "romanization": "ra-bop gao raa-khaa thuuk",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low",
+            "mid",
+            "high",
+            "low"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "low",
+          "low",
+          "mid",
+          "mid",
+          "low"
+        ],
+        "reason": "Corrected tones to match the 6 syllables in the Thai text: ระ (high) บบ (low) เก่า (low) รา (mid) คา (mid) ถูก (low)."
+      },
+      {
+        "item_id": "b22-1151",
+        "thai": "ระบบเดิมรองรับผู้ใช้ไม่พอ",
+        "romanization": "ra-bop doem raawng-rap phuu-chai mai phaaw",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low",
+            "mid",
+            "high",
+            "low",
+            "falling",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "low",
+          "mid",
+          "mid",
+          "high",
+          "falling",
+          "high",
+          "falling",
+          "mid"
+        ],
+        "reason": "Corrected tones to match the 9 syllables in the Thai text: ระ (high) บบ (low) เดิม (mid) รอง (mid) รับ (high) ผู้ (falling) ใช้ (high) ไม่ (falling) พอ (mid)."
+      },
+      {
+        "item_id": "b22-0900",
+        "thai": "ระบบตอบช้าลง",
+        "romanization": "ra-bop dtaawp chaa long",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low",
+            "falling",
+            "high",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "low",
+          "low",
+          "high",
+          "mid"
+        ],
+        "reason": "Corrected tones for the 5 syllables: ระ (high) บบ (low) ตอบ (low) ช้า (high) ลง (mid)."
+      },
+      {
+        "item_id": "b22-0487",
+        "thai": "ระบบมีปัญหา",
+        "romanization": "ra-bop mii bpan-haa",
+        "current_tones_variants": [
+          [
+            "low",
+            "low",
+            "mid",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "low",
+          "mid",
+          "mid",
+          "rising"
+        ],
+        "reason": "Corrected tones to match the 5 syllables in the Thai text: ระ (high) บบ (low) มี (mid) ปัญ (mid) หา (rising)."
+      },
+      {
+        "item_id": "b22-0441",
+        "thai": "ระบบใหม่",
+        "romanization": "ra-bop mai",
+        "current_tones_variants": [
+          [
+            "low",
+            "low",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "low",
+          "low"
+        ],
+        "reason": "Corrected tones for the 3 syllables: ระ (high) บบ (low) ใหม่ (low)."
+      },
+      {
+        "item_id": "b22-1311",
+        "thai": "ระบบใหม่ดูแลง่าย",
+        "romanization": "nai-kha-na-thii ra-bop mai duu-laae ngaai",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low",
+            "low",
+            "mid",
+            "falling",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "low",
+          "low",
+          "mid",
+          "mid",
+          "falling"
+        ],
+        "reason": "Corrected tones to match the 6 syllables in the Thai text (ignoring the extra romanization words): ระ (high) บบ (low) ใหม่ (low) ดู (mid) แล (mid) ง่าย (falling)."
+      },
+      {
+        "item_id": "b22-0124",
+        "thai": "ระบบใหม่เร็วขึ้นจริงๆ",
+        "romanization": "ra-bop mai reo kheun jing-jing",
+        "current_tones_variants": [
+          [
+            "low",
+            "low",
+            "falling",
+            "mid",
+            "falling",
+            "mid",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "low",
+          "low",
+          "mid",
+          "falling",
+          "mid",
+          "mid"
+        ],
+        "reason": "Corrected tones for the 7 syllables: ระ (high) บบ (low) ใหม่ (low) เร็ว (mid) ขึ้น (falling) จริง (mid) ๆ (mid)."
+      },
+      {
+        "item_id": "b22-1010",
+        "thai": "ระบบอาจล่มอีก",
+        "romanization": "ra-bop aat lom iik",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low",
+            "low",
+            "low",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "low",
+          "low",
+          "falling",
+          "low"
+        ],
+        "reason": "Corrected tones for the 5 syllables: ระ (high) บบ (low) อาจ (low) ล่ม (falling) อีก (low)."
+      },
+      {
+        "item_id": "b22-1307",
+        "thai": "ระยะยาวต้องการความแม่นยำ",
+        "romanization": "nai-kha-na-thii ra-ya yaao dtawng-gaan khwaam maen-yam",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low",
+            "low",
+            "mid",
+            "mid",
+            "mid",
+            "falling",
+            "mid",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "high",
+          "mid",
+          "falling",
+          "mid",
+          "mid",
+          "falling",
+          "mid"
+        ],
+        "reason": "Corrected tones to match the 8 syllables in the Thai text (ignoring the extra romanization words): ระ (high) ยะ (high) ยาว (mid) ต้อง (falling) การ (mid) ความ (mid) แม่น (falling) ยำ (mid)."
+      },
+      {
+        "item_id": "b22-1395",
+        "thai": "ระหว่างทาง",
+        "romanization": "ra-waang thaang",
+        "current_tones_variants": [
+          [
+            "mid",
+            "mid",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "low",
+          "mid"
+        ],
+        "reason": "Corrected tones for the 3 syllables: ระ (high) หว่าง (low) ทาง (mid)."
+      },
+      {
+        "item_id": "b22-0482",
+        "thai": "รับมือเก่งด้วย",
+        "romanization": "rap-mue geng duay",
+        "current_tones_variants": [
+          [
+            "high",
+            "mid",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "mid",
+          "low",
+          "falling"
+        ],
+        "reason": "Corrected tones for the 4 syllables: รับ (high) มือ (mid) เก่ง (low) ด้วย (falling)."
+      },
+      {
+        "item_id": "b22-1238",
+        "thai": "ราคาขายปรับขึ้น",
+        "romanization": "song-phon hai raa-khaa khaai bprap kheun",
+        "current_tones_variants": [
+          [
+            "low",
+            "rising",
+            "falling",
+            "mid",
+            "high",
+            "rising",
+            "low",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "rising",
+          "low",
+          "falling"
+        ],
+        "reason": "Corrected tones to match the 5 syllables in the Thai text (ignoring the extra romanization words): รา (mid) คา (mid) ขาย (rising) ปรับ (low) ขึ้น (falling)."
+      },
+      {
+        "item_id": "b22-1388",
+        "thai": "ราคาขึ้นเรื่อยๆ",
+        "romanization": "raa-khaa kheun rueai-rueai",
+        "current_tones_variants": [
+          [
+            "mid",
+            "high",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "falling",
+          "falling",
+          "falling"
+        ],
+        "reason": "Corrected tones to match the 5 syllables in the Thai text: รา (mid) คา (mid) ขึ้น (falling) เรื่อย (falling) ๆ (falling)."
+      },
+      {
+        "item_id": "b22-0505",
+        "thai": "ราคาจะขึ้นอีก",
+        "romanization": "raa-khaa kheun iik",
+        "current_tones_variants": [
+          [
+            "mid",
+            "high",
+            "falling",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "low",
+          "falling",
+          "low"
+        ],
+        "reason": "Corrected tones to match the 5 syllables in the Thai text (including 'จะ' which is missing in romanization): รา (mid) คา (mid) จะ (low) ขึ้น (falling) อีก (low)."
+      },
+      {
+        "item_id": "b22-1296",
+        "thai": "ร้านนี้เงียบตอนเช้า",
+        "romanization": "raan nii ngiap dtaawn chao",
+        "current_tones_variants": [
+          [
+            "high",
+            "high",
+            "low",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "high",
+          "falling",
+          "mid",
+          "high"
+        ],
+        "reason": "Corrected tones for the 5 syllables: ร้าน (high) นี้ (high) เงียบ (falling) ตอน (mid) เช้า (high)."
+      },
+      {
+        "item_id": "b22-1396",
+        "thai": "ร้านนี้มีคนเข้าเรื่อยๆ",
+        "romanization": "raan nii khon khao rueai-rueai",
+        "current_tones_variants": [
+          [
+            "high",
+            "high",
+            "mid",
+            "high",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "high",
+          "mid",
+          "mid",
+          "falling",
+          "falling",
+          "falling"
+        ],
+        "reason": "Corrected tones to match the 7 syllables in the Thai text (including 'มี' which is missing in romanization): ร้าน (high) นี้ (high) มี (mid) คน (mid) เข้า (falling) เรื่อย (falling) ๆ (falling)."
+      },
+      {
+        "item_id": "b22-0518",
+        "thai": "ร้านนี้ยังเปิดอยู่",
+        "romanization": "raan nii yang bpoet yuu",
+        "current_tones_variants": [
+          [
+            "high",
+            "high",
+            "mid",
+            "low",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "high",
+          "mid",
+          "low",
+          "low"
+        ],
+        "reason": "Corrected tones for the 5 syllables: ร้าน (high) นี้ (high) ยัง (mid) เปิด (low) อยู่ (low)."
+      },
+      {
+        "item_id": "b22-1177",
+        "thai": "รายงานฉบับเดิมใช้ไม่ได้",
+        "romanization": "raai-ngaan cha-bap doem chai mai dai",
+        "current_tones_variants": [
+          [
+            "mid",
+            "mid",
+            "low",
+            "low",
+            "high",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "low",
+          "low",
+          "mid",
+          "high",
+          "falling",
+          "falling"
+        ],
+        "reason": "Corrected tones to match the 8 syllables in the Thai text: ราย (mid) งาน (mid) ฉะ (low) บับ (low) เดิม (mid) ใช้ (high) ไม่ (falling) ได้ (falling)."
+      },
+      {
+        "item_id": "b22-0106",
+        "thai": "รายละเอียดเล็กๆ นี่",
+        "romanization": "raai-la-iat lek-lek nii",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low",
+            "low",
+            "high",
+            "high",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "high",
+          "low",
+          "high",
+          "high",
+          "falling"
+        ],
+        "reason": "Corrected tones for the 6 syllables: ราย (mid) ละ (high) เอียด (low) เล็ก (high) ๆ (high) นี่ (falling)."
+      }
+    ]
+  },
+  "rawText": "{\n  \"stage\": \"B2.2\",\n  \"batch_id\": \"batch-045\",\n  \"checked_items\": 25,\n  \"findings\": [\n    {\n      \"item_id\": \"b22-1310\",\n      \"thai\": \"ระบบเก่าราคาถูก\",\n      \"romanization\": \"ra-bop gao raa-khaa thuuk\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"mid\",\n          \"high\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"Corrected tones to match the 6 syllables in the Thai text: ระ (high) บบ (low) เก่า (low) รา (mid) คา (mid) ถูก (low).\"\n    },\n    {\n      \"item_id\": \"b22-1151\",\n      \"thai\": \"ระบบเดิมรองรับผู้ใช้ไม่พอ\",\n      \"romanization\": \"ra-bop doem raawng-rap phuu-chai mai phaaw\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"mid\",\n          \"high\",\n          \"low\",\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"high\",\n        \"falling\",\n        \"high\",\n        \"falling\",\n        \"mid\"\n      ],\n      \"reason\": \"Corrected tones to match the 9 syllables in the Thai text: ระ (high) บบ (low) เดิม (mid) รอง (mid) รับ (high) ผู้ (falling) ใช้ (high) ไม่ (falling) พอ (mid).\"\n    },\n    {\n      \"item_id\": \"b22-0900\",\n      \"thai\": \"ระบบตอบช้าลง\",\n      \"romanization\": \"ra-bop dtaawp chaa long\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"falling\",\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"low\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"Corrected tones for the 5 syllables: ระ (high) บบ (low) ตอบ (low) ช้า (high) ลง (mid).\"\n    },\n    {\n      \"item_id\": \"b22-0487\",\n      \"thai\": \"ระบบมีปัญหา\",\n      \"romanization\": \"ra-bop mii bpan-haa\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"low\",\n          \"mid\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"rising\"\n      ],\n      \"reason\": \"Corrected tones to match the 5 syllables in the Thai text: ระ (high) บบ (low) มี (mid) ปัญ (mid) หา (rising).\"\n    },\n    {\n      \"item_id\": \"b22-0441\",\n      \"thai\": \"ระบบใหม่\",\n      \"romanization\": \"ra-bop mai\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"low\"\n      ],\n      \"reason\": \"Corrected tones for the 3 syllables: ระ (high) บบ (low) ใหม่ (low).\"\n    },\n    {\n      \"item_id\": \"b22-1311\",\n      \"thai\": \"ระบบใหม่ดูแลง่าย\",\n      \"romanization\": \"nai-kha-na-thii ra-bop mai duu-laae ngaai\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"mid\",\n          \"falling\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones to match the 6 syllables in the Thai text (ignoring the extra romanization words): ระ (high) บบ (low) ใหม่ (low) ดู (mid) แล (mid) ง่าย (falling).\"\n    },\n    {\n      \"item_id\": \"b22-0124\",\n      \"thai\": \"ระบบใหม่เร็วขึ้นจริงๆ\",\n      \"romanization\": \"ra-bop mai reo kheun jing-jing\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"falling\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"falling\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"Corrected tones for the 7 syllables: ระ (high) บบ (low) ใหม่ (low) เร็ว (mid) ขึ้น (falling) จริง (mid) ๆ (mid).\"\n    },\n    {\n      \"item_id\": \"b22-1010\",\n      \"thai\": \"ระบบอาจล่มอีก\",\n      \"romanization\": \"ra-bop aat lom iik\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"low\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"low\",\n        \"falling\",\n        \"low\"\n      ],\n      \"reason\": \"Corrected tones for the 5 syllables: ระ (high) บบ (low) อาจ (low) ล่ม (falling) อีก (low).\"\n    },\n    {\n      \"item_id\": \"b22-1307\",\n      \"thai\": \"ระยะยาวต้องการความแม่นยำ\",\n      \"romanization\": \"nai-kha-na-thii ra-ya yaao dtawng-gaan khwaam maen-yam\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"falling\",\n          \"mid\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\",\n        \"mid\",\n        \"falling\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"mid\"\n      ],\n      \"reason\": \"Corrected tones to match the 8 syllables in the Thai text (ignoring the extra romanization words): ระ (high) ยะ (high) ยาว (mid) ต้อง (falling) การ (mid) ความ (mid) แม่น (falling) ยำ (mid).\"\n    },\n    {\n      \"item_id\": \"b22-1395\",\n      \"thai\": \"ระหว่างทาง\",\n      \"romanization\": \"ra-waang thaang\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"mid\"\n      ],\n      \"reason\": \"Corrected tones for the 3 syllables: ระ (high) หว่าง (low) ทาง (mid).\"\n    },\n    {\n      \"item_id\": \"b22-0482\",\n      \"thai\": \"รับมือเก่งด้วย\",\n      \"romanization\": \"rap-mue geng duay\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"mid\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"mid\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones for the 4 syllables: รับ (high) มือ (mid) เก่ง (low) ด้วย (falling).\"\n    },\n    {\n      \"item_id\": \"b22-1238\",\n      \"thai\": \"ราคาขายปรับขึ้น\",\n      \"romanization\": \"song-phon hai raa-khaa khaai bprap kheun\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"rising\",\n          \"falling\",\n          \"mid\",\n          \"high\",\n          \"rising\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"rising\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones to match the 5 syllables in the Thai text (ignoring the extra romanization words): รา (mid) คา (mid) ขาย (rising) ปรับ (low) ขึ้น (falling).\"\n    },\n    {\n      \"item_id\": \"b22-1388\",\n      \"thai\": \"ราคาขึ้นเรื่อยๆ\",\n      \"romanization\": \"raa-khaa kheun rueai-rueai\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"high\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones to match the 5 syllables in the Thai text: รา (mid) คา (mid) ขึ้น (falling) เรื่อย (falling) ๆ (falling).\"\n    },\n    {\n      \"item_id\": \"b22-0505\",\n      \"thai\": \"ราคาจะขึ้นอีก\",\n      \"romanization\": \"raa-khaa kheun iik\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"high\",\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"low\",\n        \"falling\",\n        \"low\"\n      ],\n      \"reason\": \"Corrected tones to match the 5 syllables in the Thai text (including 'จะ' which is missing in romanization): รา (mid) คา (mid) จะ (low) ขึ้น (falling) อีก (low).\"\n    },\n    {\n      \"item_id\": \"b22-1296\",\n      \"thai\": \"ร้านนี้เงียบตอนเช้า\",\n      \"romanization\": \"raan nii ngiap dtaawn chao\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"high\",\n          \"low\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\",\n        \"falling\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"Corrected tones for the 5 syllables: ร้าน (high) นี้ (high) เงียบ (falling) ตอน (mid) เช้า (high).\"\n    },\n    {\n      \"item_id\": \"b22-1396\",\n      \"thai\": \"ร้านนี้มีคนเข้าเรื่อยๆ\",\n      \"romanization\": \"raan nii khon khao rueai-rueai\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"high\",\n          \"mid\",\n          \"high\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones to match the 7 syllables in the Thai text (including 'มี' which is missing in romanization): ร้าน (high) นี้ (high) มี (mid) คน (mid) เข้า (falling) เรื่อย (falling) ๆ (falling).\"\n    },\n    {\n      \"item_id\": \"b22-0518\",\n      \"thai\": \"ร้านนี้ยังเปิดอยู่\",\n      \"romanization\": \"raan nii yang bpoet yuu\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"high\",\n          \"mid\",\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\",\n        \"mid\",\n        \"low\",\n        \"low\"\n      ],\n      \"reason\": \"Corrected tones for the 5 syllables: ร้าน (high) นี้ (high) ยัง (mid) เปิด (low) อยู่ (low).\"\n    },\n    {\n      \"item_id\": \"b22-1177\",\n      \"thai\": \"รายงานฉบับเดิมใช้ไม่ได้\",\n      \"romanization\": \"raai-ngaan cha-bap doem chai mai dai\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"high\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"high\",\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones to match the 8 syllables in the Thai text: ราย (mid) งาน (mid) ฉะ (low) บับ (low) เดิม (mid) ใช้ (high) ไม่ (falling) ได้ (falling).\"\n    },\n    {\n      \"item_id\": \"b22-0106\",\n      \"thai\": \"รายละเอียดเล็กๆ นี่\",\n      \"romanization\": \"raai-la-iat lek-lek nii\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"high\",\n          \"high\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"high\",\n        \"low\",\n        \"high\",\n        \"high\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones for the 6 syllables: ราย (mid) ละ (high) เอียด (low) เล็ก (high) ๆ (high) นี่ (falling).\"\n    }\n  ]\n}",
+  "rawResponse": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\n  \"stage\": \"B2.2\",\n  \"batch_id\": \"batch-045\",\n  \"checked_items\": 25,\n  \"findings\": [\n    {\n      \"item_id\": \"b22-1310\",\n      \"thai\": \"ระบบเก่าราคาถูก\",\n      \"romanization\": \"ra-bop gao raa-khaa thuuk\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"mid\",\n          \"high\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"Corrected tones to match the 6 syllables in the Thai text: ระ (high) บบ (low) เก่า (low) รา (mid) คา (mid) ถูก (low).\"\n    },\n    {\n      \"item_id\": \"b22-1151\",\n      \"thai\": \"ระบบเดิมรองรับผู้ใช้ไม่พอ\",\n      \"romanization\": \"ra-bop doem raawng-rap phuu-chai mai phaaw\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"mid\",\n          \"high\",\n          \"low\",\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"high\",\n        \"falling\",\n        \"high\",\n        \"falling\",\n        \"mid\"\n      ],\n      \"reason\": \"Corrected tones to match the 9 syllables in the Thai text: ระ (high) บบ (low) เดิม (mid) รอง (mid) รับ (high) ผู้ (falling) ใช้ (high) ไม่ (falling) พอ (mid).\"\n    },\n    {\n      \"item_id\": \"b22-0900\",\n      \"thai\": \"ระบบตอบช้าลง\",\n      \"romanization\": \"ra-bop dtaawp chaa long\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"falling\",\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"low\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"Corrected tones for the 5 syllables: ระ (high) บบ (low) ตอบ (low) ช้า (high) ลง (mid).\"\n    },\n    {\n      \"item_id\": \"b22-0487\",\n      \"thai\": \"ระบบมีปัญหา\",\n      \"romanization\": \"ra-bop mii bpan-haa\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"low\",\n          \"mid\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"rising\"\n      ],\n      \"reason\": \"Corrected tones to match the 5 syllables in the Thai text: ระ (high) บบ (low) มี (mid) ปัญ (mid) หา (rising).\"\n    },\n    {\n      \"item_id\": \"b22-0441\",\n      \"thai\": \"ระบบใหม่\",\n      \"romanization\": \"ra-bop mai\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"low\"\n      ],\n      \"reason\": \"Corrected tones for the 3 syllables: ระ (high) บบ (low) ใหม่ (low).\"\n    },\n    {\n      \"item_id\": \"b22-1311\",\n      \"thai\": \"ระบบใหม่ดูแลง่าย\",\n      \"romanization\": \"nai-kha-na-thii ra-bop mai duu-laae ngaai\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"mid\",\n          \"falling\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones to match the 6 syllables in the Thai text (ignoring the extra romanization words): ระ (high) บบ (low) ใหม่ (low) ดู (mid) แล (mid) ง่าย (falling).\"\n    },\n    {\n      \"item_id\": \"b22-0124\",\n      \"thai\": \"ระบบใหม่เร็วขึ้นจริงๆ\",\n      \"romanization\": \"ra-bop mai reo kheun jing-jing\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"falling\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"falling\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"Corrected tones for the 7 syllables: ระ (high) บบ (low) ใหม่ (low) เร็ว (mid) ขึ้น (falling) จริง (mid) ๆ (mid).\"\n    },\n    {\n      \"item_id\": \"b22-1010\",\n      \"thai\": \"ระบบอาจล่มอีก\",\n      \"romanization\": \"ra-bop aat lom iik\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"low\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"low\",\n        \"falling\",\n        \"low\"\n      ],\n      \"reason\": \"Corrected tones for the 5 syllables: ระ (high) บบ (low) อาจ (low) ล่ม (falling) อีก (low).\"\n    },\n    {\n      \"item_id\": \"b22-1307\",\n      \"thai\": \"ระยะยาวต้องการความแม่นยำ\",\n      \"romanization\": \"nai-kha-na-thii ra-ya yaao dtawng-gaan khwaam maen-yam\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"falling\",\n          \"mid\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\",\n        \"mid\",\n        \"falling\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"mid\"\n      ],\n      \"reason\": \"Corrected tones to match the 8 syllables in the Thai text (ignoring the extra romanization words): ระ (high) ยะ (high) ยาว (mid) ต้อง (falling) การ (mid) ความ (mid) แม่น (falling) ยำ (mid).\"\n    },\n    {\n      \"item_id\": \"b22-1395\",\n      \"thai\": \"ระหว่างทาง\",\n      \"romanization\": \"ra-waang thaang\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"low\",\n        \"mid\"\n      ],\n      \"reason\": \"Corrected tones for the 3 syllables: ระ (high) หว่าง (low) ทาง (mid).\"\n    },\n    {\n      \"item_id\": \"b22-0482\",\n      \"thai\": \"รับมือเก่งด้วย\",\n      \"romanization\": \"rap-mue geng duay\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"mid\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"mid\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones for the 4 syllables: รับ (high) มือ (mid) เก่ง (low) ด้วย (falling).\"\n    },\n    {\n      \"item_id\": \"b22-1238\",\n      \"thai\": \"ราคาขายปรับขึ้น\",\n      \"romanization\": \"song-phon hai raa-khaa khaai bprap kheun\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"rising\",\n          \"falling\",\n          \"mid\",\n          \"high\",\n          \"rising\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"rising\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones to match the 5 syllables in the Thai text (ignoring the extra romanization words): รา (mid) คา (mid) ขาย (rising) ปรับ (low) ขึ้น (falling).\"\n    },\n    {\n      \"item_id\": \"b22-1388\",\n      \"thai\": \"ราคาขึ้นเรื่อยๆ\",\n      \"romanization\": \"raa-khaa kheun rueai-rueai\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"high\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones to match the 5 syllables in the Thai text: รา (mid) คา (mid) ขึ้น (falling) เรื่อย (falling) ๆ (falling).\"\n    },\n    {\n      \"item_id\": \"b22-0505\",\n      \"thai\": \"ราคาจะขึ้นอีก\",\n      \"romanization\": \"raa-khaa kheun iik\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"high\",\n          \"falling\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"low\",\n        \"falling\",\n        \"low\"\n      ],\n      \"reason\": \"Corrected tones to match the 5 syllables in the Thai text (including 'จะ' which is missing in romanization): รา (mid) คา (mid) จะ (low) ขึ้น (falling) อีก (low).\"\n    },\n    {\n      \"item_id\": \"b22-1296\",\n      \"thai\": \"ร้านนี้เงียบตอนเช้า\",\n      \"romanization\": \"raan nii ngiap dtaawn chao\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"high\",\n          \"low\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\",\n        \"falling\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"Corrected tones for the 5 syllables: ร้าน (high) นี้ (high) เงียบ (falling) ตอน (mid) เช้า (high).\"\n    },\n    {\n      \"item_id\": \"b22-1396\",\n      \"thai\": \"ร้านนี้มีคนเข้าเรื่อยๆ\",\n      \"romanization\": \"raan nii khon khao rueai-rueai\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"high\",\n          \"mid\",\n          \"high\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones to match the 7 syllables in the Thai text (including 'มี' which is missing in romanization): ร้าน (high) นี้ (high) มี (mid) คน (mid) เข้า (falling) เรื่อย (falling) ๆ (falling).\"\n    },\n    {\n      \"item_id\": \"b22-0518\",\n      \"thai\": \"ร้านนี้ยังเปิดอยู่\",\n      \"romanization\": \"raan nii yang bpoet yuu\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"high\",\n          \"mid\",\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\",\n        \"mid\",\n        \"low\",\n        \"low\"\n      ],\n      \"reason\": \"Corrected tones for the 5 syllables: ร้าน (high) นี้ (high) ยัง (mid) เปิด (low) อยู่ (low).\"\n    },\n    {\n      \"item_id\": \"b22-1177\",\n      \"thai\": \"รายงานฉบับเดิมใช้ไม่ได้\",\n      \"romanization\": \"raai-ngaan cha-bap doem chai mai dai\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"high\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"high\",\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones to match the 8 syllables in the Thai text: ราย (mid) งาน (mid) ฉะ (low) บับ (low) เดิม (mid) ใช้ (high) ไม่ (falling) ได้ (falling).\"\n    },\n    {\n      \"item_id\": \"b22-0106\",\n      \"thai\": \"รายละเอียดเล็กๆ นี่\",\n      \"romanization\": \"raai-la-iat lek-lek nii\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"high\",\n          \"high\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"high\",\n        \"low\",\n        \"high\",\n        \"high\",\n        \"falling\"\n      ],\n      \"reason\": \"Corrected tones for the 6 syllables: ราย (mid) ละ (high) เอียด (low) เล็ก (high) ๆ (high) นี่ (falling).\"\n    }\n  ]\n}",
+              "thoughtSignature": "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"
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 4440,
+      "candidatesTokenCount": 3710,
+      "totalTokenCount": 13957,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 4440
+        }
+      ],
+      "thoughtsTokenCount": 5807
+    },
+    "modelVersion": "gemini-3.1-pro-preview",
+    "responseId": "xBXWaf2mAenaqfkPpsqg2As"
+  },
+  "usageMetadata": {
+    "promptTokenCount": 4440,
+    "candidatesTokenCount": 3710,
+    "totalTokenCount": 13957,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 4440
+      }
+    ],
+    "thoughtsTokenCount": 5807
+  }
+}

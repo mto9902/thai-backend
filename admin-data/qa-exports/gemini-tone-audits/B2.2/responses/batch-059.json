@@ -1,0 +1,128 @@
+{
+  "requestedModel": "gemini-3.1-pro-preview",
+  "responseModelVersion": "gemini-3.1-pro-preview",
+  "stage": "B2.2",
+  "batch_id": "batch-059",
+  "item_count": 6,
+  "parsedOutput": {
+    "stage": "B2.2",
+    "batch_id": "batch-059",
+    "checked_items": 6,
+    "findings": [
+      {
+        "item_id": "b22-0158",
+        "thai": "เอาตัวอย่างจริงมาดู",
+        "romanization": "ao dtua-yaang jing maa duu",
+        "current_tones_variants": [
+          [
+            "mid",
+            "mid",
+            "falling",
+            "mid",
+            "mid",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "mid",
+          "low",
+          "mid",
+          "mid",
+          "mid"
+        ],
+        "reason": "The word 'อย่าง' (yaang) has a low tone, not a falling tone."
+      },
+      {
+        "item_id": "b22-0012",
+        "thai": "เอาเอกสารชุดนี้ไปด้วย",
+        "romanization": "ao eek-ga-saan chut nii bpai duay",
+        "current_tones_variants": [
+          [
+            "mid",
+            "low",
+            "low",
+            "high",
+            "high",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "mid",
+          "low",
+          "low",
+          "rising",
+          "high",
+          "high",
+          "mid",
+          "falling"
+        ],
+        "reason": "The romanization has 8 syllables, but the current tones array only has 7 elements. Additionally, 'สาร' (saan) has a rising tone."
+      },
+      {
+        "item_id": "b22-0465",
+        "thai": "แอปนี้",
+        "romanization": "aep nii",
+        "current_tones_variants": [
+          [
+            "low",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "high"
+        ],
+        "reason": "The loanword 'แอป' (app) is pronounced with a high tone in Thai, despite strict reading rules suggesting a low tone."
+      }
+    ]
+  },
+  "rawText": "{\n  \"stage\": \"B2.2\",\n  \"batch_id\": \"batch-059\",\n  \"checked_items\": 6,\n  \"findings\": [\n    {\n      \"item_id\": \"b22-0158\",\n      \"thai\": \"เอาตัวอย่างจริงมาดู\",\n      \"romanization\": \"ao dtua-yaang jing maa duu\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"falling\",\n          \"mid\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"The word 'อย่าง' (yaang) has a low tone, not a falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0012\",\n      \"thai\": \"เอาเอกสารชุดนี้ไปด้วย\",\n      \"romanization\": \"ao eek-ga-saan chut nii bpai duay\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"high\",\n          \"high\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"rising\",\n        \"high\",\n        \"high\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"The romanization has 8 syllables, but the current tones array only has 7 elements. Additionally, 'สาร' (saan) has a rising tone.\"\n    },\n    {\n      \"item_id\": \"b22-0465\",\n      \"thai\": \"แอปนี้\",\n      \"romanization\": \"aep nii\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\"\n      ],\n      \"reason\": \"The loanword 'แอป' (app) is pronounced with a high tone in Thai, despite strict reading rules suggesting a low tone.\"\n    }\n  ]\n}",
+  "rawResponse": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\n  \"stage\": \"B2.2\",\n  \"batch_id\": \"batch-059\",\n  \"checked_items\": 6,\n  \"findings\": [\n    {\n      \"item_id\": \"b22-0158\",\n      \"thai\": \"เอาตัวอย่างจริงมาดู\",\n      \"romanization\": \"ao dtua-yaang jing maa duu\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"mid\",\n          \"falling\",\n          \"mid\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"mid\",\n        \"low\",\n        \"mid\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"The word 'อย่าง' (yaang) has a low tone, not a falling tone.\"\n    },\n    {\n      \"item_id\": \"b22-0012\",\n      \"thai\": \"เอาเอกสารชุดนี้ไปด้วย\",\n      \"romanization\": \"ao eek-ga-saan chut nii bpai duay\",\n      \"current_tones_variants\": [\n        [\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"high\",\n          \"high\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"rising\",\n        \"high\",\n        \"high\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"The romanization has 8 syllables, but the current tones array only has 7 elements. Additionally, 'สาร' (saan) has a rising tone.\"\n    },\n    {\n      \"item_id\": \"b22-0465\",\n      \"thai\": \"แอปนี้\",\n      \"romanization\": \"aep nii\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\"\n      ],\n      \"reason\": \"The loanword 'แอป' (app) is pronounced with a high tone in Thai, despite strict reading rules suggesting a low tone.\"\n    }\n  ]\n}",
+              "thoughtSignature": "Eq0oCqooAb4+9vuZiMI7EkIoyQtXHJOChdd9LGQwlBzxcIOgMywSGbbah5c+3QzIAJ6slpsV8ez7DXradrLLvSQbHd4HIIuoEqIv8vOIkFcgnqeaEKmi1eNhhWbRlumeVBSNYFjvaQ+bJ6iwF06eUjVWTNeP2NEKzUdMRU7F9mYEeV3p9sIpqaYV2JFUo7NGzIgJJUcEP2VWA59DggQ672RJ0KlzMv1ybOlotE4duOTrPAygv49y3VPZjuftxCMtP0EdG4Qcn//Qlnu579km98t9KDPYnLVG/FXateXBrHYbIgE7qRaE7I6fBu2UwPKB5T/+UjJ1Ft09myNxh8vPEylSp0iMx3TEbA0dhZHOYOI+2VxfUs5p2jkP0lOa0p6P0J6H6etHPbNHWKdWSx/A6K+HkW6ytsr9TGKbxB68ULPwHtqaY0TcZhVLCI6CXB8xhb4rilgSxWj433u6N+8WJrpjErW2qltzR/80xCpIFcuGZneQne+IsV1cpAn8BNTJ5J+cOcdXal18Rdhtnplzy6uJwbFKRpKmFpF0W9HJMYXQeUroRMXFrCdYB+APNRha/UK30BJyujiCJ51yoU39LNcX69HhdF63V03neRN6Fzu8IocqhttDo3uq0EAnqjK0dFxJ8am46Yopl/kGaZb5135AxNjlQ9+aQaaugSbYkHuH5608IVkfIWEGT1LFHG0/CcxbFU3zC3sEi3FuzCwyHE/KKf+DDgC9dhpKwHfdJ/MWtH1KUYFJPSxwd2lz8QEQLf3IJlaSYsCjz33Ksr57tkO9RNUBExBO9rUPi1yclL+v/Nn9P3XJ3hwgehmnLwiVgBse/qeTfmBCXfvemb0UYfrfBIQR17KaeVJ64CGLfxS44loiX7nJJHhfJdgxKxP+75FpPKmTLS8xqo34RhB4EQHiQa3EezJxnjo5lSsC5RzwJ4mCeXWz0VmQ+BjxGKywuud+yWIdqQHYggdCXbxZXGAf7lMv5UsQg+K3wL5U7QIgxge0azcRAKUGDSgGjIphjSBNbIEihDjUR8va686xW07KTgcqoJ1795mEi9b90TphadfA9cg8cCBPIKfcxbciwY7sm/oQJ32FS/9RWS7ph0PvZ7zmKeNYPZRnkNRu5Y8e+G94Lw7N9pBV5RXg2UnM26/tN7DlgSy6+skNv5JJhaTZ0qDiIsUYJ5zFkXQF1eB1yMoQ1dAYnklqGe7xVPe58jVC7rTu1VN8Q1Xgblp4SAuwMTjuj2B/BCopS25fMkUnL3LEal5Elwgc1hmR+gRvMt6GvQM7lXhDgFSkKAwW6LvWHil0cnPpRmLytAzvPQHvuYXW/EZjxnaEAfrCzFSvOhZB5YfJ7vxg45aI/Gcbk3wov+Ws5RYQjFGMSCAhT5yeSnGtzX9mP+pt1v/CmWW9W0mceL2rAiTtXnDQXRUpD+er0IDPKXEPCRJmw7Psf2ET8HjUqhLhY+YkNe5bEnPQi+rmRUTC9A4JS8a15eSXqD5Ec2Xr0Y/43O+s4aysBJNChfXCalCZ6qAyAtH2GeG+fndCdHc+B2fXx3E4a0ygd+7xP997QJEfjytMOMDviVEZG6ORpdWIRs4pUsQtnqZvpHMEGyNZxCOX4IgDMIH9mEE/1mwi4RZqBv7leyFLuUnxCWa4EFVQR9bUY6Uj9pS05vavMBaX5G68OmSduNZ5+RfPvA98xRBTbB+tsh+hbcoD8eqc33q6Pw0Lb+hToHub7TvkFoUC4wEJnpR6qSGtVvlpw9A7Vm4l6eNgxa9g2xB9fPWFXOHYdnk3OOe0WgjiEXzFJwjbg+S8gE+UmoCaaKlalKz+J7jGjsJ5HkirjGYqPZLSv5NjQUveslPCQkV16HHpboxZUwRc37HG4rFJy4vsDbZVGGJZPzc8+1teyVwUton2//QEfiZV3wh/sMEap4HU96LQUnLGOU36qaZNCpHjnLcs51phZvPAeJpAVVadMrYVqzCFwMRVzj5rTTKnh6EAwjC40maPtzVcscakbYuewQEVqqBOeiUPUidm6XMqyfTJ+4/Qk1sPDJ+PzaEtMLaCEET5Z1kkhHfZ+eXClc0H2YN4ze5nRZ0AHpFjkAFic+Wqkqq2cVoCWlhTf4IG6t6dMNFpbLxdLcCau43lQUa9yMT5azKulVIDzHUP3oPDmagjH+wUs947BJQ4GtGu1OZzN7toj2mp3Pmo37CCyXH1o10EaYkTojEdTPMTzsvHNirxhZobdKWfsQbiVWuB8GwH1tZYHxY4rhFlSF+XlX/g75eu22doFgNtS+onC1u/JLJNYNbEO9+AL35k5mqLSE+75xBCOiy0XUO2g48KyYkTCrsKZUTCk8hP/SJAi98gksWxWsuOFiNwFvxrEAoRIFcSyv4kvb+ReOjgdfY3LIMiI4uVbntWm1mI0HqMLn9/u/RZf5wDWaueMLDZ8kIPq+rSOyrIqaTXzyrM1CR+XROTmG1M5KMvMI92jI9GSAkNG2KVyj1ssgjpwwYOmlSH6DfxIk+z2lIIfEqryaGArg4hFDvPSdrBEng/rdfwlCTXyB2PhuKp8OyEbAf9DuuICMVIqObVZ+o11M+ZGgmReFVi9fcMdJ2QWnFsOIDL18dVdzNiHIPW3BSLp45YEuN6j18JacW8pIKl6RRqYKoLFEGQCd+RazfkCnZDrghMReMwNp0bwbu11EQiO98pgwPcfdTT4+3sXNnKyh/h3lpp3kkU7RmDMIPQ6p6qlvFSckjzrh319NDbo+WMiPwROfOV3Ldkdp0SiWtpjy2+DacdG0aHZzqZ0Xy/6KrTFI+fZM/faJEsbi2ydsolqqVw36NsoBU+c6m74TSe25YRq9iKj6NY7zQrbVN7yQcaeOoV45NKgUwFOVNv8cBOjULeEK/4BPEI0Xr4OCyS65IPsAn0n5DwFfkOI2aMX4iP3iN+lu7jvSKxHBoJbTvPIyIlQqCurs46eDNyiFZKlNmHN8DrXMpHr3itd8TQKO1WaOSDcuIxbFTq9ibUa4Ck1M9yRnHaoMvSDxp3qNa3PghUa3AEZcVenpzIehgwXVQvOqsJK2MUmjJYcNfAZReIlXG0TFQ9saMcZbLNA4wr+Nhc7VtrhfFWi0QlwH2JLi1DdEhrSjGeB003u0Kz1I0GN1525yWVo5Kcyab7j8So/Hmr7NeMjLRO7LX6A46fps1d83moHtZ5L1oEDy2ImWzrd8kVeptQpVRRB6Wr5kAVIfUTcT+qD7zMYtvEixseJp5n31u59wy2hTQ0lHj6P+ccNTbXVrHE4Z3buS1qi4tNK2RTaRp3HBacbPe0I9bwskC4DRZqc3jhm6duIGhEEp8+x/BBMmUqekOPxK1U8Px2w4/xopp7kYvZS1R8D6SoXGNjB84aew4ZH4qIg4nNNWgF1T13JuCJlCufs007qhKRKtuP1XopmpiOfCDOts+SPEru0xCjgIutfPj9miBZ5/V3J8Q35Fxo9Yv4M7kioKAjzHG0GZac9GzBXVQliNKLZE2bC/iUSVieatDSS8k/LLAtiTUQfaI87ZUw/OZHyNTGhB8lJoaIUXBXIsZk8fhYaLoTPjygE1vjtR93o4I/RKEOyl/io9al9UGdzPB/FlqNNu9S9rZxMfoLjOlmE/Xdi8PTXEcqA6b1EzbOBB0+JVYOnCF4TBiFFyT9QrKFEGCO6Oov3rv8jeZlIOKifU/mmFjJrROjrI7CimqeacHYrao1PHOm49liF4jDkWcbiZLOj/lIhjd8Itxxaf9BuOAFVZrqAaFqZYPc6nynA1Jvx5Inw5dXqjt/XKR4jTVWDyQ2LWv7mFq36gZZRTwi1riO2PI1VsXlcDyHHLFo8ddUyxBQJ+YbMQ3cUqHJaTPp4zUVly7UA/8SDbK2vZb7YVAqywaiFPQvu5LvBGU/WXnYcA/4AKt1BhQdX+rq20yeBmn1EnCCyNo/pbe83zrixJr+mXbvOAxLMam+mhXvgWmj6s7W79pP3IKvqC7HpwZg1xyJOc3xHNiuf8SvM0IacxbAOrLNnemB32pd7j0j+ndM6WvzVmUpjn2hJDw6FfL7L21t1AnjLwUu528+TED0N0Fd6JQt0Pu/NQ347YcJ/c6+PqNmS3hA5F/K9t159Kaqc0OZlyRwgglOng26AmBdJHMo20YMf382LU78Y7raiFpxFkWrg19ek6hp7qXFBTmL1397x6yGy+neompOWv8Ve9xnDlo3PKxbX+MXkf8YIDtGoZEOpgJbetsEk4U56r/xyXcvvgbmw6Q9Tra6YR5AJlZuZruq0pUVk4pIN9OD174Q3PHj78PMyeDv1xV2RXhM7E7nYW1E6xYmayiRsr/BEI0WemdJj7wKjOy+Wn1t5bsy2sIq+f+VEgWG2653YS6vm3130C1lLAzANOEB2KgdqMa4SjCWx/QQXS1VKePksn3jKnHrAZgF2rKioOb7R47yhU5qD1K6n4rpik+lT1SZHMgAQireaMz1/GDfQ8UqYfa3aH03g9cKkZ4GeOYBWO/DNjoh58ftW/EzR4nle/52vs4bkfjtfoEIdmRbNMJwRL6IqXjSqQ9xHdhk4TOqYBoExEVC0+dCA+B2f/8juK8XXl5jEU276v8IxgrlfR3v/2q6Kkoam+AlYuiZcZlpGIcxADjaf35qtLQR7ilYUjsrNbisDfumuE6d2VK7qMD/YRr9yrLJ6TfnHw5+oZ30dqUefNKmpMCpjxCzf2pYByp3JWbYEDzB1ksAC1PoMT72qO3lIbQoBeHRU3ZAJzM+iEJgCD1NKkjMhm1EUxQ+wcCcfo9jMJQtHdB4a0Kb9hm2iWOK5lkackD+0QHb2poidPlJisBS8+NdQF+/xsmS06UDfGyoKJQOUguM2/eBBuYs1QGH+3SuKY6ZH9IsDVYe5v/a2kO3Ja31IDglAQd4JxNBufRzdLZu/Oj11/8t6nVnKIdxCqIWRnt+oNUijWj4njlIGo0uQqLzZEilvwVQpy1tEoLY5kwiEW95EK45HNEf4ocgoYZr20bXXfH/By29ALmkpLZsMFcEH8mit+KvSN8w5T/vssH8zA6Js7Hjv+OqlgdpyooyQDTx1WQyq5Fyk2q883v273MfM4MTG0922/hIS1n4Be6l3R1T9PkWYA/NwNlv4qBHwMoe9qobCIziKW053wR0b8MWR+FEgOrLs7tBgMlM5Oe2zI4v71kuITZXzdlkxVPsPdOWKWted1L5CzkirlxYc1RN6I6lqI/AbOMYajryreKufm8RPKkj0SIpncSCl99F8BocyGNEaERthRmKP3aLmF61h4ziBAmxytUZ/oH+i4jBQc6WYU0CY75G3ThHksaDCKD1vtYQ9iUGgBD05H1HosE/0FTzsT+csStYV9yWPoZ3GDLJ0p2RD0ih2O/7+vBnET+gwYgpzN/UaxE0kdvv3Wmi5pXHwUoGA5xn6X3WJYtGDFQEuk4Vh8YnB0VrRrsjoj+S05CECyKH/1z2eYnpBIBMiCAEJx57d1GWwFO5p86arqjL4sOru7MATEk9jvEk3129TY3y72hkWRFcYdO3ADvZMyP1cXf3vjlbSqDdhi54mlTxHUsBw3kJrZ+249ilKtrJIVYB6u5e8v6I1I28Ifb7+5kCKtAzBXIIufei5zJLGDQQo1sdsG/q5UNJ82B6KWlV0+ND57Q3QOxFOimBCFBZKlmKrqmFLciWVlTaFn48XlGI5ffZT/pyteA4JmBEjGFp/e+bCvhFJL8t4HHO90+1n++jhfUqZjGxJ+wFCpKdvLW+HEEOxNpffOSMVHD9+GJPfvEnvpq39vbg7+AQKD3ADWcB4kfMs8tz/H9DCLoJ20ZM/LDnmbrBvW9XGiISpB3E2+B9toOvW4q72/wae04lHsbdWeYAh/ZqWvxHBUEHu+qqwIMq9Nsn6+AHDnD/bmHzv2BqSPPbxRvU0SyAvoxGdN81E0Zub1RlGqNvlhyd3pC3DD/DJgDbUNNjXnsYa7CIby47OX2BNBVvuH45vCtTnbFyMuruX1CfBsxlZNa+/+f6No60rIQzPAKZukr4nQl8YQujId+hJc/nCMAmX2/mk2jYlD2+O911XxubYE5wuxps5NAXP+ZtT01x5oJPhOeQrIrssyAVRaYUlaAKnDBYTSxPRe4EuHIJcuiabBeAazFPAhnuKt02QXGc6BsG52xOy673sfOXL09ZFTIQurj6xSpHqD8C35YdoKS3HavIow57KdrFZub/tbI9UO4mNUq0kJBQxew8zQU1J5h08mA8uAos59eeanjWmITY4jYzVLIxV1K2JsxYlXr69ac16dsN9K9TyoTotWK9EExo3H9zJYJA5TQGfK9n1U6dDZpRsewge+G4LQWStCb4+LVjh4VLvl9fDHTJLnFVv2iU8wOsHxhmPZYsRmZe1o2jDNGc2syoKLej2horFUrFjsqh4tcIDNZwOYtaqtfCnsdgLTLHsqRaFEci073WQxtKq4WnWmDeIGOh8fmcxyU9YyEPS7wAfnYM49i/xsftsPAFD5aHgX5L35/GN1TN1c9AJRUMoEwH0rKospDUxIsGnAexWlbr03hvGG4z16c70S/B77wAf9KMRvn/Z8gA4D+oUHjHpDbnbOtNITZxbwEh27X/t2+BweG1gx1n50i0E2JT3y665UlqhtTvR+uhNkUmFjcREI42OJV2iWO6LbBGSRAPrcO1oh+xIRnMnH+2eG5SA4OCM7foAgrqH/qcJwCvV4glKd16ht/iOBHHleB7K9Muv8LRzuEHty9yAZ9Sy6+JdCOrHowhTSjxkWestVw4TXcBQAppK3CPxC/HmRYxKCtSLR6fF7Rx5AUTePaNrQXvgc0WMEC2nP3RJJLO2PFx/FDWBZ80LgR7l7EXBZcbKzvBLr8UvMeGJAEnPjnyA+S5/3gnX1ZV48PM/Ayj1rnMzx0eaKqe39k="
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 1126,
+      "candidatesTokenCount": 568,
+      "totalTokenCount": 3278,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 1126
+        }
+      ],
+      "thoughtsTokenCount": 1584
+    },
+    "modelVersion": "gemini-3.1-pro-preview",
+    "responseId": "4RjWaaPpO6nSjuMPoonKkQw"
+  },
+  "usageMetadata": {
+    "promptTokenCount": 1126,
+    "candidatesTokenCount": 568,
+    "totalTokenCount": 3278,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1126
+      }
+    ],
+    "thoughtsTokenCount": 1584
+  }
+}

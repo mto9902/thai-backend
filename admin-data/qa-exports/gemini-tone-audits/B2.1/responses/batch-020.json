@@ -1,0 +1,616 @@
+{
+  "requestedModel": "gemini-3.1-pro-preview",
+  "responseModelVersion": "gemini-3.1-pro-preview",
+  "stage": "B2.1",
+  "batch_id": "batch-020",
+  "item_count": 30,
+  "parsedOutput": {
+    "stage": "B2.1",
+    "batch_id": "batch-020",
+    "checked_items": 30,
+    "findings": [
+      {
+        "item_id": "b21-1349",
+        "thai": "เฉพาะเงินสด",
+        "romanization": "cha-phaw ngoen sot",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "mid",
+            "low"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "mid",
+          "low"
+        ],
+        "reason": "The word เฉพาะ (cha-phaw) is pronounced with a low tone for 'cha' and a high tone for 'phaw' (low class consonant พ + short vowel าะ)."
+      },
+      {
+        "item_id": "b21-1364",
+        "thai": "เฉพาะตอนเช้า",
+        "romanization": "cha-phaw dtawn chao",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "mid",
+          "high"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. เช้า (chao) is a low class consonant with mai tho, which produces a high tone."
+      },
+      {
+        "item_id": "b21-1380",
+        "thai": "เฉพาะตามสั่ง",
+        "romanization": "cha-phaw dtaam sang",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "mid",
+          "low"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. สั่ง (sang) is a high class consonant with mai ek, which produces a low tone."
+      },
+      {
+        "item_id": "b21-1370",
+        "thai": "เฉพาะติดต่อเรื่องด่วน",
+        "romanization": "cha-phaw dtit-dtaw rueang duan",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "low",
+            "low",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "low",
+          "low",
+          "falling",
+          "low"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. ด่วน (duan) is a mid class consonant with mai ek, which produces a low tone."
+      },
+      {
+        "item_id": "b21-1382",
+        "thai": "เฉพาะในกรุงเทพฯ",
+        "romanization": "cha-phaw nai grung-theep",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "mid",
+            "mid",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "mid",
+          "mid",
+          "falling"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high."
+      },
+      {
+        "item_id": "b21-1355",
+        "thai": "เฉพาะในคอมพิวเตอร์รุ่นใหม่",
+        "romanization": "cha-phaw nai khom-phiu-dtoe run mai",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "mid",
+            "mid",
+            "mid",
+            "mid",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "mid",
+          "mid",
+          "mid",
+          "falling",
+          "falling",
+          "low"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. เตอร์ (dtoe) is falling tone. ใหม่ (mai) is low tone. The current array was also missing a tone for the 8 syllables."
+      },
+      {
+        "item_id": "b21-1392",
+        "thai": "เฉพาะในที่ประชุม",
+        "romanization": "cha-phaw nai thii bpra-chum",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "mid",
+            "falling",
+            "low",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "mid",
+          "falling",
+          "low",
+          "mid"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high."
+      },
+      {
+        "item_id": "b21-1378",
+        "thai": "เฉพาะผ่านเว็บไซต์",
+        "romanization": "cha-phaw phaan wep-sai",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "falling",
+            "high",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "low",
+          "high",
+          "falling"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. ผ่าน (phaan) is low tone."
+      },
+      {
+        "item_id": "b21-1372",
+        "thai": "เฉพาะผู้บริหาร",
+        "romanization": "cha-phaw phuu-baw-ri-haan",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "falling",
+            "low",
+            "high",
+            "rising"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "falling",
+          "mid",
+          "high",
+          "rising"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. บ (baw) is mid tone."
+      },
+      {
+        "item_id": "b21-1384",
+        "thai": "เฉพาะพนักงาน",
+        "romanization": "cha-phaw pha-nak-ngaan",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "high",
+            "high",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "high",
+          "high",
+          "mid"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high."
+      },
+      {
+        "item_id": "b21-1386",
+        "thai": "เฉพาะภาษาไทย",
+        "romanization": "cha-phaw phaa-saa thai",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "mid",
+            "rising",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "mid",
+          "rising",
+          "mid"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high."
+      },
+      {
+        "item_id": "b21-1394",
+        "thai": "เฉพาะรับเรื่องร้องเรียน",
+        "romanization": "cha-phaw rap rueang rong-rian",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "high",
+            "falling",
+            "high",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "high",
+          "falling",
+          "high",
+          "mid"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high."
+      },
+      {
+        "item_id": "b21-1374",
+        "thai": "เฉพาะรายละเอียดเบื้องต้น",
+        "romanization": "cha-phaw raai-la-iat beuang-dton",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "high",
+            "mid",
+            "low",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "mid",
+          "high",
+          "low",
+          "falling",
+          "falling"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. ราย (raai) is mid tone, ละ (la) is high tone. The current array was missing a tone for the 7 syllables."
+      },
+      {
+        "item_id": "b21-1376",
+        "thai": "เฉพาะรีสตาร์ตระบบ",
+        "romanization": "cha-phaw rii-sa-dtaat ra-bop",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "mid",
+            "low",
+            "low",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "mid",
+          "low",
+          "low",
+          "high",
+          "low"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. บบ (bop) is low tone. The current array was missing a tone for the 7 syllables."
+      },
+      {
+        "item_id": "b21-1366",
+        "thai": "เฉพาะลูกค้าที่นัดล่วงหน้า",
+        "romanization": "cha-phaw luuk-khaa thii nat luang-naa",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "falling",
+            "high",
+            "falling",
+            "high",
+            "falling",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "falling",
+          "high",
+          "falling",
+          "high",
+          "falling",
+          "falling"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high."
+      },
+      {
+        "item_id": "b21-1388",
+        "thai": "เฉพาะลูกค้าใหม่",
+        "romanization": "cha-phaw luuk-khaa mai",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "falling",
+            "high",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "falling",
+          "high",
+          "low"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. ใหม่ (mai) is low tone."
+      },
+      {
+        "item_id": "b21-1357",
+        "thai": "เฉพาะวันธรรมดา",
+        "romanization": "cha-phaw wan tham-ma-daa",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "mid",
+            "mid",
+            "mid",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "mid",
+          "mid",
+          "high",
+          "mid"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. มะ (ma) is high tone."
+      },
+      {
+        "item_id": "b21-1396",
+        "thai": "เฉพาะวันเสาร์กับอาทิตย์",
+        "romanization": "cha-phaw wan sao gap aa-thit",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "mid",
+            "rising",
+            "low",
+            "mid",
+            "low"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "mid",
+          "rising",
+          "low",
+          "mid",
+          "high"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. ทิตย์ (thit) is high tone."
+      },
+      {
+        "item_id": "b21-1353",
+        "thai": "เฉพาะสมาชิก",
+        "romanization": "cha-phaw sa-maa-chik",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "low",
+            "mid",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "low",
+          "mid",
+          "high"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high."
+      },
+      {
+        "item_id": "b21-1362",
+        "thai": "เฉพาะสาขาที่ร่วมรายการ",
+        "romanization": "cha-phaw saa-khaa thii ruam raai-gaan",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "rising",
+            "falling",
+            "falling",
+            "high",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "rising",
+          "rising",
+          "falling",
+          "falling",
+          "mid",
+          "mid"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. ขา (khaa) is rising tone. The current array was missing a tone for the 8 syllables."
+      },
+      {
+        "item_id": "b21-1368",
+        "thai": "เฉพาะสำหรับสมาชิก",
+        "romanization": "cha-phaw sam-rap sa-maa-chik",
+        "current_tones_variants": [
+          [
+            "low",
+            "falling",
+            "rising",
+            "high",
+            "low",
+            "mid",
+            "high"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "low",
+          "high",
+          "rising",
+          "low",
+          "low",
+          "mid",
+          "high"
+        ],
+        "reason": "เฉพาะ (cha-phaw) is low, high. หรับ (rap) is low tone."
+      },
+      {
+        "item_id": "b21-0661",
+        "thai": "ชนะ",
+        "romanization": "cha-na",
+        "current_tones_variants": [
+          [
+            "high",
+            "mid"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "high",
+          "high"
+        ],
+        "reason": "นะ (na) is a low class consonant with a short vowel, which produces a high tone."
+      },
+      {
+        "item_id": "b21-0715",
+        "thai": "ช่วยลดความผิดพลาด",
+        "romanization": "chuai lot khwaam phit-phlaat",
+        "current_tones_variants": [
+          [
+            "falling",
+            "low",
+            "mid",
+            "low",
+            "falling"
+          ]
+        ],
+        "status": "corrected",
+        "corrected_tones": [
+          "falling",
+          "high",
+          "mid",
+          "low",
+          "falling"
+        ],
+        "reason": "ลด (lot) is a low class consonant with a short vowel and a stop consonant, which produces a high tone."
+      }
+    ]
+  },
+  "rawText": "{\n  \"stage\": \"B2.1\",\n  \"batch_id\": \"batch-020\",\n  \"checked_items\": 30,\n  \"findings\": [\n    {\n      \"item_id\": \"b21-1349\",\n      \"thai\": \"เฉพาะเงินสด\",\n      \"romanization\": \"cha-phaw ngoen sot\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"The word เฉพาะ (cha-phaw) is pronounced with a low tone for 'cha' and a high tone for 'phaw' (low class consonant พ + short vowel าะ).\"\n    },\n    {\n      \"item_id\": \"b21-1364\",\n      \"thai\": \"เฉพาะตอนเช้า\",\n      \"romanization\": \"cha-phaw dtawn chao\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. เช้า (chao) is a low class consonant with mai tho, which produces a high tone.\"\n    },\n    {\n      \"item_id\": \"b21-1380\",\n      \"thai\": \"เฉพาะตามสั่ง\",\n      \"romanization\": \"cha-phaw dtaam sang\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. สั่ง (sang) is a high class consonant with mai ek, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b21-1370\",\n      \"thai\": \"เฉพาะติดต่อเรื่องด่วน\",\n      \"romanization\": \"cha-phaw dtit-dtaw rueang duan\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"low\",\n          \"low\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"low\",\n        \"low\",\n        \"falling\",\n        \"low\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. ด่วน (duan) is a mid class consonant with mai ek, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b21-1382\",\n      \"thai\": \"เฉพาะในกรุงเทพฯ\",\n      \"romanization\": \"cha-phaw nai grung-theep\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1355\",\n      \"thai\": \"เฉพาะในคอมพิวเตอร์รุ่นใหม่\",\n      \"romanization\": \"cha-phaw nai khom-phiu-dtoe run mai\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"falling\",\n        \"low\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. เตอร์ (dtoe) is falling tone. ใหม่ (mai) is low tone. The current array was also missing a tone for the 8 syllables.\"\n    },\n    {\n      \"item_id\": \"b21-1392\",\n      \"thai\": \"เฉพาะในที่ประชุม\",\n      \"romanization\": \"cha-phaw nai thii bpra-chum\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"falling\",\n          \"low\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"falling\",\n        \"low\",\n        \"mid\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1378\",\n      \"thai\": \"เฉพาะผ่านเว็บไซต์\",\n      \"romanization\": \"cha-phaw phaan wep-sai\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"falling\",\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"low\",\n        \"high\",\n        \"falling\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. ผ่าน (phaan) is low tone.\"\n    },\n    {\n      \"item_id\": \"b21-1372\",\n      \"thai\": \"เฉพาะผู้บริหาร\",\n      \"romanization\": \"cha-phaw phuu-baw-ri-haan\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"falling\",\n          \"low\",\n          \"high\",\n          \"rising\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"falling\",\n        \"mid\",\n        \"high\",\n        \"rising\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. บ (baw) is mid tone.\"\n    },\n    {\n      \"item_id\": \"b21-1384\",\n      \"thai\": \"เฉพาะพนักงาน\",\n      \"romanization\": \"cha-phaw pha-nak-ngaan\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"high\",\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"high\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1386\",\n      \"thai\": \"เฉพาะภาษาไทย\",\n      \"romanization\": \"cha-phaw phaa-saa thai\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"rising\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"rising\",\n        \"mid\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1394\",\n      \"thai\": \"เฉพาะรับเรื่องร้องเรียน\",\n      \"romanization\": \"cha-phaw rap rueang rong-rian\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"high\",\n          \"falling\",\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"high\",\n        \"falling\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1374\",\n      \"thai\": \"เฉพาะรายละเอียดเบื้องต้น\",\n      \"romanization\": \"cha-phaw raai-la-iat beuang-dton\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"high\",\n          \"mid\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"high\",\n        \"low\",\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. ราย (raai) is mid tone, ละ (la) is high tone. The current array was missing a tone for the 7 syllables.\"\n    },\n    {\n      \"item_id\": \"b21-1376\",\n      \"thai\": \"เฉพาะรีสตาร์ตระบบ\",\n      \"romanization\": \"cha-phaw rii-sa-dtaat ra-bop\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"high\",\n        \"low\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. บบ (bop) is low tone. The current array was missing a tone for the 7 syllables.\"\n    },\n    {\n      \"item_id\": \"b21-1366\",\n      \"thai\": \"เฉพาะลูกค้าที่นัดล่วงหน้า\",\n      \"romanization\": \"cha-phaw luuk-khaa thii nat luang-naa\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"falling\",\n          \"high\",\n          \"falling\",\n          \"high\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"falling\",\n        \"high\",\n        \"falling\",\n        \"high\",\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1388\",\n      \"thai\": \"เฉพาะลูกค้าใหม่\",\n      \"romanization\": \"cha-phaw luuk-khaa mai\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"falling\",\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"falling\",\n        \"high\",\n        \"low\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. ใหม่ (mai) is low tone.\"\n    },\n    {\n      \"item_id\": \"b21-1357\",\n      \"thai\": \"เฉพาะวันธรรมดา\",\n      \"romanization\": \"cha-phaw wan tham-ma-daa\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"mid\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. มะ (ma) is high tone.\"\n    },\n    {\n      \"item_id\": \"b21-1396\",\n      \"thai\": \"เฉพาะวันเสาร์กับอาทิตย์\",\n      \"romanization\": \"cha-phaw wan sao gap aa-thit\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"rising\",\n          \"low\",\n          \"mid\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"rising\",\n        \"low\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. ทิตย์ (thit) is high tone.\"\n    },\n    {\n      \"item_id\": \"b21-1353\",\n      \"thai\": \"เฉพาะสมาชิก\",\n      \"romanization\": \"cha-phaw sa-maa-chik\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"low\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1362\",\n      \"thai\": \"เฉพาะสาขาที่ร่วมรายการ\",\n      \"romanization\": \"cha-phaw saa-khaa thii ruam raai-gaan\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"rising\",\n          \"falling\",\n          \"falling\",\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"rising\",\n        \"rising\",\n        \"falling\",\n        \"falling\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. ขา (khaa) is rising tone. The current array was missing a tone for the 8 syllables.\"\n    },\n    {\n      \"item_id\": \"b21-1368\",\n      \"thai\": \"เฉพาะสำหรับสมาชิก\",\n      \"romanization\": \"cha-phaw sam-rap sa-maa-chik\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"rising\",\n          \"high\",\n          \"low\",\n          \"mid\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"rising\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. หรับ (rap) is low tone.\"\n    },\n    {\n      \"item_id\": \"b21-0661\",\n      \"thai\": \"ชนะ\",\n      \"romanization\": \"cha-na\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\"\n      ],\n      \"reason\": \"นะ (na) is a low class consonant with a short vowel, which produces a high tone.\"\n    },\n    {\n      \"item_id\": \"b21-0715\",\n      \"thai\": \"ช่วยลดความผิดพลาด\",\n      \"romanization\": \"chuai lot khwaam phit-phlaat\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"high\",\n        \"mid\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"ลด (lot) is a low class consonant with a short vowel and a stop consonant, which produces a high tone.\"\n    }\n  ]\n}",
+  "rawResponse": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\n  \"stage\": \"B2.1\",\n  \"batch_id\": \"batch-020\",\n  \"checked_items\": 30,\n  \"findings\": [\n    {\n      \"item_id\": \"b21-1349\",\n      \"thai\": \"เฉพาะเงินสด\",\n      \"romanization\": \"cha-phaw ngoen sot\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"The word เฉพาะ (cha-phaw) is pronounced with a low tone for 'cha' and a high tone for 'phaw' (low class consonant พ + short vowel าะ).\"\n    },\n    {\n      \"item_id\": \"b21-1364\",\n      \"thai\": \"เฉพาะตอนเช้า\",\n      \"romanization\": \"cha-phaw dtawn chao\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. เช้า (chao) is a low class consonant with mai tho, which produces a high tone.\"\n    },\n    {\n      \"item_id\": \"b21-1380\",\n      \"thai\": \"เฉพาะตามสั่ง\",\n      \"romanization\": \"cha-phaw dtaam sang\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"low\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. สั่ง (sang) is a high class consonant with mai ek, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b21-1370\",\n      \"thai\": \"เฉพาะติดต่อเรื่องด่วน\",\n      \"romanization\": \"cha-phaw dtit-dtaw rueang duan\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"low\",\n          \"low\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"low\",\n        \"low\",\n        \"falling\",\n        \"low\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. ด่วน (duan) is a mid class consonant with mai ek, which produces a low tone.\"\n    },\n    {\n      \"item_id\": \"b21-1382\",\n      \"thai\": \"เฉพาะในกรุงเทพฯ\",\n      \"romanization\": \"cha-phaw nai grung-theep\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"mid\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"mid\",\n        \"falling\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1355\",\n      \"thai\": \"เฉพาะในคอมพิวเตอร์รุ่นใหม่\",\n      \"romanization\": \"cha-phaw nai khom-phiu-dtoe run mai\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"mid\",\n        \"mid\",\n        \"falling\",\n        \"falling\",\n        \"low\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. เตอร์ (dtoe) is falling tone. ใหม่ (mai) is low tone. The current array was also missing a tone for the 8 syllables.\"\n    },\n    {\n      \"item_id\": \"b21-1392\",\n      \"thai\": \"เฉพาะในที่ประชุม\",\n      \"romanization\": \"cha-phaw nai thii bpra-chum\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"falling\",\n          \"low\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"falling\",\n        \"low\",\n        \"mid\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1378\",\n      \"thai\": \"เฉพาะผ่านเว็บไซต์\",\n      \"romanization\": \"cha-phaw phaan wep-sai\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"falling\",\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"low\",\n        \"high\",\n        \"falling\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. ผ่าน (phaan) is low tone.\"\n    },\n    {\n      \"item_id\": \"b21-1372\",\n      \"thai\": \"เฉพาะผู้บริหาร\",\n      \"romanization\": \"cha-phaw phuu-baw-ri-haan\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"falling\",\n          \"low\",\n          \"high\",\n          \"rising\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"falling\",\n        \"mid\",\n        \"high\",\n        \"rising\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. บ (baw) is mid tone.\"\n    },\n    {\n      \"item_id\": \"b21-1384\",\n      \"thai\": \"เฉพาะพนักงาน\",\n      \"romanization\": \"cha-phaw pha-nak-ngaan\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"high\",\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"high\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1386\",\n      \"thai\": \"เฉพาะภาษาไทย\",\n      \"romanization\": \"cha-phaw phaa-saa thai\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"rising\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"rising\",\n        \"mid\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1394\",\n      \"thai\": \"เฉพาะรับเรื่องร้องเรียน\",\n      \"romanization\": \"cha-phaw rap rueang rong-rian\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"high\",\n          \"falling\",\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"high\",\n        \"falling\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1374\",\n      \"thai\": \"เฉพาะรายละเอียดเบื้องต้น\",\n      \"romanization\": \"cha-phaw raai-la-iat beuang-dton\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"high\",\n          \"mid\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"high\",\n        \"low\",\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. ราย (raai) is mid tone, ละ (la) is high tone. The current array was missing a tone for the 7 syllables.\"\n    },\n    {\n      \"item_id\": \"b21-1376\",\n      \"thai\": \"เฉพาะรีสตาร์ตระบบ\",\n      \"romanization\": \"cha-phaw rii-sa-dtaat ra-bop\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"low\",\n          \"low\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"low\",\n        \"low\",\n        \"high\",\n        \"low\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. บบ (bop) is low tone. The current array was missing a tone for the 7 syllables.\"\n    },\n    {\n      \"item_id\": \"b21-1366\",\n      \"thai\": \"เฉพาะลูกค้าที่นัดล่วงหน้า\",\n      \"romanization\": \"cha-phaw luuk-khaa thii nat luang-naa\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"falling\",\n          \"high\",\n          \"falling\",\n          \"high\",\n          \"falling\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"falling\",\n        \"high\",\n        \"falling\",\n        \"high\",\n        \"falling\",\n        \"falling\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1388\",\n      \"thai\": \"เฉพาะลูกค้าใหม่\",\n      \"romanization\": \"cha-phaw luuk-khaa mai\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"falling\",\n          \"high\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"falling\",\n        \"high\",\n        \"low\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. ใหม่ (mai) is low tone.\"\n    },\n    {\n      \"item_id\": \"b21-1357\",\n      \"thai\": \"เฉพาะวันธรรมดา\",\n      \"romanization\": \"cha-phaw wan tham-ma-daa\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"mid\",\n          \"mid\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"mid\",\n        \"high\",\n        \"mid\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. มะ (ma) is high tone.\"\n    },\n    {\n      \"item_id\": \"b21-1396\",\n      \"thai\": \"เฉพาะวันเสาร์กับอาทิตย์\",\n      \"romanization\": \"cha-phaw wan sao gap aa-thit\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"mid\",\n          \"rising\",\n          \"low\",\n          \"mid\",\n          \"low\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"mid\",\n        \"rising\",\n        \"low\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. ทิตย์ (thit) is high tone.\"\n    },\n    {\n      \"item_id\": \"b21-1353\",\n      \"thai\": \"เฉพาะสมาชิก\",\n      \"romanization\": \"cha-phaw sa-maa-chik\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"low\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high.\"\n    },\n    {\n      \"item_id\": \"b21-1362\",\n      \"thai\": \"เฉพาะสาขาที่ร่วมรายการ\",\n      \"romanization\": \"cha-phaw saa-khaa thii ruam raai-gaan\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"rising\",\n          \"falling\",\n          \"falling\",\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"rising\",\n        \"rising\",\n        \"falling\",\n        \"falling\",\n        \"mid\",\n        \"mid\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. ขา (khaa) is rising tone. The current array was missing a tone for the 8 syllables.\"\n    },\n    {\n      \"item_id\": \"b21-1368\",\n      \"thai\": \"เฉพาะสำหรับสมาชิก\",\n      \"romanization\": \"cha-phaw sam-rap sa-maa-chik\",\n      \"current_tones_variants\": [\n        [\n          \"low\",\n          \"falling\",\n          \"rising\",\n          \"high\",\n          \"low\",\n          \"mid\",\n          \"high\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"low\",\n        \"high\",\n        \"rising\",\n        \"low\",\n        \"low\",\n        \"mid\",\n        \"high\"\n      ],\n      \"reason\": \"เฉพาะ (cha-phaw) is low, high. หรับ (rap) is low tone.\"\n    },\n    {\n      \"item_id\": \"b21-0661\",\n      \"thai\": \"ชนะ\",\n      \"romanization\": \"cha-na\",\n      \"current_tones_variants\": [\n        [\n          \"high\",\n          \"mid\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"high\",\n        \"high\"\n      ],\n      \"reason\": \"นะ (na) is a low class consonant with a short vowel, which produces a high tone.\"\n    },\n    {\n      \"item_id\": \"b21-0715\",\n      \"thai\": \"ช่วยลดความผิดพลาด\",\n      \"romanization\": \"chuai lot khwaam phit-phlaat\",\n      \"current_tones_variants\": [\n        [\n          \"falling\",\n          \"low\",\n          \"mid\",\n          \"low\",\n          \"falling\"\n        ]\n      ],\n      \"status\": \"corrected\",\n      \"corrected_tones\": [\n        \"falling\",\n        \"high\",\n        \"mid\",\n        \"low\",\n        \"falling\"\n      ],\n      \"reason\": \"ลด (lot) is a low class consonant with a short vowel and a stop consonant, which produces a high tone.\"\n    }\n  ]\n}",
+              "thoughtSignature": "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"
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 4905,
+      "candidatesTokenCount": 4132,
+      "totalTokenCount": 17627,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 4905
+        }
+      ],
+      "thoughtsTokenCount": 8590
+    },
+    "modelVersion": "gemini-3.1-pro-preview",
+    "responseId": "dATWaZvYMYy_g8UP8I246Qg"
+  },
+  "usageMetadata": {
+    "promptTokenCount": 4905,
+    "candidatesTokenCount": 4132,
+    "totalTokenCount": 17627,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 4905
+      }
+    ],
+    "thoughtsTokenCount": 8590
+  }
+}
