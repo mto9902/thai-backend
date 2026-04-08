@@ -3476,23 +3476,41 @@ async function findUserForPaddleEntity(entity) {
 }
 
 async function updateUserPaddleAccess(userId, updates) {
-  const {
-    customerId = null,
-    subscriptionId = null,
-    subscriptionStatus = null,
-    priceId = null,
-    hasAccess = null,
-  } = updates ?? {};
+  const hasCustomerIdUpdate =
+    updates && Object.prototype.hasOwnProperty.call(updates, "customerId");
+  const hasSubscriptionIdUpdate =
+    updates && Object.prototype.hasOwnProperty.call(updates, "subscriptionId");
+  const hasSubscriptionStatusUpdate =
+    updates && Object.prototype.hasOwnProperty.call(updates, "subscriptionStatus");
+  const hasPriceIdUpdate =
+    updates && Object.prototype.hasOwnProperty.call(updates, "priceId");
+  const hasAccessUpdate =
+    updates && Object.prototype.hasOwnProperty.call(updates, "hasAccess");
+
+  const customerId = hasCustomerIdUpdate ? updates.customerId ?? null : null;
+  const subscriptionId = hasSubscriptionIdUpdate
+    ? updates.subscriptionId ?? null
+    : null;
+  const subscriptionStatus = hasSubscriptionStatusUpdate
+    ? updates.subscriptionStatus ?? null
+    : null;
+  const priceId = hasPriceIdUpdate ? updates.priceId ?? null : null;
+  const hasBooleanAccessUpdate =
+    hasAccessUpdate && typeof updates.hasAccess === "boolean";
+  const hasAccess =
+    hasBooleanAccessUpdate
+      ? updates.hasAccess
+      : null;
 
   const result = await pool.query(
     `
     UPDATE users
     SET
-      paddle_customer_id = COALESCE($2, paddle_customer_id),
-      paddle_subscription_id = COALESCE($3, paddle_subscription_id),
-      paddle_subscription_status = COALESCE($4, paddle_subscription_status),
-      paddle_price_id = COALESCE($5, paddle_price_id),
-      paddle_keystone_access = COALESCE($6, paddle_keystone_access),
+      paddle_customer_id = CASE WHEN $2 THEN $3 ELSE paddle_customer_id END,
+      paddle_subscription_id = CASE WHEN $4 THEN $5 ELSE paddle_subscription_id END,
+      paddle_subscription_status = CASE WHEN $6 THEN $7 ELSE paddle_subscription_status END,
+      paddle_price_id = CASE WHEN $8 THEN $9 ELSE paddle_price_id END,
+      paddle_keystone_access = CASE WHEN $10 THEN $11 ELSE paddle_keystone_access END,
       paddle_access_updated_at = NOW()
     WHERE id = $1
     RETURNING
@@ -3510,11 +3528,16 @@ async function updateUserPaddleAccess(userId, updates) {
     `,
     [
       userId,
+      hasCustomerIdUpdate,
       customerId,
+      hasSubscriptionIdUpdate,
       subscriptionId,
+      hasSubscriptionStatusUpdate,
       subscriptionStatus,
+      hasPriceIdUpdate,
       priceId,
-      typeof hasAccess === "boolean" ? hasAccess : null,
+      hasBooleanAccessUpdate,
+      hasAccess,
     ],
   );
 
@@ -3588,12 +3611,50 @@ async function resolvePaddleBillingStateForUser(userId) {
   }
 
   if (!subscription && customerId) {
-    const subscriptions = await listPaddleSubscriptionsForCustomer(customerId);
-    const bestSubscription = selectBestPaddleSubscription(subscriptions);
-    if (bestSubscription) {
-      subscription = bestSubscription;
-      subscriptionId =
-        typeof bestSubscription.id === "string" ? bestSubscription.id.trim() : "";
+    try {
+      const subscriptions = await listPaddleSubscriptionsForCustomer(customerId);
+      const bestSubscription = selectBestPaddleSubscription(subscriptions);
+      if (bestSubscription) {
+        subscription = bestSubscription;
+        subscriptionId =
+          typeof bestSubscription.id === "string" ? bestSubscription.id.trim() : "";
+      }
+    } catch (error) {
+      if (error?.status !== 404) {
+        throw error;
+      }
+
+      // A stale sandbox customer ID can survive the move to live billing.
+      // Fall back to the live customer resolved by email and clear old pointers
+      // if the live account does not know about the stored customer.
+      customerId = "";
+      subscriptionId = "";
+      subscription = null;
+
+      const liveCustomer = await findPaddleCustomerByEmail(user.email);
+      const liveCustomerId =
+        typeof liveCustomer?.id === "string" ? liveCustomer.id.trim() : "";
+
+      user =
+        (await updateUserPaddleAccess(userId, {
+          customerId: liveCustomerId || null,
+          subscriptionId: null,
+          subscriptionStatus: null,
+          priceId: null,
+          ...(liveCustomerId ? {} : { hasAccess: false }),
+        })) || user;
+
+      customerId = liveCustomerId;
+
+      if (customerId) {
+        const subscriptions = await listPaddleSubscriptionsForCustomer(customerId);
+        const bestSubscription = selectBestPaddleSubscription(subscriptions);
+        if (bestSubscription) {
+          subscription = bestSubscription;
+          subscriptionId =
+            typeof bestSubscription.id === "string" ? bestSubscription.id.trim() : "";
+        }
+      }
     }
   }
 
