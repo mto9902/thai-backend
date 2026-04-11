@@ -27,6 +27,7 @@ import {
   verifyPaddleWebhookSignature,
 } from "./paddle.js";
 import { registerSRSRoutes, SRS_CONFIG } from "./srs.js";
+import registerExplainSentenceRoute from "./explainSentence.js";
 import registerTransformRoute from "./transform.js";
 
 dotenv.config();
@@ -299,6 +300,11 @@ const sentenceTtsRateLimiter = createRateLimiter({
   maxRequests: readPositiveIntEnv("TTS_RATE_LIMIT_MAX", 90),
   windowMs: readPositiveIntEnv("TTS_RATE_LIMIT_WINDOW_MS", 60 * 1000),
 });
+const grammarExplanationRateLimiter = createRateLimiter({
+  keyPrefix: "grammar-explain",
+  maxRequests: readPositiveIntEnv("GRAMMAR_EXPLANATION_RATE_LIMIT_MAX", 20),
+  windowMs: readPositiveIntEnv("GRAMMAR_EXPLANATION_RATE_LIMIT_WINDOW_MS", 60 * 1000),
+});
 const ttsConcurrencyLimiter = createConcurrencyLimiter(TTS_MAX_CONCURRENT);
 
 function parseGrammarBreakdown(rawBreakdown, contextLabel) {
@@ -375,6 +381,63 @@ async function readGrammarRowsFromCsvDirectory() {
   }
 
   return nextGrammarSentences;
+}
+
+let grammarRowNormalizationPromise = null;
+
+async function persistNormalizedGrammarRows(
+  updates,
+  nextGrammarSentences,
+  grammarsNeedingCsvMirror,
+) {
+  if (!Array.isArray(updates) || updates.length === 0) {
+    return;
+  }
+
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    for (const update of updates) {
+      await client.query(
+        `
+        UPDATE ${GRAMMAR_EXAMPLES_TABLE}
+        SET
+          breakdown = $2::jsonb,
+          tone_confidence = $3,
+          tone_status = $4,
+          tone_analysis = $5::jsonb,
+          review_status = $6,
+          updated_at = NOW()
+        WHERE id = $1
+        `,
+        [
+          update.id,
+          JSON.stringify(update.breakdown),
+          update.toneConfidence,
+          update.toneStatus,
+          JSON.stringify(update.toneAnalysis),
+          update.reviewStatus,
+        ],
+      );
+    }
+    await client.query("COMMIT");
+  } catch (err) {
+    await client.query("ROLLBACK");
+    throw err;
+  } finally {
+    client.release();
+  }
+
+  for (const grammarId of grammarsNeedingCsvMirror) {
+    const rows = nextGrammarSentences[grammarId];
+    if (Array.isArray(rows)) {
+      writeGrammarRowsToCsvMirror(grammarId, rows);
+    }
+  }
+
+  console.log(
+    `Backfilled tone metadata for ${updates.length} grammar example row${updates.length === 1 ? "" : "s"}`,
+  );
 }
 
 async function loadGrammarRowsFromDatabase() {
@@ -498,50 +561,29 @@ async function loadGrammarRowsFromDatabase() {
   }
 
   if (updates.length > 0) {
-    const client = await pool.connect();
-    try {
-      await client.query("BEGIN");
-      for (const update of updates) {
-        await client.query(
-          `
-          UPDATE ${GRAMMAR_EXAMPLES_TABLE}
-          SET
-            breakdown = $2::jsonb,
-            tone_confidence = $3,
-            tone_status = $4,
-            tone_analysis = $5::jsonb,
-            review_status = $6,
-            updated_at = NOW()
-          WHERE id = $1
-          `,
-          [
-            update.id,
-            JSON.stringify(update.breakdown),
-            update.toneConfidence,
-            update.toneStatus,
-            JSON.stringify(update.toneAnalysis),
-            update.reviewStatus,
-          ],
-        );
-      }
-      await client.query("COMMIT");
-    } catch (err) {
-      await client.query("ROLLBACK");
-      throw err;
-    } finally {
-      client.release();
+    // Keep startup responsive: the in-memory rows are already normalized, so
+    // persisting those fixes back to Postgres can happen in the background.
+    if (!grammarRowNormalizationPromise) {
+      const scheduledUpdates = updates.map((update) => ({ ...update }));
+      const scheduledGrammarIds = Array.from(grammarsNeedingCsvMirror);
+      const scheduledRows = Object.fromEntries(
+        scheduledGrammarIds.map((grammarId) => [grammarId, nextGrammarSentences[grammarId]]),
+      );
+      console.log(
+        `Scheduling tone metadata backfill for ${scheduledUpdates.length} grammar example row${scheduledUpdates.length === 1 ? "" : "s"}`,
+      );
+      grammarRowNormalizationPromise = persistNormalizedGrammarRows(
+        scheduledUpdates,
+        scheduledRows,
+        scheduledGrammarIds,
+      )
+        .catch((err) => {
+          console.error("Background grammar tone metadata backfill failed:", err);
+        })
+        .finally(() => {
+          grammarRowNormalizationPromise = null;
+        });
     }
-
-    for (const grammarId of grammarsNeedingCsvMirror) {
-      const rows = nextGrammarSentences[grammarId];
-      if (Array.isArray(rows)) {
-        writeGrammarRowsToCsvMirror(grammarId, rows);
-      }
-    }
-
-    console.log(
-      `Backfilled tone metadata for ${updates.length} grammar example row${updates.length === 1 ? "" : "s"}`,
-    );
   }
 
   return nextGrammarSentences;
@@ -4192,6 +4234,7 @@ const STARTUP_ROUTE_CHECKS = [
   { group: "core", method: "DELETE", path: "/me", label: "delete account" },
   { group: "thai", method: "GET", path: "/grammar/overrides", label: "grammar overrides" },
   { group: "thai", method: "POST", path: "/practice-csv", label: "practice sentence" },
+  { group: "thai", method: "POST", path: "/grammar/explain-sentence", label: "grammar sentence explanation" },
   { group: "thai", method: "GET", path: "/review/queue", label: "review queue" },
   { group: "thai", method: "GET", path: "/review/grammar/:grammarId", label: "review grammar detail" },
   { group: "thai", method: "PATCH", path: "/review/grammar/:grammarId/lesson", label: "review lesson save" },
@@ -4556,6 +4599,37 @@ async function reviewContentMiddleware(req, res, next) {
     res.status(500).json({ error: "Failed to verify review access" });
   }
 }
+
+function optionalAuthMiddleware(req, _res, next) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return next();
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  if (!token) {
+    return next();
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "devsecret");
+    req.userId = decoded.userId;
+    req.userEmail = decoded.email;
+  } catch (_err) {
+    req.userId = undefined;
+    req.userEmail = undefined;
+  }
+
+  next();
+}
+
+registerExplainSentenceRoute(app, {
+  openai,
+  authMiddleware: optionalAuthMiddleware,
+  rateLimiter: grammarExplanationRateLimiter,
+});
 
 app.get("/me", authMiddleware, async (req, res) => {
   try {
@@ -7592,6 +7666,28 @@ async function startServer() {
     await pool.query(`
       CREATE INDEX IF NOT EXISTS idx_grammar_progress_user_last_practiced
         ON grammar_progress (user_id, last_practiced DESC);
+    `);
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS sentence_explanation_cache (
+        cache_key TEXT PRIMARY KEY,
+        cache_version TEXT NOT NULL,
+        grammar_id TEXT,
+        sentence_thai TEXT NOT NULL,
+        model TEXT NOT NULL,
+        explanation TEXT NOT NULL,
+        hit_count INTEGER NOT NULL DEFAULT 1,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        last_used_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_sentence_explanation_cache_last_used
+        ON sentence_explanation_cache (last_used_at DESC);
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_sentence_explanation_cache_grammar
+        ON sentence_explanation_cache (grammar_id, last_used_at DESC);
     `);
     await pool.query(`
       CREATE TABLE IF NOT EXISTS ${GRAMMAR_EXAMPLES_TABLE} (
