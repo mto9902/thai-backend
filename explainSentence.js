@@ -5,9 +5,9 @@ const DEFAULT_EXPLANATION_MODEL = "gpt-4o-mini";
 const MAX_BREAKDOWN_ITEMS = 24;
 const MAX_TEXT_LENGTH = 900;
 const EXPLANATION_CACHE_TABLE = "sentence_explanation_cache";
-const EXPLANATION_CACHE_VERSION = "plain-learner-text-v1";
+const EXPLANATION_CACHE_VERSION = "plain-beginner-text-v2";
 const EXPLANATION_INSTRUCTIONS =
-  "Explain this sentence for a learner in English. Write in plain English only. Explain only the final Thai sentence itself, not the exercise, spacing, formatting, or learner answer. Every time you mention a Thai word or Thai phrase, immediately put its romanization in parentheses. Do this every time, with no exceptions. No Markdown, no headings, no bullet points, no hashtags, no asterisks, and no bold formatting. Do not say the sentence is correct or incorrect. Do not offer extra help or say 'if you want'. Start directly with the explanation.";
+  "Explain this sentence to a beginner in English. Write in plain English only. Explain only the final Thai sentence itself, not the exercise, spacing, formatting, or learner answer. Every time you mention a Thai word or Thai phrase, immediately put its romanization in parentheses. Do this every time, with no exceptions. No Markdown, no headings, no bullet points, no hashtags, no asterisks, and no bold formatting. Do not say the sentence is correct or incorrect. Do not offer extra help or say 'if you want'. Start directly with the explanation.";
 
 function httpError(statusCode, message) {
   const error = new Error(message);
