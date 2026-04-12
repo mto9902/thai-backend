@@ -305,6 +305,11 @@ const grammarExplanationRateLimiter = createRateLimiter({
   maxRequests: readPositiveIntEnv("GRAMMAR_EXPLANATION_RATE_LIMIT_MAX", 20),
   windowMs: readPositiveIntEnv("GRAMMAR_EXPLANATION_RATE_LIMIT_WINDOW_MS", 60 * 1000),
 });
+const supportRequestRateLimiter = createRateLimiter({
+  keyPrefix: "support",
+  maxRequests: readPositiveIntEnv("SUPPORT_RATE_LIMIT_MAX", 8),
+  windowMs: readPositiveIntEnv("SUPPORT_RATE_LIMIT_WINDOW_MS", 15 * 60 * 1000),
+});
 const ttsConcurrencyLimiter = createConcurrencyLimiter(TTS_MAX_CONCURRENT);
 
 function parseGrammarBreakdown(rawBreakdown, contextLabel) {
@@ -3965,18 +3970,20 @@ async function sendSupportRequestEmail({
   const fromEmail = process.env.SMTP_FROM_EMAIL?.trim();
   const fromName = process.env.SMTP_FROM_NAME?.trim() || "Keystone Languages";
   const safeMessage = escapeHtml(message).replace(/\n/g, "<br />");
+  const contactLabel = contactEmail || accountEmail || "guest submission";
+  const replyTo = isValidEmail(contactEmail || "") ? contactEmail : undefined;
 
   await transporter.sendMail({
     from: fromName ? `"${fromName}" <${fromEmail}>` : fromEmail,
     to: SUPPORT_INBOX_EMAIL,
-    replyTo: contactEmail,
-    subject: `Support request from ${contactEmail}`,
+    replyTo,
+    subject: `Support request from ${contactLabel}`,
     text: [
-      `Support request received from ${contactEmail}.`,
+      `Support request received from ${contactLabel}.`,
       "",
       `User ID: ${userId ?? "unknown"}`,
       `Account email: ${accountEmail || "unknown"}`,
-      `Reply-to email: ${contactEmail}`,
+      `Reply-to email: ${contactEmail || "not provided"}`,
       "",
       "Message:",
       message,
@@ -3984,7 +3991,7 @@ async function sendSupportRequestEmail({
     html: `
       <div style="font-family:Arial,Helvetica,sans-serif;line-height:1.6;color:#0f1720;max-width:680px;margin:0 auto;padding:24px;">
         <h1 style="font-size:24px;margin:0 0 12px;">Support request</h1>
-        <p style="margin:0 0 16px;"><strong>Reply-to:</strong> ${escapeHtml(contactEmail)}</p>
+        <p style="margin:0 0 16px;"><strong>Reply-to:</strong> ${escapeHtml(contactEmail || "not provided")}</p>
         <p style="margin:0 0 8px;"><strong>User ID:</strong> ${escapeHtml(userId ?? "unknown")}</p>
         <p style="margin:0 0 20px;"><strong>Account email:</strong> ${escapeHtml(accountEmail || "unknown")}</p>
         <div style="padding:16px;border:1px solid #d8dde5;background:#faf7f1;">
@@ -4661,13 +4668,13 @@ app.get("/me", authMiddleware, async (req, res) => {
   }
 });
 
-app.post("/support/request", authMiddleware, async (req, res) => {
+app.post("/support/request", supportRequestRateLimiter, optionalAuthMiddleware, async (req, res) => {
   try {
     const contactEmail =
       typeof req.body?.email === "string" ? req.body.email.trim().toLowerCase() : "";
     const message = typeof req.body?.message === "string" ? req.body.message.trim() : "";
 
-    if (!isValidEmail(contactEmail)) {
+    if (contactEmail && !isValidEmail(contactEmail)) {
       return res.status(400).json({ error: "Enter a valid email address." });
     }
 
@@ -4679,27 +4686,33 @@ app.post("/support/request", authMiddleware, async (req, res) => {
       return res.status(400).json({ error: "Please keep the message under 4000 characters." });
     }
 
-    const userResult = await pool.query(
-      `
-      SELECT id, email
-      FROM users
-      WHERE id = $1
-      LIMIT 1
-      `,
-      [req.userId],
-    );
+    let user = null;
+    if (req.userId) {
+      const userResult = await pool.query(
+        `
+        SELECT id, email
+        FROM users
+        WHERE id = $1
+        LIMIT 1
+        `,
+        [req.userId],
+      );
 
-    if (userResult.rows.length === 0) {
-      return res.status(404).json({ error: "User not found" });
+      if (userResult.rows.length === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      user = userResult.rows[0];
     }
 
-    const user = userResult.rows[0];
+    const resolvedAccountEmail = user?.email || contactEmail || null;
     const supportRequest = {
       id: randomUUID(),
       createdAt: new Date().toISOString(),
-      userId: user.id,
-      accountEmail: user.email,
-      contactEmail,
+      userId: user?.id || null,
+      accountEmail: resolvedAccountEmail,
+      contactEmail: contactEmail || null,
+      isGuest: !user,
       message,
       deliveredByEmail: false,
     };
@@ -4707,9 +4720,9 @@ app.post("/support/request", authMiddleware, async (req, res) => {
     try {
       if (isEmailTransportConfigured()) {
         await sendSupportRequestEmail({
-          accountEmail: user.email,
+          accountEmail: resolvedAccountEmail,
           contactEmail,
-          userId: user.id,
+          userId: user?.id ? String(user.id) : "guest",
           message,
         });
         supportRequest.deliveredByEmail = true;
