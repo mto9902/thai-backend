@@ -32,9 +32,97 @@ import registerTransformRoute from "./transform.js";
 
 dotenv.config();
 
+const NODE_ENV = process.env.NODE_ENV || "development";
+const IS_PRODUCTION = NODE_ENV === "production";
+
+function parseCsvEnv(value) {
+  return String(value || "")
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+}
+
+function resolveJwtSecret() {
+  const configuredSecret = process.env.JWT_SECRET?.trim();
+  if (configuredSecret) {
+    return configuredSecret;
+  }
+
+  if (IS_PRODUCTION) {
+    throw new Error("JWT_SECRET must be set in production");
+  }
+
+  console.warn("JWT_SECRET is not set; using the local development fallback secret.");
+  return "devsecret";
+}
+
+const PRODUCTION_ALLOWED_ORIGINS = [
+  "https://thai.keystonelanguages.com",
+  "https://www.keystonelanguages.com",
+  "https://thai-web-app.vercel.app",
+];
+
+const DEVELOPMENT_ALLOWED_ORIGINS = [
+  ...PRODUCTION_ALLOWED_ORIGINS,
+  "http://localhost:3000",
+  "http://localhost:8081",
+  "http://localhost:8082",
+  "http://localhost:8083",
+  "http://127.0.0.1:3000",
+  "http://127.0.0.1:8081",
+  "http://127.0.0.1:8082",
+  "http://127.0.0.1:8083",
+  "http://192.168.1.101:8081",
+  "http://192.168.1.101:8082",
+  "http://192.168.1.101:8083",
+];
+
+function getAllowedOrigins() {
+  const configuredOrigins = parseCsvEnv(process.env.CORS_ALLOWED_ORIGINS);
+  const defaultOrigins = IS_PRODUCTION
+    ? PRODUCTION_ALLOWED_ORIGINS
+    : DEVELOPMENT_ALLOWED_ORIGINS;
+  return new Set(
+    (configuredOrigins.length > 0 ? configuredOrigins : defaultOrigins)
+      .map((origin) => origin.trim())
+      .filter(Boolean),
+  );
+}
+
+const JWT_SECRET = resolveJwtSecret();
+const ALLOWED_ORIGINS = getAllowedOrigins();
+
 const app = express();
 app.set("trust proxy", true);
-app.use(cors());
+app.disable("x-powered-by");
+app.use((_req, res, next) => {
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  next();
+});
+app.use(
+  cors((req, callback) => {
+    const origin = req.header("Origin");
+
+    if (!origin) {
+      return callback(null, {
+        origin: true,
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+        optionsSuccessStatus: 204,
+      });
+    }
+
+    return callback(null, {
+      origin: ALLOWED_ORIGINS.has(origin),
+      credentials: true,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      optionsSuccessStatus: 204,
+    });
+  }),
+);
 app.use(
   express.json({
     limit: process.env.JSON_BODY_LIMIT || "1mb",
@@ -3250,7 +3338,7 @@ function resolveDisplayName(value, email) {
 function createSessionToken(user) {
   return jwt.sign(
     { userId: user.id, email: user.email },
-    process.env.JWT_SECRET || "devsecret",
+    JWT_SECRET,
   );
 }
 
@@ -4220,6 +4308,10 @@ function renderPasswordResetPage() {
 }
 
 app.get("/health", (_req, res) => {
+  if (IS_PRODUCTION) {
+    return res.json({ ok: true });
+  }
+
   res.json({
     ok: true,
     db: getPoolStats(),
@@ -4475,6 +4567,10 @@ function printStartupSummary() {
 }
 
 app.get("/health/startup", (_req, res) => {
+  if (IS_PRODUCTION && process.env.EXPOSE_STARTUP_HEALTH !== "true") {
+    return res.status(404).json({ error: "Not found" });
+  }
+
   res.json(buildStartupReport());
 });
 
@@ -4545,7 +4641,7 @@ function authMiddleware(req, res, next) {
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "devsecret");
+    const decoded = jwt.verify(token, JWT_SECRET);
 
     req.userId = decoded.userId;
     req.userEmail = decoded.email;
@@ -4621,7 +4717,7 @@ function optionalAuthMiddleware(req, _res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "devsecret");
+    const decoded = jwt.verify(token, JWT_SECRET);
     req.userId = decoded.userId;
     req.userEmail = decoded.email;
   } catch (_err) {
